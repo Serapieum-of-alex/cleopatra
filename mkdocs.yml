@@ -1,0 +1,13 @@
+site_name: statista
+site_description: The documentation of cleopatra python package
+site_author: Mostafa Farrag
+
+repo_url: https://github.com/MAfarrag/cleopatra
+edit_url: ""
+
+theme:
+    name: readthedocs
+
+nav:
+    - Home: index.md
+    - License: license.md
