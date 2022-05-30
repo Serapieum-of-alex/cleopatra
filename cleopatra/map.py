@@ -76,45 +76,44 @@ class Map:
         pass
 
     @staticmethod
-    def LineStyle(Style: Union[str, int] = "loosely dotted"):
+    def lineStyle(style: Union[str, int] = "loosely dotted"):
         """LineStyle.
 
         Line styles for plotting
 
         Parameters
         ----------
-        Style : TYPE, optional
+        style : TYPE, optional
             DESCRIPTION. The default is 'loosely dotted'.
 
         Returns
         -------
         TYPE
             DESCRIPTION.
-
         """
-        if isinstance(Style, str):
+        if isinstance(style, str):
             try:
-                return Map.linestyles[Style]
+                return Map.linestyles[style]
             except KeyError:
                 msg = (
-                    " The Style name you entered-{0}-does not exist please"
+                    " The style name you entered-{0}-does not exist please"
                     "choose from the available styles"
-                ).format(Style)
+                ).format(style)
                 print(msg)
                 print(list(Map.linestyles))
         else:
-            return list(Map.linestyles.items())[Style][1]
+            return list(Map.linestyles.items())[style][1]
 
 
     @staticmethod
-    def MarkerStyle(Style: int):
+    def markerStyle(style: int):
         """MarkerStyle.
 
         Marker styles for plotting
 
         Parameters
         ----------
-        Style : TYPE
+        style : TYPE
             DESCRIPTION.
 
         Returns
@@ -123,37 +122,37 @@ class Map:
             DESCRIPTION.
 
         """
-        if Style > len(Map.MarkerStyleList) - 1:
-            Style = Style % len(Map.MarkerStyleList)
-        return Map.MarkerStyleList[Style]
+        if style > len(Map.MarkerStyleList) - 1:
+            style = style % len(Map.MarkerStyleList)
+        return Map.MarkerStyleList[style]
 
 
     @staticmethod
-    def PlotArray(
+    def plotArray(
             src: Union[Dataset, np.ndarray],
             nodataval: Union[int, float] = np.nan,
-            Figsize: Tuple[int, int]=(8, 8),
-            Title: Any = "Total Discharge",
-            titlesize: Union[int, float] = 15,
-            Cbarlength: Union[int, float] = 0.75,
+            figsize: Tuple[int, int]=(8, 8),
+            title: Any = "Total Discharge",
+            title_size: Union[int, float] = 15,
+            cbar_length: Union[int, float] = 0.75,
             orientation: str="vertical",
-            cbarlabelsize: Union[int, float] = 12,
-            cbarlabel: str="Color bar label",
+            cbar_label_size: Union[int, float] = 12,
+            cbar_label: str= "Color bar label",
             rotation: Union[int, float] = -90,
-            TicksSpacing: Union[int, float] = 5,
-            NumSize: Union[int, float] = 8,
-            ColorScale: int=1,
+            ticks_spacing: Union[int, float] = 5,
+            num_size: Union[int, float] = 8,
+            color_scale: int=1,
             cmap: str="coolwarm_r",
             gamma: Union[int, float] = 0.5,
             linscale: Union[int, float] = 0.001,
             linthresh: Union[int, float] = 0.0001,
             midpoint: int=0,
             display_cellvalue: bool=False,
-            Backgroundcolorthreshold=None,
-            Gaugecolor: str="red",
-            Gaugesize: Union[int, float] = 100,
-            IDcolor="blue",
-            IDsize: Union[int, float] = 10,
+            background_color_threshold=None,
+            point_color: str= "red",
+            point_size: Union[int, float] = 100,
+            pid_color="blue",
+            pid_size: Union[int, float] = 10,
             **kwargs
     ):
         """PlotArray.
@@ -167,31 +166,31 @@ class Map:
         nodataval : [numeric]
             value used to fill cells out of the domain. Optional, Default is np.nan
             needed only in case of plotting array
-        Figsize : [tuple], optional
+        figsize : [tuple], optional
             figure size. The default is (8,8).
-        Title : [str], optional
+        title : [str], optional
             title of the plot. The default is 'Total Discharge'.
-        titlesize : [integer], optional
+        title_size : [integer], optional
             title size. The default is 15.
-        Cbarlength : [float], optional
+        cbar_length : [float], optional
             ratio to control the height of the colorbar. The default is 0.75.
         orientation : [string], optional
             orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-        cbarlabelsize : integer, optional
+        cbar_label_size : integer, optional
             size of the color bar label. The default is 12.
-        cbarlabel : str, optional
+        cbar_label : str, optional
             label of the color bar. The default is 'Discharge m3/s'.
         rotation : [number], optional
             rotation of the colorbar label. The default is -90.
-        TicksSpacing : [integer], optional
+        ticks_spacing : [integer], optional
             Spacing in the colorbar ticks. The default is 2.
-        ColorScale : integer, optional
+        color_scale : integer, optional
             there are 5 options to change the scale of the colors. The default is 1.
-            1- ColorScale 1 is the normal scale
-            2- ColorScale 2 is the power scale
-            3- ColorScale 3 is the SymLogNorm scale
-            4- ColorScale 4 is the PowerNorm scale
-            5- ColorScale 5 is the BoundaryNorm scale
+            1- color_scale 1 is the normal scale
+            2- color_scale 2 is the power scale
+            3- color_scale 3 is the SymLogNorm scale
+            4- color_scale 4 is the PowerNorm scale
+            5- color_scale 5 is the BoundaryNorm scale
         gamma : [float], optional
             value needed for option 2 . The default is 1./2..
         linthresh : [float], optional
@@ -204,21 +203,21 @@ class Map:
             color style. The default is 'coolwarm_r'.
         display_cellvalue : [bool]
             True if you want to display the values of the cells as a text
-        NumSize : integer, optional
+        num_size : integer, optional
             size of the numbers plotted intop of each cells. The default is 8.
-        Backgroundcolorthreshold : [float/integer], optional
+        background_color_threshold : [float/integer], optional
             threshold value if the value of the cell is greater, the plotted
             numbers will be black and if smaller the plotted number will be white
             if None given the maxvalue/2 will be considered. The default is None.
-        Gaugecolor : [str], optional
+        point_color : [str], optional
             color of the points. The default is 'red'.
-        Gaugesize : [integer], optional
+        point_size : [integer], optional
             size of the points. The default is 100.
-        IDcolor : [str]
+        pid_color : [str]
             the ID of the Point.The default is "blue".
-        IDsize : [integer]
+        pid_size : [integer]
             size of the ID text. The default is 10.
-        IDcolor : []
+        pid_color : []
 
         rotation : []
 
@@ -257,30 +256,30 @@ class Map:
             Arr[np.isclose(Arr, nodataval, rtol=0.001)] = np.nan
             no_elem = np.size(Arr[:, :]) - np.count_nonzero((Arr[np.isnan(Arr)]))
 
-        fig = plt.figure(figsize=Figsize)
+        fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        if np.mod(np.nanmax(Arr), TicksSpacing) == 0:
+        if np.mod(np.nanmax(Arr), ticks_spacing) == 0:
             ticks = np.arange(
-                np.nanmin(Arr), np.nanmax(Arr) + TicksSpacing, TicksSpacing
+                np.nanmin(Arr), np.nanmax(Arr) + ticks_spacing, ticks_spacing
             )
         else:
             try:
-                ticks = np.arange(np.nanmin(Arr), np.nanmax(Arr), TicksSpacing)
+                ticks = np.arange(np.nanmin(Arr), np.nanmax(Arr), ticks_spacing)
             except ValueError:
                 raise ValueError("The number of ticks exceeded the max allowed size, possible errors"
                                  f"is the value of the NodataValue you entered-{nodataval}")
             ticks = np.append(
                 ticks,
-                [int(np.nanmax(Arr) / TicksSpacing) * TicksSpacing + TicksSpacing],
+                [int(np.nanmax(Arr) / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
 
-        if ColorScale == 1:
+        if color_scale == 1:
             im = ax.matshow(
                 Arr[:, :], cmap=cmap, vmin=np.nanmin(Arr), vmax=np.nanmax(Arr)
             )
             cbar_kw = dict(ticks=ticks)
-        elif ColorScale == 2:
+        elif color_scale == 2:
             im = ax.matshow(
                 Arr[:, :],
                 cmap=cmap,
@@ -289,7 +288,7 @@ class Map:
                 ),
             )
             cbar_kw = dict(ticks=ticks)
-        elif ColorScale == 3:
+        elif color_scale == 3:
             im = ax.matshow(
                 Arr[:, :],
                 cmap=cmap,
@@ -304,7 +303,7 @@ class Map:
 
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif ColorScale == 4:
+        elif color_scale == 4:
             bounds = ticks
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(Arr[:, :], cmap=cmap, norm=norm)
@@ -317,14 +316,14 @@ class Map:
 
         # Create colorbar
         cbar = ax.figure.colorbar(
-            im, ax=ax, shrink=Cbarlength, orientation=orientation, **cbar_kw
+            im, ax=ax, shrink=cbar_length, orientation=orientation, **cbar_kw
         )
         cbar.ax.set_ylabel(
-            cbarlabel, rotation=rotation, va="bottom", fontsize=cbarlabelsize
+            cbar_label, rotation=rotation, va="bottom", fontsize=cbar_label_size
         )
         cbar.ax.tick_params(labelsize=10)
 
-        ax.set_title(Title, fontsize=titlesize)
+        ax.set_title(title, fontsize=title_size)
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
@@ -348,7 +347,7 @@ class Map:
                         ha="center",
                         va="center",
                         color="w",
-                        fontsize=NumSize,
+                        fontsize=num_size,
                     )
                 )
         #
@@ -357,7 +356,7 @@ class Map:
             row = points.loc[:, "row"].tolist()
             col = points.loc[:, "col"].tolist()
             IDs = points.loc[:, "id"].tolist()
-            Points = ax.scatter(col, row, color=Gaugecolor, s=Gaugesize)
+            Points = ax.scatter(col, row, color=point_color, s=point_size)
 
             for i in range(len(row)):
                 PoitsID.append(
@@ -367,76 +366,76 @@ class Map:
                         IDs[i],
                         ha="center",
                         va="center",
-                        color=IDcolor,
-                        fontsize=IDsize,
+                        color=pid_color,
+                        fontsize=pid_size,
                     )
                 )
         # Normalize the threshold to the images color range.
-        if Backgroundcolorthreshold is not None:
-            Backgroundcolorthreshold = im.norm(Backgroundcolorthreshold)
+        if background_color_threshold is not None:
+            background_color_threshold = im.norm(background_color_threshold)
         else:
-            Backgroundcolorthreshold = im.norm(np.nanmax(Arr)) / 2.0
+            background_color_threshold = im.norm(np.nanmax(Arr)) / 2.0
 
         return fig, ax
 
 
     @staticmethod
-    def PlotCatchment(
-            Metrics: GeoDataFrame,
-            ColumnName: Any,
-            Basin: GeoDataFrame,
-            River: GeoDataFrame,
+    def plotCatchment(
+            points: GeoDataFrame,
+            column_name: Any,
+            poly: GeoDataFrame,
+            line: GeoDataFrame,
             scheme: Any = None,
             scale_func: Any = '',
             cmap: str = "viridis",
             legend_values: List = [],
             legend_labels: List = [],
             figsize: Tuple = (8, 8),
-            Title: Any = 'Title',
-            TitleSize: int = 500,
-            Save: Union[bool, str] = False,
+            title: Any = 'title',
+            title_size: int = 500,
+            save: Union[bool, str] = False,
     ):
         """PlotCatchment.
 
         Inputs:
         ------
-            Metrics:[GeoDataFrame]
-                geodataframe contains values to plot in one of its columns.
-            ColumnName: [str]
-                name of the column you want to plot its values.
-            Basin: [GeoDataFrame]
-                geodataframe contains polygon geometries.
-            River: [GeoDataFrame]
-                geodataframe contains linestring geometries.
-            figsize: [Tuple]
-                fize oif the figure.
-            Title:[str]
-                title of the figure.
-            Save: [bool/str]
-                if you want to save the plot provide the path with the extention,
-                Default is False.
+        points:[GeoDataFrame]
+            geodataframe contains values to plot in one of its columns.
+        column_name: [str]
+            name of the column you want to plot its values.
+        poly: [GeoDataFrame]
+            geodataframe contains polygon geometries.
+        line: [GeoDataFrame]
+            geodataframe contains linestring geometries.
+        figsize: [Tuple]
+            fize oif the figure.
+        title:[str]
+            title of the figure.
+        save: [bool/str]
+            if you want to save the plot provide the path with the extention,
+            Default is False.
         """
         # unify the projection
-        if not Basin.crs.is_geographic:
-            logger.debug("The coordinate system of the Basin geodataframe is not geographic"
+        if not poly.crs.is_geographic:
+            logger.debug("The coordinate system of the poly geodataframe is not geographic"
                          "SO, it will be reprojected to WGS-84")
-            Basin.to_crs(4326, inplace=True)
+            poly.to_crs(4326, inplace=True)
 
-        epsg = Basin.crs.to_json()
-        River.to_crs(epsg, inplace=True)
-        Metrics.to_crs(epsg, inplace=True)
+        epsg = poly.crs.to_json()
+        line.to_crs(epsg, inplace=True)
+        points.to_crs(epsg, inplace=True)
 
         pointplot_kwargs = {'edgecolor': 'white', 'linewidth': 0.9}  # 'color': "crimson"
 
         # make sure that the plotted column is numeric
-        Metrics[ColumnName] = Metrics[ColumnName].map(float)
+        points[column_name] = points[column_name].map(float)
 
         fig, ax = plt.subplots(1, 1, figsize=figsize, subplot_kw={'projection': gcrs.AlbersEqualArea()})
         if scheme:
 
-            gplt.pointplot(Metrics, projection=gcrs.AlbersEqualArea(),
-                           hue=ColumnName, cmap=cmap,
-                           scale=ColumnName, limits=(4, 20),
+            gplt.pointplot(points, projection=gcrs.AlbersEqualArea(),
+                           hue=column_name, cmap=cmap,
+                           scale=column_name, limits=(4, 20),
                            scheme=scheme,
                            # scale_func = scale_func,
                            legend=True,
@@ -446,9 +445,9 @@ class Map:
                            ax=ax, **pointplot_kwargs  # ,
                            )
         else:
-            gplt.pointplot(Metrics, projection=gcrs.AlbersEqualArea(),
-                           hue=ColumnName, cmap=cmap,
-                           scale=ColumnName, limits=(4, 20),
+            gplt.pointplot(points, projection=gcrs.AlbersEqualArea(),
+                           hue=column_name, cmap=cmap,
+                           scale=column_name, limits=(4, 20),
                            scale_func=scale_func,
                            legend=True,
                            legend_var='scale',
@@ -459,49 +458,49 @@ class Map:
                            ax=ax, **pointplot_kwargs  # ,
                            )
 
-        gplt.polyplot(Basin, ax=ax, edgecolor='grey', facecolor='grey',  # 'lightgray',
-                      linewidth=0.5, extent=Basin.total_bounds)  # # , zorder=0
+        gplt.polyplot(poly, ax=ax, edgecolor='grey', facecolor='grey',  # 'lightgray',
+                      linewidth=0.5, extent=poly.total_bounds)  # # , zorder=0
 
-        gplt.polyplot(River, ax=ax, linewidth=10)
+        gplt.polyplot(line, ax=ax, linewidth=10)
 
-        plt.title(Title, fontsize=TitleSize)
+        plt.title(title, fontsize=title_size)
         # plt.subplots_adjust(top=0.99999, right=0.9999, left=0.000005, bottom=0.000005)
-        if Save:
-            plt.savefig(Save, bbox_inches='tight', transparent=True)
+        if save:
+            plt.savefig(save, bbox_inches='tight', transparent=True)
 
         return fig, ax
 
 
     @staticmethod
-    def AnimateArray(
-            Arr,
-            Time,
-            NoElem,
-            TicksSpacing=2,
-            Figsize=(8, 8),
-            PlotNumbers=True,
-            NumSize=8,
-            Title="Total Discharge",
-            titlesize=15,
-            Backgroundcolorthreshold=None,
-            cbarlabel="Discharge m3/s",
-            cbarlabelsize=12,
-            textcolors=("white", "black"),
-            Cbarlength=0.75,
+    def animateArray(
+            array,
+            time,
+            n_elem,
+            ticks_spacing=2,
+            figsize=(8, 8),
+            plot_numbers=True,
+            num_size=8,
+            title="Total Discharge",
+            title_size=15,
+            background_color_threshold=None,
+            cbar_label="Discharge m3/s",
+            cbar_label_size=12,
+            text_colors=("white", "black"),
+            cbar_length=0.75,
             interval=200,
             cmap="coolwarm_r",
-            Textloc=[0.1, 0.2],
-            Gaugecolor="red",
-            Gaugesize=100,
-            ColorScale=1,
+            text_loc=[0.1, 0.2],
+            points_color="red",
+            points_size=100,
+            color_scale=1,
             gamma=0.5,
-            linthresh=0.0001,
-            linscale=0.001,
+            line_threshold=0.0001,
+            line_scale=0.001,
             midpoint=0,
             orientation="vertical",
             rotation=-90,
-            IDcolor="blue",
-            IDsize=10,
+            pid_color="blue",
+            pid_size=10,
             **kwargs
     ):
         """AnimateArray.
@@ -510,63 +509,63 @@ class Map:
 
         Parameters
         ----------
-        Arr : [array]
+        array : [array]
             the array you want to animate.
-        Time : [dataframe]
+        time : [dataframe]
             dataframe contains the date of values.
-        NoElem : [integer]
+        n_elem : [integer]
             Number of the cells that has values.
-        TicksSpacing : [integer], optional
+        ticks_spacing : [integer], optional
             Spacing in the colorbar ticks. The default is 2.
-        Figsize : [tuple], optional
+        figsize : [tuple], optional
             figure size. The default is (8,8).
-        PlotNumbers : [bool], optional
+        plot_numbers : [bool], optional
             True to plot the values intop of each cell. The default is True.
-        NumSize : integer, optional
+        num_size : integer, optional
             size of the numbers plotted intop of each cells. The default is 8.
-        Title : [str], optional
+        title : [str], optional
             title of the plot. The default is 'Total Discharge'.
-        titlesize : [integer], optional
+        title_size : [integer], optional
             title size. The default is 15.
-        Backgroundcolorthreshold : [float/integer], optional
+        background_color_threshold : [float/integer], optional
             threshold value if the value of the cell is greater, the plotted
             numbers will be black and if smaller the plotted number will be white
             if None given the maxvalue/2 will be considered. The default is None.
-        textcolors : TYPE, optional
+        text_colors : TYPE, optional
             Two colors to be used to plot the values i top of each cell. The default is ("white","black").
-        cbarlabel : str, optional
+        cbar_label : str, optional
             label of the color bar. The default is 'Discharge m3/s'.
-        cbarlabelsize : integer, optional
+        cbar_label_size : integer, optional
             size of the color bar label. The default is 12.
-        Cbarlength : [float], optional
+        cbar_length : [float], optional
             ratio to control the height of the colorbar. The default is 0.75.
         interval : [integer], optional
             number to controlthe speed of the animation. The default is 200.
         cmap : [str], optional
             color style. The default is 'coolwarm_r'.
-        Textloc : [list], optional
+        text_loc : [list], optional
             location of the date text. The default is [0.1,0.2].
-        Gaugecolor : [str], optional
+        points_color : [str], optional
             color of the points. The default is 'red'.
-        Gaugesize : [integer], optional
+        points_size : [integer], optional
             size of the points. The default is 100.
-        IDcolor : [str]
+        pid_color : [str]
             the ID of the Point.The default is "blue".
-        IDsize : [integer]
+        pid_size : [integer]
             size of the ID text. The default is 10.
-        ColorScale : integer, optional
+        color_scale : integer, optional
             there are 5 options to change the scale of the colors. The default is 1.
-            1- ColorScale 1 is the normal scale
-            2- ColorScale 2 is the power scale
-            3- ColorScale 3 is the SymLogNorm scale
-            4- ColorScale 4 is the PowerNorm scale
-            5- ColorScale 5 is the BoundaryNorm scale
+            1- color_scale 1 is the normal scale
+            2- color_scale 2 is the power scale
+            3- color_scale 3 is the SymLogNorm scale
+            4- color_scale 4 is the PowerNorm scale
+            5- color_scale 5 is the BoundaryNorm scale
             ------------------------------------------------------------------
             gamma : [float], optional
                 value needed for option 2 . The default is 1./2..
-            linthresh : [float], optional
+            line_threshold : [float], optional
                 value needed for option 3. The default is 0.0001.
-            linscale : [float], optional
+            line_scale : [float], optional
                 value needed for option 3. The default is 0.001.
             midpoint : [float], optional
                 value needed for option 5. The default is 0.
@@ -586,59 +585,59 @@ class Map:
         animation.FuncAnimation.
 
         """
-        fig = plt.figure(60, figsize=Figsize)
+        fig = plt.figure(60, figsize=figsize)
         gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
         ax = fig.add_subplot(gs[:, :])
-        ticks = np.arange(np.nanmin(Arr), np.nanmax(Arr), TicksSpacing)
+        ticks = np.arange(np.nanmin(array), np.nanmax(array), ticks_spacing)
 
-        if ColorScale == 1:
+        if color_scale == 1:
             im = ax.matshow(
-                Arr[:, :, 0], cmap=cmap, vmin=np.nanmin(Arr), vmax=np.nanmax(Arr)
+                array[:, :, 0], cmap=cmap, vmin=np.nanmin(array), vmax=np.nanmax(array)
             )
             cbar_kw = dict(ticks=ticks)
-        elif ColorScale == 2:
+        elif color_scale == 2:
             im = ax.matshow(
-                Arr[:, :, 0],
+                array[:, :, 0],
                 cmap=cmap,
                 norm=colors.PowerNorm(
-                    gamma=gamma, vmin=np.nanmin(Arr), vmax=np.nanmax(Arr)
+                    gamma=gamma, vmin=np.nanmin(array), vmax=np.nanmax(array)
                 ),
             )
             cbar_kw = dict(ticks=ticks)
-        elif ColorScale == 3:
+        elif color_scale == 3:
             im = ax.matshow(
-                Arr[:, :, 0],
+                array[:, :, 0],
                 cmap=cmap,
                 norm=colors.SymLogNorm(
-                    linthresh=linthresh,
-                    linscale=linscale,
+                    linthresh=line_threshold,
+                    linscale=line_scale,
                     base=np.e,
-                    vmin=np.nanmin(Arr),
-                    vmax=np.nanmax(Arr),
+                    vmin=np.nanmin(array),
+                    vmax=np.nanmax(array),
                 ),
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif ColorScale == 4:
-            bounds = np.arange(np.nanmin(Arr), np.nanmax(Arr), TicksSpacing)
+        elif color_scale == 4:
+            bounds = np.arange(np.nanmin(array), np.nanmax(array), ticks_spacing)
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
-            im = ax.matshow(Arr[:, :, 0], cmap=cmap, norm=norm)
+            im = ax.matshow(array[:, :, 0], cmap=cmap, norm=norm)
             cbar_kw = dict(ticks=ticks)
         else:
             im = ax.matshow(
-                Arr[:, :, 0], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
+                array[:, :, 0], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
             )
             cbar_kw = dict(ticks=ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
-            im, ax=ax, shrink=Cbarlength, orientation=orientation, **cbar_kw
+            im, ax=ax, shrink=cbar_length, orientation=orientation, **cbar_kw
         )
-        cbar.ax.set_ylabel(cbarlabel, rotation=rotation, va="bottom")
+        cbar.ax.set_ylabel(cbar_label, rotation=rotation, va="bottom")
         cbar.ax.tick_params(labelsize=10)
 
-        day_text = ax.text(Textloc[0], Textloc[1], " ", fontsize=cbarlabelsize)
-        ax.set_title(Title, fontsize=titlesize)
+        day_text = ax.text(text_loc[0], text_loc[1], " ", fontsize=cbar_label_size)
+        ax.set_title(title, fontsize=title_size)
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
@@ -646,22 +645,22 @@ class Map:
         ax.set_yticks([])
         Indexlist = list()
 
-        for x in range(Arr.shape[0]):
-            for y in range(Arr.shape[1]):
-                if not np.isnan(Arr[x, y, 0]):
+        for x in range(array.shape[0]):
+            for y in range(array.shape[1]):
+                if not np.isnan(array[x, y, 0]):
                     Indexlist.append([x, y])
 
         Textlist = list()
-        for x in range(NoElem):
+        for x in range(n_elem):
             Textlist.append(
                 ax.text(
                     Indexlist[x][1],
                     Indexlist[x][0],
-                    round(Arr[Indexlist[x][0], Indexlist[x][1], 0], 2),
+                    round(array[Indexlist[x][0], Indexlist[x][1], 0], 2),
                     ha="center",
                     va="center",
                     color="w",
-                    fontsize=NumSize,
+                    fontsize=num_size,
                 )
             )
         # Points = list()
@@ -670,7 +669,7 @@ class Map:
             row = kwargs["Points"].loc[:, "cell_row"].tolist()
             col = kwargs["Points"].loc[:, "cell_col"].tolist()
             IDs = kwargs["Points"].loc[:, "id"].tolist()
-            Points = ax.scatter(col, row, color=Gaugecolor, s=Gaugesize)
+            Points = ax.scatter(col, row, color=points_color, s=points_size)
 
             for i in range(len(row)):
                 PoitsID.append(
@@ -680,20 +679,20 @@ class Map:
                         IDs[i],
                         ha="center",
                         va="center",
-                        color=IDcolor,
-                        fontsize=IDsize,
+                        color=pid_color,
+                        fontsize=pid_size,
                     )
                 )
 
         # Normalize the threshold to the images color range.
-        if Backgroundcolorthreshold is not None:
-            Backgroundcolorthreshold = im.norm(Backgroundcolorthreshold)
+        if background_color_threshold is not None:
+            background_color_threshold = im.norm(background_color_threshold)
         else:
-            Backgroundcolorthreshold = im.norm(np.nanmax(Arr)) / 2.0
+            background_color_threshold = im.norm(np.nanmax(array)) / 2.0
 
 
         def init():
-            im.set_data(Arr[:, :, 0])
+            im.set_data(array[:, :, 0])
             day_text.set_text("")
 
             output = [im, day_text]
@@ -712,9 +711,9 @@ class Map:
 
                 output = output + PoitsID
 
-            if PlotNumbers:
-                for x in range(NoElem):
-                    val = round(Arr[Indexlist[x][0], Indexlist[x][1], 0], 2)
+            if plot_numbers:
+                for x in range(n_elem):
+                    val = round(array[Indexlist[x][0], Indexlist[x][1], 0], 2)
                     Textlist[x].set_text(val)
 
                 output = output + Textlist
@@ -723,8 +722,8 @@ class Map:
 
 
         def animate(i):
-            im.set_data(Arr[:, :, i])
-            day_text.set_text("Date = " + str(Time[i])[0:10])
+            im.set_data(array[:, :, i])
+            day_text.set_text("Date = " + str(time[i])[0:10])
 
             output = [im, day_text]
 
@@ -742,14 +741,14 @@ class Map:
 
                 output = output + PoitsID
 
-            if PlotNumbers:
-                for x in range(NoElem):
-                    val = round(Arr[Indexlist[x][0], Indexlist[x][1], i], 2)
+            if plot_numbers:
+                for x in range(n_elem):
+                    val = round(array[Indexlist[x][0], Indexlist[x][1], i], 2)
                     kw = dict(
-                        color=textcolors[
+                        color=text_colors[
                             int(
-                                im.norm(Arr[Indexlist[x][0], Indexlist[x][1], i])
-                                > Backgroundcolorthreshold
+                                im.norm(array[Indexlist[x][0], Indexlist[x][1], i])
+                                > background_color_threshold
                             )
                         ]
                     )
@@ -767,7 +766,7 @@ class Map:
             fig,
             animate,
             init_func=init,
-            frames=np.shape(Arr)[2],
+            frames=np.shape(array)[2],
             interval=interval,
             blit=True,
         )
@@ -776,7 +775,7 @@ class Map:
 
 
     @staticmethod
-    def Plot_Type1(
+    def plotType1(
             Y1,
             Y2,
             Points,

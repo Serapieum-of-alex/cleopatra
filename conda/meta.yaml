@@ -1,11 +1,11 @@
 {% set version = "0.1.0" %}
 
 package:
-  name: earth2observe
+  name: cleopatra
   version: {{ version }}
 
 source:
-  path: C:\MyComputer\01Algorithms\Hydrology\earth2observe
+  path: C:\MyComputer\01Algorithms\Visualization\cleopatra
 
 build:
   noarch: python
