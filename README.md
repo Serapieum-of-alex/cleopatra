@@ -1,8 +1,8 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/cleopatra.png)](https://img.shields.io/pypi/pyversions/cleopatra)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MAfarrag/Hapi.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MAfarrag/Hapi/context:python)
-
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MAfarrag/cleopatra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MAfarrag/cleopatra/context:python)
+[![Documentation Status](https://readthedocs.org/projects/cleopatra/badge/?version=latest)](https://cleopatra.readthedocs.io/en/latest/?badge=latest)
 
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/MAfarrag/cleopatra)
@@ -19,18 +19,18 @@ Current release info
 
 cleopatra - Remote Sensing package
 =====================================================================
-**cleopatra** is a Remote Sensing package
+**cleopatra** is a matplotlib utility package
 
 cleopatra
 
 Main Features
 -------------
-  - 
+  -
 
 
 Future work
 -------------
-  - 
+  -
 
 
 
