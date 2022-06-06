@@ -6,8 +6,8 @@ with open("README.md", "r") as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-# requirements = [line.strip() for line in open("requirements.txt").readlines()]
-# requirements = requirements[1:]
+requirements = [line.strip() for line in open("requirements.txt").readlines()]
+requirements = requirements[1:]
 
 test_requirements = ['pytest>=3', ]
 
@@ -17,8 +17,8 @@ setup(
     description="visualization package",
     author="Mostafa Farrag",
     author_email="moah.farag@gmail.come",
-    url="https://github.com/MAfarrag/earthobserve",
-    keywords=["matplotlib", "maps", "visualization"],
+    url="https://github.com/MAfarrag/cleopatra",
+    keywords=["matplotlib", "arrays", "visualization"],
     long_description=readme + '\n\n' + history,
     long_description_content_type="text/markdown",
     license="GNU General Public License v3",
@@ -26,12 +26,7 @@ setup(
     packages=find_packages(include=['cleopatra', 'cleopatra.*']),
     test_suite="tests",
     tests_require=test_requirements,
-    # install_requires=requirements,
-    # entry_points={
-    #     'console_scripts': [
-    #         'earth2observe=earth2observe.cli:main',
-    #     ],
-    # },
+    install_requires=requirements,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
