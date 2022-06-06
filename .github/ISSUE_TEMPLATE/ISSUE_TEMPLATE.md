@@ -1,4 +1,4 @@
-* HapiSM version:
+* cleopatra version:
 * Python version:
 * Operating System:
 
