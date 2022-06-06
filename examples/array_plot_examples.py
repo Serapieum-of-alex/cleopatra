@@ -2,7 +2,6 @@ import matplotlib
 matplotlib.use("TkAgg")
 # import matplotlib.pyplot as plt
 from cleopatra.array import Array
-from osgeo import gdal
 import numpy as np
 #%%
 arr = np.load("examples/data/arr.npy")
