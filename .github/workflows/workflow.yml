@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          $CONDA/bin/conda env update --yes --file requirement.txt --name base
+          $CONDA/bin/conda install --yes --file requirement.txt
           python setup.py install
 
 #    - name: Lint with flake8
