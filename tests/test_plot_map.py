@@ -1,70 +1,59 @@
 from typing import List
 
 import numpy as np
-import pandas as pd
-import pytest
 from matplotlib.figure import Figure
-from osgeo.gdal import Dataset
-
-from cleopatra.map import Map
+from cleopatra.array import Array
 
 
 class TestPlotArray:
 
-    def test_plot_gdal_object(
-            self,
-            src: Dataset
-    ):
-        fig, ax = Map.PlotArray(src, Title="Flow Accumulation")
-        assert isinstance(fig, Figure)
-
 
     def test_plot_numpy_array(
             self,
-            src_arr: np.ndarray,
-            src_no_data_value: float,
+            arr: np.ndarray,
+            no_data_value: float,
     ):
-        fig, ax = Map.PlotArray(src_arr, nodataval=src_no_data_value, Title="Flow Accumulation")
+        fig, ax = Array.plot(arr, exculde_value=no_data_value, Title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_1(
             self,
-            src: Dataset,
+            arr: np.ndarray,
             cmap: str,
-            ColorScale: List[int],
-            TicksSpacing: int
+            color_scale: List[int],
+            ticks_spacing: int
     ):
-        fig, ax = Map.PlotArray(src, ColorScale=ColorScale[0], cmap=cmap, TicksSpacing=TicksSpacing)
+        fig, ax = Array.plot(arr, color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing)
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_2(
             self,
-            src: Dataset,
+            arr: np.ndarray,
             cmap: str,
             color_scale_2_gamma: float,
-            ColorScale: List[int],
-            TicksSpacing: int
+            color_scale: List[int],
+            ticks_spacing: int
     ):
-        fig, ax = Map.PlotArray(src, ColorScale=ColorScale[1], cmap=cmap, gamma=color_scale_2_gamma,
-                                TicksSpacing=TicksSpacing)
+        fig, ax = Array.plot(arr, color_scale=color_scale[1], cmap=cmap, gamma=color_scale_2_gamma,
+                                ticks_spacing=ticks_spacing)
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_3(
             self,
-            src: Dataset,
+            arr: np.ndarray,
             cmap: str,
-            ColorScale: List[int],
-            TicksSpacing: int,
+            color_scale: List[int],
+            ticks_spacing: int,
             color_scale_3_linscale: float,
             color_scale_3_linthresh: float,
     ):
-        fig, ax = Map.PlotArray(
-            src,
-            ColorScale=ColorScale[2],
+        fig, ax = Array.plot(
+            arr,
+            color_scale=color_scale[2],
             linscale=color_scale_3_linscale,
             linthresh=color_scale_3_linthresh,
             cmap=cmap,
-            TicksSpacing=TicksSpacing
+            ticks_spacing=ticks_spacing
         )
 
         assert isinstance(fig, Figure)
@@ -72,34 +61,34 @@ class TestPlotArray:
 
     def test_plot_array_color_scale_4(
             self,
-            src: Dataset,
+            arr: np.ndarray,
             cmap: str,
-            ColorScale: List[int],
-            TicksSpacing: int
+            color_scale: List[int],
+            ticks_spacing: int
     ):
-        fig, ax = Map.PlotArray(
-            src,
-            ColorScale=ColorScale[3],
+        fig, ax = Array.plot(
+            arr,
+            color_scale=color_scale[3],
             cmap=cmap,
-            TicksSpacing=TicksSpacing
+            ticks_spacing=ticks_spacing
         )
 
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_5(
             self,
-            src: Dataset,
+            arr: np.ndarray,
             cmap: str,
-            ColorScale: List[int],
-            TicksSpacing: int,
+            color_scale: List[int],
+            ticks_spacing: int,
             midpoint: int
     ):
-        fig, ax = Map.PlotArray(
-            src,
-            ColorScale=ColorScale[4],
+        fig, ax = Array.plot(
+            arr,
+            color_scale=color_scale[4],
             midpoint=midpoint,
             cmap=cmap,
-            TicksSpacing=TicksSpacing
+            ticks_spacing=ticks_spacing
         )
 
         assert isinstance(fig, Figure)
@@ -107,50 +96,48 @@ class TestPlotArray:
 
     def test_plot_array_display_cell_values(
             self,
-            src: Dataset,
-            TicksSpacing: int,
+            arr: np.ndarray,
+            ticks_spacing: int,
             display_cellvalue: bool,
-            NumSize: int,
-            Backgroundcolorthreshold,
+            num_size,
+            background_color_threshold,
     ):
 
-
-
-        fig, ax = Map.PlotArray(
-            src,
+        fig, ax = Array.plot(
+            arr,
             display_cellvalue=display_cellvalue,
-            NumSize=NumSize,
-            Backgroundcolorthreshold=Backgroundcolorthreshold,
-            TicksSpacing=TicksSpacing,
+            num_size=num_size,
+            background_color_threshold=background_color_threshold,
+            ticks_spacing=ticks_spacing,
         )
 
         assert isinstance(fig, Figure)
 
 
-    def test_plot_array_with_points(
-            self,
-            src: Dataset,
-            display_cellvalue: bool,
-            points: pd.DataFrame,
-            NumSize: int,
-            Backgroundcolorthreshold,
-            TicksSpacing: int,
-            IDsize: int,
-            IDcolor: str,
-            Gaugesize: int,
-            Gaugecolor: str,
-    ):
-        fig, ax = Map.PlotArray(
-            src,
-            Gaugecolor=Gaugecolor,
-            Gaugesize=Gaugesize,
-            IDcolor=IDcolor,
-            IDsize=IDsize,
-            points=points,
-            display_cellvalue=display_cellvalue,
-            NumSize=NumSize,
-            Backgroundcolorthreshold=Backgroundcolorthreshold,
-            TicksSpacing=TicksSpacing,
-        )
-
-        assert isinstance(fig, Figure)
+    # def test_plot_array_with_points(
+    #         self,
+    #         arr: np.ndarray,
+    #         display_cellvalue: bool,
+    #         points: pd.DataFrame,
+    #         num_size,
+    #         background_color_threshold,
+    #         ticks_spacing: int,
+    #         IDsize: int,
+    #         IDcolor: str,
+    #         Gaugesize: int,
+    #         Gaugecolor: str,
+    # ):
+    #     fig, ax = Array.plot(
+    #         arr,
+    #         Gaugecolor=Gaugecolor,
+    #         Gaugesize=Gaugesize,
+    #         IDcolor=IDcolor,
+    #         IDsize=IDsize,
+    #         points=points,
+    #         display_cellvalue=display_cellvalue,
+    #         NumSize=num_size,
+    #         Backgroundcolorthreshold=background_color_threshold,
+    #         ticks_spacing=ticks_spacing,
+    #     )
+    #
+    #     assert isinstance(fig, Figure)

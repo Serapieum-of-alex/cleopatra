@@ -2,22 +2,17 @@ from typing import List
 import numpy as np
 import pandas as pd
 import pytest
-from osgeo import gdal
-from osgeo.gdal import Dataset
-
-@pytest.fixture(scope="module")
-def src() -> Dataset:
-    return gdal.Open("examples/data/acc4000.tif")
+import numpy as np
 
 
 @pytest.fixture(scope="module")
-def src_arr(src: Dataset) -> np.ndarray:
-    return src.ReadAsArray()
+def arr() -> np.ndarray:
+    return np.load("examples/data/arr.npy")
 
 
 @pytest.fixture(scope="module")
-def src_no_data_value(src: Dataset) -> float:
-    return src.GetRasterBand(1).GetNoDataValue()
+def no_data_value(arr: np.ndarray) -> float:
+    return arr[0,0]
 
 
 @pytest.fixture(scope="module")
@@ -26,11 +21,11 @@ def cmap() -> str:
 
 
 @pytest.fixture(scope="module")
-def ColorScale() -> List[int]:
+def color_scale() -> List[int]:
     return [1, 2, 3, 4, 5]
 
 @pytest.fixture(scope="module")
-def TicksSpacing() -> int:
+def ticks_spacing() -> int:
     return 500
 
 @pytest.fixture(scope="module")
@@ -58,25 +53,24 @@ def display_cellvalue() -> bool:
 
 
 @pytest.fixture(scope="module")
-def NumSize() -> int:
+def num_size() -> int:
     return 8
 
 
 @pytest.fixture(scope="module")
-def Backgroundcolorthreshold():
+def background_color_threshold():
     return None
 
-@pytest.fixture(scope="module")
-def points() -> pd.DataFrame:
-    return pd.read_csv("examples/data/points.csv")
 
 @pytest.fixture(scope="module")
 def IDsize() -> int:
     return 20
 
+
 @pytest.fixture(scope="module")
 def IDcolor() -> str:
     return "green"
+
 
 @pytest.fixture(scope="module")
 def Gaugesize() -> int:

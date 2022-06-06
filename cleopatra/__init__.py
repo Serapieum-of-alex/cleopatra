@@ -30,7 +30,7 @@ if missing_dependencies:
     raise ImportError("Missing required dependencies {0}".format(missing_dependencies))
 
 
-import cleopatra.map
+import cleopatra.array
 
 __doc__ = """
 cleopatra - visualization package

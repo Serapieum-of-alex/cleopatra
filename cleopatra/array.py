@@ -1,30 +1,20 @@
-from typing import Any, List, Tuple, Union
+from typing import Any, Tuple, Union
 from collections import OrderedDict
 
-import geoplot as gplt
-import geoplot.crs as gcrs
+
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
-from geopandas import GeoDataFrame
-from loguru import logger
-from matplotlib import gridspec  # animation,
+from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
 from matplotlib.ticker import LogFormatter
-from osgeo import gdal
-from osgeo.gdal import Dataset
-
-from pyramids.catchment import Catchment as GC
-from pyramids.raster import Raster
-# from Hapi.plot.visualizer import MidpointNormalize, Map
-from statista.tools import Tools as ST
 
 
-class Map:
+class Array:
     """
     Map
     """
-    FigureDefaultOptions = dict(
+    figure_default_options = dict(
         ylabel="",
         xlabel="",
         legend="",
@@ -39,7 +29,8 @@ class Map:
         Axisfontsize=15,
     )
 
-    linestyles = OrderedDict(
+
+    line_styles = OrderedDict(
         [
             ("solid", (0, ())),  # 0
             ("loosely dotted", (0, (1, 10))),  # 1
@@ -58,7 +49,8 @@ class Map:
         ]
     )
 
-    MarkerStyleList = [
+
+    marker_style_list = [
         "--o",
         ":D",
         "-.H",
@@ -71,7 +63,6 @@ class Map:
         "-.*",
         "-.h",
     ]
-
     def __init__(self):
         pass
 
@@ -93,16 +84,16 @@ class Map:
         """
         if isinstance(style, str):
             try:
-                return Map.linestyles[style]
+                return Array.line_styles[style]
             except KeyError:
                 msg = (
                     " The style name you entered-{0}-does not exist please"
                     "choose from the available styles"
                 ).format(style)
                 print(msg)
-                print(list(Map.linestyles))
+                print(list(Array.line_styles))
         else:
-            return list(Map.linestyles.items())[style][1]
+            return list(Array.line_styles.items())[style][1]
 
 
     @staticmethod
@@ -120,17 +111,16 @@ class Map:
         -------
         TYPE
             DESCRIPTION.
-
         """
-        if style > len(Map.MarkerStyleList) - 1:
-            style = style % len(Map.MarkerStyleList)
-        return Map.MarkerStyleList[style]
+        if style > len(Array.marker_style_list) - 1:
+            style = style % len(Array.marker_style_list)
+        return Array.marker_style_list[style]
 
 
     @staticmethod
-    def plotArray(
-            src: Union[Dataset, np.ndarray],
-            nodataval: Union[int, float] = np.nan,
+    def plot(
+            arr: np.ndarray,
+            exculde_value: Union[int, float] = np.nan,
             figsize: Tuple[int, int]=(8, 8),
             title: Any = "Total Discharge",
             title_size: Union[int, float] = 15,
@@ -149,10 +139,6 @@ class Map:
             midpoint: int=0,
             display_cellvalue: bool=False,
             background_color_threshold=None,
-            point_color: str= "red",
-            point_size: Union[int, float] = 100,
-            pid_color="blue",
-            pid_size: Union[int, float] = 10,
             **kwargs
     ):
         """PlotArray.
@@ -161,9 +147,9 @@ class Map:
 
         Parameters
         ----------
-        src : [array/gdal.Dataset]
+        arr : [array]
             the array/gdal raster you want to plot.
-        nodataval : [numeric]
+        exculde_value : [numeric]
             value used to fill cells out of the domain. Optional, Default is np.nan
             needed only in case of plotting array
         figsize : [tuple], optional
@@ -209,15 +195,6 @@ class Map:
             threshold value if the value of the cell is greater, the plotted
             numbers will be black and if smaller the plotted number will be white
             if None given the maxvalue/2 will be considered. The default is None.
-        point_color : [str], optional
-            color of the points. The default is 'red'.
-        point_size : [integer], optional
-            size of the points. The default is 100.
-        pid_color : [str]
-            the ID of the Point.The default is "blue".
-        pid_size : [integer]
-            size of the ID text. The default is 10.
-        pid_color : []
 
         rotation : []
 
@@ -236,68 +213,53 @@ class Map:
         fig: [matplotlib figure object]
             the figure object
         """
-        if isinstance(src, gdal.Dataset):
-            Arr, nodataval = Raster.getRasterData(src)
-            Arr = Arr.astype(np.float32)
-            Arr[np.isclose(Arr, nodataval, rtol=0.001)] = np.nan
+        arr = arr
+        arr[np.isclose(arr, exculde_value, rtol=0.0000001)] = np.nan
+        no_elem = np.size(arr[:, :]) - np.count_nonzero((arr[np.isnan(arr)]))
 
-            no_elem = np.size(Arr[:, :]) - np.count_nonzero((Arr[np.isnan(Arr)]))
-
-            if "points" in kwargs.keys():
-                points = kwargs["points"]
-                points["row"] = np.nan
-                points["col"] = np.nan
-                # to locte the points in the array
-                points.loc[:, ["row", "col"]] = GC.nearestCell(
-                    src, points[["x", "y"]][:]
-                ).values
-        elif isinstance(src, np.ndarray):
-            Arr = src
-            Arr[np.isclose(Arr, nodataval, rtol=0.001)] = np.nan
-            no_elem = np.size(Arr[:, :]) - np.count_nonzero((Arr[np.isnan(Arr)]))
 
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
 
-        if np.mod(np.nanmax(Arr), ticks_spacing) == 0:
+        if np.mod(np.nanmax(arr), ticks_spacing) == 0:
             ticks = np.arange(
-                np.nanmin(Arr), np.nanmax(Arr) + ticks_spacing, ticks_spacing
+                np.nanmin(arr), np.nanmax(arr) + ticks_spacing, ticks_spacing
             )
         else:
             try:
-                ticks = np.arange(np.nanmin(Arr), np.nanmax(Arr), ticks_spacing)
+                ticks = np.arange(np.nanmin(arr), np.nanmax(arr), ticks_spacing)
             except ValueError:
                 raise ValueError("The number of ticks exceeded the max allowed size, possible errors"
-                                 f"is the value of the NodataValue you entered-{nodataval}")
+                                 f"is the value of the NodataValue you entered-{exculde_value}")
             ticks = np.append(
                 ticks,
-                [int(np.nanmax(Arr) / ticks_spacing) * ticks_spacing + ticks_spacing],
+                [int(np.nanmax(arr) / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
 
         if color_scale == 1:
             im = ax.matshow(
-                Arr[:, :], cmap=cmap, vmin=np.nanmin(Arr), vmax=np.nanmax(Arr)
+                arr[:, :], cmap=cmap, vmin=np.nanmin(arr), vmax=np.nanmax(arr)
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
             im = ax.matshow(
-                Arr[:, :],
+                arr[:, :],
                 cmap=cmap,
                 norm=colors.PowerNorm(
-                    gamma=gamma, vmin=np.nanmin(Arr), vmax=np.nanmax(Arr)
+                    gamma=gamma, vmin=np.nanmin(arr), vmax=np.nanmax(arr)
                 ),
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 3:
             im = ax.matshow(
-                Arr[:, :],
+                arr[:, :],
                 cmap=cmap,
                 norm=colors.SymLogNorm(
                     linthresh=linthresh,
                     linscale=linscale,
                     base=np.e,
-                    vmin=np.nanmin(Arr),
-                    vmax=np.nanmax(Arr),
+                    vmin=np.nanmin(arr),
+                    vmax=np.nanmax(arr),
                 ),
             )
 
@@ -306,11 +268,11 @@ class Map:
         elif color_scale == 4:
             bounds = ticks
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
-            im = ax.matshow(Arr[:, :], cmap=cmap, norm=norm)
+            im = ax.matshow(arr[:, :], cmap=cmap, norm=norm)
             cbar_kw = dict(ticks=ticks)
         else:
             im = ax.matshow(
-                Arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
+                arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
             )
             cbar_kw = dict(ticks=ticks)
 
@@ -332,9 +294,9 @@ class Map:
         Indexlist = list()
 
         if display_cellvalue:
-            for x in range(Arr.shape[0]):
-                for y in range(Arr.shape[1]):
-                    if not np.isnan(Arr[x, y]):
+            for x in range(arr.shape[0]):
+                for y in range(arr.shape[1]):
+                    if not np.isnan(arr[x, y]):
                         Indexlist.append([x, y])
             # add text for the cell values
             Textlist = list()
@@ -343,136 +305,25 @@ class Map:
                     ax.text(
                         Indexlist[x][1],
                         Indexlist[x][0],
-                        round(Arr[Indexlist[x][0], Indexlist[x][1]], 2),
+                        round(arr[Indexlist[x][0], Indexlist[x][1]], 2),
                         ha="center",
                         va="center",
                         color="w",
                         fontsize=num_size,
                     )
                 )
-        #
-        PoitsID = list()
-        if "points" in kwargs.keys():
-            row = points.loc[:, "row"].tolist()
-            col = points.loc[:, "col"].tolist()
-            IDs = points.loc[:, "id"].tolist()
-            Points = ax.scatter(col, row, color=point_color, s=point_size)
 
-            for i in range(len(row)):
-                PoitsID.append(
-                    ax.text(
-                        col[i],
-                        row[i],
-                        IDs[i],
-                        ha="center",
-                        va="center",
-                        color=pid_color,
-                        fontsize=pid_size,
-                    )
-                )
         # Normalize the threshold to the images color range.
         if background_color_threshold is not None:
-            background_color_threshold = im.norm(background_color_threshold)
+            im.norm(background_color_threshold)
         else:
-            background_color_threshold = im.norm(np.nanmax(Arr)) / 2.0
+            im.norm(np.nanmax(arr)) / 2.0
 
         return fig, ax
 
 
     @staticmethod
-    def plotCatchment(
-            points: GeoDataFrame,
-            column_name: Any,
-            poly: GeoDataFrame,
-            line: GeoDataFrame,
-            scheme: Any = None,
-            scale_func: Any = '',
-            cmap: str = "viridis",
-            legend_values: List = [],
-            legend_labels: List = [],
-            figsize: Tuple = (8, 8),
-            title: Any = 'title',
-            title_size: int = 500,
-            save: Union[bool, str] = False,
-    ):
-        """PlotCatchment.
-
-        Inputs:
-        ------
-        points:[GeoDataFrame]
-            geodataframe contains values to plot in one of its columns.
-        column_name: [str]
-            name of the column you want to plot its values.
-        poly: [GeoDataFrame]
-            geodataframe contains polygon geometries.
-        line: [GeoDataFrame]
-            geodataframe contains linestring geometries.
-        figsize: [Tuple]
-            fize oif the figure.
-        title:[str]
-            title of the figure.
-        save: [bool/str]
-            if you want to save the plot provide the path with the extention,
-            Default is False.
-        """
-        # unify the projection
-        if not poly.crs.is_geographic:
-            logger.debug("The coordinate system of the poly geodataframe is not geographic"
-                         "SO, it will be reprojected to WGS-84")
-            poly.to_crs(4326, inplace=True)
-
-        epsg = poly.crs.to_json()
-        line.to_crs(epsg, inplace=True)
-        points.to_crs(epsg, inplace=True)
-
-        pointplot_kwargs = {'edgecolor': 'white', 'linewidth': 0.9}  # 'color': "crimson"
-
-        # make sure that the plotted column is numeric
-        points[column_name] = points[column_name].map(float)
-
-        fig, ax = plt.subplots(1, 1, figsize=figsize, subplot_kw={'projection': gcrs.AlbersEqualArea()})
-        if scheme:
-
-            gplt.pointplot(points, projection=gcrs.AlbersEqualArea(),
-                           hue=column_name, cmap=cmap,
-                           scale=column_name, limits=(4, 20),
-                           scheme=scheme,
-                           # scale_func = scale_func,
-                           legend=True,
-                           legend_var='scale',
-                           legend_kwargs={  # 'loc': 'upper right',
-                               'bbox_to_anchor': (1, 0.35)},
-                           ax=ax, **pointplot_kwargs  # ,
-                           )
-        else:
-            gplt.pointplot(points, projection=gcrs.AlbersEqualArea(),
-                           hue=column_name, cmap=cmap,
-                           scale=column_name, limits=(4, 20),
-                           scale_func=scale_func,
-                           legend=True,
-                           legend_var='scale',
-                           legend_values=legend_values,
-                           legend_labels=legend_labels,
-                           legend_kwargs={  # 'loc': 'upper right',
-                               'bbox_to_anchor': (1, 0.35)},
-                           ax=ax, **pointplot_kwargs  # ,
-                           )
-
-        gplt.polyplot(poly, ax=ax, edgecolor='grey', facecolor='grey',  # 'lightgray',
-                      linewidth=0.5, extent=poly.total_bounds)  # # , zorder=0
-
-        gplt.polyplot(line, ax=ax, linewidth=10)
-
-        plt.title(title, fontsize=title_size)
-        # plt.subplots_adjust(top=0.99999, right=0.9999, left=0.000005, bottom=0.000005)
-        if save:
-            plt.savefig(save, bbox_inches='tight', transparent=True)
-
-        return fig, ax
-
-
-    @staticmethod
-    def animateArray(
+    def animate(
             array,
             time,
             n_elem,
@@ -721,7 +572,7 @@ class Map:
             return output
 
 
-        def animate(i):
+        def animate_a(i):
             im.set_data(array[:, :, i])
             day_text.set_text("Date = " + str(time[i])[0:10])
 
@@ -764,7 +615,7 @@ class Map:
         # global anim
         anim = FuncAnimation(
             fig,
-            animate,
+            animate_a,
             init_func=init,
             frames=np.shape(array)[2],
             interval=interval,
@@ -854,7 +705,7 @@ class Map:
             Y1[:, 1],
             zorder=1,
             color=color1,
-            linestyle=Map.LineStyle(0),
+            linestyle=Array.lineStyle(0),
             linewidth=linewidth,
             label="Model 1 Output1",
         )
@@ -875,7 +726,7 @@ class Map:
                     Y1_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Map.LineStyle(i),
+                    linestyle=Array.lineStyle(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )
@@ -885,7 +736,7 @@ class Map:
             Y2[:, 1],
             zorder=1,
             color=color3,
-            linestyle=Map.LineStyle(6),
+            linestyle=Array.lineStyle(6),
             linewidth=2,
             label="Output1-Diff",
         )
@@ -905,7 +756,7 @@ class Map:
                     Y2_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Map.LineStyle(i),
+                    linestyle=Array.lineStyle(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )
@@ -928,7 +779,7 @@ class Map:
         vminnew = PointMinSize
 
         Points_scaled = [
-            ST.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
+            Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
         ]
         f1 = np.ones(shape=(len(Points))) * PointsY
         scatter = ax2.scatter(
@@ -947,7 +798,7 @@ class Map:
 
             for i in range(col_points - 1):
                 Points1_scaled = [
-                    ST.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points1[:, i]
+                    Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points1[:, i]
                 ]
                 f2[:, i] = PointsY1[i]
 
@@ -973,7 +824,7 @@ class Map:
         )
         # L = [vminnew] + [float(i[14:-2]) for i in labels] + [vmaxnew]
         L = [float(i[14:-2]) for i in labels]
-        labels1 = [round(ST.Rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L]
+        labels1 = [round(Scale.Rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L]
 
         legend2 = ax2.legend(
             handles, labels1, bbox_to_anchor=LegendLoc, title=PointLegendTitle
@@ -1009,35 +860,62 @@ class Map:
 
 class Scale:
 
-
     def __init__(self):
         pass
 
-
+    @staticmethod
     def log_scale(minval, maxval):
         def scalar(val):
             val = val + abs(minval) + 1
             return np.log10(val)
 
-
         return scalar
 
 
+    @staticmethod
     def power_scale(minval, maxval):
         def scalar(val):
             val = val + abs(minval) + 1
             return (val / 1000) ** 2
 
-
         return scalar
 
 
+    @staticmethod
     def identity_scale(minval, maxval):
         def scalar(val):
             return 2
 
-
         return scalar
+
+
+    @staticmethod
+    def Rescale(OldValue, OldMin, OldMax, NewMin, NewMax):
+        """Rescale.
+
+        Rescale nethod rescales a value between two boundaries to a new value
+        bewteen two other boundaries
+        inputs:
+            1-OldValue:
+                [float] value need to transformed
+            2-OldMin:
+                [float] min old value
+            3-OldMax:
+                [float] max old value
+            4-NewMin:
+                [float] min new value
+            5-NewMax:
+                [float] max new value
+        output:
+            1-NewValue:
+                [float] transformed new value
+
+        """
+        OldRange = OldMax - OldMin
+        NewRange = NewMax - NewMin
+        NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+
+        return NewValue
 
 
 class MidpointNormalize(colors.Normalize):
