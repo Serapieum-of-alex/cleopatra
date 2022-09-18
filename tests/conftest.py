@@ -1,8 +1,9 @@
 from typing import List
+
 import numpy as np
-import pandas as pd
+
+# import pandas as pd
 import pytest
-import numpy as np
 
 
 @pytest.fixture(scope="module")
@@ -12,7 +13,7 @@ def arr() -> np.ndarray:
 
 @pytest.fixture(scope="module")
 def no_data_value(arr: np.ndarray) -> float:
-    return arr[0,0]
+    return arr[0, 0]
 
 
 @pytest.fixture(scope="module")
@@ -24,9 +25,11 @@ def cmap() -> str:
 def color_scale() -> List[int]:
     return [1, 2, 3, 4, 5]
 
+
 @pytest.fixture(scope="module")
 def ticks_spacing() -> int:
     return 500
+
 
 @pytest.fixture(scope="module")
 def color_scale_2_gamma() -> float:
@@ -46,6 +49,7 @@ def color_scale_3_linthresh() -> float:
 @pytest.fixture(scope="module")
 def midpoint() -> int:
     return 20
+
 
 @pytest.fixture(scope="module")
 def display_cellvalue() -> bool:

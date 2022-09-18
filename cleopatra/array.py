@@ -1,6 +1,6 @@
-from typing import Any, Tuple, Union
+"""plotting Array."""
 from collections import OrderedDict
-
+from typing import Any, Tuple, Union
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
@@ -11,9 +11,8 @@ from matplotlib.ticker import LogFormatter
 
 
 class Array:
-    """
-    Map
-    """
+    """Map."""
+
     figure_default_options = dict(
         ylabel="",
         xlabel="",
@@ -28,7 +27,6 @@ class Array:
         linewidth=3,
         Axisfontsize=15,
     )
-
 
     line_styles = OrderedDict(
         [
@@ -45,10 +43,9 @@ class Array:
             ("loosely dashdotdotted", (0, (3, 10, 1, 10, 1, 10))),  # 10
             ("dashdotdotted", (0, (3, 5, 1, 5, 1, 5))),  # 11
             ("densely dashdotdotted", (0, (3, 1, 1, 1, 1, 1))),  # 12
-            ("densely dashdotdottededited", (0, (6, 1, 1, 1, 1, 1))),# 13
+            ("densely dashdotdottededited", (0, (6, 1, 1, 1, 1, 1))),  # 13
         ]
     )
-
 
     marker_style_list = [
         "--o",
@@ -63,7 +60,12 @@ class Array:
         "-.*",
         "-.h",
     ]
+
     def __init__(self):
+        """Plot array.
+
+        the object does not need any parameters to be initialized.
+        """
         pass
 
     @staticmethod
@@ -95,7 +97,6 @@ class Array:
         else:
             return list(Array.line_styles.items())[style][1]
 
-
     @staticmethod
     def markerStyle(style: int):
         """MarkerStyle.
@@ -116,30 +117,29 @@ class Array:
             style = style % len(Array.marker_style_list)
         return Array.marker_style_list[style]
 
-
     @staticmethod
     def plot(
-            arr: np.ndarray,
-            exculde_value: Union[int, float] = np.nan,
-            figsize: Tuple[int, int]=(8, 8),
-            title: Any = "Total Discharge",
-            title_size: Union[int, float] = 15,
-            cbar_length: Union[int, float] = 0.75,
-            orientation: str="vertical",
-            cbar_label_size: Union[int, float] = 12,
-            cbar_label: str= "Color bar label",
-            rotation: Union[int, float] = -90,
-            ticks_spacing: Union[int, float] = 5,
-            num_size: Union[int, float] = 8,
-            color_scale: int=1,
-            cmap: str="coolwarm_r",
-            gamma: Union[int, float] = 0.5,
-            linscale: Union[int, float] = 0.001,
-            linthresh: Union[int, float] = 0.0001,
-            midpoint: int=0,
-            display_cellvalue: bool=False,
-            background_color_threshold=None,
-            **kwargs
+        arr: np.ndarray,
+        exculde_value: Union[int, float] = np.nan,
+        figsize: Tuple[int, int] = (8, 8),
+        title: Any = "Total Discharge",
+        title_size: Union[int, float] = 15,
+        cbar_length: Union[int, float] = 0.75,
+        orientation: str = "vertical",
+        cbar_label_size: Union[int, float] = 12,
+        cbar_label: str = "Color bar label",
+        rotation: Union[int, float] = -90,
+        ticks_spacing: Union[int, float] = 5,
+        num_size: Union[int, float] = 8,
+        color_scale: int = 1,
+        cmap: str = "coolwarm_r",
+        gamma: Union[int, float] = 0.5,
+        linscale: Union[int, float] = 0.001,
+        linthresh: Union[int, float] = 0.0001,
+        midpoint: int = 0,
+        display_cellvalue: bool = False,
+        background_color_threshold=None,
+        **kwargs,
     ):
         """PlotArray.
 
@@ -213,10 +213,10 @@ class Array:
         fig: [matplotlib figure object]
             the figure object
         """
-        arr = arr
-        arr[np.isclose(arr, exculde_value, rtol=0.0000001)] = np.nan
+        # arr = arr
+        if exculde_value is not None:
+            arr[np.isclose(arr, exculde_value, rtol=0.0000001)] = np.nan
         no_elem = np.size(arr[:, :]) - np.count_nonzero((arr[np.isnan(arr)]))
-
 
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
@@ -229,8 +229,10 @@ class Array:
             try:
                 ticks = np.arange(np.nanmin(arr), np.nanmax(arr), ticks_spacing)
             except ValueError:
-                raise ValueError("The number of ticks exceeded the max allowed size, possible errors"
-                                 f"is the value of the NodataValue you entered-{exculde_value}")
+                raise ValueError(
+                    "The number of ticks exceeded the max allowed size, possible errors"
+                    f"is the value of the NodataValue you entered-{exculde_value}"
+                )
             ticks = np.append(
                 ticks,
                 [int(np.nanmax(arr) / ticks_spacing) * ticks_spacing + ticks_spacing],
@@ -321,38 +323,37 @@ class Array:
 
         return fig, ax
 
-
     @staticmethod
     def animate(
-            array,
-            time,
-            n_elem,
-            ticks_spacing=2,
-            figsize=(8, 8),
-            plot_numbers=True,
-            num_size=8,
-            title="Total Discharge",
-            title_size=15,
-            background_color_threshold=None,
-            cbar_label="Discharge m3/s",
-            cbar_label_size=12,
-            text_colors=("white", "black"),
-            cbar_length=0.75,
-            interval=200,
-            cmap="coolwarm_r",
-            text_loc=[0.1, 0.2],
-            points_color="red",
-            points_size=100,
-            color_scale=1,
-            gamma=0.5,
-            line_threshold=0.0001,
-            line_scale=0.001,
-            midpoint=0,
-            orientation="vertical",
-            rotation=-90,
-            pid_color="blue",
-            pid_size=10,
-            **kwargs
+        array,
+        time,
+        n_elem,
+        ticks_spacing=2,
+        figsize=(8, 8),
+        plot_numbers=True,
+        num_size=8,
+        title="Total Discharge",
+        title_size=15,
+        background_color_threshold=None,
+        cbar_label="Discharge m3/s",
+        cbar_label_size=12,
+        text_colors=("white", "black"),
+        cbar_length=0.75,
+        interval=200,
+        cmap="coolwarm_r",
+        text_loc=[0.1, 0.2],
+        points_color="red",
+        points_size=100,
+        color_scale=1,
+        gamma=0.5,
+        line_threshold=0.0001,
+        line_scale=0.001,
+        midpoint=0,
+        orientation="vertical",
+        rotation=-90,
+        pid_color="blue",
+        pid_size=10,
+        **kwargs,
     ):
         """AnimateArray.
 
@@ -434,7 +435,6 @@ class Array:
         Returns
         -------
         animation.FuncAnimation.
-
         """
         fig = plt.figure(60, figsize=figsize)
         gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
@@ -541,7 +541,6 @@ class Array:
         else:
             background_color_threshold = im.norm(np.nanmax(array)) / 2.0
 
-
         def init():
             im.set_data(array[:, :, 0])
             day_text.set_text("")
@@ -570,7 +569,6 @@ class Array:
                 output = output + Textlist
 
             return output
-
 
         def animate_a(i):
             im.set_data(array[:, :, i])
@@ -610,7 +608,6 @@ class Array:
 
             return output
 
-
         plt.tight_layout()
         # global anim
         anim = FuncAnimation(
@@ -624,26 +621,25 @@ class Array:
 
         return anim
 
-
     @staticmethod
     def plotType1(
-            Y1,
-            Y2,
-            Points,
-            PointsY,
-            PointMaxSize=200,
-            PointMinSize=1,
-            X_axis_label="X Axis",
-            LegendNum=5,
-            LegendLoc=(1.3, 1),
-            PointLegendTitle="Output 2",
-            Ylim=[0, 180],
-            Y2lim=[-2, 14],
-            color1="#27408B",
-            color2="#DC143C",
-            color3="grey",
-            linewidth=4,
-            **kwargs
+        Y1,
+        Y2,
+        Points,
+        PointsY,
+        PointMaxSize=200,
+        PointMinSize=1,
+        X_axis_label="X Axis",
+        LegendNum=5,
+        LegendLoc=(1.3, 1),
+        PointLegendTitle="Output 2",
+        Ylim=[0, 180],
+        Y2lim=[-2, 14],
+        color1="#27408B",
+        color2="#DC143C",
+        color3="grey",
+        linewidth=4,
+        **kwargs,
     ):
         """Plot_Type1.
 
@@ -694,7 +690,6 @@ class Array:
             DESCRIPTION.
         fig : TYPE
             DESCRIPTION.
-
         """
         fig, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
 
@@ -798,7 +793,8 @@ class Array:
 
             for i in range(col_points - 1):
                 Points1_scaled = [
-                    Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points1[:, i]
+                    Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew)
+                    for x in Points1[:, i]
                 ]
                 f2[:, i] = PointsY1[i]
 
@@ -824,7 +820,9 @@ class Array:
         )
         # L = [vminnew] + [float(i[14:-2]) for i in labels] + [vmaxnew]
         L = [float(i[14:-2]) for i in labels]
-        labels1 = [round(Scale.Rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L]
+        labels1 = [
+            round(Scale.Rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L
+        ]
 
         legend2 = ax2.legend(
             handles, labels1, bbox_to_anchor=LegendLoc, title=PointLegendTitle
@@ -855,39 +853,85 @@ class Array:
         return (ax1, ax2), fig
 
 
-
-
-
 class Scale:
+    """different scale object."""
 
     def __init__(self):
+        """Different scale object."""
         pass
 
     @staticmethod
     def log_scale(minval, maxval):
+        """log_scale.
+
+            logarithmic scale
+
+        Parameters
+        ----------
+        minval
+        maxval
+
+        Returns
+        -------
+        """
+
         def scalar(val):
+            """scalar.
+
+                scalar
+
+            Parameters
+            ----------
+            val
+
+            Returns
+            -------
+            """
             val = val + abs(minval) + 1
             return np.log10(val)
 
         return scalar
 
-
     @staticmethod
     def power_scale(minval, maxval):
+        """power_scale.
+
+            power scale
+
+        Parameters
+        ----------
+        minval
+        maxval
+
+        Returns
+        -------
+        """
+
         def scalar(val):
             val = val + abs(minval) + 1
             return (val / 1000) ** 2
 
         return scalar
 
-
     @staticmethod
     def identity_scale(minval, maxval):
+        """identity_scale.
+
+            identity_scale
+
+        Parameters
+        ----------
+        minval
+        maxval
+
+        Returns
+        -------
+        """
+
         def scalar(val):
             return 2
 
         return scalar
-
 
     @staticmethod
     def Rescale(OldValue, OldMin, OldMax, NewMin, NewMax):
@@ -909,7 +953,6 @@ class Scale:
         output:
             1-NewValue:
                 [float] transformed new value
-
         """
         OldRange = OldMax - OldMin
         NewRange = NewMax - NewMin
@@ -922,10 +965,18 @@ class MidpointNormalize(colors.Normalize):
     """MidpointNormalize.
 
     !TODO needs docs
-
     """
 
     def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+        """MidpointNormalize.
+
+        Parameters
+        ----------
+        vmin
+        vmax
+        midpoint
+        clip
+        """
         self.midpoint = midpoint
         colors.Normalize.__init__(self, vmin, vmax, clip)
 
@@ -945,7 +996,6 @@ class MidpointNormalize(colors.Normalize):
         -------
         TYPE
             DESCRIPTION.
-
         """
         # I'm ignoring masked values and all kinds of edge cases to make a
         # simple example...
