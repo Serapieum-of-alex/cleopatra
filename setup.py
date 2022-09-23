@@ -7,7 +7,6 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [line.strip() for line in open("requirements.txt").readlines()]
-requirements = requirements[1:]
 
 test_requirements = [
     "pytest>=3",
@@ -15,7 +14,7 @@ test_requirements = [
 
 setup(
     name="cleopatra",
-    version="0.2.1",
+    version="0.2.2",
     description="visualization package",
     author="Mostafa Farrag",
     author_email="moah.farag@gmail.come",
