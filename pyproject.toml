@@ -6,6 +6,7 @@ authors = ["Mostafa Farrag <moah.farag@gmail.com>"]
 license = "GNU General Public License v3"
 repository = "https://github.com/MAfarrag/cleopatra"
 documentation = "https://cleopatra.readthedocs.io/"
+readme = "README.md"
 keywords=["matplotlib", "arrays", "visualization"]
 classifiers=[
         "Development Status :: 5 - Production/Stable",
