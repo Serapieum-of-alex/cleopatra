@@ -71,6 +71,26 @@ class TestPlotArray:
 
         assert isinstance(fig, Figure)
 
+    def test_plot_array_color_scale_4_with_bounds(
+        self,
+        rhine_dem_arr: np.ndarray,
+        cmap: str,
+        color_scale: List[int],
+        ticks_spacing: int,
+        bounds: list,
+        rhine_no_data_val: float,
+    ):
+        fig, ax = Array.plot(
+            rhine_dem_arr,
+            color_scale=color_scale[3],
+            cmap=cmap,
+            ticks_spacing=ticks_spacing,
+            bounds=bounds,
+            exculde_value=rhine_no_data_val,
+        )
+
+        assert isinstance(fig, Figure)
+
     def test_plot_array_color_scale_5(
         self,
         arr: np.ndarray,
