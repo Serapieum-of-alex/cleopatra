@@ -58,7 +58,7 @@ pip install git+https://github.com/MAfarrag/cleopatra
 ## pip
 to install the last release you can easly use pip
 ```
-pip install cleopatra==0.2.1
+pip install cleopatra==0.2.5
 ```
 
 Quick start

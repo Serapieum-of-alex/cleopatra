@@ -1,6 +1,6 @@
 """plotting Array."""
 from collections import OrderedDict
-from typing import Any, Tuple, Union
+from typing import Any, List, Tuple, Union
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
@@ -69,7 +69,7 @@ class Array:
         pass
 
     @staticmethod
-    def lineStyle(style: Union[str, int] = "loosely dotted"):
+    def getLineStyle(style: Union[str, int] = "loosely dotted"):
         """LineStyle.
 
         Line styles for plotting
@@ -89,23 +89,21 @@ class Array:
                 return Array.line_styles[style]
             except KeyError:
                 msg = (
-                    " The style name you entered-{0}-does not exist please"
+                    f" The style name you entered-{style}-does not exist please"
                     "choose from the available styles"
-                ).format(style)
+                )
                 print(msg)
                 print(list(Array.line_styles))
         else:
             return list(Array.line_styles.items())[style][1]
 
     @staticmethod
-    def markerStyle(style: int):
-        """MarkerStyle.
-
-        Marker styles for plotting
+    def getMarkerStyle(style: int):
+        """Marker styles for plotting.
 
         Parameters
         ----------
-        style : TYPE
+        style: [int]
             DESCRIPTION.
 
         Returns
@@ -136,14 +134,13 @@ class Array:
         gamma: Union[int, float] = 0.5,
         linscale: Union[int, float] = 0.001,
         linthresh: Union[int, float] = 0.0001,
+        bounds: List = None,
         midpoint: int = 0,
         display_cellvalue: bool = False,
         background_color_threshold=None,
         **kwargs,
     ):
-        """PlotArray.
-
-            plot an array/ gdal dataset
+        """plot an array.
 
         Parameters
         ----------
@@ -183,6 +180,8 @@ class Array:
             value needed for option 3. The default is 0.0001.
         linscale : [float], optional
             value needed for option 3. The default is 0.001.
+        bounds: [List]
+            a list of number to be used as a discrete bounds for the color scale 4.Default is None,
         midpoint : [float], optional
             value needed for option 5. The default is 0.
         cmap : [str], optional
@@ -220,7 +219,7 @@ class Array:
 
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
-
+        # creating the ticks/bounds
         if np.mod(np.nanmax(arr), ticks_spacing) == 0:
             ticks = np.arange(
                 np.nanmin(arr), np.nanmax(arr) + ticks_spacing, ticks_spacing
@@ -268,10 +267,14 @@ class Array:
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
         elif color_scale == 4:
-            bounds = ticks
+            if not bounds:
+                bounds = ticks
+                cbar_kw = dict(ticks=ticks)
+            else:
+                cbar_kw = dict(ticks=bounds)
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr[:, :], cmap=cmap, norm=norm)
-            cbar_kw = dict(ticks=ticks)
+
         else:
             im = ax.matshow(
                 arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
@@ -700,7 +703,7 @@ class Array:
             Y1[:, 1],
             zorder=1,
             color=color1,
-            linestyle=Array.lineStyle(0),
+            linestyle=Array.getLineStyle(0),
             linewidth=linewidth,
             label="Model 1 Output1",
         )
@@ -721,7 +724,7 @@ class Array:
                     Y1_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Array.lineStyle(i),
+                    linestyle=Array.getLineStyle(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )
@@ -731,7 +734,7 @@ class Array:
             Y2[:, 1],
             zorder=1,
             color=color3,
-            linestyle=Array.lineStyle(6),
+            linestyle=Array.getLineStyle(6),
             linewidth=2,
             label="Output1-Diff",
         )
@@ -751,7 +754,7 @@ class Array:
                     Y2_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Array.lineStyle(i),
+                    linestyle=Array.getLineStyle(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )
@@ -774,7 +777,7 @@ class Array:
         vminnew = PointMinSize
 
         Points_scaled = [
-            Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
+            Scale.rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
         ]
         f1 = np.ones(shape=(len(Points))) * PointsY
         scatter = ax2.scatter(
@@ -793,7 +796,7 @@ class Array:
 
             for i in range(col_points - 1):
                 Points1_scaled = [
-                    Scale.Rescale(x, vmin, vmax, vminnew, vmaxnew)
+                    Scale.rescale(x, vmin, vmax, vminnew, vmaxnew)
                     for x in Points1[:, i]
                 ]
                 f2[:, i] = PointsY1[i]
@@ -821,7 +824,7 @@ class Array:
         # L = [vminnew] + [float(i[14:-2]) for i in labels] + [vmaxnew]
         L = [float(i[14:-2]) for i in labels]
         labels1 = [
-            round(Scale.Rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L
+            round(Scale.rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L
         ]
 
         legend2 = ax2.legend(
@@ -934,7 +937,7 @@ class Scale:
         return scalar
 
     @staticmethod
-    def Rescale(OldValue, OldMin, OldMax, NewMin, NewMax):
+    def rescale(OldValue, OldMin, OldMax, NewMin, NewMax):
         """Rescale.
 
         Rescale nethod rescales a value between two boundaries to a new value

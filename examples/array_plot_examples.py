@@ -10,11 +10,13 @@ from cleopatra.array import Array
 arr = np.load("examples/data/arr.npy")
 exculde_value = arr[0, 0]
 cmap = "terrain"
+arr2 = np.load("examples/data/DEM5km_Rhine_burned_fill.npy")
+exculde_value2 = arr2[0, 0]
+color_scale = [1, 2, 3, 4, 5]
+ticks_spacing = 500
 #%%
 fig, ax = Array.plot(arr, exculde_value=exculde_value, Title="Flow Accumulation")
 #%% test_plot_array_color_scale_1
-ticks_spacing = 500
-color_scale = [1, 2, 3, 4, 5]
 fig, ax = Array.plot(
     arr,
     exculde_value=exculde_value,
@@ -50,6 +52,18 @@ fig, ax = Array.plot(
     arr,
     exculde_value=exculde_value,
     color_scale=color_scale[3],
+    cmap=cmap,
+    ticks_spacing=ticks_spacing,
+)
+#%%
+bounds = [-559, 0, 440, 940, 1440, 1940, 2440, 2940, 3500]
+# bounds = [0,  440,  940, 1440, 1940, 2440, 2940, 3500]
+
+fig, ax = Array.plot(
+    arr2,
+    exculde_value=exculde_value2,
+    color_scale=color_scale[3],
+    bounds=bounds,
     cmap=cmap,
     ticks_spacing=ticks_spacing,
 )
