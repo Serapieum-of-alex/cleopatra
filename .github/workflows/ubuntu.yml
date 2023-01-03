@@ -28,9 +28,12 @@ jobs:
             pip install --user poetry==1.2.2
             export PATH="${PATH}:/root/.poetry/bin"
 
+      - name: Check lock file
+        run: poetry lock --check
+        
       - name: Install dependencies
         run: |
-            poetry install
+            poetry install  --with github-actions
             source `poetry env info --path`/bin/activate
 
       - name: Install & Lint with flake8
@@ -40,8 +43,6 @@ jobs:
 
       - name: Generate coverage report
         run: |
-#            pip install pytest
-#            pip install pytest-cov
             which python
             poetry run pytest -vvv --cov=cleopatra --cov-report=xml
 
