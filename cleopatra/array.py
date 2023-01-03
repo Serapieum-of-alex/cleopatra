@@ -215,18 +215,21 @@ class Array:
         # arr = arr
         if exculde_value is not None:
             arr[np.isclose(arr, exculde_value, rtol=0.0000001)] = np.nan
+
+        vmin = np.nanmin(arr)
+        vmax = np.nanmax(arr)
         no_elem = np.size(arr[:, :]) - np.count_nonzero((arr[np.isnan(arr)]))
 
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
         # creating the ticks/bounds
-        if np.mod(np.nanmax(arr), ticks_spacing) == 0:
+        if np.mod(vmax, ticks_spacing) == 0:
             ticks = np.arange(
-                np.nanmin(arr), np.nanmax(arr) + ticks_spacing, ticks_spacing
+                vmin, vmax + ticks_spacing, ticks_spacing
             )
         else:
             try:
-                ticks = np.arange(np.nanmin(arr), np.nanmax(arr), ticks_spacing)
+                ticks = np.arange(vmin, vmax, ticks_spacing)
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
@@ -234,12 +237,12 @@ class Array:
                 )
             ticks = np.append(
                 ticks,
-                [int(np.nanmax(arr) / ticks_spacing) * ticks_spacing + ticks_spacing],
+                [int(vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
 
         if color_scale == 1:
             im = ax.matshow(
-                arr[:, :], cmap=cmap, vmin=np.nanmin(arr), vmax=np.nanmax(arr)
+                arr[:, :], cmap=cmap, vmin=vmin, vmax=vmax
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
@@ -247,7 +250,7 @@ class Array:
                 arr[:, :],
                 cmap=cmap,
                 norm=colors.PowerNorm(
-                    gamma=gamma, vmin=np.nanmin(arr), vmax=np.nanmax(arr)
+                    gamma=gamma, vmin=vmin, vmax=vmax
                 ),
             )
             cbar_kw = dict(ticks=ticks)
@@ -259,8 +262,8 @@ class Array:
                     linthresh=linthresh,
                     linscale=linscale,
                     base=np.e,
-                    vmin=np.nanmin(arr),
-                    vmax=np.nanmax(arr),
+                    vmin=vmin,
+                    vmax=vmax,
                 ),
             )
 
@@ -277,7 +280,7 @@ class Array:
 
         else:
             im = ax.matshow(
-                arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
+                arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint, vmin=vmin, vmax=vmax)
             )
             cbar_kw = dict(ticks=ticks)
 
@@ -322,7 +325,7 @@ class Array:
         if background_color_threshold is not None:
             im.norm(background_color_threshold)
         else:
-            im.norm(np.nanmax(arr)) / 2.0
+            im.norm(vmax) / 2.0
 
         return fig, ax
 
