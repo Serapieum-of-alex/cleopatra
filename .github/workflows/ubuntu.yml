@@ -35,17 +35,15 @@ jobs:
 
       - name: Install & Lint with flake8
         run: |
-            poetry shell
             pip install flake8
-            flake8 --max-line-length=120 cleopatra/*.py tests/*.py
+            poetry run flake8 --max-line-length=120 cleopatra/*.py tests/*.py
 
       - name: Generate coverage report
         run: |
-            poetry shell
-            pip install pytest
-            pip install pytest-cov
+#            pip install pytest
+#            pip install pytest-cov
             which python
-            python -m pytest -vvv --cov=cleopatra --cov-report=xml
+            poetry run pytest -vvv --cov=cleopatra --cov-report=xml
 
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v1
