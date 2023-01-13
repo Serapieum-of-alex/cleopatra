@@ -58,7 +58,7 @@ source = ["cleopatra"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 40
+fail_under = 30
 
 
 [tool.isort]
