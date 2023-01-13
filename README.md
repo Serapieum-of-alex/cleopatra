@@ -3,7 +3,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MAfarrag/cleopatra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MAfarrag/cleopatra/context:python)
 [![Documentation Status](https://readthedocs.org/projects/cleopatra/badge/?version=latest)](https://cleopatra.readthedocs.io/en/latest/?badge=latest)
-
+[![codecov](https://codecov.io/github/Serapieum-of-alex/cleopatra/branch/main/graph/badge.svg?token=gHxH7ljIC3)](https://codecov.io/github/Serapieum-of-alex/cleopatra)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/MAfarrag/cleopatra)
 ![GitHub forks](https://img.shields.io/github/forks/MAfarrag/cleopatra?style=social)
