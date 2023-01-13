@@ -42,7 +42,7 @@ jobs:
         run: |
             pip install pytest
             pip install pytest-cov
-            python -m pytest -vvv --cov=cleopatra --cov-report=xml
+            poetry run pytest -vvv --cov=cleopatra --cov-report=xml
 
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v1
