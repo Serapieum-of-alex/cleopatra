@@ -1,9 +1,17 @@
+from collections import OrderedDict
 from typing import List
 
 import numpy as np
 from matplotlib.figure import Figure
 
 from cleopatra.array import Array
+
+
+def test_create_visualize_instance():
+    Vis = Array()
+    assert isinstance(Vis.marker_style_list, list)
+    assert isinstance(Vis.figure_default_options, dict)
+    assert isinstance(Vis.line_styles, OrderedDict)
 
 
 class TestPlotArray:
