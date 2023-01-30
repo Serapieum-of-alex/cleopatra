@@ -15,23 +15,13 @@ Current release info
 
 | Name | Downloads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Version | Platforms |
 | --- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- | --- |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-cleopatra-green.svg)](https://anaconda.org/conda-forge/cleopatra) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![Downloads](https://pepy.tech/badge/cleopatra)](https://pepy.tech/project/cleopatra) [![Downloads](https://pepy.tech/badge/cleopatra/month)](https://pepy.tech/project/cleopatra)  [![Downloads](https://pepy.tech/badge/cleopatra/week)](https://pepy.tech/project/cleopatra)  ![PyPI - Downloads](https://img.shields.io/pypi/dd/cleopatra?color=blue&style=flat-square) ![GitHub all releases](https://img.shields.io/github/downloads/MAfarrag/cleopatra/total) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/MAfarrag/cleopatra/0.1.0/total) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![PyPI version](https://badge.fury.io/py/cleopatra.svg)](https://badge.fury.io/py/cleopatra) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/cleopatra/badges/version.svg)](https://anaconda.org/conda-forge/cleopatra) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![Join the chat at https://gitter.im/Hapi-Nile/Hapi](https://badges.gitter.im/Hapi-Nile/Hapi.svg)](https://gitter.im/Hapi-Nile/Hapi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cleopatra-green.svg)](https://anaconda.org/conda-forge/cleopatra) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![Downloads](https://pepy.tech/badge/cleopatra)](https://pepy.tech/project/cleopatra) [![Downloads](https://pepy.tech/badge/cleopatra/month)](https://pepy.tech/project/cleopatra)  [![Downloads](https://pepy.tech/badge/cleopatra/week)](https://pepy.tech/project/cleopatra)  ![PyPI - Downloads](https://img.shields.io/pypi/dd/cleopatra?color=blue&style=flat-square) ![GitHub all releases](https://img.shields.io/github/downloads/MAfarrag/cleopatra/total) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![PyPI version](https://badge.fury.io/py/cleopatra.svg)](https://badge.fury.io/py/cleopatra) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/cleopatra/badges/version.svg)](https://anaconda.org/conda-forge/cleopatra) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cleopatra.svg)](https://anaconda.org/conda-forge/cleopatra) [![Join the chat at https://gitter.im/Hapi-Nile/Hapi](https://badges.gitter.im/Hapi-Nile/Hapi.svg)](https://gitter.im/Hapi-Nile/Hapi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
 
-cleopatra - Remote Sensing package
+cleopatra - matplotlib utility package
 =====================================================================
 **cleopatra** is a matplotlib utility package
 
 cleopatra
-
-Main Features
--------------
-  -
-
-
-Future work
--------------
-  -
-
 
 
 Installing cleopatra
@@ -58,7 +48,7 @@ pip install git+https://github.com/MAfarrag/cleopatra
 ## pip
 to install the last release you can easly use pip
 ```
-pip install cleopatra==0.2.5
+pip install cleopatra==0.2.6
 ```
 
 Quick start

@@ -16,3 +16,8 @@ History
 ------------------
 
 * plot array with discrete bounds takes the bounds as a parameter
+
+0.2.6 (2023-01-31)
+------------------
+
+* bump up versions
