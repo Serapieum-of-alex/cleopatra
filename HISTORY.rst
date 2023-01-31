@@ -22,3 +22,7 @@ History
 
 * bump up versions
 * add serapeum_utils as a dependency
+
+0.2.7 (2023-01-31)
+------------------
+* bump up numpy to version 1.24.1
