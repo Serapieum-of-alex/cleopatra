@@ -21,3 +21,4 @@ History
 ------------------
 
 * bump up versions
+* add serapeum_utils as a dependency
