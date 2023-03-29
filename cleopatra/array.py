@@ -61,15 +61,31 @@ class Array:
         "-.h",
     ]
 
-    def __init__(self):
+    def __init__(
+        self, array: np.ndarray, exculde_value: Union[int, float] = np.nan
+    ) -> object:
         """Plot array.
+
+        Parameters
+        ----------
+        array: [numpy array]
+            array.
+        exculde_value : [numeric]
+            value used to fill cells out of the domain. Optional, Default is np.nan
+            needed only in case of plotting array
 
         the object does not need any parameters to be initialized.
         """
-        pass
+        # first replace the no_data_value by nan
+        if exculde_value is not None:
+            array[np.isclose(array, exculde_value, rtol=0.0000001)] = np.nan
+        self.vmin = np.nanmin(array)
+        self.vmax = np.nanmax(array)
+        self.arr = array
+        self.no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
 
     @staticmethod
-    def getLineStyle(style: Union[str, int] = "loosely dotted"):
+    def get_line_style(style: Union[str, int] = "loosely dotted"):
         """LineStyle.
 
         Line styles for plotting
@@ -98,7 +114,7 @@ class Array:
             return list(Array.line_styles.items())[style][1]
 
     @staticmethod
-    def getMarkerStyle(style: int):
+    def get_marker_style(style: int):
         """Marker styles for plotting.
 
         Parameters
@@ -115,10 +131,8 @@ class Array:
             style = style % len(Array.marker_style_list)
         return Array.marker_style_list[style]
 
-    @staticmethod
     def plot(
-        arr: np.ndarray,
-        exculde_value: Union[int, float] = np.nan,
+        self,
         figsize: Tuple[int, int] = (8, 8),
         title: Any = "Total Discharge",
         title_size: Union[int, float] = 15,
@@ -144,11 +158,6 @@ class Array:
 
         Parameters
         ----------
-        arr : [array]
-            the array/gdal raster you want to plot.
-        exculde_value : [numeric]
-            value used to fill cells out of the domain. Optional, Default is np.nan
-            needed only in case of plotting array
         figsize : [tuple], optional
             figure size. The default is (8,8).
         title : [str], optional
@@ -212,46 +221,33 @@ class Array:
         fig: [matplotlib figure object]
             the figure object
         """
-        # arr = arr
-        if exculde_value is not None:
-            arr[np.isclose(arr, exculde_value, rtol=0.0000001)] = np.nan
-
-        vmin = np.nanmin(arr)
-        vmax = np.nanmax(arr)
-        no_elem = np.size(arr[:, :]) - np.count_nonzero((arr[np.isnan(arr)]))
-
+        arr = self.arr
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot()
         # creating the ticks/bounds
-        if np.mod(vmax, ticks_spacing) == 0:
-            ticks = np.arange(
-                vmin, vmax + ticks_spacing, ticks_spacing
-            )
+        if np.mod(self.vmax, ticks_spacing) == 0:
+            ticks = np.arange(self.vmin, self.vmax + ticks_spacing, ticks_spacing)
         else:
             try:
-                ticks = np.arange(vmin, vmax, ticks_spacing)
+                ticks = np.arange(self.vmin, self.vmax, ticks_spacing)
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
-                    f"is the value of the NodataValue you entered-{exculde_value}"
+                    f"is the value of the NodataValue you entered-{self.exculde_value}"
                 )
             ticks = np.append(
                 ticks,
-                [int(vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
+                [int(self.vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
 
         if color_scale == 1:
-            im = ax.matshow(
-                arr[:, :], cmap=cmap, vmin=vmin, vmax=vmax
-            )
+            im = ax.matshow(arr[:, :], cmap=cmap, vmin=self.vmin, vmax=self.vmax)
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
             im = ax.matshow(
                 arr[:, :],
                 cmap=cmap,
-                norm=colors.PowerNorm(
-                    gamma=gamma, vmin=vmin, vmax=vmax
-                ),
+                norm=colors.PowerNorm(gamma=gamma, vmin=self.vmin, vmax=self.vmax),
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 3:
@@ -262,8 +258,8 @@ class Array:
                     linthresh=linthresh,
                     linscale=linscale,
                     base=np.e,
-                    vmin=vmin,
-                    vmax=vmax,
+                    vmin=self.vmin,
+                    vmax=self.vmax,
                 ),
             )
 
@@ -280,7 +276,11 @@ class Array:
 
         else:
             im = ax.matshow(
-                arr[:, :], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint, vmin=vmin, vmax=vmax)
+                arr[:, :],
+                cmap=cmap,
+                norm=MidpointNormalize(
+                    midpoint=midpoint, vmin=self.vmin, vmax=self.vmax
+                ),
             )
             cbar_kw = dict(ticks=ticks)
 
@@ -308,7 +308,7 @@ class Array:
                         Indexlist.append([x, y])
             # add text for the cell values
             Textlist = list()
-            for x in range(no_elem):
+            for x in range(self.no_elem):
                 Textlist.append(
                     ax.text(
                         Indexlist[x][1],
@@ -325,7 +325,7 @@ class Array:
         if background_color_threshold is not None:
             im.norm(background_color_threshold)
         else:
-            im.norm(vmax) / 2.0
+            im.norm(self.vmax) / 2.0
 
         return fig, ax
 
@@ -628,7 +628,7 @@ class Array:
         return anim
 
     @staticmethod
-    def plotType1(
+    def plot_type_1(
         Y1,
         Y2,
         Points,
@@ -706,7 +706,7 @@ class Array:
             Y1[:, 1],
             zorder=1,
             color=color1,
-            linestyle=Array.getLineStyle(0),
+            linestyle=Array.get_line_style(0),
             linewidth=linewidth,
             label="Model 1 Output1",
         )
@@ -727,7 +727,7 @@ class Array:
                     Y1_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Array.getLineStyle(i),
+                    linestyle=Array.get_line_style(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )
@@ -737,7 +737,7 @@ class Array:
             Y2[:, 1],
             zorder=1,
             color=color3,
-            linestyle=Array.getLineStyle(6),
+            linestyle=Array.get_line_style(6),
             linewidth=2,
             label="Output1-Diff",
         )
@@ -757,7 +757,7 @@ class Array:
                     Y2_2[:, i],
                     zorder=1,
                     color=color2,
-                    linestyle=Array.getLineStyle(i),
+                    linestyle=Array.get_line_style(i),
                     linewidth=linewidth,
                     label=label[i - 1],
                 )

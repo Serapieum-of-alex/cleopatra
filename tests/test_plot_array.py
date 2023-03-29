@@ -1,9 +1,17 @@
 from typing import List
-
 import numpy as np
 from matplotlib.figure import Figure
-
 from cleopatra.array import Array
+
+
+class TestCreateArray:
+    def test_create_instance(self, arr: np.ndarray, no_data_value: float):
+        array = Array(arr, exculde_value=no_data_value)
+        assert isinstance(array.arr, np.ndarray)
+        assert np.isnan(array.arr[0, 0])
+        assert array.no_elem == 89
+        assert array.vmin == 0
+        assert array.vmax == 88
 
 
 class TestPlotArray:
@@ -12,29 +20,35 @@ class TestPlotArray:
         arr: np.ndarray,
         no_data_value: float,
     ):
-        fig, ax = Array.plot(
-            arr, exculde_value=no_data_value, Title="Flow Accumulation"
-        )
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_1(
-        self, arr: np.ndarray, cmap: str, color_scale: List[int], ticks_spacing: int
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        cmap: str,
+        color_scale: List[int],
+        ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr, color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
+            color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
         )
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_2(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale_2_gamma: float,
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
             color_scale=color_scale[1],
             cmap=cmap,
             gamma=color_scale_2_gamma,
@@ -45,14 +59,15 @@ class TestPlotArray:
     def test_plot_array_color_scale_3(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale: List[int],
         ticks_spacing: int,
         color_scale_3_linscale: float,
         color_scale_3_linthresh: float,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
             color_scale=color_scale[2],
             linscale=color_scale_3_linscale,
             linthresh=color_scale_3_linthresh,
@@ -63,11 +78,15 @@ class TestPlotArray:
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_4(
-        self, arr: np.ndarray, cmap: str, color_scale: List[int], ticks_spacing: int
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        cmap: str,
+        color_scale: List[int],
+        ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr, color_scale=color_scale[3], cmap=cmap, ticks_spacing=ticks_spacing
-        )
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(color_scale=color_scale[3], cmap=cmap, ticks_spacing=5)
 
         assert isinstance(fig, Figure)
 
@@ -80,8 +99,8 @@ class TestPlotArray:
         bounds: list,
         rhine_no_data_val: float,
     ):
-        fig, ax = Array.plot(
-            rhine_dem_arr,
+        array = Array(rhine_dem_arr, exculde_value=rhine_no_data_val)
+        fig, ax = array.plot(
             color_scale=color_scale[3],
             cmap=cmap,
             ticks_spacing=ticks_spacing,
@@ -94,13 +113,14 @@ class TestPlotArray:
     def test_plot_array_color_scale_5(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale: List[int],
         ticks_spacing: int,
         midpoint: int,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
             color_scale=color_scale[4],
             midpoint=midpoint,
             cmap=cmap,
@@ -112,14 +132,14 @@ class TestPlotArray:
     def test_plot_array_display_cell_values(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         ticks_spacing: int,
         display_cellvalue: bool,
         num_size,
         background_color_threshold,
     ):
-
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
             display_cellvalue=display_cellvalue,
             num_size=num_size,
             background_color_threshold=background_color_threshold,
@@ -132,7 +152,7 @@ class TestPlotArray:
     #         self,
     #         arr: np.ndarray,
     #         display_cellvalue: bool,
-    #         points: pd.DataFrame,
+    #         points,
     #         num_size,
     #         background_color_threshold,
     #         ticks_spacing: int,
@@ -141,8 +161,8 @@ class TestPlotArray:
     #         point_size: int,
     #         Gaugecolor: str,
     # ):
-    #     fig, ax = Array.plot(
-    #         arr,
+    #     array = Array(arr, exculde_value=no_data_value)
+    #     fig, ax = array.plot(
     #         Gaugecolor=Gaugecolor,
     #         point_size=point_size,
     #         id_color=id_color,
