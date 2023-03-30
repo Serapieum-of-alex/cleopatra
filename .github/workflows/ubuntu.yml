@@ -24,19 +24,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: x64
 
-      - name: Install GDAL
-        run: |
-            python -m pip install --upgrade pip
-            pip install --no-cache-dir Cython
-            pip install --find-links=https://girder.github.io/large_image_wheels --no-cache GDAL
-
-      - name: Test GDAL installation
-        run: |
-            python -c "from osgeo import gdal"
-            gdalinfo --version
-
       - name: Install dependencies
         run: |
+            pip install git+https://github.com/Serapieum-of-alex/numpy-utils.git@main
             pip install -r requirements.txt -r requirements-dev.txt
             python setup.py install
 

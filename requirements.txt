@@ -1,7 +1,6 @@
+matplotlib >=3.6.2
 numpy >=1.24.1
 # numpy-utils >=0.1.0
-git+https://github.com/Serapieum-of-alex/numpy-utils.git@main
 pip >=22.3.1
-matplotlib >=3.6.2
 pytest >=7.2.0
 pytest-cov >=4.0.0
