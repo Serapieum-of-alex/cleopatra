@@ -148,30 +148,31 @@ class TestPlotArray:
 
         assert isinstance(fig, Figure)
 
-    # def test_plot_array_with_points(
-    #         self,
-    #         arr: np.ndarray,
-    #         display_cellvalue: bool,
-    #         points,
-    #         num_size,
-    #         background_color_threshold,
-    #         ticks_spacing: int,
-    #         id_size: int,
-    #         id_color: str,
-    #         point_size: int,
-    #         Gaugecolor: str,
-    # ):
-    #     array = Array(arr, exculde_value=no_data_value)
-    #     fig, ax = array.plot(
-    #         Gaugecolor=Gaugecolor,
-    #         point_size=point_size,
-    #         id_color=id_color,
-    #         id_size=id_size,
-    #         points=points,
-    #         display_cellvalue=display_cellvalue,
-    #         NumSize=num_size,
-    #         Backgroundcolorthreshold=background_color_threshold,
-    #         ticks_spacing=ticks_spacing,
-    #     )
-    #
-    #     assert isinstance(fig, Figure)
+    def test_plot_array_with_points(
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        display_cellvalue: bool,
+        points,
+        num_size,
+        background_color_threshold,
+        ticks_spacing: int,
+        id_size: int,
+        id_color: str,
+        point_size: int,
+        Gaugecolor: str,
+    ):
+        array = Array(arr, exculde_value=no_data_value)
+        fig, ax = array.plot(
+            Gaugecolor=Gaugecolor,
+            point_size=point_size,
+            id_color=id_color,
+            id_size=id_size,
+            points=points,
+            display_cellvalue=display_cellvalue,
+            NumSize=num_size,
+            Backgroundcolorthreshold=background_color_threshold,
+            ticks_spacing=ticks_spacing,
+        )
+
+        assert isinstance(fig, Figure)

@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture(scope="module")
 def arr() -> np.ndarray:
-    return np.load("examples/data/arr.npy")
+    return np.load("tests/data/arr.npy")
 
 
 @pytest.fixture(scope="module")
@@ -15,7 +15,7 @@ def no_data_value(arr: np.ndarray) -> float:
 
 @pytest.fixture(scope="module")
 def rhine_dem_arr() -> np.ndarray:
-    return np.load("examples/data/DEM5km_Rhine_burned_fill.npy")
+    return np.load("tests/data/DEM5km_Rhine_burned_fill.npy")
 
 
 @pytest.fixture(scope="module")
@@ -96,3 +96,28 @@ def Gaugesize() -> int:
 @pytest.fixture(scope="module")
 def Gaugecolor() -> str:
     return "blue"
+
+
+@pytest.fixture(scope="module")
+def points():
+    return np.loadtxt("tests/data/points.csv", skiprows=1, delimiter=",")
+
+
+@pytest.fixture(scope="module")
+def id_size() -> int:
+    return 20
+
+
+@pytest.fixture(scope="module")
+def id_color() -> str:
+    return "green"
+
+
+@pytest.fixture(scope="module")
+def point_size() -> int:
+    return 100
+
+
+# @pytest.fixture(scope="module")
+# def point_color() -> str:
+#     return "blue"

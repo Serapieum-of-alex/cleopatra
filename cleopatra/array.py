@@ -5,6 +5,7 @@ from typing import Any, List, Tuple, Union
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy_utils.filter import get_indices2
 from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
 from matplotlib.ticker import LogFormatter
@@ -61,9 +62,7 @@ class Array:
         "-.h",
     ]
 
-    def __init__(
-        self, array: np.ndarray, exculde_value: Union[int, float] = np.nan
-    ) -> object:
+    def __init__(self, array: np.ndarray, exculde_value: Union[int, float] = np.nan):
         """Plot array.
 
         Parameters
@@ -152,6 +151,10 @@ class Array:
         midpoint: int = 0,
         display_cellvalue: bool = False,
         background_color_threshold=None,
+        point_color: str = "red",
+        point_size: Union[int, float] = 100,
+        pid_color="blue",
+        pid_size: Union[int, float] = 10,
         **kwargs,
     ):
         """plot an array.
@@ -299,33 +302,45 @@ class Array:
 
         ax.set_xticks([])
         ax.set_yticks([])
-        Indexlist = list()
 
         if display_cellvalue:
-            for x in range(arr.shape[0]):
-                for y in range(arr.shape[1]):
-                    if not np.isnan(arr[x, y]):
-                        Indexlist.append([x, y])
+            indices = get_indices2(arr, [np.nan])
             # add text for the cell values
-            Textlist = list()
-            for x in range(self.no_elem):
-                Textlist.append(
-                    ax.text(
-                        Indexlist[x][1],
-                        Indexlist[x][0],
-                        round(arr[Indexlist[x][0], Indexlist[x][1]], 2),
-                        ha="center",
-                        va="center",
-                        color="w",
-                        fontsize=num_size,
-                    )
-                )
+            add_text = lambda elem: ax.text(
+                elem[1],
+                elem[0],
+                round(arr[elem[0], elem[1]], 2),
+                ha="center",
+                va="center",
+                color="w",
+                fontsize=num_size,
+            )
+            list(map(add_text, indices))
 
         # Normalize the threshold to the images color range.
         if background_color_threshold is not None:
             im.norm(background_color_threshold)
         else:
             im.norm(self.vmax) / 2.0
+
+        if "points" in kwargs.keys():
+            points = kwargs["points"]
+            row = points[:, 1]
+            col = points[:, 2]
+            # IDs = points[:, 0]
+            ax.scatter(col, row, color=point_color, s=point_size)
+            # TODO: Points = ax.scatter(col, rows, color=point_color, s=point_size)
+            #  return the scatter plot object (Points)
+            write_points = lambda x: ax.text(
+                x[2],
+                x[1],
+                x[0],
+                ha="center",
+                va="center",
+                color=pid_color,
+                fontsize=pid_size,
+            )
+            list(map(write_points, points))
 
         return fig, ax
 
