@@ -26,3 +26,10 @@ History
 0.2.7 (2023-01-31)
 ------------------
 * bump up numpy to version 1.24.1
+
+
+0.3.0 (2023-03-31)
+------------------
+* change API to work completly with numpy array inputs
+* chenge to conda config
+* add numpy-utils to filter anc access arrays
