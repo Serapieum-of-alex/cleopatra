@@ -1,14 +1,94 @@
 """plotting Array."""
 from collections import OrderedDict
-from typing import Any, List, Tuple, Union
+from typing import Any, Union
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
+
 from numpy_utils.filter import get_indices2
-from matplotlib import gridspec
+
+# from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
 from matplotlib.ticker import LogFormatter
+
+
+DEFAULT_OPTIONS = dict(
+    figsize=(8, 8),
+    title=None,
+    title_size=15,
+    cbar_length=0.75,
+    orientation="vertical",
+    cmap="coolwarm_r",
+    cbar_label_size=12,
+    cbar_label="Color bar label",
+    rotation=-90,
+    ticks_spacing=5,
+    num_size=8,
+    color_scale=1,
+    gamma=0.5,
+    line_scale=0.001,
+    line_threshold=0.0001,
+    bounds=None,
+    midpoint=0,
+    display_cell_value=False,
+    background_color_threshold=None,
+    id_color="green",
+    id_size=20,
+    tick_spacing=10,
+    precission=2,
+)
+"""
+figsize : [tuple], optional
+    figure size. The default is (8,8).
+title : [str], optional
+    title of the plot. The default is 'Total Discharge'.
+title_size : [integer], optional
+    title size. The default is 15.
+orientation : [string], optional
+    orintation of the colorbar horizontal/vertical. The default is 'vertical'.
+rotation : [number], optional
+    rotation of the colorbar label. The default is -90.
+orientation : [string], optional
+    orintation of the colorbar horizontal/vertical. The default is 'vertical'.
+cbar_length : [float], optional
+    ratio to control the height of the colorbar. The default is 0.75.
+ticks_spacing : [integer], optional
+    Spacing in the colorbar ticks. The default is 2.
+cbar_label_size : integer, optional
+    size of the color bar label. The default is 12.
+cbar_label : str, optional
+    label of the color bar. The default is 'Discharge m3/s'.
+color_scale : integer, optional
+    there are 5 options to change the scale of the colors. The default is 1.
+    1- color_scale 1 is the normal scale
+    2- color_scale 2 is the power scale
+    3- color_scale 3 is the SymLogNorm scale
+    4- color_scale 4 is the PowerNorm scale
+    5- color_scale 5 is the BoundaryNorm scale
+    ------------------------------------------------------------------
+    gamma : [float], optional
+        value needed for option 2 . The default is 1./2..
+    line_threshold : [float], optional
+        value needed for option 3. The default is 0.0001.
+    line_scale : [float], optional
+        value needed for option 3. The default is 0.001.
+    bounds: [List]
+        a list of number to be used as a discrete bounds for the color scale 4.Default is None,
+    midpoint : [float], optional
+        value needed for option 5. The default is 0.
+    ------------------------------------------------------------------
+cmap : [str], optional
+    color style. The default is 'coolwarm_r'.
+display_cell_value : [bool]
+    True if you want to display the values of the cells as a text
+num_size : integer, optional
+    size of the numbers plotted intop of each cells. The default is 8.
+background_color_threshold : [float/integer], optional
+    threshold value if the value of the cell is greater, the plotted
+    numbers will be black and if smaller the plotted number will be white
+    if None given the maxvalue/2 will be considered. The default is None.
+"""
 
 
 class Array:
@@ -78,10 +158,30 @@ class Array:
         # first replace the no_data_value by nan
         if exculde_value is not None:
             array[np.isclose(array, exculde_value, rtol=0.0000001)] = np.nan
-        self.vmin = np.nanmin(array)
-        self.vmax = np.nanmax(array)
+        self.exculde_value = exculde_value
+        self._vmin = np.nanmin(array)
+        self._vmax = np.nanmax(array)
         self.arr = array
-        self.no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
+        shape = array.shape
+        if len(shape) == 3:
+            no_elem = np.size(array[0, :, :]) - np.count_nonzero(
+                (array[0, np.isnan(array[0, :, :])])
+            )
+        else:
+            no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
+
+        self.no_elem = no_elem
+        self.default_options = DEFAULT_OPTIONS
+
+    @property
+    def vmin(self):
+        """min value in the array"""
+        return self._vmin
+
+    @property
+    def vmax(self):
+        """max value in the array"""
+        return self._vmax
 
     @staticmethod
     def get_line_style(style: Union[str, int] = "loosely dotted"):
@@ -130,104 +230,8 @@ class Array:
             style = style % len(Array.marker_style_list)
         return Array.marker_style_list[style]
 
-    def plot(
-        self,
-        figsize: Tuple[int, int] = (8, 8),
-        title: Any = "Total Discharge",
-        title_size: Union[int, float] = 15,
-        cbar_length: Union[int, float] = 0.75,
-        orientation: str = "vertical",
-        cbar_label_size: Union[int, float] = 12,
-        cbar_label: str = "Color bar label",
-        rotation: Union[int, float] = -90,
-        ticks_spacing: Union[int, float] = 5,
-        num_size: Union[int, float] = 8,
-        color_scale: int = 1,
-        cmap: str = "coolwarm_r",
-        gamma: Union[int, float] = 0.5,
-        linscale: Union[int, float] = 0.001,
-        linthresh: Union[int, float] = 0.0001,
-        bounds: List = None,
-        midpoint: int = 0,
-        display_cellvalue: bool = False,
-        background_color_threshold=None,
-        point_color: str = "red",
-        point_size: Union[int, float] = 100,
-        pid_color="blue",
-        pid_size: Union[int, float] = 10,
-        **kwargs,
-    ):
-        """plot an array.
-
-        Parameters
-        ----------
-        figsize : [tuple], optional
-            figure size. The default is (8,8).
-        title : [str], optional
-            title of the plot. The default is 'Total Discharge'.
-        title_size : [integer], optional
-            title size. The default is 15.
-        cbar_length : [float], optional
-            ratio to control the height of the colorbar. The default is 0.75.
-        orientation : [string], optional
-            orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-        cbar_label_size : integer, optional
-            size of the color bar label. The default is 12.
-        cbar_label : str, optional
-            label of the color bar. The default is 'Discharge m3/s'.
-        rotation : [number], optional
-            rotation of the colorbar label. The default is -90.
-        ticks_spacing : [integer], optional
-            Spacing in the colorbar ticks. The default is 2.
-        color_scale : integer, optional
-            there are 5 options to change the scale of the colors. The default is 1.
-            1- color_scale 1 is the normal scale
-            2- color_scale 2 is the power scale
-            3- color_scale 3 is the SymLogNorm scale
-            4- color_scale 4 is the PowerNorm scale
-            5- color_scale 5 is the BoundaryNorm scale
-        gamma : [float], optional
-            value needed for option 2 . The default is 1./2..
-        linthresh : [float], optional
-            value needed for option 3. The default is 0.0001.
-        linscale : [float], optional
-            value needed for option 3. The default is 0.001.
-        bounds: [List]
-            a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-        midpoint : [float], optional
-            value needed for option 5. The default is 0.
-        cmap : [str], optional
-            color style. The default is 'coolwarm_r'.
-        display_cellvalue : [bool]
-            True if you want to display the values of the cells as a text
-        num_size : integer, optional
-            size of the numbers plotted intop of each cells. The default is 8.
-        background_color_threshold : [float/integer], optional
-            threshold value if the value of the cell is greater, the plotted
-            numbers will be black and if smaller the plotted number will be white
-            if None given the maxvalue/2 will be considered. The default is None.
-
-        rotation : []
-
-        midpoint : []
-
-        **kwargs : [dict]
-            keys:
-                Points : [dataframe].
-                    dataframe contains two columns 'row', and col to
-                    plot the point at this location
-
-        Returns
-        -------
-        axes: [figure axes].
-            the axes of the matplotlib figure
-        fig: [matplotlib figure object]
-            the figure object
-        """
-        arr = self.arr
-        fig = plt.figure(figsize=figsize)
-        ax = fig.add_subplot()
-        # creating the ticks/bounds
+    def get_ticks(self, ticks_spacing: int) -> np.ndarray:
+        """get list of ticks for the color bar"""
         if np.mod(self.vmax, ticks_spacing) == 0:
             ticks = np.arange(self.vmin, self.vmax + ticks_spacing, ticks_spacing)
         else:
@@ -242,136 +246,228 @@ class Array:
                 ticks,
                 [int(self.vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
+        return ticks
+
+    def get_im_cbar(self, ax, arr: np.ndarray, ticks: np.ndarray):
+        """
+
+        Parameters
+        ----------
+        arr: [array]
+            numpy array.
+        ticks: [list]
+            color bar ticks.
+
+        Returns
+        -------
+        im, cbar
+        """
+        color_scale = self.default_options["color_scale"]
+        cmap = self.default_options["cmap"]
 
         if color_scale == 1:
-            im = ax.matshow(arr[:, :], cmap=cmap, vmin=self.vmin, vmax=self.vmax)
+            im = ax.matshow(arr, cmap=cmap, vmin=self.vmin, vmax=self.vmax)
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
             im = ax.matshow(
-                arr[:, :],
+                arr,
                 cmap=cmap,
-                norm=colors.PowerNorm(gamma=gamma, vmin=self.vmin, vmax=self.vmax),
+                norm=colors.PowerNorm(
+                    gamma=self.default_options["gamma"], vmin=self.vmin, vmax=self.vmax
+                ),
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 3:
             im = ax.matshow(
-                arr[:, :],
+                arr,
                 cmap=cmap,
                 norm=colors.SymLogNorm(
-                    linthresh=linthresh,
-                    linscale=linscale,
+                    linthresh=self.default_options["line_threshold"],
+                    linscale=self.default_options["line_scale"],
                     base=np.e,
                     vmin=self.vmin,
                     vmax=self.vmax,
                 ),
             )
-
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
         elif color_scale == 4:
-            if not bounds:
+            if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
             else:
-                cbar_kw = dict(ticks=bounds)
+                bounds = self.default_options["bounds"]
+                cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
-            im = ax.matshow(arr[:, :], cmap=cmap, norm=norm)
-
+            im = ax.matshow(arr, cmap=cmap, norm=norm)
         else:
             im = ax.matshow(
-                arr[:, :],
+                arr,
                 cmap=cmap,
                 norm=MidpointNormalize(
-                    midpoint=midpoint, vmin=self.vmin, vmax=self.vmax
+                    midpoint=self.default_options["midpoint"],
+                    vmin=self.vmin,
+                    vmax=self.vmax,
                 ),
             )
             cbar_kw = dict(ticks=ticks)
 
+        return im, cbar_kw
+
+    def _plot_text(self, ax, arr: np.ndarray, indices, DEFAULT_OPTIONS: dict):
+        """
+            plot values as a text in each cell
+
+        Parameters
+        ----------
+        ax:[matplotlib ax]
+        indices: [array]
+            array with columns, (row, col)
+
+        DEFAULT_OPTIONS
+
+        Returns
+        -------
+        list of the text object
+        """
+        # add text for the cell values
+        add_text = lambda elem: ax.text(
+            elem[1],
+            elem[0],
+            round(arr[elem[0], elem[1]], 2),
+            ha="center",
+            va="center",
+            color="w",
+            fontsize=DEFAULT_OPTIONS["num_size"],
+        )
+        return list(map(add_text, indices))
+
+    def _plot_point_values(self, ax, point_table: np.ndarray, pid_color, pid_size):
+        write_points = lambda x: ax.text(
+            x[2],
+            x[1],
+            x[0],
+            ha="center",
+            va="center",
+            color=pid_color,
+            fontsize=pid_size,
+        )
+        return list(map(write_points, point_table))
+
+    def plot(
+        self,
+        points: np.ndarray = None,
+        point_color: str = "red",
+        point_size: Union[int, float] = 100,
+        pid_color="blue",
+        pid_size: Union[int, float] = 10,
+        **kwargs,
+    ):
+        """plot an array.
+
+        Parameters
+        ----------
+        points : [array]
+            3 column array with the first column as the value you want to display for the point, the second is the rows
+            index of the point in the array, and the third column as the column index in the array.
+            - the second and third column tells the location of the point in the array.
+        point_color: [str]
+            color.
+        point_size: [Any]
+            size of the point.
+        pid_color: [str]
+            the color of the anotation of the point. Default is blue.
+        pid_size: [Any]
+            size of the point annotation.
+        **kwargs : [dict]
+            keys:
+                Points : [dataframe].
+                    dataframe contains two columns 'row', and col to
+                    plot the point at this location
+
+        Returns
+        -------
+        axes: [figure axes].
+            the axes of the matplotlib figure
+        fig: [matplotlib figure object]
+            the figure object
+        """
+        for key, val in kwargs.items():
+            if key not in self.default_options.keys():
+                raise ValueError(
+                    f"The given keyword argument:{key} is not correct, possible parameters are,"
+                    f" {DEFAULT_OPTIONS}"
+                )
+            else:
+                self.default_options[key] = val
+
+        arr = self.arr
+        fig = plt.figure(figsize=self.default_options["figsize"])
+        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
+        ax = fig.add_subplot()  # gs[:,:]
+        # creating the ticks/bounds
+        ticks = self.get_ticks(self.default_options["ticks_spacing"])
+        im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
+
         # Create colorbar
         cbar = ax.figure.colorbar(
-            im, ax=ax, shrink=cbar_length, orientation=orientation, **cbar_kw
+            im,
+            ax=ax,
+            shrink=self.default_options["cbar_length"],
+            orientation=self.default_options["orientation"],
+            **cbar_kw,
         )
         cbar.ax.set_ylabel(
-            cbar_label, rotation=rotation, va="bottom", fontsize=cbar_label_size
+            self.default_options["cbar_label"],
+            rotation=self.default_options["rotation"],
+            va="bottom",
+            fontsize=self.default_options["cbar_label_size"],
         )
         cbar.ax.tick_params(labelsize=10)
 
-        ax.set_title(title, fontsize=title_size)
+        ax.set_title(
+            self.default_options["title"], fontsize=self.default_options["title_size"]
+        )
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
         ax.set_xticks([])
         ax.set_yticks([])
 
-        if display_cellvalue:
+        optional_display = {}
+        if self.default_options["display_cell_value"]:
             indices = get_indices2(arr, [np.nan])
-            # add text for the cell values
-            add_text = lambda elem: ax.text(
-                elem[1],
-                elem[0],
-                round(arr[elem[0], elem[1]], 2),
-                ha="center",
-                va="center",
-                color="w",
-                fontsize=num_size,
+            optional_display["cell_text_value"] = self._plot_text(
+                ax, arr, indices, self.default_options
             )
-            list(map(add_text, indices))
 
-        # Normalize the threshold to the images color range.
-        if background_color_threshold is not None:
-            im.norm(background_color_threshold)
-        else:
-            im.norm(self.vmax) / 2.0
-
-        if "points" in kwargs.keys():
-            points = kwargs["points"]
+        if points is not None:
             row = points[:, 1]
             col = points[:, 2]
-            # IDs = points[:, 0]
-            ax.scatter(col, row, color=point_color, s=point_size)
-            # TODO: Points = ax.scatter(col, rows, color=point_color, s=point_size)
-            #  return the scatter plot object (Points)
-            write_points = lambda x: ax.text(
-                x[2],
-                x[1],
-                x[0],
-                ha="center",
-                va="center",
-                color=pid_color,
-                fontsize=pid_size,
+            optional_display["points_scatter"] = ax.scatter(
+                col, row, color=point_color, s=point_size
             )
-            list(map(write_points, points))
+            optional_display["poits_id"] = self._plot_point_values(
+                ax, points, pid_color, pid_size
+            )
+
+        # # Normalize the threshold to the images color range.
+        # if self.default_options["background_color_threshold"] is not None:
+        #     im.norm(self.default_options["background_color_threshold"])
+        # else:
+        #     im.norm(self.vmax) / 2.0
 
         return fig, ax
 
-    @staticmethod
     def animate(
-        array,
-        time,
-        n_elem,
-        ticks_spacing=2,
-        figsize=(8, 8),
-        plot_numbers=True,
-        num_size=8,
-        title="Total Discharge",
-        title_size=15,
-        background_color_threshold=None,
-        cbar_label="Discharge m3/s",
-        cbar_label_size=12,
+        self,
+        time: list,
+        points: np.ndarray = None,
         text_colors=("white", "black"),
-        cbar_length=0.75,
         interval=200,
-        cmap="coolwarm_r",
-        text_loc=[0.1, 0.2],
-        points_color="red",
-        points_size=100,
-        color_scale=1,
-        gamma=0.5,
-        line_threshold=0.0001,
-        line_scale=0.001,
-        midpoint=0,
-        orientation="vertical",
-        rotation=-90,
+        text_loc: list[Any, Any] = None,
+        point_color="red",
+        point_size=100,
         pid_color="blue",
         pid_size=10,
         **kwargs,
@@ -382,250 +478,159 @@ class Array:
 
         Parameters
         ----------
-        array : [array]
-            the array you want to animate.
         time : [dataframe]
             dataframe contains the date of values.
-        n_elem : [integer]
-            Number of the cells that has values.
-        ticks_spacing : [integer], optional
-            Spacing in the colorbar ticks. The default is 2.
-        figsize : [tuple], optional
-            figure size. The default is (8,8).
-        plot_numbers : [bool], optional
-            True to plot the values intop of each cell. The default is True.
-        num_size : integer, optional
-            size of the numbers plotted intop of each cells. The default is 8.
-        title : [str], optional
-            title of the plot. The default is 'Total Discharge'.
-        title_size : [integer], optional
-            title size. The default is 15.
-        background_color_threshold : [float/integer], optional
-            threshold value if the value of the cell is greater, the plotted
-            numbers will be black and if smaller the plotted number will be white
-            if None given the maxvalue/2 will be considered. The default is None.
+        points : [array]
+            3 column array with the first column as the value you want to display for the point, the second is the rows
+            index of the point in the array, and the third column as the column index in the array.
+            - the second and third column tells the location of the point in the array.
+        point_color: [str]
+            color of the points. The default is 'red'.
+        point_size: [Any]
+            size of the point. The default is 100.
+        pid_color: [str]
+            the color of the anotation of the point. Default is blue.
+        pid_size: [Any]
+            size of the point annotation. The default is 10.
         text_colors : TYPE, optional
             Two colors to be used to plot the values i top of each cell. The default is ("white","black").
-        cbar_label : str, optional
-            label of the color bar. The default is 'Discharge m3/s'.
-        cbar_label_size : integer, optional
-            size of the color bar label. The default is 12.
-        cbar_length : [float], optional
-            ratio to control the height of the colorbar. The default is 0.75.
         interval : [integer], optional
             number to controlthe speed of the animation. The default is 200.
-        cmap : [str], optional
-            color style. The default is 'coolwarm_r'.
         text_loc : [list], optional
             location of the date text. The default is [0.1,0.2].
-        points_color : [str], optional
-            color of the points. The default is 'red'.
-        points_size : [integer], optional
-            size of the points. The default is 100.
-        pid_color : [str]
-            the ID of the Point.The default is "blue".
-        pid_size : [integer]
-            size of the ID text. The default is 10.
-        color_scale : integer, optional
-            there are 5 options to change the scale of the colors. The default is 1.
-            1- color_scale 1 is the normal scale
-            2- color_scale 2 is the power scale
-            3- color_scale 3 is the SymLogNorm scale
-            4- color_scale 4 is the PowerNorm scale
-            5- color_scale 5 is the BoundaryNorm scale
-            ------------------------------------------------------------------
-            gamma : [float], optional
-                value needed for option 2 . The default is 1./2..
-            line_threshold : [float], optional
-                value needed for option 3. The default is 0.0001.
-            line_scale : [float], optional
-                value needed for option 3. The default is 0.001.
-            midpoint : [float], optional
-                value needed for option 5. The default is 0.
-            ------------------------------------------------------------------
-        orientation : [string], optional
-            orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-        rotation : [number], optional
-            rotation of the colorbar label. The default is -90.
         **kwargs : [dict]
-            keys:
-                Points : [dataframe].
-                    dataframe contains two columns 'cell_row', and cell_col to
-                    plot the point at this location
 
         Returns
         -------
         animation.FuncAnimation.
         """
-        fig = plt.figure(60, figsize=figsize)
-        gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
-        ax = fig.add_subplot(gs[:, :])
-        ticks = np.arange(np.nanmin(array), np.nanmax(array), ticks_spacing)
+        if text_loc is None:
+            text_loc = [0.1, 0.2]
 
-        if color_scale == 1:
-            im = ax.matshow(
-                array[:, :, 0], cmap=cmap, vmin=np.nanmin(array), vmax=np.nanmax(array)
-            )
-            cbar_kw = dict(ticks=ticks)
-        elif color_scale == 2:
-            im = ax.matshow(
-                array[:, :, 0],
-                cmap=cmap,
-                norm=colors.PowerNorm(
-                    gamma=gamma, vmin=np.nanmin(array), vmax=np.nanmax(array)
-                ),
-            )
-            cbar_kw = dict(ticks=ticks)
-        elif color_scale == 3:
-            im = ax.matshow(
-                array[:, :, 0],
-                cmap=cmap,
-                norm=colors.SymLogNorm(
-                    linthresh=line_threshold,
-                    linscale=line_scale,
-                    base=np.e,
-                    vmin=np.nanmin(array),
-                    vmax=np.nanmax(array),
-                ),
-            )
-            formatter = LogFormatter(10, labelOnlyBase=False)
-            cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale == 4:
-            bounds = np.arange(np.nanmin(array), np.nanmax(array), ticks_spacing)
-            norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
-            im = ax.matshow(array[:, :, 0], cmap=cmap, norm=norm)
-            cbar_kw = dict(ticks=ticks)
-        else:
-            im = ax.matshow(
-                array[:, :, 0], cmap=cmap, norm=MidpointNormalize(midpoint=midpoint)
-            )
-            cbar_kw = dict(ticks=ticks)
+        for key, val in kwargs.items():
+            if key not in self.default_options.keys():
+                raise ValueError(
+                    f"The given keyword argument:{key} is not correct, possible parameters are,"
+                    f" {DEFAULT_OPTIONS}"
+                )
+            else:
+                self.default_options[key] = val
+
+        # if optional_display
+        precission = self.default_options["precission"]
+        array = self.arr
+        fig = plt.figure(60, figsize=self.default_options["figsize"])
+
+        ax = fig.add_subplot()
+        ticks = self.get_ticks(self.default_options["ticks_spacing"])
+        im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
-            im, ax=ax, shrink=cbar_length, orientation=orientation, **cbar_kw
+            im,
+            ax=ax,
+            shrink=self.default_options["cbar_length"],
+            orientation=self.default_options["orientation"],
+            **cbar_kw,
         )
-        cbar.ax.set_ylabel(cbar_label, rotation=rotation, va="bottom")
+        cbar.ax.set_ylabel(
+            self.default_options["cbar_label"],
+            rotation=self.default_options["rotation"],
+            va="bottom",
+            fontsize=self.default_options["cbar_label_size"],
+        )
         cbar.ax.tick_params(labelsize=10)
 
-        day_text = ax.text(text_loc[0], text_loc[1], " ", fontsize=cbar_label_size)
-        ax.set_title(title, fontsize=title_size)
+        ax.set_title(
+            self.default_options["title"], fontsize=self.default_options["title_size"]
+        )
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
         ax.set_xticks([])
         ax.set_yticks([])
-        Indexlist = list()
 
-        for x in range(array.shape[0]):
-            for y in range(array.shape[1]):
-                if not np.isnan(array[x, y, 0]):
-                    Indexlist.append([x, y])
-
-        Textlist = list()
-        for x in range(n_elem):
-            Textlist.append(
-                ax.text(
-                    Indexlist[x][1],
-                    Indexlist[x][0],
-                    round(array[Indexlist[x][0], Indexlist[x][1], 0], 2),
-                    ha="center",
-                    va="center",
-                    color="w",
-                    fontsize=num_size,
-                )
+        if self.default_options["display_cell_value"]:
+            indices = get_indices2(array[0, :, :], [np.nan])
+            cell_text_value = self._plot_text(
+                ax, array[0, :, :], indices, self.default_options
             )
-        # Points = list()
-        PoitsID = list()
-        if "Points" in kwargs.keys():
-            row = kwargs["Points"].loc[:, "cell_row"].tolist()
-            col = kwargs["Points"].loc[:, "cell_col"].tolist()
-            IDs = kwargs["Points"].loc[:, "id"].tolist()
-            Points = ax.scatter(col, row, color=points_color, s=points_size)
+            indices = np.array(indices)
 
-            for i in range(len(row)):
-                PoitsID.append(
-                    ax.text(
-                        col[i],
-                        row[i],
-                        IDs[i],
-                        ha="center",
-                        va="center",
-                        color=pid_color,
-                        fontsize=pid_size,
-                    )
-                )
+        if points is not None:
+            row = points[:, 1]
+            col = points[:, 2]
+            points_scatter = ax.scatter(col, row, color=point_color, s=point_size)
+            poits_id = self._plot_point_values(ax, points, pid_color, pid_size)
 
         # Normalize the threshold to the images color range.
-        if background_color_threshold is not None:
-            background_color_threshold = im.norm(background_color_threshold)
+        if self.default_options["background_color_threshold"] is not None:
+            background_color_threshold = im.norm(
+                self.default_options["background_color_threshold"]
+            )
         else:
             background_color_threshold = im.norm(np.nanmax(array)) / 2.0
 
-        def init():
-            im.set_data(array[:, :, 0])
-            day_text.set_text("")
+        day_text = ax.text(
+            text_loc[0],
+            text_loc[1],
+            " ",
+            fontsize=self.default_options["cbar_label_size"],
+        )
 
+        def init():
+            """initialize the plot with the first array"""
+            im.set_data(array[0, :, :])
+            day_text.set_text("")
             output = [im, day_text]
 
-            if "Points" in kwargs.keys():
-                # plot gauges
-                # for j in range(len(kwargs['Points'])):
-                row = kwargs["Points"].loc[:, "cell_row"].tolist()
-                col = kwargs["Points"].loc[:, "cell_col"].tolist()
-                # Points[j].set_offsets(col, row)
-                Points.set_offsets(np.c_[col, row])
-                output.append(Points)
+            if points is not None:
+                points_scatter.set_offsets(np.c_[col, row])
+                output.append(points_scatter)
+                update_points = lambda x: poits_id[x].set_text(points[x, 0])
+                list(map(update_points, range(len(col))))
 
-                for x in range(len(col)):
-                    PoitsID[x].set_text(IDs[x])
+                output = output + poits_id
 
-                output = output + PoitsID
-
-            if plot_numbers:
-                for x in range(n_elem):
-                    val = round(array[Indexlist[x][0], Indexlist[x][1], 0], 2)
-                    Textlist[x].set_text(val)
-
-                output = output + Textlist
+            if self.default_options["display_cell_value"]:
+                vals = array[0, indices[:, 0], indices[:, 1]]
+                update_cell_value = lambda x: cell_text_value[x].set_text(vals[x])
+                list(map(update_cell_value, range(self.no_elem)))
+                output = output + cell_text_value
 
             return output
 
         def animate_a(i):
-            im.set_data(array[:, :, i])
+            """plot for each element in the iterable."""
+            im.set_data(array[i, :, :])
             day_text.set_text("Date = " + str(time[i])[0:10])
-
             output = [im, day_text]
 
-            if "Points" in kwargs.keys():
-                # plot gauges
-                # for j in range(len(kwargs['Points'])):
-                row = kwargs["Points"].loc[:, "cell_row"].tolist()
-                col = kwargs["Points"].loc[:, "cell_col"].tolist()
-                # Points[j].set_offsets(col, row)
-                Points.set_offsets(np.c_[col, row])
-                output.append(Points)
+            if points is not None:
+                points_scatter.set_offsets(np.c_[col, row])
+                output.append(points_scatter)
 
                 for x in range(len(col)):
-                    PoitsID[x].set_text(IDs[x])
+                    poits_id[x].set_text(points[x, 0])
 
-                output = output + PoitsID
+                output = output + poits_id
 
-            if plot_numbers:
-                for x in range(n_elem):
-                    val = round(array[Indexlist[x][0], Indexlist[x][1], i], 2)
+            if self.default_options["display_cell_value"]:
+                vals = array[i, indices[:, 0], indices[:, 1]]
+
+                def update_cell_value(x):
+                    val = round(vals[x], precission)
                     kw = dict(
                         color=text_colors[
-                            int(
-                                im.norm(array[Indexlist[x][0], Indexlist[x][1], i])
-                                > background_color_threshold
-                            )
+                            int(im.norm(vals[x]) > background_color_threshold)
                         ]
                     )
-                    Textlist[x].update(kw)
-                    Textlist[x].set_text(val)
+                    cell_text_value[x].update(kw)
+                    cell_text_value[x].set_text(val)
 
-                output = output + Textlist
+                list(map(update_cell_value, range(self.no_elem)))
+
+                output = output + cell_text_value
 
             return output
 
@@ -635,7 +640,7 @@ class Array:
             fig,
             animate_a,
             init_func=init,
-            frames=np.shape(array)[2],
+            frames=np.shape(array)[0],
             interval=interval,
             blit=True,
         )

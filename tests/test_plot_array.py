@@ -1,7 +1,11 @@
 from collections import OrderedDict
 from typing import List
 import numpy as np
+
+# import matplotlib
+# matplotlib.use("TkAgg")
 from matplotlib.figure import Figure
+from matplotlib.animation import FuncAnimation
 from cleopatra.array import Array
 
 
@@ -73,8 +77,8 @@ class TestPlotArray:
         array = Array(arr, exculde_value=no_data_value)
         fig, ax = array.plot(
             color_scale=color_scale[2],
-            linscale=color_scale_3_linscale,
-            linthresh=color_scale_3_linthresh,
+            line_scale=color_scale_3_linscale,
+            line_threshold=color_scale_3_linthresh,
             cmap=cmap,
             ticks_spacing=ticks_spacing,
         )
@@ -109,7 +113,6 @@ class TestPlotArray:
             cmap=cmap,
             ticks_spacing=ticks_spacing,
             bounds=bounds,
-            exculde_value=rhine_no_data_val,
         )
 
         assert isinstance(fig, Figure)
@@ -138,13 +141,13 @@ class TestPlotArray:
         arr: np.ndarray,
         no_data_value: float,
         ticks_spacing: int,
-        display_cellvalue: bool,
+        display_cell_value: bool,
         num_size,
         background_color_threshold,
     ):
         array = Array(arr, exculde_value=no_data_value)
         fig, ax = array.plot(
-            display_cellvalue=display_cellvalue,
+            display_cell_value=display_cell_value,
             num_size=num_size,
             background_color_threshold=background_color_threshold,
             ticks_spacing=ticks_spacing,
@@ -156,7 +159,7 @@ class TestPlotArray:
         self,
         arr: np.ndarray,
         no_data_value: float,
-        display_cellvalue: bool,
+        display_cell_value: bool,
         points,
         num_size,
         background_color_threshold,
@@ -168,15 +171,27 @@ class TestPlotArray:
     ):
         array = Array(arr, exculde_value=no_data_value)
         fig, ax = array.plot(
-            Gaugecolor=Gaugecolor,
+            points=points,
+            point_color=Gaugecolor,
             point_size=point_size,
             id_color=id_color,
             id_size=id_size,
-            points=points,
-            display_cellvalue=display_cellvalue,
-            NumSize=num_size,
-            Backgroundcolorthreshold=background_color_threshold,
+            display_cell_value=display_cell_value,
+            num_size=num_size,
+            background_color_threshold=background_color_threshold,
             ticks_spacing=ticks_spacing,
         )
 
         assert isinstance(fig, Figure)
+
+
+class TestAnimate:
+    def test_numpy_array(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        array = Array(coello_data, exculde_value=no_data_value)
+        anim_obj = array.animate(animate_time_list, title="Flow Accumulation")
+        assert isinstance(anim_obj, FuncAnimation)

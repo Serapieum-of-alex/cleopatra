@@ -64,7 +64,7 @@ def midpoint() -> int:
 
 
 @pytest.fixture(scope="module")
-def display_cellvalue() -> bool:
+def display_cell_value() -> bool:
     return True
 
 
@@ -121,3 +121,13 @@ def point_size() -> int:
 # @pytest.fixture(scope="module")
 # def point_color() -> str:
 #     return "blue"
+
+
+@pytest.fixture(scope="module")
+def coello_data() -> np.ndarray:
+    return np.load("tests/data/coello.npy")
+
+
+@pytest.fixture(scope="module")
+def animate_time_list() -> list:
+    return list(range(1, 11))
