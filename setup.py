@@ -10,7 +10,7 @@ requirements = [line.strip() for line in open("requirements.txt").readlines()]
 requirements_dev = [line.strip() for line in open("requirements-dev.txt").readlines()]
 
 setup(
-    name="celopatra",
+    name="cleopatra",
     version="0.3.0",
     description="visualization package",
     author="Mostafa Farrag",
