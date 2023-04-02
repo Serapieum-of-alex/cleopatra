@@ -1,6 +1,6 @@
 """plotting Array."""
 from collections import OrderedDict
-from typing import Any, Union
+from typing import Any, Union, List
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
@@ -15,6 +15,8 @@ from matplotlib.ticker import LogFormatter
 
 DEFAULT_OPTIONS = dict(
     figsize=(8, 8),
+    vmin=None,
+    vmax=None,
     title=None,
     title_size=15,
     cbar_length=0.75,
@@ -105,12 +107,17 @@ class Array:
         the object does not need any parameters to be initialized.
         """
         # first replace the no_data_value by nan
+        # convert the array to float32 to be able to replace the no data value with nan
+        array = array.astype(np.float32)
+
         if exculde_value is not None:
             array[np.isclose(array, exculde_value, rtol=0.0000001)] = np.nan
         self.exculde_value = exculde_value
         self._vmin = np.nanmin(array)
         self._vmax = np.nanmax(array)
         self.arr = array
+        # get the tick spacing that have 10 ticks only
+        self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
         if len(shape) == 3:
             no_elem = np.size(array[0, :, :]) - np.count_nonzero(
@@ -179,13 +186,16 @@ class Array:
             style = style % len(Array.marker_style_list)
         return Array.marker_style_list[style]
 
-    def get_ticks(self, ticks_spacing: int) -> np.ndarray:
+    def get_ticks(self) -> np.ndarray:
         """get list of ticks for the color bar"""
-        if np.mod(self.vmax, ticks_spacing) == 0:
-            ticks = np.arange(self.vmin, self.vmax + ticks_spacing, ticks_spacing)
+        ticks_spacing = self.default_options["ticks_spacing"]
+        vmax = self.default_options["vmax"]
+        vmin = self.default_options["vmin"]
+        if np.mod(vmax, ticks_spacing) == 0:
+            ticks = np.arange(vmin, vmax + ticks_spacing, ticks_spacing)
         else:
             try:
-                ticks = np.arange(self.vmin, self.vmax, ticks_spacing)
+                ticks = np.arange(vmin, vmax, ticks_spacing)
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
@@ -193,7 +203,7 @@ class Array:
                 )
             ticks = np.append(
                 ticks,
-                [int(self.vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
+                [int(vmax / ticks_spacing) * ticks_spacing + ticks_spacing],
             )
         return ticks
 
@@ -213,16 +223,18 @@ class Array:
         """
         color_scale = self.default_options["color_scale"]
         cmap = self.default_options["cmap"]
+        vmin = self.default_options["vmin"]
+        vmax = self.default_options["vmax"]
 
         if color_scale == 1:
-            im = ax.matshow(arr, cmap=cmap, vmin=self.vmin, vmax=self.vmax)
+            im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax)
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
             im = ax.matshow(
                 arr,
                 cmap=cmap,
                 norm=colors.PowerNorm(
-                    gamma=self.default_options["gamma"], vmin=self.vmin, vmax=self.vmax
+                    gamma=self.default_options["gamma"], vmin=vmin, vmax=vmax
                 ),
             )
             cbar_kw = dict(ticks=ticks)
@@ -234,8 +246,8 @@ class Array:
                     linthresh=self.default_options["line_threshold"],
                     linscale=self.default_options["line_scale"],
                     base=np.e,
-                    vmin=self.vmin,
-                    vmax=self.vmax,
+                    vmin=vmin,
+                    vmax=vmax,
                 ),
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
@@ -255,8 +267,8 @@ class Array:
                 cmap=cmap,
                 norm=MidpointNormalize(
                     midpoint=self.default_options["midpoint"],
-                    vmin=self.vmin,
-                    vmax=self.vmax,
+                    vmin=vmin,
+                    vmax=vmax,
                 ),
             )
             cbar_kw = dict(ticks=ticks)
@@ -395,13 +407,20 @@ class Array:
                 )
             else:
                 self.default_options[key] = val
+        # if user did not input ticks spacing use the calculated one.
+        if "ticks_spacing" not in kwargs.items():
+            self.default_options["ticks_spacing"] = self.ticks_spacing
+        if "vmin" not in kwargs.items():
+            self.default_options["vmin"] = self.vmin
+        if "vmax" not in kwargs.items():
+            self.default_options["vmax"] = self.vmax
 
         arr = self.arr
         fig = plt.figure(figsize=self.default_options["figsize"])
         # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
         ax = fig.add_subplot()  # gs[:,:]
         # creating the ticks/bounds
-        ticks = self.get_ticks(self.default_options["ticks_spacing"])
+        ticks = self.get_ticks()
         im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
 
         # Create colorbar
@@ -456,7 +475,7 @@ class Array:
 
     def animate(
         self,
-        time: list,
+        time: List[Any],
         points: np.ndarray = None,
         text_colors=("white", "black"),
         interval=200,
@@ -559,13 +578,22 @@ class Array:
                 )
             else:
                 self.default_options[key] = val
+
+        # if user did not input ticks spacing use the calculated one.
+        if "ticks_spacing" not in kwargs.items():
+            self.default_options["ticks_spacing"] = self.ticks_spacing
+        if "vmin" not in kwargs.items():
+            self.default_options["vmin"] = self.vmin
+        if "vmax" not in kwargs.items():
+            self.default_options["vmax"] = self.vmax
+
         # if optional_display
         precission = self.default_options["precission"]
         array = self.arr
         fig = plt.figure(60, figsize=self.default_options["figsize"])
 
         ax = fig.add_subplot()
-        ticks = self.get_ticks(self.default_options["ticks_spacing"])
+        ticks = self.get_ticks()
         im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
 
         # Create colorbar
