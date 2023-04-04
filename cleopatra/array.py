@@ -93,7 +93,7 @@ class Array:
         "-.h",
     ]
 
-    def __init__(self, array: np.ndarray, exculde_value: Union[int, float] = np.nan):
+    def __init__(self, array: np.ndarray, exculde_value: List = np.nan):
         """Plot array.
 
         Parameters
@@ -111,7 +111,16 @@ class Array:
         array = array.astype(np.float32)
 
         if exculde_value is not None:
-            array[np.isclose(array, exculde_value, rtol=0.0000001)] = np.nan
+            if len(exculde_value) > 1:
+                mask = np.logical_or(
+                    np.isclose(array, exculde_value[0], rtol=0.001),
+                    np.isclose(array, exculde_value[1], rtol=0.001),
+                )
+            else:
+                mask = np.isclose(array, exculde_value[0], rtol=0.0000001)
+
+            array[mask] = np.nan
+
         self.exculde_value = exculde_value
         self._vmin = np.nanmin(array)
         self._vmax = np.nanmax(array)
@@ -408,11 +417,19 @@ class Array:
             else:
                 self.default_options[key] = val
         # if user did not input ticks spacing use the calculated one.
-        if "ticks_spacing" not in kwargs.items():
+        if "ticks_spacing" in kwargs.keys():
+            self.default_options["ticks_spacing"] = kwargs["ticks_spacing"]
+        else:
             self.default_options["ticks_spacing"] = self.ticks_spacing
-        if "vmin" not in kwargs.items():
+
+        if "vmin" in kwargs.keys():
+            self.default_options["vmin"] = kwargs["vmin"]
+        else:
             self.default_options["vmin"] = self.vmin
-        if "vmax" not in kwargs.items():
+
+        if "vmax" in kwargs.keys():
+            self.default_options["vmax"] = kwargs["vmax"]
+        else:
             self.default_options["vmax"] = self.vmax
 
         arr = self.arr
@@ -580,11 +597,19 @@ class Array:
                 self.default_options[key] = val
 
         # if user did not input ticks spacing use the calculated one.
-        if "ticks_spacing" not in kwargs.items():
+        if "ticks_spacing" in kwargs.keys():
+            self.default_options["ticks_spacing"] = kwargs["ticks_spacing"]
+        else:
             self.default_options["ticks_spacing"] = self.ticks_spacing
-        if "vmin" not in kwargs.items():
+
+        if "vmin" in kwargs.keys():
+            self.default_options["vmin"] = kwargs["vmin"]
+        else:
             self.default_options["vmin"] = self.vmin
-        if "vmax" not in kwargs.items():
+
+        if "vmax" in kwargs.keys():
+            self.default_options["vmax"] = kwargs["vmax"]
+        else:
             self.default_options["vmax"] = self.vmax
 
         # if optional_display
