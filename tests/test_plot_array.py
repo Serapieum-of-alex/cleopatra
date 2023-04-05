@@ -11,7 +11,7 @@ from cleopatra.array import Array
 
 class TestCreateArray:
     def test_create_instance(self, arr: np.ndarray, no_data_value: float):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         assert isinstance(array.arr, np.ndarray)
         assert np.isnan(array.arr[0, 0])
         assert array.no_elem == 89
@@ -28,7 +28,7 @@ class TestPlotArray:
         arr: np.ndarray,
         no_data_value: float,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
@@ -40,7 +40,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
         )
@@ -55,7 +55,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[1],
             cmap=cmap,
@@ -74,7 +74,7 @@ class TestPlotArray:
         color_scale_3_linscale: float,
         color_scale_3_linthresh: float,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[2],
             line_scale=color_scale_3_linscale,
@@ -93,7 +93,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(color_scale=color_scale[3], cmap=cmap, ticks_spacing=5)
 
         assert isinstance(fig, Figure)
@@ -107,7 +107,7 @@ class TestPlotArray:
         bounds: list,
         rhine_no_data_val: float,
     ):
-        array = Array(rhine_dem_arr, exculde_value=[rhine_no_data_val])
+        array = Array(rhine_dem_arr, exclude_value=[rhine_no_data_val])
         fig, ax = array.plot(
             color_scale=color_scale[3],
             cmap=cmap,
@@ -126,7 +126,7 @@ class TestPlotArray:
         ticks_spacing: int,
         midpoint: int,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[4],
             midpoint=midpoint,
@@ -145,7 +145,7 @@ class TestPlotArray:
         num_size,
         background_color_threshold,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             display_cell_value=display_cell_value,
             num_size=num_size,
@@ -169,7 +169,7 @@ class TestPlotArray:
         point_size: int,
         Gaugecolor: str,
     ):
-        array = Array(arr, exculde_value=[no_data_value])
+        array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             points=points,
             point_color=Gaugecolor,
@@ -192,6 +192,6 @@ class TestAnimate:
         animate_time_list: list,
         no_data_value: float,
     ):
-        array = Array(coello_data, exculde_value=[no_data_value])
+        array = Array(coello_data, exclude_value=[no_data_value])
         anim_obj = array.animate(animate_time_list, title="Flow Accumulation")
         assert isinstance(anim_obj, FuncAnimation)

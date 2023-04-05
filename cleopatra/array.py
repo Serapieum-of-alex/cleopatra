@@ -93,14 +93,14 @@ class Array:
         "-.h",
     ]
 
-    def __init__(self, array: np.ndarray, exculde_value: List = np.nan):
+    def __init__(self, array: np.ndarray, exclude_value: List = np.nan):
         """Plot array.
 
         Parameters
         ----------
         array: [numpy array]
             array.
-        exculde_value : [numeric]
+        exclude_value : [numeric]
             value used to fill cells out of the domain. Optional, Default is np.nan
             needed only in case of plotting array
 
@@ -110,18 +110,18 @@ class Array:
         # convert the array to float32 to be able to replace the no data value with nan
         array = array.astype(np.float32)
 
-        if exculde_value is not None:
-            if len(exculde_value) > 1:
+        if exclude_value is not None:
+            if len(exclude_value) > 1:
                 mask = np.logical_or(
-                    np.isclose(array, exculde_value[0], rtol=0.001),
-                    np.isclose(array, exculde_value[1], rtol=0.001),
+                    np.isclose(array, exclude_value[0], rtol=0.001),
+                    np.isclose(array, exclude_value[1], rtol=0.001),
                 )
             else:
-                mask = np.isclose(array, exculde_value[0], rtol=0.0000001)
+                mask = np.isclose(array, exclude_value[0], rtol=0.0000001)
 
             array[mask] = np.nan
 
-        self.exculde_value = exculde_value
+        self.exclude_value = exclude_value
         self._vmin = np.nanmin(array)
         self._vmax = np.nanmax(array)
         self.arr = array
@@ -208,7 +208,7 @@ class Array:
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
-                    f"is the value of the NodataValue you entered-{self.exculde_value}"
+                    f"is the value of the NodataValue you entered-{self.exclude_value}"
                 )
             ticks = np.append(
                 ticks,
