@@ -3,19 +3,18 @@ import matplotlib
 matplotlib.use("TkAgg")
 # import matplotlib.pyplot as plt
 import numpy as np
-
 from cleopatra.array import Array
 
 #%%
 arr = np.load("tests/data/arr.npy")
-exculde_value = arr[0, 0]
+exclude_value = arr[0, 0]
 cmap = "terrain"
 arr2 = np.load("tests/data/DEM5km_Rhine_burned_fill.npy")
 exculde_value2 = arr2[0, 0]
 color_scale = [1, 2, 3, 4, 5]
 ticks_spacing = 500
 #%%
-array = Array(arr, exculde_value=exculde_value)
+array = Array(arr, exclude_value=exclude_value)
 fig, ax = array.plot(title="Flow Accumulation")
 #%% test_plot_array_color_scale_1
 fig, ax = array.plot(
