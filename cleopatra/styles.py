@@ -9,7 +9,11 @@ DEFAULT_OPTIONS = dict(
     title=None,
     title_size=15,
     ylabel="",
+    ylabel_font_size=11,
     xlabel="",
+    xlabel_font_size=11,
+    xtick_font_size=11,
+    ytick_font_size=11,
     legend="",
     legend_size=10,
     color_1="#3D59AB",
@@ -28,11 +32,10 @@ DEFAULT_OPTIONS = dict(
     line_threshold=0.0001,
     bounds=None,
     midpoint=0,
+    grid_alpha=0.75,
 )
 
 # figure_default_options = dict(
-#         labelsize=10,
-#         fontsize=10,
 #         name="hist.tif",
 #         Axisfontsize=15,
 #     )

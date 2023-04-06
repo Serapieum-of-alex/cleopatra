@@ -1,5 +1,6 @@
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Any
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 import numpy as np
 from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
 
@@ -40,7 +41,7 @@ class Statistic:
         """Default plot options"""
         return self._default_options
 
-    def histogram(self, **kwargs):
+    def histogram(self, **kwargs) -> [Figure, Any, Dict]:
         """
 
         Parameters
@@ -66,7 +67,7 @@ class Statistic:
                 self.default_options[key] = val
 
         fig, ax = plt.subplots(figsize=self.default_options["figsize"])
-        # ax1.hist(extracted_values, bins=15, alpha = 0.4) #width = 0.2,
+
         n, bins, patches = ax.hist(
             x=self.values,
             bins=self.default_options["bins"],
@@ -74,11 +75,16 @@ class Statistic:
             alpha=self.default_options["alpha"],
             rwidth=self.default_options["rwidth"],
         )
-        plt.grid(axis="y", alpha=0.75)
-        plt.xlabel("Value", fontsize=15)
-        plt.ylabel("Frequency", fontsize=15)
-        plt.xticks(fontsize=15)
-        plt.yticks(fontsize=15)
-
-        plt.ylabel("Frequency", fontsize=15)
-        return n, bins, patches
+        plt.grid(axis="y", alpha=self.default_options["grid_alpha"])
+        plt.xlabel(
+            self.default_options["xlabel"],
+            fontsize=self.default_options["xlabel_font_size"],
+        )
+        plt.ylabel(
+            self.default_options["ylabel"],
+            fontsize=self.default_options["ylabel_font_size"],
+        )
+        plt.xticks(fontsize=self.default_options["xtick_font_size"])
+        plt.yticks(fontsize=self.default_options["ytick_font_size"])
+        hist = {"n": n, "bins": bins, "patches": patches}
+        return fig, ax, hist
