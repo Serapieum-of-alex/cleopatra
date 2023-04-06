@@ -1,9 +1,10 @@
 from typing import Union, List, Dict
 import matplotlib.pyplot as plt
 import numpy as np
+from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
 
-
-DEFAULT_OPTIONS = dict(bins=15, color="#0504aa", alpha=0.7, rwidth=0.85)
+DEFAULT_OPTIONS = dict(figsize=(5, 5), bins=15, color="#0504aa", alpha=0.7, rwidth=0.85)
+DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
 
 
 class Statistic:
@@ -64,9 +65,9 @@ class Statistic:
             else:
                 self.default_options[key] = val
 
-        # fig, ax1 = plt.subplots(fig_size=(10,8))
+        fig, ax = plt.subplots(figsize=self.default_options["figsize"])
         # ax1.hist(extracted_values, bins=15, alpha = 0.4) #width = 0.2,
-        n, bins, patches = plt.hist(
+        n, bins, patches = ax.hist(
             x=self.values,
             bins=self.default_options["bins"],
             color=self.default_options["color"],
@@ -80,7 +81,4 @@ class Statistic:
         plt.yticks(fontsize=15)
 
         plt.ylabel("Frequency", fontsize=15)
-        # plt.tight_layout()
-
-        # plt.show()
         return n, bins, patches
