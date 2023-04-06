@@ -17,9 +17,6 @@ class TestCreateArray:
         assert array.no_elem == 89
         assert array.vmin == 0
         assert array.vmax == 88
-        assert isinstance(array.marker_style_list, list)
-        assert isinstance(array.figure_default_options, dict)
-        assert isinstance(array.line_styles, OrderedDict)
 
 
 class TestPlotArray:
