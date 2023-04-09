@@ -6,6 +6,7 @@ dependencies:
 #  - numpy-utils >=0.1.0
   - pip >=22.3.1
   - matplotlib >=3.6.2
+  - ffmpeg-python
   - pytest >=7.2.0
   - pytest-cov >=4.0.0
   - pip

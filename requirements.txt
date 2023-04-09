@@ -1,3 +1,4 @@
+ffmpeg-python
 matplotlib >=3.6.2
 numpy >=1.24.1
 # numpy-utils >=0.1.0
