@@ -8,6 +8,7 @@ from numpy_utils.filter import get_indices2
 
 # from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
+from matplotlib import animation
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
 from cleopatra.styles import Styles, Scale, MidpointNormalize
@@ -23,6 +24,7 @@ DEFAULT_OPTIONS = dict(
     precission=2,
 )
 DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
+SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
 class Array:
@@ -96,6 +98,17 @@ class Array:
     def default_options(self):
         """Default plot options"""
         return self._default_options
+
+    @property
+    def anim(self):
+        """Animation function"""
+        if hasattr(self, "_anim"):
+            val = self._anim
+        else:
+            raise ValueError(
+                "please first use the function animate to create the animation object"
+            )
+        return val
 
     def get_ticks(self) -> np.ndarray:
         """get list of ticks for the color bar"""
@@ -644,8 +657,43 @@ class Array:
             interval=interval,
             blit=True,
         )
-
+        self._anim = anim
         return anim
+
+    def save_animation(self, path: str, fps: int = 2):
+        """Save gif file.
+
+            - video format is taken from the given path. available ["gif", "mov", "avi", "mp4"].
+
+        Parameters
+        ----------
+        path: [str]
+            path
+        fps: [int]
+            frames per second. Default is 2.
+        """
+        video_format = path.split(".")[-1]
+        if video_format not in SUPPORTED_VIDEO_FORMAT:
+            raise ValueError(
+                f"The given extension {video_format} implies a format that is not supported, "
+                f"only {SUPPORTED_VIDEO_FORMAT} are supported"
+            )
+
+        if video_format == "gif":
+            writergif = animation.PillowWriter(fps=fps)
+            self.anim.save(path, writer=writergif)
+        else:
+            try:
+                if video_format == "avi" or video_format == "mov":
+                    writervideo = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writervideo)
+                elif video_format == "mp4":
+                    writermp4 = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writermp4)
+            except FileNotFoundError:
+                print(
+                    "please visit https://ffmpeg.org/ and download a version of ffmpeg compitable with your operating system, for more details please check the method definition"
+                )
 
     @staticmethod
     def plot_type_1(

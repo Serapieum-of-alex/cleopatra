@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import os
 from typing import List
 import numpy as np
 
@@ -192,3 +193,71 @@ class TestAnimate:
         array = Array(coello_data, exclude_value=[no_data_value])
         anim_obj = array.animate(animate_time_list, title="Flow Accumulation")
         assert isinstance(anim_obj, FuncAnimation)
+
+    def test_save_animation_gif(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "gif"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        assert os.path.exists(path)
+        os.remove(path)
+
+    def test_save_animation_avi(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "avi"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        assert os.path.exists(path)
+        os.remove(path)
+
+    def test_save_animation_mp4(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "mp4"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        assert os.path.exists(path)
+        os.remove(path)
+
+    def test_save_animation_mov(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "mov"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        assert os.path.exists(path)
+        os.remove(path)
