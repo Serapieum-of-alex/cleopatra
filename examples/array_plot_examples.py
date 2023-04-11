@@ -5,6 +5,7 @@ matplotlib.use("TkAgg")
 import numpy as np
 from cleopatra.array import Array
 
+# from matplotlib.transforms import blended_transform_factory
 #%%
 arr = np.load("tests/data/arr.npy")
 exclude_value = arr[0, 0]
@@ -14,7 +15,7 @@ exculde_value2 = arr2[0, 0]
 color_scale = [1, 2, 3, 4, 5]
 ticks_spacing = 500
 #%%
-array = Array(arr, exclude_value=exclude_value)
+array = Array(arr, exclude_value=[exclude_value])
 fig, ax = array.plot(title="Flow Accumulation")
 #%% test_plot_array_color_scale_1
 fig, ax = array.plot(
@@ -82,10 +83,26 @@ fig, ax = array.plot(
 )
 #%%
 coello_data = np.load("tests/data/coello.npy")
-exculde_value = arr[0, 0]
+exclude_value = arr[0, 0]
 animate_time_list = list(range(1, 11))
-array = Array(coello_data, exculde_value=exculde_value)
-amin_obj = array.animate(
+array = Array(coello_data, exclude_value=[exclude_value])
+anim = array.animate(
     animate_time_list, title="Flow Accumulation", display_cell_value=True
 )
+
+from pathlib import Path
+import sys
+
+# path = Path(sys.executable)
+# f"{path.parent}/{}"
 #%%
+
+# amin.save('examples/animation.gif', fps=2)
+video_format = "mp4"
+
+import matplotlib as mpl
+
+fps = 2
+
+path = "examples/animation.mp4"
+import ffmpeg
