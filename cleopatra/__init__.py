@@ -17,7 +17,7 @@ __email__ = "moah.farag@gmail.com"
 __docformat__ = "restructuredtext"
 
 # Let users know if they're missing any of our hard dependencies
-hard_dependencies = ()  # ("numpy", "pandas", "gdal")
+hard_dependencies = ()
 missing_dependencies = []
 
 for dependency in hard_dependencies:

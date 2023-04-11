@@ -1,17 +1,21 @@
-from collections import OrderedDict
+import os
 from typing import List
-
+from pathlib import Path
 import numpy as np
-from matplotlib.figure import Figure
 
+from matplotlib.figure import Figure
+from matplotlib.animation import FuncAnimation
 from cleopatra.array import Array
 
 
-def test_create_visualize_instance():
-    Vis = Array()
-    assert isinstance(Vis.marker_style_list, list)
-    assert isinstance(Vis.figure_default_options, dict)
-    assert isinstance(Vis.line_styles, OrderedDict)
+class TestCreateArray:
+    def test_create_instance(self, arr: np.ndarray, no_data_value: float):
+        array = Array(arr, exclude_value=[no_data_value])
+        assert isinstance(array.arr, np.ndarray)
+        assert np.isnan(array.arr[0, 0])
+        assert array.no_elem == 89
+        assert array.vmin == 0
+        assert array.vmax == 88
 
 
 class TestPlotArray:
@@ -20,29 +24,35 @@ class TestPlotArray:
         arr: np.ndarray,
         no_data_value: float,
     ):
-        fig, ax = Array.plot(
-            arr, exculde_value=no_data_value, Title="Flow Accumulation"
-        )
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_1(
-        self, arr: np.ndarray, cmap: str, color_scale: List[int], ticks_spacing: int
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        cmap: str,
+        color_scale: List[int],
+        ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr, color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
+            color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
         )
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_2(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale_2_gamma: float,
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
             color_scale=color_scale[1],
             cmap=cmap,
             gamma=color_scale_2_gamma,
@@ -53,17 +63,18 @@ class TestPlotArray:
     def test_plot_array_color_scale_3(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale: List[int],
         ticks_spacing: int,
         color_scale_3_linscale: float,
         color_scale_3_linthresh: float,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
             color_scale=color_scale[2],
-            linscale=color_scale_3_linscale,
-            linthresh=color_scale_3_linthresh,
+            line_scale=color_scale_3_linscale,
+            line_threshold=color_scale_3_linthresh,
             cmap=cmap,
             ticks_spacing=ticks_spacing,
         )
@@ -71,11 +82,15 @@ class TestPlotArray:
         assert isinstance(fig, Figure)
 
     def test_plot_array_color_scale_4(
-        self, arr: np.ndarray, cmap: str, color_scale: List[int], ticks_spacing: int
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        cmap: str,
+        color_scale: List[int],
+        ticks_spacing: int,
     ):
-        fig, ax = Array.plot(
-            arr, color_scale=color_scale[3], cmap=cmap, ticks_spacing=ticks_spacing
-        )
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(color_scale=color_scale[3], cmap=cmap, ticks_spacing=5)
 
         assert isinstance(fig, Figure)
 
@@ -88,13 +103,12 @@ class TestPlotArray:
         bounds: list,
         rhine_no_data_val: float,
     ):
-        fig, ax = Array.plot(
-            rhine_dem_arr,
+        array = Array(rhine_dem_arr, exclude_value=[rhine_no_data_val])
+        fig, ax = array.plot(
             color_scale=color_scale[3],
             cmap=cmap,
             ticks_spacing=ticks_spacing,
             bounds=bounds,
-            exculde_value=rhine_no_data_val,
         )
 
         assert isinstance(fig, Figure)
@@ -102,13 +116,14 @@ class TestPlotArray:
     def test_plot_array_color_scale_5(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         cmap: str,
         color_scale: List[int],
         ticks_spacing: int,
         midpoint: int,
     ):
-        fig, ax = Array.plot(
-            arr,
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
             color_scale=color_scale[4],
             midpoint=midpoint,
             cmap=cmap,
@@ -120,15 +135,15 @@ class TestPlotArray:
     def test_plot_array_display_cell_values(
         self,
         arr: np.ndarray,
+        no_data_value: float,
         ticks_spacing: int,
-        display_cellvalue: bool,
+        display_cell_value: bool,
         num_size,
         background_color_threshold,
     ):
-
-        fig, ax = Array.plot(
-            arr,
-            display_cellvalue=display_cellvalue,
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
+            display_cell_value=display_cell_value,
             num_size=num_size,
             background_color_threshold=background_color_threshold,
             ticks_spacing=ticks_spacing,
@@ -136,30 +151,111 @@ class TestPlotArray:
 
         assert isinstance(fig, Figure)
 
-    # def test_plot_array_with_points(
-    #         self,
-    #         arr: np.ndarray,
-    #         display_cellvalue: bool,
-    #         points: pd.DataFrame,
-    #         num_size,
-    #         background_color_threshold,
-    #         ticks_spacing: int,
-    #         id_size: int,
-    #         id_color: str,
-    #         point_size: int,
-    #         Gaugecolor: str,
-    # ):
-    #     fig, ax = Array.plot(
-    #         arr,
-    #         Gaugecolor=Gaugecolor,
-    #         point_size=point_size,
-    #         id_color=id_color,
-    #         id_size=id_size,
-    #         points=points,
-    #         display_cellvalue=display_cellvalue,
-    #         NumSize=num_size,
-    #         Backgroundcolorthreshold=background_color_threshold,
-    #         ticks_spacing=ticks_spacing,
-    #     )
-    #
-    #     assert isinstance(fig, Figure)
+    def test_plot_array_with_points(
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+        display_cell_value: bool,
+        points,
+        num_size,
+        background_color_threshold,
+        ticks_spacing: int,
+        id_size: int,
+        id_color: str,
+        point_size: int,
+        Gaugecolor: str,
+    ):
+        array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(
+            points=points,
+            point_color=Gaugecolor,
+            point_size=point_size,
+            id_color=id_color,
+            id_size=id_size,
+            display_cell_value=display_cell_value,
+            num_size=num_size,
+            background_color_threshold=background_color_threshold,
+            ticks_spacing=ticks_spacing,
+        )
+
+        assert isinstance(fig, Figure)
+
+
+class TestAnimate:
+    def test_numpy_array(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim_obj = array.animate(animate_time_list, title="Flow Accumulation")
+        assert isinstance(anim_obj, FuncAnimation)
+
+    def test_save_animation_gif(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "gif"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        # assert Path(path).exists()
+        # os.remove(path)
+
+    def test_save_animation_avi(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "avi"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        # assert Path(path).exists()
+        # os.remove(path)
+
+    def test_save_animation_mp4(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "mp4"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        # assert Path(path).exists()
+        # os.remove(path)
+
+    def test_save_animation_mov(
+        self,
+        coello_data: np.ndarray,
+        animate_time_list: list,
+        no_data_value: float,
+    ):
+        video_format = "mov"
+        path = f"tests/data/animation.{video_format}"
+        if os.path.exists(path):
+            os.remove(path)
+
+        array = Array(coello_data, exclude_value=[no_data_value])
+        anim = array.animate(animate_time_list, title="Flow Accumulation")
+        array.save_animation(path, fps=2)
+        # assert Path(path).exists()
+        # os.remove(path)

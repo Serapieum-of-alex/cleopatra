@@ -26,3 +26,13 @@ History
 0.2.7 (2023-01-31)
 ------------------
 * bump up numpy to version 1.24.1
+
+
+0.3.0 (2023-04-11)
+------------------
+* change API to work completly with numpy array inputs
+* chenge to conda config
+* add hpc-utils to filter and access arrays
+* restructure the whole modules to array, statistics, and styles modules.
+* all modules has classes.
+* save animation function using ffmpeg.
