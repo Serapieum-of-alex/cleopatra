@@ -11,7 +11,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
-from cleopatra.styles import Styles, Scale, MidpointNormalize
+from cleopatra.styles import MidpointNormalize
 
 DEFAULT_OPTIONS = dict(
     vmin=None,
@@ -201,7 +201,8 @@ class Array:
 
         return im, cbar_kw
 
-    def _plot_text(self, ax, arr: np.ndarray, indices, DEFAULT_OPTIONS: dict):
+    @staticmethod
+    def _plot_text(ax, arr: np.ndarray, indices, DEFAULT_OPTIONS: dict):
         """
             plot values as a text in each cell
 
@@ -229,7 +230,8 @@ class Array:
         )
         return list(map(add_text, indices))
 
-    def _plot_point_values(self, ax, point_table: np.ndarray, pid_color, pid_size):
+    @staticmethod
+    def _plot_point_values(ax, point_table: np.ndarray, pid_color, pid_size):
         write_points = lambda x: ax.text(
             x[2],
             x[1],
@@ -697,233 +699,233 @@ class Array:
                     "please visit https://ffmpeg.org/ and download a version of ffmpeg compitable with your operating system, for more details please check the method definition"
                 )
 
-    @staticmethod
-    def plot_type_1(
-        Y1,
-        Y2,
-        Points,
-        PointsY,
-        PointMaxSize=200,
-        PointMinSize=1,
-        X_axis_label="X Axis",
-        LegendNum=5,
-        LegendLoc=(1.3, 1),
-        PointLegendTitle="Output 2",
-        Ylim=[0, 180],
-        Y2lim=[-2, 14],
-        color1="#27408B",
-        color2="#DC143C",
-        color3="grey",
-        linewidth=4,
-        **kwargs,
-    ):
-        """Plot_Type1.
-
-        !TODO Needs docs
-
-        Parameters
-        ----------
-        Y1 : TYPE
-            DESCRIPTION.
-        Y2 : TYPE
-            DESCRIPTION.
-        Points : TYPE
-            DESCRIPTION.
-        PointsY : TYPE
-            DESCRIPTION.
-        PointMaxSize : TYPE, optional
-            DESCRIPTION. The default is 200.
-        PointMinSize : TYPE, optional
-            DESCRIPTION. The default is 1.
-        X_axis_label : TYPE, optional
-            DESCRIPTION. The default is 'X Axis'.
-        LegendNum : TYPE, optional
-            DESCRIPTION. The default is 5.
-        LegendLoc : TYPE, optional
-            DESCRIPTION. The default is (1.3, 1).
-        PointLegendTitle : TYPE, optional
-            DESCRIPTION. The default is "Output 2".
-        Ylim : TYPE, optional
-            DESCRIPTION. The default is [0,180].
-        Y2lim : TYPE, optional
-            DESCRIPTION. The default is [-2,14].
-        color1 : TYPE, optional
-            DESCRIPTION. The default is '#27408B'.
-        color2 : TYPE, optional
-            DESCRIPTION. The default is '#DC143C'.
-        color3 : TYPE, optional
-            DESCRIPTION. The default is "grey".
-        linewidth : TYPE, optional
-            DESCRIPTION. The default is 4.
-        **kwargs : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        ax1 : TYPE
-            DESCRIPTION.
-        TYPE
-            DESCRIPTION.
-        fig : TYPE
-            DESCRIPTION.
-        """
-        fig, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
-
-        ax2 = ax1.twinx()
-
-        ax1.plot(
-            Y1[:, 0],
-            Y1[:, 1],
-            zorder=1,
-            color=color1,
-            linestyle=Styles.get_line_style(0),
-            linewidth=linewidth,
-            label="Model 1 Output1",
-        )
-
-        if "Y1_2" in kwargs.keys():
-            Y1_2 = kwargs["Y1_2"]
-
-            rows_axis1, cols_axis1 = np.shape(Y1_2)
-
-            if "Y1_2_label" in kwargs.keys():
-                label = kwargs["Y2_2_label"]
-            else:
-                label = ["label"] * (cols_axis1 - 1)
-            # first column is the x axis
-            for i in range(1, cols_axis1):
-                ax1.plot(
-                    Y1_2[:, 0],
-                    Y1_2[:, i],
-                    zorder=1,
-                    color=color2,
-                    linestyle=Styles.get_line_style(i),
-                    linewidth=linewidth,
-                    label=label[i - 1],
-                )
-
-        ax2.plot(
-            Y2[:, 0],
-            Y2[:, 1],
-            zorder=1,
-            color=color3,
-            linestyle=Styles.get_line_style(6),
-            linewidth=2,
-            label="Output1-Diff",
-        )
-
-        if "Y2_2" in kwargs.keys():
-            Y2_2 = kwargs["Y2_2"]
-            rows_axis2, cols_axis2 = np.shape(Y2_2)
-
-            if "Y2_2_label" in kwargs.keys():
-                label = kwargs["Y2_2_label"]
-            else:
-                label = ["label"] * (cols_axis2 - 1)
-
-            for i in range(1, cols_axis2):
-                ax1.plot(
-                    Y2_2[:, 0],
-                    Y2_2[:, i],
-                    zorder=1,
-                    color=color2,
-                    linestyle=Styles.get_line_style(i),
-                    linewidth=linewidth,
-                    label=label[i - 1],
-                )
-
-        if "Points1" in kwargs.keys():
-            # first axis in the x axis
-            Points1 = kwargs["Points1"]
-
-            vmax = np.max(Points1[:, 1:])
-            vmin = np.min(Points1[:, 1:])
-
-            vmax = max(Points[:, 1].max(), vmax)
-            vmin = min(Points[:, 1].min(), vmin)
-
-        else:
-            vmax = max(Points)
-            vmin = min(Points)
-
-        vmaxnew = PointMaxSize
-        vminnew = PointMinSize
-
-        Points_scaled = [
-            Scale.rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
-        ]
-        f1 = np.ones(shape=(len(Points))) * PointsY
-        scatter = ax2.scatter(
-            Points[:, 0],
-            f1,
-            zorder=1,
-            c=color1,
-            s=Points_scaled,
-            label="Model 1 Output 2",
-        )
-
-        if "Points1" in kwargs.keys():
-            row_points, col_points = np.shape(Points1)
-            PointsY1 = kwargs["PointsY1"]
-            f2 = np.ones_like(Points1[:, 1:])
-
-            for i in range(col_points - 1):
-                Points1_scaled = [
-                    Scale.rescale(x, vmin, vmax, vminnew, vmaxnew)
-                    for x in Points1[:, i]
-                ]
-                f2[:, i] = PointsY1[i]
-
-                ax2.scatter(
-                    Points1[:, 0],
-                    f2[:, i],
-                    zorder=1,
-                    c=color2,
-                    s=Points1_scaled,
-                    label="Model 2 Output 2",
-                )
-
-        # produce a legend with the unique colors from the scatter
-        legend1 = ax2.legend(
-            *scatter.legend_elements(), bbox_to_anchor=(1.1, 0.2)
-        )  # loc="lower right", title="RIM"
-
-        ax2.add_artist(legend1)
-
-        # produce a legend with a cross section of sizes from the scatter
-        handles, labels = scatter.legend_elements(
-            prop="sizes", alpha=0.6, num=LegendNum
-        )
-        # L = [vminnew] + [float(i[14:-2]) for i in labels] + [vmaxnew]
-        L = [float(i[14:-2]) for i in labels]
-        labels1 = [
-            round(Scale.rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L
-        ]
-
-        legend2 = ax2.legend(
-            handles, labels1, bbox_to_anchor=LegendLoc, title=PointLegendTitle
-        )
-        ax2.add_artist(legend2)
-
-        ax1.set_ylim(Ylim)
-        ax2.set_ylim(Y2lim)
-        #
-        ax1.set_ylabel("Output 1 (m)", fontsize=12)
-        ax2.set_ylabel("Output 1 - Diff (m)", fontsize=12)
-        ax1.set_xlabel(X_axis_label, fontsize=12)
-        ax1.xaxis.set_minor_locator(plt.MaxNLocator(10))
-        ax1.tick_params(which="minor", length=5)
-        fig.legend(
-            loc="lower center",
-            bbox_to_anchor=(1.3, 0.3),
-            bbox_transform=ax1.transAxes,
-            fontsize=10,
-        )
-        plt.rcParams.update({"ytick.major.size": 3.5})
-        plt.rcParams.update({"font.size": 12})
-        plt.title("Model Output Comparison", fontsize=15)
-
-        plt.subplots_adjust(right=0.7)
-        # plt.tight_layout()
-
-        return (ax1, ax2), fig
+    # @staticmethod
+    # def plot_type_1(
+    #     Y1,
+    #     Y2,
+    #     Points,
+    #     PointsY,
+    #     PointMaxSize=200,
+    #     PointMinSize=1,
+    #     X_axis_label="X Axis",
+    #     LegendNum=5,
+    #     LegendLoc=(1.3, 1),
+    #     PointLegendTitle="Output 2",
+    #     Ylim=[0, 180],
+    #     Y2lim=[-2, 14],
+    #     color1="#27408B",
+    #     color2="#DC143C",
+    #     color3="grey",
+    #     linewidth=4,
+    #     **kwargs,
+    # ):
+    #     """Plot_Type1.
+    #
+    #     !TODO Needs docs
+    #
+    #     Parameters
+    #     ----------
+    #     Y1 : TYPE
+    #         DESCRIPTION.
+    #     Y2 : TYPE
+    #         DESCRIPTION.
+    #     Points : TYPE
+    #         DESCRIPTION.
+    #     PointsY : TYPE
+    #         DESCRIPTION.
+    #     PointMaxSize : TYPE, optional
+    #         DESCRIPTION. The default is 200.
+    #     PointMinSize : TYPE, optional
+    #         DESCRIPTION. The default is 1.
+    #     X_axis_label : TYPE, optional
+    #         DESCRIPTION. The default is 'X Axis'.
+    #     LegendNum : TYPE, optional
+    #         DESCRIPTION. The default is 5.
+    #     LegendLoc : TYPE, optional
+    #         DESCRIPTION. The default is (1.3, 1).
+    #     PointLegendTitle : TYPE, optional
+    #         DESCRIPTION. The default is "Output 2".
+    #     Ylim : TYPE, optional
+    #         DESCRIPTION. The default is [0,180].
+    #     Y2lim : TYPE, optional
+    #         DESCRIPTION. The default is [-2,14].
+    #     color1 : TYPE, optional
+    #         DESCRIPTION. The default is '#27408B'.
+    #     color2 : TYPE, optional
+    #         DESCRIPTION. The default is '#DC143C'.
+    #     color3 : TYPE, optional
+    #         DESCRIPTION. The default is "grey".
+    #     linewidth : TYPE, optional
+    #         DESCRIPTION. The default is 4.
+    #     **kwargs : TYPE
+    #         DESCRIPTION.
+    #
+    #     Returns
+    #     -------
+    #     ax1 : TYPE
+    #         DESCRIPTION.
+    #     TYPE
+    #         DESCRIPTION.
+    #     fig : TYPE
+    #         DESCRIPTION.
+    #     """
+    #     fig, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 6))
+    #
+    #     ax2 = ax1.twinx()
+    #
+    #     ax1.plot(
+    #         Y1[:, 0],
+    #         Y1[:, 1],
+    #         zorder=1,
+    #         color=color1,
+    #         linestyle=Styles.get_line_style(0),
+    #         linewidth=linewidth,
+    #         label="Model 1 Output1",
+    #     )
+    #
+    #     if "Y1_2" in kwargs.keys():
+    #         Y1_2 = kwargs["Y1_2"]
+    #
+    #         rows_axis1, cols_axis1 = np.shape(Y1_2)
+    #
+    #         if "Y1_2_label" in kwargs.keys():
+    #             label = kwargs["Y2_2_label"]
+    #         else:
+    #             label = ["label"] * (cols_axis1 - 1)
+    #         # first column is the x axis
+    #         for i in range(1, cols_axis1):
+    #             ax1.plot(
+    #                 Y1_2[:, 0],
+    #                 Y1_2[:, i],
+    #                 zorder=1,
+    #                 color=color2,
+    #                 linestyle=Styles.get_line_style(i),
+    #                 linewidth=linewidth,
+    #                 label=label[i - 1],
+    #             )
+    #
+    #     ax2.plot(
+    #         Y2[:, 0],
+    #         Y2[:, 1],
+    #         zorder=1,
+    #         color=color3,
+    #         linestyle=Styles.get_line_style(6),
+    #         linewidth=2,
+    #         label="Output1-Diff",
+    #     )
+    #
+    #     if "Y2_2" in kwargs.keys():
+    #         Y2_2 = kwargs["Y2_2"]
+    #         rows_axis2, cols_axis2 = np.shape(Y2_2)
+    #
+    #         if "Y2_2_label" in kwargs.keys():
+    #             label = kwargs["Y2_2_label"]
+    #         else:
+    #             label = ["label"] * (cols_axis2 - 1)
+    #
+    #         for i in range(1, cols_axis2):
+    #             ax1.plot(
+    #                 Y2_2[:, 0],
+    #                 Y2_2[:, i],
+    #                 zorder=1,
+    #                 color=color2,
+    #                 linestyle=Styles.get_line_style(i),
+    #                 linewidth=linewidth,
+    #                 label=label[i - 1],
+    #             )
+    #
+    #     if "Points1" in kwargs.keys():
+    #         # first axis in the x axis
+    #         Points1 = kwargs["Points1"]
+    #
+    #         vmax = np.max(Points1[:, 1:])
+    #         vmin = np.min(Points1[:, 1:])
+    #
+    #         vmax = max(Points[:, 1].max(), vmax)
+    #         vmin = min(Points[:, 1].min(), vmin)
+    #
+    #     else:
+    #         vmax = max(Points)
+    #         vmin = min(Points)
+    #
+    #     vmaxnew = PointMaxSize
+    #     vminnew = PointMinSize
+    #
+    #     Points_scaled = [
+    #         Scale.rescale(x, vmin, vmax, vminnew, vmaxnew) for x in Points[:, 1]
+    #     ]
+    #     f1 = np.ones(shape=(len(Points))) * PointsY
+    #     scatter = ax2.scatter(
+    #         Points[:, 0],
+    #         f1,
+    #         zorder=1,
+    #         c=color1,
+    #         s=Points_scaled,
+    #         label="Model 1 Output 2",
+    #     )
+    #
+    #     if "Points1" in kwargs.keys():
+    #         row_points, col_points = np.shape(Points1)
+    #         PointsY1 = kwargs["PointsY1"]
+    #         f2 = np.ones_like(Points1[:, 1:])
+    #
+    #         for i in range(col_points - 1):
+    #             Points1_scaled = [
+    #                 Scale.rescale(x, vmin, vmax, vminnew, vmaxnew)
+    #                 for x in Points1[:, i]
+    #             ]
+    #             f2[:, i] = PointsY1[i]
+    #
+    #             ax2.scatter(
+    #                 Points1[:, 0],
+    #                 f2[:, i],
+    #                 zorder=1,
+    #                 c=color2,
+    #                 s=Points1_scaled,
+    #                 label="Model 2 Output 2",
+    #             )
+    #
+    #     # produce a legend with the unique colors from the scatter
+    #     legend1 = ax2.legend(
+    #         *scatter.legend_elements(), bbox_to_anchor=(1.1, 0.2)
+    #     )  # loc="lower right", title="RIM"
+    #
+    #     ax2.add_artist(legend1)
+    #
+    #     # produce a legend with a cross section of sizes from the scatter
+    #     handles, labels = scatter.legend_elements(
+    #         prop="sizes", alpha=0.6, num=LegendNum
+    #     )
+    #     # L = [vminnew] + [float(i[14:-2]) for i in labels] + [vmaxnew]
+    #     L = [float(i[14:-2]) for i in labels]
+    #     labels1 = [
+    #         round(Scale.rescale(x, vminnew, vmaxnew, vmin, vmax) / 1000) for x in L
+    #     ]
+    #
+    #     legend2 = ax2.legend(
+    #         handles, labels1, bbox_to_anchor=LegendLoc, title=PointLegendTitle
+    #     )
+    #     ax2.add_artist(legend2)
+    #
+    #     ax1.set_ylim(Ylim)
+    #     ax2.set_ylim(Y2lim)
+    #     #
+    #     ax1.set_ylabel("Output 1 (m)", fontsize=12)
+    #     ax2.set_ylabel("Output 1 - Diff (m)", fontsize=12)
+    #     ax1.set_xlabel(X_axis_label, fontsize=12)
+    #     ax1.xaxis.set_minor_locator(plt.MaxNLocator(10))
+    #     ax1.tick_params(which="minor", length=5)
+    #     fig.legend(
+    #         loc="lower center",
+    #         bbox_to_anchor=(1.3, 0.3),
+    #         bbox_transform=ax1.transAxes,
+    #         fontsize=10,
+    #     )
+    #     plt.rcParams.update({"ytick.major.size": 3.5})
+    #     plt.rcParams.update({"font.size": 12})
+    #     plt.title("Model Output Comparison", fontsize=15)
+    #
+    #     plt.subplots_adjust(right=0.7)
+    #     # plt.tight_layout()
+    #
+    #     return (ax1, ax2), fig
