@@ -87,4 +87,6 @@ class Statistic:
         plt.xticks(fontsize=self.default_options["xtick_font_size"])
         plt.yticks(fontsize=self.default_options["ytick_font_size"])
         hist = {"n": n, "bins": bins, "patches": patches}
+        # ax.yaxis.label.set_color("#27408B")
+        # ax1.tick_params(axis="y", color="#27408B")
         return fig, ax, hist

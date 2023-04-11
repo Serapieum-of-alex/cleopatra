@@ -672,6 +672,8 @@ class Array:
         fps: [int]
             frames per second. Default is 2.
         """
+        # ffmpegPath = os.getenv("HOME") + "/.matplotlib/ffmpeg-static/bin/ffmpeg.exe"
+        # mpl.rcParams["animation.ffmpeg_path"] = ffmpegPath
         video_format = path.split(".")[-1]
         if video_format not in SUPPORTED_VIDEO_FORMAT:
             raise ValueError(
