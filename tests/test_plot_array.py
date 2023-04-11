@@ -207,7 +207,7 @@ class TestAnimate:
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
-        os.remove(path)
+        # os.remove(path)
 
     def test_save_animation_avi(
         self,
@@ -224,7 +224,7 @@ class TestAnimate:
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
-        os.remove(path)
+        # os.remove(path)
 
     def test_save_animation_mp4(
         self,
@@ -241,7 +241,7 @@ class TestAnimate:
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
-        os.remove(path)
+        # os.remove(path)
 
     def test_save_animation_mov(
         self,
@@ -258,4 +258,4 @@ class TestAnimate:
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
-        os.remove(path)
+        # os.remove(path)
