@@ -1,10 +1,8 @@
-from collections import OrderedDict
 import os
 from typing import List
+from pathlib import Path
 import numpy as np
 
-# import matplotlib
-# matplotlib.use("TkAgg")
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 from cleopatra.array import Array
@@ -208,7 +206,7 @@ class TestAnimate:
         array = Array(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
-        assert os.path.exists(path)
+        assert Path(path).exists()
         os.remove(path)
 
     def test_save_animation_avi(
@@ -225,7 +223,7 @@ class TestAnimate:
         array = Array(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
-        assert os.path.exists(path)
+        assert Path(path).exists()
         os.remove(path)
 
     def test_save_animation_mp4(
@@ -242,7 +240,7 @@ class TestAnimate:
         array = Array(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
-        assert os.path.exists(path)
+        assert Path(path).exists()
         os.remove(path)
 
     def test_save_animation_mov(
@@ -259,5 +257,5 @@ class TestAnimate:
         array = Array(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
-        assert os.path.exists(path)
+        assert Path(path).exists()
         os.remove(path)
