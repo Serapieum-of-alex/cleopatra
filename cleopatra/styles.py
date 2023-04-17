@@ -35,11 +35,6 @@ DEFAULT_OPTIONS = dict(
     grid_alpha=0.75,
 )
 
-# figure_default_options = dict(
-#         name="hist.tif",
-#         Axisfontsize=15,
-#     )
-
 
 class Styles:
     """Styles"""
