@@ -1,6 +1,5 @@
 import os
 from typing import List
-from pathlib import Path
 import numpy as np
 
 from matplotlib.figure import Figure
@@ -16,6 +15,13 @@ class TestCreateArray:
         assert array.no_elem == 89
         assert array.vmin == 0
         assert array.vmax == 88
+
+
+class TestRGB:
+    def test_plot_rgb(self, sentinel_2: np.ndarray):
+        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
+        fig, ax = array.plot(title="Flow Accumulation")
+        assert isinstance(fig, Figure)
 
 
 class TestPlotArray:

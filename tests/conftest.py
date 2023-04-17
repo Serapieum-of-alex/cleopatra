@@ -131,3 +131,8 @@ def coello_data() -> np.ndarray:
 @pytest.fixture(scope="module")
 def animate_time_list() -> list:
     return list(range(1, 11))
+
+
+@pytest.fixture(scope="module")
+def sentinel_2() -> np.ndarray:
+    return np.load("tests/data/s2a.npy")

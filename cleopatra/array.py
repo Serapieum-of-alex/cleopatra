@@ -30,7 +30,14 @@ SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 class Array:
     """Map."""
 
-    def __init__(self, array: np.ndarray, exclude_value: List = np.nan):
+    def __init__(
+        self,
+        array: np.ndarray,
+        exclude_value: List = np.nan,
+        rgb: List[int] = None,
+        surface_reflectance: int = 10000,
+        cutoff: List = None,
+    ):
         """Plot array.
 
         Parameters
@@ -40,14 +47,21 @@ class Array:
         exclude_value : [numeric]
             value used to fill cells out of the domain. Optional, Default is np.nan
             needed only in case of plotting array
+        rgb: [List]
+            Default is [3,2,1]
+        surface_reflectance: [int]
+            Default is  10000
+        cutoff: [List]
+            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
+            scale them back to between 0 and 1. Default is None.
 
         the object does not need any parameters to be initialized.
         """
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
-        array = array.astype(np.float32)
-
-        if exclude_value is not None:
+        print(f"display_cell_value: {DEFAULT_OPTIONS['display_cell_value']}")
+        if exclude_value is not np.nan:
+            array = array.astype(np.float32)
             if len(exclude_value) > 1:
                 mask = np.logical_or(
                     np.isclose(array, exclude_value[0], rtol=0.001),
@@ -57,6 +71,24 @@ class Array:
                 mask = np.isclose(array, exclude_value[0], rtol=0.0000001)
 
             array[mask] = np.nan
+
+        if rgb is not None:
+            self.rgb = True
+            # prepare to plot rgb plot only if there are three arrays
+            if array.shape[0] < 3:
+                raise ValueError(
+                    f"To plot RGB plot the given array should have only 3 arrays, given array have "
+                    f"{len(array.shape[0])}"
+                )
+            else:
+                array = self._prepare_rgb(
+                    array,
+                    rgb=rgb,
+                    surface_reflectance=surface_reflectance,
+                    cutoff=cutoff,
+                )
+        else:
+            self.rgb = False
 
         self._exclude_value = exclude_value
         self._vmin = np.nanmin(array)
@@ -74,6 +106,42 @@ class Array:
 
         self.no_elem = no_elem
         self._default_options = DEFAULT_OPTIONS
+
+    def _prepare_rgb(
+        self,
+        array: np.ndarray,
+        rgb: List[int] = None,
+        surface_reflectance: int = 10000,
+        cutoff: List = None,
+    ) -> np.ndarray:
+        """Prepare for RGB plot.
+
+        Parameters
+        ----------
+        array: [numpy array]
+            array.
+        rgb: [List]
+            Default is [3,2,1]
+        surface_reflectance: [int]
+            Default is  10000
+        cutoff: [List]
+            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
+            scale them back to between 0 and 1. Default is None.
+
+        Returns
+        -------
+
+        """
+        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given assume the
+        # order as sentinel data. [3, 2, 1]
+        array = array[rgb].transpose(1, 2, 0)
+        array = np.clip(array / surface_reflectance, 0, 1)
+        if cutoff is not None:
+            array[0] = np.clip(rgb[0], 0, cutoff[0]) / cutoff[0]
+            array[1] = np.clip(rgb[1], 0, cutoff[1]) / cutoff[1]
+            array[2] = np.clip(rgb[2], 0, cutoff[2]) / cutoff[2]
+
+        return array
 
     @property
     def vmin(self):
@@ -335,45 +403,50 @@ class Array:
                 )
             else:
                 self.default_options[key] = val
-        # if user did not input ticks spacing use the calculated one.
-        if "ticks_spacing" in kwargs.keys():
-            self.default_options["ticks_spacing"] = kwargs["ticks_spacing"]
-        else:
-            self.default_options["ticks_spacing"] = self.ticks_spacing
-
-        if "vmin" in kwargs.keys():
-            self.default_options["vmin"] = kwargs["vmin"]
-        else:
-            self.default_options["vmin"] = self.vmin
-
-        if "vmax" in kwargs.keys():
-            self.default_options["vmax"] = kwargs["vmax"]
-        else:
-            self.default_options["vmax"] = self.vmax
 
         arr = self.arr
         fig = plt.figure(figsize=self.default_options["figsize"])
         # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
         ax = fig.add_subplot()  # gs[:,:]
-        # creating the ticks/bounds
-        ticks = self.get_ticks()
-        im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
 
-        # Create colorbar
-        cbar = ax.figure.colorbar(
-            im,
-            ax=ax,
-            shrink=self.default_options["cbar_length"],
-            orientation=self.default_options["orientation"],
-            **cbar_kw,
-        )
-        cbar.ax.set_ylabel(
-            self.default_options["cbar_label"],
-            rotation=self.default_options["rotation"],
-            va="bottom",
-            fontsize=self.default_options["cbar_label_size"],
-        )
-        cbar.ax.tick_params(labelsize=10)
+        if self.rgb:
+            ax.imshow(arr)
+        else:
+            # if user did not input ticks spacing use the calculated one.
+            if "ticks_spacing" in kwargs.keys():
+                self.default_options["ticks_spacing"] = kwargs["ticks_spacing"]
+            else:
+                self.default_options["ticks_spacing"] = self.ticks_spacing
+
+            if "vmin" in kwargs.keys():
+                self.default_options["vmin"] = kwargs["vmin"]
+            else:
+                self.default_options["vmin"] = self.vmin
+
+            if "vmax" in kwargs.keys():
+                self.default_options["vmax"] = kwargs["vmax"]
+            else:
+                self.default_options["vmax"] = self.vmax
+
+            # creating the ticks/bounds
+            ticks = self.get_ticks()
+            im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
+
+            # Create colorbar
+            cbar = ax.figure.colorbar(
+                im,
+                ax=ax,
+                shrink=self.default_options["cbar_length"],
+                orientation=self.default_options["orientation"],
+                **cbar_kw,
+            )
+            cbar.ax.set_ylabel(
+                self.default_options["cbar_label"],
+                rotation=self.default_options["rotation"],
+                va="bottom",
+                fontsize=self.default_options["cbar_label_size"],
+            )
+            cbar.ax.tick_params(labelsize=10)
 
         ax.set_title(
             self.default_options["title"], fontsize=self.default_options["title_size"]
