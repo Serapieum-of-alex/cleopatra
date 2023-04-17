@@ -27,7 +27,6 @@ History
 ------------------
 * bump up numpy to version 1.24.1
 
-
 0.3.0 (2023-04-11)
 ------------------
 * change API to work completly with numpy array inputs
@@ -36,3 +35,7 @@ History
 * restructure the whole modules to array, statistics, and styles modules.
 * all modules has classes.
 * save animation function using ffmpeg.
+
+0.3.1 (2023-04-17)
+------------------
+* plot RGB plots
