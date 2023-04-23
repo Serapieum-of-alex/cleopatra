@@ -129,3 +129,7 @@ dmypy.json
 .pyre/
 .idea/cleopatra.iml
 .idea/*
+*.avi
+*.gif
+*.mov
+*.mp4

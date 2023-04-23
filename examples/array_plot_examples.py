@@ -1,11 +1,17 @@
 import matplotlib
 
 matplotlib.use("TkAgg")
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 from cleopatra.array import Array
 
 # from matplotlib.transforms import blended_transform_factory
+#%%
+arr = np.load("tests/data/s2a.npy")
+arr = np.moveaxis(arr, 0, -1)
+arr2 = arr[:, :, [3, 2, 1]]
+rgb = np.clip(arr2 / 10000, 0, 1)
+plt.imshow(rgb)
 #%%
 arr = np.load("tests/data/arr.npy")
 exclude_value = arr[0, 0]

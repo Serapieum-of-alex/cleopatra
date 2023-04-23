@@ -4,7 +4,7 @@ from typing import Any, Union, List
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
-from hpc.filter import get_indices2
+from hpc.indexing import get_indices2
 
 # from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
