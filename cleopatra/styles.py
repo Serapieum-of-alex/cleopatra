@@ -23,7 +23,7 @@ DEFAULT_OPTIONS = dict(
     orientation="vertical",
     cmap="coolwarm_r",
     cbar_label_size=12,
-    cbar_label="Color bar label",
+    cbar_label=None,
     rotation=-90,
     ticks_spacing=5,
     color_scale=1,
@@ -140,7 +140,7 @@ class Scale:
 
         Returns
         -------
-        """
+        #"""
 
         def scalar(val):
             """scalar.
