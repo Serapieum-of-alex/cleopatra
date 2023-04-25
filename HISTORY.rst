@@ -43,3 +43,7 @@ History
 0.3.2 (2023-04-23)
 ------------------
 * bump up hpc version
+
+0.3.3 (2023-04-25)
+------------------
+* change the default value for the color bar label.
