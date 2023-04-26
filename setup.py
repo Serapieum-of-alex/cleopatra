@@ -11,12 +11,12 @@ requirements_dev = [line.strip() for line in open("requirements-dev.txt").readli
 
 setup(
     name="cleopatra",
-    version="0.3.3",
+    version="0.3.4",
     description="visualization package",
     author="Mostafa Farrag",
     author_email="moah.farag@gmail.come",
     url="https://github.com/MAfarrag/cleopatra",
-    keywords=["matplotlib", "arrays", "visualization"],
+    keywords=["matplotlib", "visualization"],
     long_description=readme + "\n\n" + history,
     repository="https://github.com/MAfarrag/celopatra",
     documentation="https://celopatra.readthedocs.io/",
