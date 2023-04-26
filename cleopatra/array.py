@@ -37,6 +37,7 @@ class Array:
         rgb: List[int] = None,
         surface_reflectance: int = 10000,
         cutoff: List = None,
+        **kwargs,
     ):
         """Plot array.
 
@@ -91,8 +92,14 @@ class Array:
             self.rgb = False
 
         self._exclude_value = exclude_value
-        self._vmin = np.nanmin(array)
-        self._vmax = np.nanmax(array)
+
+        self._vmax = (
+            np.nanmax(array) if kwargs.get("vmax") is None else kwargs.get("vmax")
+        )
+        self._vmin = (
+            np.nanmin(array) if kwargs.get("vmin") is None else kwargs.get("vmin")
+        )
+
         self.arr = array
         # get the tick spacing that have 10 ticks only
         self.ticks_spacing = (self._vmax - self._vmin) / 10
@@ -105,7 +112,7 @@ class Array:
             no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
 
         self.no_elem = no_elem
-        self._default_options = DEFAULT_OPTIONS
+        self._default_options = DEFAULT_OPTIONS.copy()
 
     def _prepare_rgb(
         self,
@@ -191,7 +198,7 @@ class Array:
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
-                    f"is the value of the NodataValue you entered-{self.exclude_value}"
+                    f" is the value of the NodataValue you entered-{self.exclude_value}"
                 )
             ticks = np.append(
                 ticks,
