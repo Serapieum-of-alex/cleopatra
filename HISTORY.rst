@@ -47,3 +47,7 @@ History
 0.3.3 (2023-04-25)
 ------------------
 * change the default value for the color bar label.
+
+0.3.4 (2023-04-26)
+------------------
+* pass the plot kwargs to the init of the array to scale the color bar using the vmin and vmax.
