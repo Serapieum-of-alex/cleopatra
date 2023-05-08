@@ -60,7 +60,6 @@ class Array:
         """
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
-        print(f"display_cell_value: {DEFAULT_OPTIONS['display_cell_value']}")
         if exclude_value is not np.nan:
             array = array.astype(np.float32)
             if len(exclude_value) > 1:
