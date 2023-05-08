@@ -128,39 +128,22 @@ class Scale:
         pass
 
     @staticmethod
-    def log_scale(minval, maxval):
+    def log_scale(val):
         """log_scale.
 
             logarithmic scale
 
         Parameters
         ----------
-        minval
-        maxval
+        val
 
         Returns
         -------
-        #"""
-
-        def scalar(val):
-            """scalar.
-
-                scalar
-
-            Parameters
-            ----------
-            val
-
-            Returns
-            -------
-            """
-            val = val + abs(minval) + 1
-            return np.log10(val)
-
-        return scalar
+        """
+        return np.log10(val)
 
     @staticmethod
-    def power_scale(minval, maxval):
+    def power_scale(minval):
         """power_scale.
 
             power scale
@@ -168,7 +151,6 @@ class Scale:
         Parameters
         ----------
         minval
-        maxval
 
         Returns
         -------
