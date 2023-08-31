@@ -140,6 +140,21 @@ class Scale:
         Returns
         -------
         """
+
+        # def scalar(val):
+        #     """scalar.
+        #
+        #         scalar
+        #
+        #     Parameters
+        #     ----------
+        #     val
+        #
+        #     Returns
+        #     -------
+        #     """
+        #   val = val + abs(minval) + 1
+        # return scalar
         return np.log10(val)
 
     @staticmethod

@@ -51,3 +51,7 @@ History
 0.3.4 (2023-04-26)
 ------------------
 * pass the plot kwargs to the init of the array to scale the color bar using the vmin and vmax.
+
+0.3.5 (2023-8-31)
+------------------
+* Update dependencies

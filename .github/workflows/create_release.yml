@@ -7,7 +7,7 @@ on:
 
 jobs:
   create-release:
-    name: "Pre Release"
+    name: "Latest"
     runs-on: "ubuntu-latest"
 
     steps:
