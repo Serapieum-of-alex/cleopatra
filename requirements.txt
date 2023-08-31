@@ -1,7 +1,7 @@
 ffmpeg-python
-hpc-utils >=0.1.1
-matplotlib >=3.6.2
-numpy >=1.24.1
-pip >=22.3.1
-pytest >=7.2.0
-pytest-cov >=4.0.0
+hpc-utils >=0.1.2
+matplotlib >=3.7.2
+numpy >=1.25.2
+pip >=23.2.1
+pytest >=7.4.0
+pytest-cov >=4.1.0
