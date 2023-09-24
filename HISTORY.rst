@@ -55,3 +55,9 @@ History
 0.3.5 (2023-8-31)
 ------------------
 * Update dependencies
+
+0.4.0 (2023-9-24)
+------------------
+* Add a colors module to handle issues related to
+  - Converting colors from one format to another
+  - Creating colormaps
