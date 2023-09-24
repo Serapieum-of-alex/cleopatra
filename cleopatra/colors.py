@@ -1,8 +1,5 @@
-from typing import List, Union
-import re
-
-# from PIL import ImageColor
-HEX_COLOR_REGEX = re.compile(r"^#(?:[0-9a-fA-F]{3}){1,2}$")
+from typing import List, Union, Tuple
+from matplotlib import colors as mcolors
 
 
 class Colors:
@@ -27,6 +24,25 @@ class Colors:
         -------
 
         """
-        return [
-            True if HEX_COLOR_REGEX.search(col) else False for col in self.hex_color
-        ]
+        return [True if mcolors.is_color_like(col) else False for col in self.hex_color]
+
+    def get_rgb(self, normalized: bool = True) -> List[Tuple[int, int]]:
+        """get_rgb.
+
+        Parameters
+        ----------
+        normalized: [int]
+            True if you want the RGB values to be scaled between 0 and 1,  .Default is True.
+
+        Returns
+        -------
+        List[Tuples
+        """
+        if normalized == 1:
+            rgb = [mcolors.to_rgb(col) for col in self.hex_color]
+        else:
+            rgb = [
+                tuple([int(c * 255) for c in mcolors.to_rgb(col)])
+                for col in self.hex_color
+            ]
+        return rgb
