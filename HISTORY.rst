@@ -58,4 +58,6 @@ History
 
 0.4.0 (2023-9-24)
 ------------------
-* add colors module to convert colors between hex and rgb
+* Add a colors module to handle issues related to
+  - Converting colors from one format to another
+  - Creating colormaps
