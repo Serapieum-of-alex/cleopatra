@@ -55,3 +55,7 @@ History
 0.3.5 (2023-8-31)
 ------------------
 * Update dependencies
+
+0.4.0 (2023-9-24)
+------------------
+* add colors module to convert colors between hex and rgb
