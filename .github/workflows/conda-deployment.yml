@@ -1,5 +1,7 @@
-name: conda-installation
+name: conda-deployment
+
 on: [push]
+
 jobs:
   Main-package:
     runs-on: ${{ matrix.os }}
