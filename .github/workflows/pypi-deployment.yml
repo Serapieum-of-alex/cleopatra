@@ -1,17 +1,13 @@
-name: Pypi-installation
-on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+name: pypi-deployment
+
+on: [push]
+
 jobs:
-  Run:
+  Main-Package:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest]
+        os: [ubuntu-latest]
         python-version: ["3.9", "3.10", "3.11"]
     env:
       OS: ${{ matrix.os }}
@@ -31,9 +27,11 @@ jobs:
 
       - name: Generate coverage report
         run: |
-            pip install pytest
-            pip install pytest-cov
-            python -m pytest -vvv --cov=cleopatra --cov-report=xml
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          python -m pytest -vvv --cov=cleopatra --cov-report=xml
 
 
       - name: Upload coverage reports to Codecov with GitHub Action
