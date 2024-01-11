@@ -61,3 +61,7 @@ History
 * Add a colors module to handle issues related to
   - Converting colors from one format to another
   - Creating colormaps
+
+0.4.1 (2024-1-11)
+------------------
+* add extent to the array plot.

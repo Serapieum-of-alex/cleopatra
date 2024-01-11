@@ -33,22 +33,22 @@ Installing `cleopatra` from the `conda-forge` channel can be achieved by:
 conda install -c conda-forge cleopatra
 ```
 
-It is possible to list all of the versions of `cleopatra` available on your platform with:
+It is possible to list all the versions of `cleopatra` available on your platform with:
 
 ```
 conda search cleopatra --channel conda-forge
 ```
 
-## Install from Github
-to install the last development to time you can install the library from github
+## Install from GitHub
+to install the last development to time, you can install the library from GitHub
 ```
-pip install git+https://github.com/MAfarrag/cleopatra
+pip install git+https://github.com/Serapieum-of-alex/cleopatra
 ```
 
 ## pip
-to install the last release you can easly use pip
+to install the last release, you can easily use pip
 ```
-pip install cleopatra==0.4.0
+pip install cleopatra==0.4.1
 ```
 
 Quick start
