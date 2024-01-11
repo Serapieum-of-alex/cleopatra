@@ -34,6 +34,7 @@ class Array:
         self,
         array: np.ndarray,
         exclude_value: List = np.nan,
+        extent: List = None,
         rgb: List[int] = None,
         surface_reflectance: int = 10000,
         cutoff: List = None,
@@ -46,12 +47,13 @@ class Array:
         array: [numpy array]
             array.
         exclude_value : [numeric]
-            value used to fill cells out of the domain. Optional, Default is np.nan
-            needed only in case of plotting array
+            value used to fill cells out of the domain. Optional, Default is np.nan.
+        extent: [List]
+            [xmin, ymin, xmax, ymax]. Default is None.
         rgb: [List]
             Default is [3,2,1]
         surface_reflectance: [int]
-            Default is  10000
+            Default is 10000.
         cutoff: [List]
             clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
             scale them back to between 0 and 1. Default is None.
@@ -71,6 +73,11 @@ class Array:
                 mask = np.isclose(array, exclude_value[0], rtol=0.0000001)
 
             array[mask] = np.nan
+
+        # convert the extent from [xmin, ymin, xmax, ymax] to [xmin, xmax, ymin, ymax] as required by matplotlib.
+        if extent is not None:
+            extent = [extent[0], extent[2], extent[1], extent[3]]
+        self.extent = extent
 
         if rgb is not None:
             self.rgb = True
@@ -100,7 +107,7 @@ class Array:
         )
 
         self.arr = array
-        # get the tick spacing that have 10 ticks only
+        # get the tick spacing that has 10 ticks only
         self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
         if len(shape) == 3:
@@ -227,7 +234,7 @@ class Array:
         vmax = self.default_options["vmax"]
 
         if color_scale == 1:
-            im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax)
+            im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=self.extent)
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 2:
             im = ax.matshow(
@@ -236,6 +243,7 @@ class Array:
                 norm=colors.PowerNorm(
                     gamma=self.default_options["gamma"], vmin=vmin, vmax=vmax
                 ),
+                extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
         elif color_scale == 3:
@@ -249,6 +257,7 @@ class Array:
                     vmin=vmin,
                     vmax=vmax,
                 ),
+                extent=self.extent,
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
@@ -260,7 +269,7 @@ class Array:
                 bounds = self.default_options["bounds"]
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
-            im = ax.matshow(arr, cmap=cmap, norm=norm)
+            im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
         else:
             im = ax.matshow(
                 arr,
@@ -270,6 +279,7 @@ class Array:
                     vmin=vmin,
                     vmax=vmax,
                 ),
+                extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
 
@@ -331,7 +341,7 @@ class Array:
         Parameters
         ----------
         points : [array]
-            3 column array with the first column as the value you want to display for the point, the second is the rows
+            3 column array with the first column as the value you want to display for the point, the second is the rows'
             index of the point in the array, and the third column as the column index in the array.
             - the second and third column tells the location of the point in the array.
         point_color: [str]
@@ -339,30 +349,30 @@ class Array:
         point_size: [Any]
             size of the point.
         pid_color: [str]
-            the color of the anotation of the point. Default is blue.
+            the color of the annotation of the point. Default is blue.
         pid_size: [Any]
             size of the point annotation.
-        **kwargs : [dict]
+        **kwargs: [dict]
             keys:
                 figsize : [tuple], optional
                     figure size. The default is (8,8).
-                title : [str], optional
+                title: [str], optional
                     title of the plot. The default is 'Total Discharge'.
-                title_size : [integer], optional
+                title_size: [integer], optional
                     title size. The default is 15.
-                orientation : [string], optional
-                    orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-                rotation : [number], optional
-                    rotation of the colorbar label. The default is -90.
-                orientation : [string], optional
-                    orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-                cbar_length : [float], optional
-                    ratio to control the height of the colorbar. The default is 0.75.
-                ticks_spacing : [integer], optional
-                    Spacing in the colorbar ticks. The default is 2.
-                cbar_label_size : integer, optional
+                orientation: [string], optional
+                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
+                rotation: [number], optional
+                    rotation of the color bar label. The default is -90.
+                orientation: [string], optional
+                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
+                cbar_length: [float], optional
+                    ratio to control the height of the color bar. The default is 0.75.
+                ticks_spacing: [integer], optional
+                    Spacing in the color bar ticks. The default is 2.
+                cbar_label_size: integer, optional
                     size of the color bar label. The default is 12.
-                cbar_label : str, optional
+                cbar_label: str, optional
                     label of the color bar. The default is 'Discharge m3/s'.
                 color_scale : integer, optional
                     there are 5 options to change the scale of the colors. The default is 1.
@@ -372,26 +382,26 @@ class Array:
                     4- color_scale 4 is the PowerNorm scale
                     5- color_scale 5 is the BoundaryNorm scale
                     ------------------------------------------------------------------
-                    gamma : [float], optional
-                        value needed for option 2 . The default is 1./2..
-                    line_threshold : [float], optional
+                    gamma: [float], optional
+                        value needed for option 2. The default is 1./2.
+                    line_threshold: [float], optional
                         value needed for option 3. The default is 0.0001.
-                    line_scale : [float], optional
+                    line_scale: [float], optional
                         value needed for option 3. The default is 0.001.
                     bounds: [List]
                         a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-                    midpoint : [float], optional
+                    midpoint: [float], optional
                         value needed for option 5. The default is 0.
                     ------------------------------------------------------------------
-                cmap : [str], optional
+                cmap: [str], optional
                     color style. The default is 'coolwarm_r'.
-                display_cell_value : [bool]
+                display_cell_value: [bool]
                     True if you want to display the values of the cells as a text
-                num_size : integer, optional
-                    size of the numbers plotted intop of each cells. The default is 8.
-                background_color_threshold : [float/integer], optional
+                num_size: integer, optional
+                    size of the numbers plotted on top of each cell. The default is 8.
+                background_color_threshold: [float/integer], optional
                     threshold value if the value of the cell is greater, the plotted
-                    numbers will be black and if smaller the plotted number will be white
+                    numbers will be black, and if smaller the plotted number will be white
                     if None given the maxvalue/2 will be considered. The default is None.
 
         Returns
@@ -457,11 +467,12 @@ class Array:
         ax.set_title(
             self.default_options["title"], fontsize=self.default_options["title_size"]
         )
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
 
-        ax.set_xticks([])
-        ax.set_yticks([])
+        if self.extent is None:
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
+            ax.set_xticks([])
+            ax.set_yticks([])
 
         optional_display = {}
         if self.default_options["display_cell_value"]:

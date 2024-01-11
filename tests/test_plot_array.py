@@ -34,6 +34,21 @@ class TestPlotArray:
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
+    def test_plot_numpy_array_with_extent(
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+    ):
+        extent = [
+            -75.60441003848668,
+            4.235054115032001,
+            -75.09878783366909,
+            4.704560448076901,
+        ]
+        array = Array(arr, exclude_value=[no_data_value], extent=extent)
+        fig, ax = array.plot(title="Flow Accumulation")
+        assert isinstance(fig, Figure)
+
     def test_plot_array_color_scale_1(
         self,
         arr: np.ndarray,
@@ -169,12 +184,12 @@ class TestPlotArray:
         id_size: int,
         id_color: str,
         point_size: int,
-        Gaugecolor: str,
+        gauge_color: str,
     ):
         array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             points=points,
-            point_color=Gaugecolor,
+            point_color=gauge_color,
             point_size=point_size,
             id_color=id_color,
             id_size=id_size,
