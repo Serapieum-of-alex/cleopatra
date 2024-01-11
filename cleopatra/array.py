@@ -467,10 +467,10 @@ class Array:
         ax.set_title(
             self.default_options["title"], fontsize=self.default_options["title_size"]
         )
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
 
         if self.extent is None:
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
             ax.set_xticks([])
             ax.set_yticks([])
 
