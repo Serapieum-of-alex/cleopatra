@@ -470,8 +470,9 @@ class Array:
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
-        ax.set_xticks([])
-        ax.set_yticks([])
+        if self.extent is None:
+            ax.set_xticks([])
+            ax.set_yticks([])
 
         optional_display = {}
         if self.default_options["display_cell_value"]:
