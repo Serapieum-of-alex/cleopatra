@@ -133,3 +133,4 @@ dmypy.json
 *.gif
 *.mov
 *.mp4
+.run/*
