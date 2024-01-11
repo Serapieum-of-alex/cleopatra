@@ -169,12 +169,12 @@ class TestPlotArray:
         id_size: int,
         id_color: str,
         point_size: int,
-        Gaugecolor: str,
+        gauge_color: str,
     ):
         array = Array(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             points=points,
-            point_color=Gaugecolor,
+            point_color=gauge_color,
             point_size=point_size,
             id_color=id_color,
             id_size=id_size,

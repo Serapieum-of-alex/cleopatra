@@ -79,22 +79,12 @@ def background_color_threshold():
 
 
 @pytest.fixture(scope="module")
-def IDsize() -> int:
-    return 20
-
-
-@pytest.fixture(scope="module")
-def IDcolor() -> str:
-    return "green"
-
-
-@pytest.fixture(scope="module")
-def Gaugesize() -> int:
+def gauge_size() -> int:
     return 100
 
 
 @pytest.fixture(scope="module")
-def Gaugecolor() -> str:
+def gauge_color() -> str:
     return "blue"
 
 
