@@ -1,7 +1,6 @@
 channels:
   - conda-forge
 dependencies:
-  - python >=3.12
   - numpy >=2.0.0
   - hpc >=0.1.4
   - pip >=24.0.0
