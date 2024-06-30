@@ -65,3 +65,7 @@ History
 0.4.1 (2024-1-11)
 ------------------
 * add extent to the array plot.
+
+0.4.2 (2024-06-30)
+------------------
+* Update dependencies
