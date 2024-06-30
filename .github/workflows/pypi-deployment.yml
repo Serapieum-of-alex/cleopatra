@@ -3,12 +3,12 @@ name: pypi-deployment
 on: [push]
 
 jobs:
-  Main-Package:
+  main-package:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.12"]
     env:
       OS: ${{ matrix.os }}
 
