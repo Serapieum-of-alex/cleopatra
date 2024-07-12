@@ -11,7 +11,7 @@ requirements_dev = [line.strip() for line in open("requirements-dev.txt").readli
 
 setup(
     name="cleopatra",
-    version="0.4.2",
+    version="0.4.3",
     description="visualization package",
     author="Mostafa Farrag",
     author_email="moah.farag@gmail.come",
