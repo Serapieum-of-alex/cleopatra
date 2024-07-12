@@ -1,4 +1,5 @@
 """plotting Array."""
+
 from typing import Any, Union, List
 
 import matplotlib.colors as colors
@@ -426,7 +427,7 @@ class Array:
         ax = fig.add_subplot()  # gs[:,:]
 
         if self.rgb:
-            ax.imshow(arr)
+            ax.imshow(arr, extent=self.extent)
         else:
             # if user did not input ticks spacing use the calculated one.
             if "ticks_spacing" in kwargs.keys():

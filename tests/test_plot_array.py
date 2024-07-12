@@ -19,8 +19,16 @@ class TestCreateArray:
 
 class TestRGB:
     def test_plot_rgb(self, sentinel_2: np.ndarray):
-        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
+        extent = [
+            34.626902783650785,
+            34.654007151597256,
+            31.82337186561403,
+            31.8504762335605,
+        ]
+        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3], extent=extent)
         fig, ax = array.plot(title="Flow Accumulation")
+        im = ax.get_images()[0]
+        assert im.get_extent() == [extent[0], extent[2], extent[1], extent[3]]
         assert isinstance(fig, Figure)
 
 
