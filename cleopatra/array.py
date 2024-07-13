@@ -89,7 +89,7 @@ class Array:
                     f"{len(array.shape[0])}"
                 )
             else:
-                array = self._prepare_rgb(
+                array = self._prepare_sentinel_rgb(
                     array,
                     rgb=rgb,
                     surface_reflectance=surface_reflectance,
@@ -121,7 +121,7 @@ class Array:
         self.no_elem = no_elem
         self._default_options = DEFAULT_OPTIONS.copy()
 
-    def _prepare_rgb(
+    def _prepare_sentinel_rgb(
         self,
         array: np.ndarray,
         rgb: List[int] = None,
@@ -144,9 +144,10 @@ class Array:
 
         Returns
         -------
-
+        np.ndarray:
+            the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
         """
-        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given assume the
+        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
         array = array[rgb].transpose(1, 2, 0)
         array = np.clip(array / surface_reflectance, 0, 1)
@@ -188,7 +189,7 @@ class Array:
             val = self._anim
         else:
             raise ValueError(
-                "please first use the function animate to create the animation object"
+                "Please first use the function animate to create the animation object"
             )
         return val
 
