@@ -13,7 +13,7 @@ from hpc.indexing import get_indices2
 from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.ticker import LogFormatter
-from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
+from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
 
 DEFAULT_OPTIONS = dict(
@@ -26,12 +26,12 @@ DEFAULT_OPTIONS = dict(
     id_size=20,
     precision=2,
 )
-DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
+DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
 class Array:
-    """Map."""
+    """Array."""
 
     def __init__(
         self,
@@ -45,23 +45,23 @@ class Array:
         fig: Figure = None,
         **kwargs,
     ):
-        """Plot array.
+        """Array.
 
         Parameters
         ----------
-        array: [numpy array]
+        array: np.ndarray
             array.
-        exclude_value : [numeric]
-            value used to fill cells out of the domain. Optional, Default is np.nan.
-        extent: [List]
-            [xmin, ymin, xmax, ymax]. Default is None.
-        rgb: [List]
-            Default is [3,2,1]
-        surface_reflectance: [int]
-            Default is 10000.
-        cutoff: [List]
-            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
-            scale them back to between 0 and 1. Default is None.
+        exclude_value: numeric, Optional, Default is np.nan.
+            value used to fill cells out of the domain.
+        extent: List, Default is None.
+            [xmin, ymin, xmax, ymax].
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1.
 
         the object does not need any parameters to be initialized.
         """
@@ -140,15 +140,15 @@ class Array:
 
         Parameters
         ----------
-        array: [numpy array]
+        array: np.ndarray
             array.
-        rgb: [List]
-            Default is [3,2,1]
-        surface_reflectance: [int]
-            Default is  10000
-        cutoff: [List]
-            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
-            scale them back to between 0 and 1. Default is None.
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1).
 
         Returns
         -------
@@ -312,20 +312,24 @@ class Array:
         return im, cbar_kw
 
     @staticmethod
-    def _plot_text(ax, arr: np.ndarray, indices, DEFAULT_OPTIONS: dict):
+    def _plot_text(
+        ax: Axes, arr: np.ndarray, indices, default_options_dict: dict
+    ) -> list:
         """plot values as a text in each cell.
 
         Parameters
         ----------
         ax:[matplotlib ax]
+            matplotlib axes
         indices: [array]
             array with columns, (row, col)
-
-        DEFAULT_OPTIONS
+        default_options_dict: Dict
+            default options dictionary after updating the options.
 
         Returns
         -------
-        list of the text object
+        list:
+            list of the text object
         """
         # add text for the cell values
         add_text = lambda elem: ax.text(
@@ -335,7 +339,7 @@ class Array:
             ha="center",
             va="center",
             color="w",
-            fontsize=DEFAULT_OPTIONS["num_size"],
+            fontsize=default_options_dict["num_size"],
         )
         return list(map(add_text, indices))
 
@@ -508,11 +512,11 @@ class Array:
             optional_display["points_scatter"] = ax.scatter(
                 col, row, color=point_color, s=point_size
             )
-            optional_display["poits_id"] = self._plot_point_values(
+            optional_display["points_id"] = self._plot_point_values(
                 ax, points, pid_color, pid_size
             )
 
-        # # Normalize the threshold to the images color range.
+        # # Normalize the threshold to the image color range.
         # if self.default_options["background_color_threshold"] is not None:
         #     im.norm(self.default_options["background_color_threshold"])
         # else:
@@ -684,9 +688,9 @@ class Array:
             row = points[:, 1]
             col = points[:, 2]
             points_scatter = ax.scatter(col, row, color=point_color, s=point_size)
-            poits_id = self._plot_point_values(ax, points, pid_color, pid_size)
+            points_id = self._plot_point_values(ax, points, pid_color, pid_size)
 
-        # Normalize the threshold to the images color range.
+        # Normalize the threshold to the image color range.
         if self.default_options["background_color_threshold"] is not None:
             background_color_threshold = im.norm(
                 self.default_options["background_color_threshold"]
@@ -710,16 +714,16 @@ class Array:
             if points is not None:
                 points_scatter.set_offsets(np.c_[col, row])
                 output.append(points_scatter)
-                update_points = lambda x: poits_id[x].set_text(points[x, 0])
+                update_points = lambda x: points_id[x].set_text(points[x, 0])
                 list(map(update_points, range(len(col))))
 
-                output = output + poits_id
+                output += points_id
 
             if self.default_options["display_cell_value"]:
                 vals = array[0, indices[:, 0], indices[:, 1]]
                 update_cell_value = lambda x: cell_text_value[x].set_text(vals[x])
                 list(map(update_cell_value, range(self.no_elem)))
-                output = output + cell_text_value
+                output += cell_text_value
 
             return output
 
@@ -734,14 +738,15 @@ class Array:
                 output.append(points_scatter)
 
                 for x in range(len(col)):
-                    poits_id[x].set_text(points[x, 0])
+                    points_id[x].set_text(points[x, 0])
 
-                output = output + poits_id
+                output += points_id
 
             if self.default_options["display_cell_value"]:
                 vals = array[i, indices[:, 0], indices[:, 1]]
 
                 def update_cell_value(x):
+                    """Update cell value"""
                     val = round(vals[x], precision)
                     kw = dict(
                         color=text_colors[
@@ -753,7 +758,7 @@ class Array:
 
                 list(map(update_cell_value, range(self.no_elem)))
 
-                output = output + cell_text_value
+                output += cell_text_value
 
             return output
 
@@ -792,19 +797,20 @@ class Array:
             )
 
         if video_format == "gif":
-            writergif = animation.PillowWriter(fps=fps)
-            self.anim.save(path, writer=writergif)
+            writer_gif = animation.PillowWriter(fps=fps)
+            self.anim.save(path, writer=writer_gif)
         else:
             try:
                 if video_format == "avi" or video_format == "mov":
-                    writervideo = animation.FFMpegWriter(fps=fps, bitrate=1800)
-                    self.anim.save(path, writer=writervideo)
+                    writer_video = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writer_video)
                 elif video_format == "mp4":
-                    writermp4 = animation.FFMpegWriter(fps=fps, bitrate=1800)
-                    self.anim.save(path, writer=writermp4)
+                    writer_mp4 = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writer_mp4)
             except FileNotFoundError:
                 print(
-                    "please visit https://ffmpeg.org/ and download a version of ffmpeg compitable with your operating system, for more details please check the method definition"
+                    "Please visit https://ffmpeg.org/ and download a version of ffmpeg compatible with your operating"
+                    "system, for more details please check the method definition"
                 )
 
     # @staticmethod
