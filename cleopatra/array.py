@@ -1,8 +1,11 @@
 """plotting Array."""
-from typing import Any, Union, List
+
+from typing import Any, Union, List, Tuple
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 import numpy as np
 from hpc.indexing import get_indices2
 
@@ -10,7 +13,7 @@ from hpc.indexing import get_indices2
 from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.ticker import LogFormatter
-from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
+from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
 
 DEFAULT_OPTIONS = dict(
@@ -21,14 +24,14 @@ DEFAULT_OPTIONS = dict(
     background_color_threshold=None,
     id_color="green",
     id_size=20,
-    precission=2,
+    precision=2,
 )
-DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
+DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
 class Array:
-    """Map."""
+    """Array."""
 
     def __init__(
         self,
@@ -38,27 +41,41 @@ class Array:
         rgb: List[int] = None,
         surface_reflectance: int = 10000,
         cutoff: List = None,
+        ax: Axes = None,
+        fig: Figure = None,
         **kwargs,
     ):
-        """Plot array.
+        """Array.
 
         Parameters
         ----------
-        array: [numpy array]
+        array: np.ndarray
             array.
-        exclude_value : [numeric]
-            value used to fill cells out of the domain. Optional, Default is np.nan.
-        extent: [List]
-            [xmin, ymin, xmax, ymax]. Default is None.
-        rgb: [List]
-            Default is [3,2,1]
-        surface_reflectance: [int]
-            Default is 10000.
-        cutoff: [List]
-            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
-            scale them back to between 0 and 1. Default is None.
+        exclude_value: numeric, Optional, Default is np.nan.
+            value used to fill cells out of the domain.
+        extent: List, Default is None.
+            [xmin, ymin, xmax, ymax].
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1.
 
         the object does not need any parameters to be initialized.
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = Array(arr)
+            >>> array.plot()
+
+        .. image:: /_images/image-plot.png
+            :alt: Example Image
+            :align: center
         """
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
@@ -85,10 +102,10 @@ class Array:
             if array.shape[0] < 3:
                 raise ValueError(
                     f"To plot RGB plot the given array should have only 3 arrays, given array have "
-                    f"{len(array.shape[0])}"
+                    f"{array.shape[0]}"
                 )
             else:
-                array = self._prepare_rgb(
+                array = self._prepare_sentinel_rgb(
                     array,
                     rgb=rgb,
                     surface_reflectance=surface_reflectance,
@@ -119,8 +136,12 @@ class Array:
 
         self.no_elem = no_elem
         self._default_options = DEFAULT_OPTIONS.copy()
+        if fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+        else:
+            self.fig, self.ax = fig, ax
 
-    def _prepare_rgb(
+    def _prepare_sentinel_rgb(
         self,
         array: np.ndarray,
         rgb: List[int] = None,
@@ -131,21 +152,22 @@ class Array:
 
         Parameters
         ----------
-        array: [numpy array]
+        array: np.ndarray
             array.
-        rgb: [List]
-            Default is [3,2,1]
-        surface_reflectance: [int]
-            Default is  10000
-        cutoff: [List]
-            clip the range of pixel values for each band. (take only the pixel values from 0 to value of the cutoff and
-            scale them back to between 0 and 1. Default is None.
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1).
 
         Returns
         -------
-
+        np.ndarray:
+            the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
         """
-        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given assume the
+        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
         array = array[rgb].transpose(1, 2, 0)
         array = np.clip(array / surface_reflectance, 0, 1)
@@ -155,6 +177,16 @@ class Array:
             array[2] = np.clip(rgb[2], 0, cutoff[2]) / cutoff[2]
 
         return array
+
+    def __str__(self):
+        """String representation of the Array object."""
+        message = f"""
+                    Min: {self.vmin}
+                    Max: {self.vmax}
+                    Exclude values: {self.exclude_value}
+                    RGB: {self.rgb}
+                """
+        return message
 
     @property
     def vmin(self):
@@ -187,12 +219,28 @@ class Array:
             val = self._anim
         else:
             raise ValueError(
-                "please first use the function animate to create the animation object"
+                "Please first use the function animate to create the animation object"
             )
         return val
 
+    def create_figure_axes(self) -> Tuple[Figure, Axes]:
+        """Create the figure and the axes.
+
+        Returns
+        -------
+        fig: matplotlib.figure.Figure
+            the created figure.
+        ax: matplotlib.axes.Axes
+            the created axes.
+        """
+        fig = plt.figure(figsize=self.default_options["figsize"])
+        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
+        ax = fig.add_subplot()  # gs[:,:]
+
+        return fig, ax
+
     def get_ticks(self) -> np.ndarray:
-        """get list of ticks for the color bar"""
+        """get a list of ticks for the color bar"""
         ticks_spacing = self.default_options["ticks_spacing"]
         vmax = self.default_options["vmax"]
         vmin = self.default_options["vmin"]
@@ -286,21 +334,24 @@ class Array:
         return im, cbar_kw
 
     @staticmethod
-    def _plot_text(ax, arr: np.ndarray, indices, DEFAULT_OPTIONS: dict):
-        """
-            plot values as a text in each cell
+    def _plot_text(
+        ax: Axes, arr: np.ndarray, indices, default_options_dict: dict
+    ) -> list:
+        """plot values as a text in each cell.
 
         Parameters
         ----------
         ax:[matplotlib ax]
+            matplotlib axes
         indices: [array]
             array with columns, (row, col)
-
-        DEFAULT_OPTIONS
+        default_options_dict: Dict
+            default options dictionary after updating the options.
 
         Returns
         -------
-        list of the text object
+        list:
+            list of the text object
         """
         # add text for the cell values
         add_text = lambda elem: ax.text(
@@ -310,7 +361,7 @@ class Array:
             ha="center",
             va="center",
             color="w",
-            fontsize=DEFAULT_OPTIONS["num_size"],
+            fontsize=default_options_dict["num_size"],
         )
         return list(map(add_text, indices))
 
@@ -335,7 +386,7 @@ class Array:
         pid_color="blue",
         pid_size: Union[int, float] = 10,
         **kwargs,
-    ):
+    ) -> Tuple[Figure, Axes]:
         """plot an array.
 
         Parameters
@@ -349,7 +400,7 @@ class Array:
         point_size: [Any]
             size of the point.
         pid_color: [str]
-            the color of the annotation of the point. Default is blue.
+            the annotation color of the point. Default is blue.
         pid_size: [Any]
             size of the point annotation.
         **kwargs: [dict]
@@ -381,18 +432,16 @@ class Array:
                     3- color_scale 3 is the SymLogNorm scale
                     4- color_scale 4 is the PowerNorm scale
                     5- color_scale 5 is the BoundaryNorm scale
-                    ------------------------------------------------------------------
-                    gamma: [float], optional
-                        value needed for option 2. The default is 1./2.
-                    line_threshold: [float], optional
-                        value needed for option 3. The default is 0.0001.
-                    line_scale: [float], optional
-                        value needed for option 3. The default is 0.001.
-                    bounds: [List]
-                        a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-                    midpoint: [float], optional
-                        value needed for option 5. The default is 0.
-                    ------------------------------------------------------------------
+                gamma: [float], optional
+                    value needed for option 2. The default is 1./2.
+                line_threshold: [float], optional
+                    value needed for option 3. The default is 0.0001.
+                line_scale: [float], optional
+                    value needed for option 3. The default is 0.001.
+                bounds: [List]
+                    a list of number to be used as a discrete bounds for the color scale 4.Default is None,
+                midpoint: [float], optional
+                    value needed for option 5. The default is 0.
                 cmap: [str], optional
                     color style. The default is 'coolwarm_r'.
                 display_cell_value: [bool]
@@ -402,7 +451,7 @@ class Array:
                 background_color_threshold: [float/integer], optional
                     threshold value if the value of the cell is greater, the plotted
                     numbers will be black, and if smaller the plotted number will be white
-                    if None given the maxvalue/2 will be considered. The default is None.
+                    if None given the maxvalue/2 is considered. The default is None.
 
         Returns
         -------
@@ -421,12 +470,10 @@ class Array:
                 self.default_options[key] = val
 
         arr = self.arr
-        fig = plt.figure(figsize=self.default_options["figsize"])
-        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
-        ax = fig.add_subplot()  # gs[:,:]
+        fig, ax = self.fig, self.ax
 
         if self.rgb:
-            ax.imshow(arr)
+            ax.imshow(arr, extent=self.extent)
         else:
             # if user did not input ticks spacing use the calculated one.
             if "ticks_spacing" in kwargs.keys():
@@ -487,16 +534,16 @@ class Array:
             optional_display["points_scatter"] = ax.scatter(
                 col, row, color=point_color, s=point_size
             )
-            optional_display["poits_id"] = self._plot_point_values(
+            optional_display["points_id"] = self._plot_point_values(
                 ax, points, pid_color, pid_size
             )
 
-        # # Normalize the threshold to the images color range.
+        # # Normalize the threshold to the image color range.
         # if self.default_options["background_color_threshold"] is not None:
         #     im.norm(self.default_options["background_color_threshold"])
         # else:
         #     im.norm(self.vmax) / 2.0
-
+        plt.show()
         return fig, ax
 
     def animate(
@@ -529,65 +576,63 @@ class Array:
         point_size: [Any]
             size of the point. The default is 100.
         pid_color: [str]
-            the color of the anotation of the point. Default is blue.
+            the annotation color of the point. Default is blue.
         pid_size: [Any]
             size of the point annotation. The default is 10.
         text_colors : TYPE, optional
-            Two colors to be used to plot the values i top of each cell. The default is ("white","black").
-        interval : [integer], optional
-            number to controlthe speed of the animation. The default is 200.
-        text_loc : [list], optional
+            Two colors to be used to plot the values on top of each cell. The default is ("white","black").
+        interval: [integer], optional
+            number to control the speed of the animation. The default is 200.
+        text_loc: [list], optional
             location of the date text. The default is [0.1,0.2].
-        **kwargs : [dict]
-            figsize : [tuple], optional
+        **kwargs: [dict]
+            figsize: [tuple], optional
                 figure size. The default is (8,8).
-            title : [str], optional
+            title: [str], optional
                 title of the plot. The default is 'Total Discharge'.
-            title_size : [integer], optional
+            title_size: [integer], optional
                 title size. The default is 15.
-            orientation : [string], optional
-                orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-            rotation : [number], optional
+            orientation: [string], optional
+                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
+            rotation: [number], optional
                 rotation of the colorbar label. The default is -90.
-            orientation : [string], optional
-                orintation of the colorbar horizontal/vertical. The default is 'vertical'.
-            cbar_length : [float], optional
+            orientation: [string], optional
+                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
+            cbar_length: [float], optional
                 ratio to control the height of the colorbar. The default is 0.75.
-            ticks_spacing : [integer], optional
+            ticks_spacing: [integer], optional
                 Spacing in the colorbar ticks. The default is 2.
-            cbar_label_size : integer, optional
+            cbar_label_size: integer, optional
                 size of the color bar label. The default is 12.
-            cbar_label : str, optional
+            cbar_label: str, optional
                 label of the color bar. The default is 'Discharge m3/s'.
-            color_scale : integer, optional
+            color_scale: integer, optional
                 there are 5 options to change the scale of the colors. The default is 1.
                 1- color_scale 1 is the normal scale
                 2- color_scale 2 is the power scale
                 3- color_scale 3 is the SymLogNorm scale
                 4- color_scale 4 is the PowerNorm scale
                 5- color_scale 5 is the BoundaryNorm scale
-                ------------------------------------------------------------------
-                gamma : [float], optional
-                    value needed for option 2 . The default is 1./2..
-                line_threshold : [float], optional
-                    value needed for option 3. The default is 0.0001.
-                line_scale : [float], optional
-                    value needed for option 3. The default is 0.001.
-                bounds: [List]
-                    a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-                midpoint : [float], optional
-                    value needed for option 5. The default is 0.
-                ------------------------------------------------------------------
-            cmap : [str], optional
+            gamma: [float], optional
+                value needed for option 2. The default is 1./2.
+            line_threshold: [float], optional
+                value needed for option 3. The default is 0.0001.
+            line_scale: [float], optional
+                value needed for option 3. The default is 0.001.
+            bounds: [List]
+                a list of number to be used as a discrete bounds for the color scale 4.Default is None,
+            midpoint: [float], optional
+                value needed for option 5. The default is 0.
+            cmap: [str], optional
                 color style. The default is 'coolwarm_r'.
             display_cell_value : [bool]
                 True if you want to display the values of the cells as a text
             num_size : integer, optional
-                size of the numbers plotted intop of each cells. The default is 8.
-            background_color_threshold : [float/integer], optional
+                size of the numbers plotted on top of each cell. The default is 8.
+            background_color_threshold: [float/integer], optional
                 threshold value if the value of the cell is greater, the plotted
                 numbers will be black and if smaller the plotted number will be white
-                if None given the maxvalue/2 will be considered. The default is None.
+                if None given the max value/2 is considered. The default is None.
 
         Returns
         -------
@@ -622,11 +667,10 @@ class Array:
             self.default_options["vmax"] = self.vmax
 
         # if optional_display
-        precission = self.default_options["precission"]
+        precision = self.default_options["precision"]
         array = self.arr
-        fig = plt.figure(60, figsize=self.default_options["figsize"])
+        fig, ax = self.fig, self.ax
 
-        ax = fig.add_subplot()
         ticks = self.get_ticks()
         im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
 
@@ -666,9 +710,9 @@ class Array:
             row = points[:, 1]
             col = points[:, 2]
             points_scatter = ax.scatter(col, row, color=point_color, s=point_size)
-            poits_id = self._plot_point_values(ax, points, pid_color, pid_size)
+            points_id = self._plot_point_values(ax, points, pid_color, pid_size)
 
-        # Normalize the threshold to the images color range.
+        # Normalize the threshold to the image color range.
         if self.default_options["background_color_threshold"] is not None:
             background_color_threshold = im.norm(
                 self.default_options["background_color_threshold"]
@@ -692,16 +736,16 @@ class Array:
             if points is not None:
                 points_scatter.set_offsets(np.c_[col, row])
                 output.append(points_scatter)
-                update_points = lambda x: poits_id[x].set_text(points[x, 0])
+                update_points = lambda x: points_id[x].set_text(points[x, 0])
                 list(map(update_points, range(len(col))))
 
-                output = output + poits_id
+                output += points_id
 
             if self.default_options["display_cell_value"]:
                 vals = array[0, indices[:, 0], indices[:, 1]]
                 update_cell_value = lambda x: cell_text_value[x].set_text(vals[x])
                 list(map(update_cell_value, range(self.no_elem)))
-                output = output + cell_text_value
+                output += cell_text_value
 
             return output
 
@@ -716,15 +760,16 @@ class Array:
                 output.append(points_scatter)
 
                 for x in range(len(col)):
-                    poits_id[x].set_text(points[x, 0])
+                    points_id[x].set_text(points[x, 0])
 
-                output = output + poits_id
+                output += points_id
 
             if self.default_options["display_cell_value"]:
                 vals = array[i, indices[:, 0], indices[:, 1]]
 
                 def update_cell_value(x):
-                    val = round(vals[x], precission)
+                    """Update cell value"""
+                    val = round(vals[x], precision)
                     kw = dict(
                         color=text_colors[
                             int(im.norm(vals[x]) > background_color_threshold)
@@ -735,7 +780,7 @@ class Array:
 
                 list(map(update_cell_value, range(self.no_elem)))
 
-                output = output + cell_text_value
+                output += cell_text_value
 
             return output
 
@@ -774,19 +819,20 @@ class Array:
             )
 
         if video_format == "gif":
-            writergif = animation.PillowWriter(fps=fps)
-            self.anim.save(path, writer=writergif)
+            writer_gif = animation.PillowWriter(fps=fps)
+            self.anim.save(path, writer=writer_gif)
         else:
             try:
                 if video_format == "avi" or video_format == "mov":
-                    writervideo = animation.FFMpegWriter(fps=fps, bitrate=1800)
-                    self.anim.save(path, writer=writervideo)
+                    writer_video = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writer_video)
                 elif video_format == "mp4":
-                    writermp4 = animation.FFMpegWriter(fps=fps, bitrate=1800)
-                    self.anim.save(path, writer=writermp4)
+                    writer_mp4 = animation.FFMpegWriter(fps=fps, bitrate=1800)
+                    self.anim.save(path, writer=writer_mp4)
             except FileNotFoundError:
                 print(
-                    "please visit https://ffmpeg.org/ and download a version of ffmpeg compitable with your operating system, for more details please check the method definition"
+                    "Please visit https://ffmpeg.org/ and download a version of ffmpeg compatible with your operating"
+                    "system, for more details please check the method definition"
                 )
 
     # @staticmethod

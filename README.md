@@ -48,7 +48,7 @@ pip install git+https://github.com/Serapieum-of-alex/cleopatra
 ## pip
 to install the last release, you can easily use pip
 ```
-pip install cleopatra==0.4.2
+pip install cleopatra==0.4.3
 ```
 
 Quick start

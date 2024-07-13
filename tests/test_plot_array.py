@@ -4,7 +4,16 @@ import numpy as np
 
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
 from cleopatra.array import Array
+
+
+class TestProperties:
+
+    def test__str__(self):
+        arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        array = Array(arr)
+        assert isinstance(array.__str__(), str)
 
 
 class TestCreateArray:
@@ -19,8 +28,16 @@ class TestCreateArray:
 
 class TestRGB:
     def test_plot_rgb(self, sentinel_2: np.ndarray):
-        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
+        extent = [
+            34.626902783650785,
+            34.654007151597256,
+            31.82337186561403,
+            31.8504762335605,
+        ]
+        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3], extent=extent)
         fig, ax = array.plot(title="Flow Accumulation")
+        im = ax.get_images()[0]
+        assert im.get_extent() == [extent[0], extent[2], extent[1], extent[3]]
         assert isinstance(fig, Figure)
 
 
@@ -31,6 +48,17 @@ class TestPlotArray:
         no_data_value: float,
     ):
         array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(title="Flow Accumulation")
+        assert isinstance(fig, Figure)
+
+    def test_give_fig_ax(
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+    ):
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot()
+        array = Array(arr, exclude_value=[no_data_value], fig=fig, ax=ax)
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 

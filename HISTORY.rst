@@ -69,3 +69,9 @@ History
 0.4.2 (2024-06-30)
 ------------------
 * Update dependencies
+
+0.4.3 (2024-07-13)
+------------------
+* Add extent to the array plot when plotting an rgb array.
+* Add `ax`, and `fig` parameters to the `Array` constructor method to take an Axes and plot the array on it.
+* Add `__str__` to the `Array` class.
