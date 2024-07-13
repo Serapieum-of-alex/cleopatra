@@ -24,7 +24,7 @@ DEFAULT_OPTIONS = dict(
     background_color_threshold=None,
     id_color="green",
     id_size=20,
-    precission=2,
+    precision=2,
 )
 DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
@@ -646,7 +646,7 @@ class Array:
             self.default_options["vmax"] = self.vmax
 
         # if optional_display
-        precission = self.default_options["precission"]
+        precision = self.default_options["precision"]
         array = self.arr
         fig, ax = self.fig, self.ax
 
@@ -747,7 +747,7 @@ class Array:
                 vals = array[i, indices[:, 0], indices[:, 1]]
 
                 def update_cell_value(x):
-                    val = round(vals[x], precission)
+                    val = round(vals[x], precision)
                     kw = dict(
                         color=text_colors[
                             int(im.norm(vals[x]) > background_color_threshold)
