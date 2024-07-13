@@ -64,6 +64,18 @@ class Array:
             and scale them back to between 0 and 1.
 
         the object does not need any parameters to be initialized.
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = Array(arr)
+            >>> array.plot()
+
+        .. image:: /_images/image-plot.png
+            :alt: Example Image
+            :align: center
         """
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
