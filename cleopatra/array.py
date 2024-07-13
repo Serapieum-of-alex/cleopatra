@@ -178,6 +178,16 @@ class Array:
 
         return array
 
+    def __str__(self):
+        """String representation of the Array object."""
+        message = f"""
+                    Min: {self.vmin}
+                    Max: {self.vmax}
+                    Exclude values: {self.exclude_value}
+                    RGB: {self.rgb}
+                """
+        return message
+
     @property
     def vmin(self):
         """min value in the array"""

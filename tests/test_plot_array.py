@@ -8,6 +8,14 @@ import matplotlib.pyplot as plt
 from cleopatra.array import Array
 
 
+class TestProperties:
+
+    def test__str__(self):
+        arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        array = Array(arr)
+        assert isinstance(array.__str__(), str)
+
+
 class TestCreateArray:
     def test_create_instance(self, arr: np.ndarray, no_data_value: float):
         array = Array(arr, exclude_value=[no_data_value])
