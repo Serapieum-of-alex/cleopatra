@@ -1,9 +1,11 @@
 """plotting Array."""
 
-from typing import Any, Union, List
+from typing import Any, Union, List, Tuple
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 import numpy as np
 from hpc.indexing import get_indices2
 
@@ -39,6 +41,8 @@ class Array:
         rgb: List[int] = None,
         surface_reflectance: int = 10000,
         cutoff: List = None,
+        ax: Axes = None,
+        fig: Figure = None,
         **kwargs,
     ):
         """Plot array.
@@ -120,6 +124,10 @@ class Array:
 
         self.no_elem = no_elem
         self._default_options = DEFAULT_OPTIONS.copy()
+        if fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+        else:
+            self.fig, self.ax = fig, ax
 
     def _prepare_sentinel_rgb(
         self,
@@ -192,6 +200,22 @@ class Array:
                 "Please first use the function animate to create the animation object"
             )
         return val
+
+    def create_figure_axes(self) -> Tuple[Figure, Axes]:
+        """Create the figure and the axes.
+
+        Returns
+        -------
+        fig: matplotlib.figure.Figure
+            the created figure.
+        ax: matplotlib.axes.Axes
+            the created axes.
+        """
+        fig = plt.figure(figsize=self.default_options["figsize"])
+        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
+        ax = fig.add_subplot()  # gs[:,:]
+
+        return fig, ax
 
     def get_ticks(self) -> np.ndarray:
         """get list of ticks for the color bar"""
@@ -337,7 +361,7 @@ class Array:
         pid_color="blue",
         pid_size: Union[int, float] = 10,
         **kwargs,
-    ):
+    ) -> Tuple[Figure, Axes]:
         """plot an array.
 
         Parameters
@@ -423,9 +447,7 @@ class Array:
                 self.default_options[key] = val
 
         arr = self.arr
-        fig = plt.figure(figsize=self.default_options["figsize"])
-        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
-        ax = fig.add_subplot()  # gs[:,:]
+        fig, ax = self.fig, self.ax
 
         if self.rgb:
             ax.imshow(arr, extent=self.extent)
@@ -626,9 +648,8 @@ class Array:
         # if optional_display
         precission = self.default_options["precission"]
         array = self.arr
-        fig = plt.figure(60, figsize=self.default_options["figsize"])
+        fig, ax = self.fig, self.ax
 
-        ax = fig.add_subplot()
         ticks = self.get_ticks()
         im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
 

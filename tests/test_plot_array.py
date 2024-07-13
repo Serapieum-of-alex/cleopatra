@@ -4,6 +4,7 @@ import numpy as np
 
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
 from cleopatra.array import Array
 
 
@@ -39,6 +40,17 @@ class TestPlotArray:
         no_data_value: float,
     ):
         array = Array(arr, exclude_value=[no_data_value])
+        fig, ax = array.plot(title="Flow Accumulation")
+        assert isinstance(fig, Figure)
+
+    def test_give_fig_ax(
+        self,
+        arr: np.ndarray,
+        no_data_value: float,
+    ):
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot()
+        array = Array(arr, exclude_value=[no_data_value], fig=fig, ax=ax)
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
