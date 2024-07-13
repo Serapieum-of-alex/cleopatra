@@ -27,6 +27,9 @@ setup(
     test_suite="tests",
     tests_require=requirements_dev,
     install_requires=requirements,
+    extras_require={
+        "dev": requirements_dev,
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
