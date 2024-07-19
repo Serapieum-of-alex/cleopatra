@@ -80,7 +80,7 @@ Main Features
    :hidden:
    :maxdepth: 1
 
-   Installation <00Installation.rst>
+   Installation <installation.rst>
    Statistical plots <statistics-class.rst>
    Array <array-class.rst>
 
