@@ -75,17 +75,18 @@ Main Features
   convert different forms of distributed data (rasters, NetCDF, shapefiles)
 - Visualization module for animating the results of the distributed model, and the meteorological inputs
 
-.. digraph:: Linking
-
-    GIS -> raster;
-    GIS -> vector;
-    GIS -> giscatchment;
-    dpi=200;
 
 .. toctree::
    :hidden:
    :maxdepth: 1
 
    Installation <00Installation.rst>
-   Tutorial <03tutorial.rst>
-   GIS <05GIS.rst>
+   Statistical plots <datacube-class.rst>
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
