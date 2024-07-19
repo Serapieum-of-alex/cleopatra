@@ -1,14 +1,32 @@
 import numpy as np
+import matplotlib
+
+matplotlib.use("agg")
 from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 from cleopatra.statistics import Statistic
 
 
-def test_histogram():
+def test_histogram_one_sample():
     # make data
     np.random.seed(1)
     x = 4 + np.random.normal(0, 1.5, 200)
     stat_plot = Statistic(x)
     fig, ax, hist = stat_plot.histogram()
     assert isinstance(fig, Figure)
+    assert isinstance(ax, Axes)
+    assert isinstance(hist, dict)
+    assert ["n", "bins", "patches"] == list(hist.keys())
+
+
+def test_histogram_multiple_sample():
+    # make data
+    np.random.seed(1)
+    x = 4 + np.random.normal(0, 1.5, (200, 3))
+    colors = ["red", "green", "blue"]
+    stat_plot = Statistic(x, color=colors)
+    fig, ax, hist = stat_plot.histogram()
+    assert isinstance(fig, Figure)
+    assert isinstance(ax, Axes)
     assert isinstance(hist, dict)
     assert ["n", "bins", "patches"] == list(hist.keys())
