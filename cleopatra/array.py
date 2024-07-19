@@ -178,6 +178,37 @@ class Array:
 
         return array
 
+    @staticmethod
+    def scale_percentile(arr: np.ndarray, percentile: int = 1) -> np.ndarray:
+        """Scale the array.
+
+        Parameters
+        ----------
+        arr: np.ndarray
+            The array to be scaled.
+        percentile: int
+            The percentile value to be used for scaling.
+
+        Returns
+        -------
+        np.ndarray
+            The scaled array, normalized between 0 and 1. using the percentile values.
+        """
+        rows, columns, bands = arr.shape
+        # flatten image.
+        arr = np.reshape(arr, [rows * columns, bands]).astype(np.float32)
+        # lower percentile values (one value for each band).
+        lower_percent = np.percentile(arr, percentile, axis=0)
+        # 98 percentile values.
+        upper_percent = np.percentile(arr, 100 - percentile, axis=0) - lower_percent
+        # normalize the 3 bands using the percentile values for each band.
+        arr = (arr - lower_percent[None, :]) / upper_percent[None, :]
+        arr = np.reshape(arr, [rows, columns, bands])
+        # discard outliers.
+        arr = arr.clip(0, 1)
+
+        return arr
+
     def __str__(self):
         """String representation of the Array object."""
         message = f"""

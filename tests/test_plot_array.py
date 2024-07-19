@@ -308,3 +308,24 @@ class TestAnimate:
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
         # os.remove(path)
+
+
+def test_scale_percentile():
+    arr = np.array(
+        [
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        ]
+    )
+    array = Array(arr)
+
+    scaled_arr = np.array(
+        [
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+        ]
+    )
+    np.testing.assert_array_almost_equal(array.scale_percentile(arr), scaled_arr)
+    print("Done!")
