@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 import numpy as np
-from cleopatra.styles import DEFAULT_OPTIONS as style_defaults
+from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 
 DEFAULT_OPTIONS = dict(
     figsize=(5, 5), bins=15, color=["#0504aa"], alpha=0.7, rwidth=0.85
 )
-DEFAULT_OPTIONS = style_defaults | DEFAULT_OPTIONS
+DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 
 
 class Statistic:
