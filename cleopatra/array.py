@@ -39,10 +39,11 @@ class Array:
         exclude_value: List = np.nan,
         extent: List = None,
         rgb: List[int] = None,
-        surface_reflectance: int = 10000,
+        surface_reflectance: int = None,
         cutoff: List = None,
         ax: Axes = None,
         fig: Figure = None,
+        percentile: int = 1,
         **kwargs,
     ):
         """Array.
@@ -62,6 +63,8 @@ class Array:
         cutoff: List, Default is None.
             clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
             and scale them back to between 0 and 1.
+        percentile: int
+            The percentile value to be used for scaling.
 
         the object does not need any parameters to be initialized.
 
@@ -105,11 +108,12 @@ class Array:
                     f"{array.shape[0]}"
                 )
             else:
-                array = self._prepare_sentinel_rgb(
+                array = self.prepare_array(
                     array,
                     rgb=rgb,
                     surface_reflectance=surface_reflectance,
                     cutoff=cutoff,
+                    percentile=percentile,
                 )
         else:
             self.rgb = False
@@ -141,6 +145,50 @@ class Array:
         else:
             self.fig, self.ax = fig, ax
 
+    def prepare_array(
+        self,
+        array: np.ndarray,
+        rgb: List[int] = None,
+        surface_reflectance: int = None,
+        cutoff: List = None,
+        percentile: int = 1,
+    ) -> np.ndarray:
+        """Prepare Array.
+
+        Parameters
+        ----------
+        array: np.ndarray
+            array.
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1).
+        percentile: int
+            The percentile value to be used for scaling.
+
+        Returns
+        -------
+        np.ndarray:
+            the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
+        """
+        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
+        # order as sentinel data. [3, 2, 1]
+        array = array[rgb].transpose(1, 2, 0)
+
+        if surface_reflectance is None:
+            array = self.scale_percentile(array, percentile=percentile)
+        else:
+            array = self._prepare_sentinel_rgb(
+                array,
+                rgb=rgb,
+                surface_reflectance=surface_reflectance,
+                cutoff=cutoff,
+            )
+        return array
+
     def _prepare_sentinel_rgb(
         self,
         array: np.ndarray,
@@ -167,9 +215,6 @@ class Array:
         np.ndarray:
             the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
         """
-        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
-        # order as sentinel data. [3, 2, 1]
-        array = array[rgb].transpose(1, 2, 0)
         array = np.clip(array / surface_reflectance, 0, 1)
         if cutoff is not None:
             array[0] = np.clip(rgb[0], 0, cutoff[0]) / cutoff[0]
