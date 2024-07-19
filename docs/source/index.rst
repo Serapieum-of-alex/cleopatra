@@ -81,8 +81,8 @@ Main Features
    :maxdepth: 1
 
    Installation <00Installation.rst>
-   Statistical plots <datacube-class.rst>
-
+   Statistical plots <statistics-class.rst>
+   Array <array-class.rst>
 
 Indices and tables
 ==================
