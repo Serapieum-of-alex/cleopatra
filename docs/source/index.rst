@@ -56,20 +56,21 @@ cleopatra - Matplotlib utility package
 =====================================================================
 
 
-**cleopatra** is a Python package providing fast and flexible way to build Hydrological models with different spatial
-representations (lumped, semidistributed and conceptual distributed) using HBV96.
-The package is very flexible to an extent that it allows developers to change the structure of the defined conceptual model or to enter
-their own model, it contains two routing functions muskingum cunge, and MAXBAS triangular function.
+**cleopatra** is a Python package providing fast and flexible way to build visualize data using matplotlib. it
+provides functionalities to handle 3D arrays and perform various operations on them,
+such as plotting, animating, and displaying the array. it also provides functionalities for creating statistical plots,
 
 
 Main Features
 -------------
-- Modified version of HBV96 hydrological model (Bergström, 1992) with 15 parameters in case of considering
-  snow processes, and 10 parameters without snow, in addition to 2 parameters of Muskingum routing method
-- GIS modules to enable the modeler to fully prepare the meteorological inputs and do all the preprocessing
-  needed to build the model (align rasters with the DEM), in addition to various methods to manipulate and
-  convert different forms of distributed data (rasters, NetCDF, shapefiles)
-- Visualization module for animating the results of the distributed model, and the meteorological inputs
+The `Array` class has the following functionalities:
+- Initialize an array object with the provided parameters.
+- Plot the array with optional parameters to customize the appearance and display cell values.
+- Animate the array over time with optional parameters to customize the animation speed and display points.
+- Display the array with optional parameters to customize the appearance and display point IDs.
+
+The `Statistic` module provides a class for creating statistical plots, specifically histograms. The class, `Statistic`,
+is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) data.
 
 
 .. toctree::
