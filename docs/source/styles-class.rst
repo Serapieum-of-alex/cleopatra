@@ -1,5 +1,5 @@
 ###############
-Statistic Class
+Styles Module
 ###############
 
 .. automodule:: styles
