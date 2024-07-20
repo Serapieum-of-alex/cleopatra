@@ -1,6 +1,6 @@
-###############
-Statistic Class
-###############
+###########
+Array Class
+###########
 
 .. automodule:: array
    :members: Array
