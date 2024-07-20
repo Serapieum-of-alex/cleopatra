@@ -1,11 +1,18 @@
 from cleopatra.colors import Colors
 
 
-def test_create_colors_object():
-    """test_create_colors_object."""
-    hex_number = "ff0000"
-    color = Colors(hex_number)
-    assert color.hex_color == [hex_number]
+class TestCreateColors:
+    def test_create_from_hex(self):
+        """test_create_colors_object."""
+        hex_number = "ff0000"
+        color = Colors(hex_number)
+        assert color._color_value == [hex_number]
+
+    def test_create_from_rgb(self):
+        """test_create_colors_object."""
+        hex_number = (128, 51, 204)
+        color = Colors(hex_number)
+        assert color._color_value == [hex_number]
 
 
 def test_is_valid():
@@ -16,7 +23,7 @@ def test_is_valid():
     assert valid == [False, True]
 
 
-def test_get_rgb():
+def test_to_rgb():
     """test_create_colors_object."""
     hex_number = ["#ff0000", "#23a9dd"]
     color = Colors(hex_number)
