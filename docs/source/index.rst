@@ -6,7 +6,7 @@ Current release info
   :target: https://pypi.org/project/cleopatra/0.1.0/
 
 
-.. image:: https://img.shields.io/conda/v/conda-forge/hapi?label=conda-forge
+.. image:: https://img.shields.io/conda/v/conda-forge/cleopatra?label=conda-forge
   :target: https://pypi.org/project/cleopatra/0.1.0/
 
 
@@ -14,15 +14,11 @@ Current release info
   :target: https://pypi.org/project/cleopatra/0.1.0/
 
 
-.. image:: https://img.shields.io/github/forks/mafarrag/hapi?style=social   :alt: GitHub forks
+.. image:: https://img.shields.io/github/forks/mafarrag/cleopatra?style=social   :alt: GitHub forks
 
 
-.. image:: https://anaconda.org/conda-forge/hapi/badges/downloads.svg
-  :target: https://anaconda.org/conda-forge/hapi
-
-
-.. image:: https://img.shields.io/conda/vn/conda-forge/hapi   :alt: Conda (channel only)
-  :target: https://pypi.org/project/cleopatra/0.1.0/
+.. image:: https://anaconda.org/conda-forge/cleopatra/badges/downloads.svg
+  :target: https://anaconda.org/conda-forge/cleopatra
 
 
 .. image:: https://img.shields.io/gitter/room/mafarrag/Hapi
@@ -37,8 +33,8 @@ Current release info
   :alt: PyPI
 
 
-.. image:: https://anaconda.org/conda-forge/hapi/badges/platforms.svg
-  :target: https://anaconda.org/conda-forge/hapi
+.. image:: https://anaconda.org/conda-forge/cleopatra/badges/platforms.svg
+  :target: https://anaconda.org/conda-forge/cleopatra
 
 
 .. image:: https://static.pepy.tech/personalized-badge/cleopatra?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Downloads
@@ -56,11 +52,11 @@ Current release info
 
 
 
-pyramids - GIS utility package
+cleopatra - Matplotlib utility package
 =====================================================================
 
 
-**pyramids** is a Python package providing fast and flexible way to build Hydrological models with different spatial
+**cleopatra** is a Python package providing fast and flexible way to build Hydrological models with different spatial
 representations (lumped, semidistributed and conceptual distributed) using HBV96.
 The package is very flexible to an extent that it allows developers to change the structure of the defined conceptual model or to enter
 their own model, it contains two routing functions muskingum cunge, and MAXBAS triangular function.
