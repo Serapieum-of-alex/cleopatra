@@ -331,4 +331,3 @@ def test_scale_percentile():
         ]
     )
     np.testing.assert_array_almost_equal(array.scale_percentile(arr), scaled_arr)
-    print("Done!")
