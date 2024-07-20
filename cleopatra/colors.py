@@ -7,7 +7,9 @@ class Colors:
 
     def __init__(
         self,
-        color_value: Union[List[str], str, Tuple[float, int], List[Tuple[float, int]]],
+        color_value: Union[
+            List[str], str, Tuple[float, float, float], List[Tuple[float, int]]
+        ],
     ):
         """
 
@@ -15,6 +17,29 @@ class Colors:
         ----------
         color_value: List[str]/Tuple[float, float]/str.
             the color value could be a list of hex colors, a tuple of RGB values, or a single hex/RGB color.
+
+        Examples
+        --------
+        - Create a color object from a hex color:
+
+            >>> hex_number = "ff0000"
+            >>> color = Colors(hex_number)
+            >>> print(color.color_value)
+            ['ff0000']
+
+        - Create a color object from an RGB color (values are between 0 and 1):
+
+            >>> rgb_color = (0.5, 0.2, 0.8)
+            >>> color = Colors(rgb_color)
+            >>> print(color.color_value)
+            [(0.5, 0.2, 0.8)]
+
+        - Create a color object from an RGB color (values are between 0 and 255):
+
+            >>> rgb_color = (128, 51, 204)
+            >>> color = Colors(rgb_color)
+            >>> print(color.color_value)
+            [(128, 51, 204)]
         """
         # convert the hex color to a list if it is a string
         if isinstance(color_value, str) or isinstance(color_value, tuple):
