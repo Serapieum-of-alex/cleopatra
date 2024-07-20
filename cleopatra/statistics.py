@@ -26,29 +26,30 @@ The class has the following key features:
 Here's an example of how to use the `Statistic` class:
 
 ```python
-import numpy as np
-import matplotlib
-matplotlib.use("TkAgg")
-from cleopatra.statistics import Statistic
 
-# Create some random 1D data
-np.random.seed(1)
-data_1d = 4 + np.random.normal(0, 1.5, 200)
+    import numpy as np
+    import matplotlib
+    matplotlib.use("TkAgg")
+    from cleopatra.statistics import Statistic
 
-# Create a Statistic object with the 1D data
-stat_plot_1d = Statistic(data_1d)
+    # Create some random 1D data
+    np.random.seed(1)
+    data_1d = 4 + np.random.normal(0, 1.5, 200)
 
-# Generate a histogram plot for the 1D data
-fig_1d, ax_1d, hist_1d = stat_plot_1d.histogram()
+    # Create a Statistic object with the 1D data
+    stat_plot_1d = Statistic(data_1d)
 
-# Create some random 2D data
-data_2d = 4 + np.random.normal(0, 1.5, (200, 3))
+    # Generate a histogram plot for the 1D data
+    fig_1d, ax_1d, hist_1d = stat_plot_1d.histogram()
 
-# Create a Statistic object with the 2D data
-stat_plot_2d = Statistic(data_2d, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+    # Create some random 2D data
+    data_2d = 4 + np.random.normal(0, 1.5, (200, 3))
 
-# Generate a histogram plot for the 2D data
-fig_2d, ax_2d, hist_2d = stat_plot_2d.histogram()
+    # Create a Statistic object with the 2D data
+    stat_plot_2d = Statistic(data_2d, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+
+    # Generate a histogram plot for the 2D data
+    fig_2d, ax_2d, hist_2d = stat_plot_2d.histogram()
 """
 
 from typing import Union, List, Dict
@@ -66,7 +67,39 @@ DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 
 class Statistic:
     """
-    Statistical plots
+    A class for creating statistical plots, specifically histograms.
+
+    This class provides methods for initializing the class with numerical values and optional keyword arguments,
+    and for creating histograms from the given values.
+
+    Attributes:
+    _values: numpy.ndarray
+        The numerical values to be plotted as histograms.
+    _default_options: dict
+        The default options for creating histograms, including the number of bins, color, alpha, rwidth, grid_alpha,
+        xlabel, ylabel, xlabel_font_size, ylabel_font_size, xtick_font_size, and ytick_font_size.
+
+    Methods:
+    __init__(self, values: Union[List, np.ndarray], **kwargs):
+        Initializes the class with numerical values and optional keyword arguments.
+    histogram(self, **kwargs) -> [Figure, Axes, Dict]:
+        Creates a histogram from the given values and optional keyword arguments.
+
+    Example:
+    >>> np.random.seed(1)
+    >>> x = 4 + np.random.normal(0, 1.5, 200)
+    >>> stat_plot = Statistic(x)
+    >>> fig, ax, hist = stat_plot.histogram()
+    >>> print(hist) # doctest: +SKIP
+    {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
+                        6.,  1.])], 'bins': [array([0.34774335, 0.8440597 , 1.34037605, 1.8366924 , 2.33300874,
+                       2.82932509, 3.32564144, 3.82195778, 4.31827413, 4.81459048,
+                       5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
+                       7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
+
+    .. image:: /_images/one-histogram.png
+        :alt: Example Image
+        :align: center
     """
 
     def __init__(
