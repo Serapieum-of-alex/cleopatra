@@ -52,6 +52,45 @@ class Colors:
 
         self._color_value = color_value
 
+    def get_type(self) -> List[str]:
+        """get_type.
+
+        Returns
+        -------
+        List[str]
+
+        Examples
+        --------
+        - Create a color object from a hex color:
+
+            >>> hex_number = "#23a9dd"
+            >>> color = Colors(hex_number)
+            >>> print(color.get_type())
+            ['hex']
+
+        - Create a color object from an RGB color (values are between 0 and 1):
+
+            >>> rgb_color = (0.5, 0.2, 0.8)
+            >>> color = Colors(rgb_color)
+            >>> print(color.get_type())
+            ['rgb']
+
+        - Create a color object from an RGB color (values are between 0 and 255):
+
+            >>> rgb_color = (128, 51, 204)
+            >>> color = Colors(rgb_color)
+            >>> print(color.get_type())
+            ['rgb']
+        """
+        color_type = []
+        for color_i in self.color_value:
+            if self.is_valid_rgb_i(color_i):
+                color_type.append("rgb")
+            elif self.is_valid_hex_i(color_i):
+                color_type.append("hex")
+
+        return color_type
+
     @property
     def color_value(self) -> Union[List[str], Tuple[float, float, float]]:
         """Color values given by the user.
@@ -114,7 +153,8 @@ class Colors:
 
         Returns
         -------
-
+        List[bool]
+            List of boolean values for each color
         """
         return [self.is_valid_rgb_i(col) for col in self.color_value]
 

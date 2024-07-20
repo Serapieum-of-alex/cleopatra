@@ -15,6 +15,14 @@ class TestCreateColors:
         assert color._color_value == [rgb_color]
 
 
+def test_get_type():
+    """test_create_colors_object."""
+    mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+    color = Colors(mixed_color)
+    color_types = color.get_type()
+    assert color_types == ["rgb", "hex", "rgb"]
+
+
 def test__is_valid_rgb():
     """test_create_colors_object."""
     rgb_color = (128, 51, 204)
@@ -27,6 +35,7 @@ def test_is_valid_rgb():
     rgb_color = [(128, 51, 204), (0.5, 0.2, 0.8)]
     color = Colors(rgb_color)
     assert all(color.is_valid_rgb())
+
 
 def test_is_valid():
     """test_create_colors_object."""
