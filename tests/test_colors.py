@@ -19,7 +19,7 @@ def test__is_valid_rgb():
     """test_create_colors_object."""
     rgb_color = (128, 51, 204)
     color = Colors(rgb_color)
-    assert color._is_valid_rgb(rgb_color) is True
+    assert color.is_valid_rgb_i(rgb_color) is True
 
 
 def test_is_valid_rgb():
@@ -27,7 +27,6 @@ def test_is_valid_rgb():
     rgb_color = [(128, 51, 204), (0.5, 0.2, 0.8)]
     color = Colors(rgb_color)
     assert all(color.is_valid_rgb())
-
 
 def test_is_valid():
     """test_create_colors_object."""

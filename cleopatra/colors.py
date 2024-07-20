@@ -1,4 +1,4 @@
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Any
 from matplotlib import colors as mcolors
 
 
@@ -87,12 +87,25 @@ class Colors:
         -------
 
         """
-        return [
-            True if mcolors.is_color_like(col) else False for col in self.color_value
-        ]
+        return [self.is_valid_hex_i(col) for col in self.color_value]
+
+    @staticmethod
+    def is_valid_hex_i(hex_color: str) -> bool:
+        """is_valid_hex for single color.
+
+
+        Parameters
+        ----------
+        hex_color: str.
+            single hex color.
+        Returns
+        -------
+        bool
+        """
+        return True if mcolors.is_color_like(hex_color) else False
 
     def is_valid_rgb(self) -> List[bool]:
-        """is_valid_hex.
+        """is_valid_rgb.
 
             is_valid_hex
 
@@ -103,10 +116,11 @@ class Colors:
         -------
 
         """
-        return [self._is_valid_rgb(col) for col in self.color_value]
+        return [self.is_valid_rgb_i(col) for col in self.color_value]
 
     @staticmethod
-    def _is_valid_rgb(rgb_tuple: Tuple) -> bool:
+    def is_valid_rgb_i(rgb_tuple: Any) -> bool:
+        """validate a single color whither it is rgb or not."""
         if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
             if all(isinstance(value, int) for value in rgb_tuple):
                 return all(0 <= value <= 255 for value in rgb_tuple)
