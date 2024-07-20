@@ -9,13 +9,15 @@ Required dependencies
 =====================
 
 - Python (3.11 or later)
-- `numpy <https://www.numpy.org/>`__ (1.21 or later)
+- `numpy <https://www.numpy.org/>`__ (2.0.0 or later)
+- `hpc <https://github.com/Serapieum-of-alex/hpc>`__ (0.1.4 or later)
+- `matplotlib <https://https://matplotlib.org/>`__ (3.8.4 or later)
+- `matplotlib <https://https://matplotlib.org/>`__ (3.8.4 or later)
+- `ffmpeg-python <https://github.com/kkroening/ffmpeg-python/>`__ (0.2.0 or later)
+
 
 .. _optional-dependencies:
 
-Optional dependencies
-=====================
-- cleopatra (0.3.4 or later)
 
 Stable release
 **************
