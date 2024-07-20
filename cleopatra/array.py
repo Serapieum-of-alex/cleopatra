@@ -1,4 +1,26 @@
-"""plotting Array."""
+"""
+Module: Array.
+
+This module provides a class, `Array`, to handle 3D arrays and perform various operations on them,
+such as plotting, animating, and displaying the array.
+
+The `Array` class has the following functionalities:
+- Initialize an array object with the provided parameters.
+- Plot the array with optional parameters to customize the appearance and display cell values.
+- Animate the array over time with optional parameters to customize the animation speed and display points.
+- Display the array with optional parameters to customize the appearance and display point IDs.
+
+The `Array` class has the following attributes:
+- `arr`: The 3D array to be handled.
+- `time`: The time values for animation.
+- `points`: The points to be displayed on the array.
+- `default_options`: A dictionary to store default options for plotting, animating, and displaying.
+
+The `Array` class has the following methods:
+- `plot`: Plot the array with optional parameters.
+- `animate`: Animate the array over time with optional parameters.
+- `display`: Display the array with optional parameters.
+"""
 
 from typing import Any, Union, List, Tuple
 
@@ -31,7 +53,35 @@ SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
 class Array:
-    """Array."""
+    """Array.
+
+    A class to handle 3D arrays and perform various operations on them.
+
+    Attributes
+    ----------
+    arr : np.ndarray
+        The 3D array to be processed.
+    default_options : dict
+        A dictionary containing default options for plotting and animation.
+
+    Methods
+    -------
+    scale_percentile(arr, percentile)
+        Scale the array using percentile values.
+    _plot_text(ax, arr, indices, default_options_dict)
+        Plot values as text in each cell.
+    _plot_point_values(ax, point_table, pid_color, pid_size)
+        Plot points on the array.
+    get_ticks()
+        Get a list of ticks for the color bar.
+    get_im_cbar(ax, arr, ticks)
+        Get the image and color bar for the plot.
+    plot(points=None, point_color='red', point_size=100, pid_color='blue', pid_size=10, **kwargs)
+        Plot an array.
+    animate(time, points=None, text_colors=('white', 'black'), interval=200, text_loc=[0.1, 0.2],
+             point_color='red', point_size=100, pid_color='blue', pid_size=10, **kwargs)
+        Animate an array.
+    """
 
     def __init__(
         self,
@@ -641,26 +691,26 @@ class Array:
 
         Parameters
         ----------
-        time : [dataframe]
-            dataframe contains the date of values.
-        points : [array]
-            3 column array with the first column as the value you want to display for the point, the second is the rows
-            index of the point in the array, and the third column as the column index in the array.
+        time : List[Any]
+            A list containing the date of values for each frame in the animation.
+        points : np.ndarray, optional
+            A 3 column array with the first column as the value you want to display for the point, the second is the
+            rows index of the point in the array, and the third column as the column index in the array.
             - the second and third column tells the location of the point in the array.
-        point_color: [str]
-            color of the points. The default is 'red'.
-        point_size: [Any]
-            size of the point. The default is 100.
-        pid_color: [str]
-            the annotation color of the point. Default is blue.
-        pid_size: [Any]
-            size of the point annotation. The default is 10.
-        text_colors : TYPE, optional
-            Two colors to be used to plot the values on top of each cell. The default is ("white","black").
-        interval: [integer], optional
-            number to control the speed of the animation. The default is 200.
-        text_loc: [list], optional
-            location of the date text. The default is [0.1,0.2].
+        point_color : str, optional, default is 'red'.
+            The color of the points.
+        point_size: int, optional, default is 100.
+            The size of the point.
+        pid_color : str, optional, default is blue.
+            The annotation color of the point.
+        pid_size : int, optional, default is 10.
+            The size of the point annotation.
+        text_colors : Tuple[str, str], optional, The default is ("white","black").
+            Two colors to be used to plot the values on top of each cell.
+        interval: int, optional, default is 200.
+            number to control the speed of the animation.
+        text_loc: list, optional, default is [0.1,0.2].
+            location of the date text.
         **kwargs: [dict]
             figsize: [tuple], optional
                 figure size. The default is (8,8).
