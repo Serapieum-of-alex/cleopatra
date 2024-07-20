@@ -8,6 +8,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [line.strip() for line in open("requirements.txt").readlines()]
 requirements_dev = [line.strip() for line in open("requirements-dev.txt").readlines()]
+requirements_docs = [line.strip() for line in open("docs/requirements.txt").readlines()]
 
 setup(
     name="cleopatra",
@@ -29,6 +30,7 @@ setup(
     install_requires=requirements,
     extras_require={
         "dev": requirements_dev,
+        "docs": requirements_docs,
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
