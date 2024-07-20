@@ -59,3 +59,11 @@ def test_to_rgb():
     ]
     rgb_scale_255 = color.to_rgb(normalized=False)
     assert rgb_scale_255 == [(255, 0, 0), (35, 169, 221)]
+
+
+def test_to_hex():
+    """test_create_colors_object."""
+    mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+    color = Colors(mixed_color)
+    hex_colors = color.to_hex()
+    assert hex_colors == ["#8033cc", "#23a9dd", "#8033cc"]

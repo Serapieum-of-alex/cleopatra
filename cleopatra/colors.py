@@ -103,18 +103,35 @@ class Colors:
         """
         return self._color_value
 
-    @property
-    def hex_color(self) -> List[str]:
-        """hex_color.
-
-        Parameters
-        ----------
+    def to_hex(self) -> List[str]:
+        """Convert colors to hexdecimal format.
 
         Returns
         -------
         List[str]
+            list of hec colors.
+
+        Examples
+        --------
+        - Create a color object from a mixed list of hex and RGB colors:
+
+            >>> mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+            >>> color = Colors(mixed_color)
+            >>> print(color.to_hex())
+            ['#8033cc', '#23a9dd', '#8033cc']
         """
-        return self._hex_color
+        converted_color = []
+        color_type = self.get_type()
+        for ind, color_i in enumerate(self.color_value):
+            if color_type[ind] == "hex":
+                converted_color.append(color_i)
+            elif color_type[ind] == "rgb":
+                # Normalize the RGB values to be between 0 and 1
+                rgb_color_normalized = tuple(value / 255 for value in color_i)
+                converted_color.append(mcolors.to_hex(rgb_color_normalized))
+            else:
+                converted_color.append(mcolors.to_hex(color_i))
+        return converted_color
 
     def is_valid_hex(self) -> List[bool]:
         """is_valid_hex.
