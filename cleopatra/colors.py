@@ -73,7 +73,7 @@ class Colors:
             >>> rgb_color = (0.5, 0.2, 0.8)
             >>> color = Colors(rgb_color)
             >>> print(color.get_type())
-            ['rgb']
+            ['rgb-normalized']
 
         - Create a color object from an RGB color (values are between 0 and 255):
 
@@ -84,7 +84,9 @@ class Colors:
         """
         color_type = []
         for color_i in self.color_value:
-            if self.is_valid_rgb_i(color_i):
+            if self.is_valid_rgb_norm(color_i):
+                color_type.append("rgb-normalized")
+            elif self.is_valid_rgb_255(color_i):
                 color_type.append("rgb")
             elif self.is_valid_hex_i(color_i):
                 color_type.append("hex")
@@ -146,25 +148,29 @@ class Colors:
     def is_valid_rgb(self) -> List[bool]:
         """is_valid_rgb.
 
-            is_valid_hex
-
-        Parameters
-        ----------
-
         Returns
         -------
         List[bool]
             List of boolean values for each color
         """
-        return [self.is_valid_rgb_i(col) for col in self.color_value]
+        return [
+            self.is_valid_rgb_norm(col) or self.is_valid_rgb_255(col)
+            for col in self.color_value
+        ]
 
     @staticmethod
-    def is_valid_rgb_i(rgb_tuple: Any) -> bool:
+    def is_valid_rgb_255(rgb_tuple: Any) -> bool:
         """validate a single color whither it is rgb or not."""
         if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
             if all(isinstance(value, int) for value in rgb_tuple):
                 return all(0 <= value <= 255 for value in rgb_tuple)
-            elif all(isinstance(value, float) for value in rgb_tuple):
+        return False
+
+    @staticmethod
+    def is_valid_rgb_norm(rgb_tuple: Any) -> bool:
+        """validate a single color whither it is rgb or not."""
+        if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
+            if all(isinstance(value, float) for value in rgb_tuple):
                 return all(0.0 <= value <= 1.0 for value in rgb_tuple)
         return False
 

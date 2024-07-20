@@ -20,14 +20,17 @@ def test_get_type():
     mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
     color = Colors(mixed_color)
     color_types = color.get_type()
-    assert color_types == ["rgb", "hex", "rgb"]
+    assert color_types == ["rgb", "hex", "rgb-normalized"]
 
 
-def test__is_valid_rgb():
+def test_is_valid_rgb_norm_255():
     """test_create_colors_object."""
     rgb_color = (128, 51, 204)
     color = Colors(rgb_color)
-    assert color.is_valid_rgb_i(rgb_color) is True
+    assert color.is_valid_rgb_255(rgb_color) is True
+    rgb_color = (0.5, 0.2, 0.8)
+    color = Colors(rgb_color)
+    assert color.is_valid_rgb_norm(rgb_color) is True
 
 
 def test_is_valid_rgb():
