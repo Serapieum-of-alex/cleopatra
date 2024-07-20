@@ -26,7 +26,7 @@ class Colors:
         """
         return [True if mcolors.is_color_like(col) else False for col in self.hex_color]
 
-    def get_rgb(self, normalized: bool = True) -> List[Tuple[int, int]]:
+    def to_rgb(self, normalized: bool = True) -> List[Tuple[int, int]]:
         """get_rgb.
 
         Parameters
