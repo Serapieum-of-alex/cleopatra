@@ -206,11 +206,24 @@ class Colors:
         -------
         List[Tuples]
         """
-        if normalized == 1:
-            rgb = [mcolors.to_rgb(col) for col in self.color_value]
+        color_type = self.get_type()
+        rgb = []
+        if normalized:
+            for ind, color_i in enumerate(self.color_value):
+                # if the color is in RGB format (0-255), normalize the values to be between 0 and 1
+                if color_type[ind] == "rgb":
+                    rgb_color_normalized = tuple(value / 255 for value in color_i)
+                    rgb.append(rgb_color_normalized)
+                else:
+                    # any other format, just convert it to RGB
+                    rgb.append(mcolors.to_rgb(color_i))
         else:
-            rgb = [
-                tuple([int(c * 255) for c in mcolors.to_rgb(col)])
-                for col in self.color_value
-            ]
+            for ind, color_i in enumerate(self.color_value):
+                # if the color is in RGB format (0-255), normalize the values to be between 0 and 1
+                if color_type[ind] == "rgb":
+                    rgb.append(color_i)
+                else:
+                    # any other format, just convert it to RGB
+                    rgb.append(tuple([int(c * 255) for c in mcolors.to_rgb(color_i)]))
+
         return rgb

@@ -50,15 +50,22 @@ def test_is_valid():
 
 def test_to_rgb():
     """test_create_colors_object."""
-    hex_number = ["#ff0000", "#23a9dd"]
+    hex_number = ["#ff0000", "#23a9dd", (0.5, 0.2, 0.8), (35, 169, 221)]
     color = Colors(hex_number)
     rgb_scale_1 = color.to_rgb(normalized=True)
     assert rgb_scale_1 == [
         (1.0, 0.0, 0.0),
         (0.13725490196078433, 0.6627450980392157, 0.8666666666666667),
+        (0.5, 0.2, 0.8),
+        (0.13725490196078433, 0.6627450980392157, 0.8666666666666667),
     ]
     rgb_scale_255 = color.to_rgb(normalized=False)
-    assert rgb_scale_255 == [(255, 0, 0), (35, 169, 221)]
+    assert rgb_scale_255 == [
+        (255, 0, 0),
+        (35, 169, 221),
+        (127, 51, 204),
+        (35, 169, 221),
+    ]
 
 
 def test_to_hex():
