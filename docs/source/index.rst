@@ -80,6 +80,8 @@ is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) da
    Installation <installation.rst>
    Statistical plots <statistics-class.rst>
    Array <array-class.rst>
+   Colors <colors-class.rst>
+   Styles <styles-class.rst>
 
 Indices and tables
 ==================
