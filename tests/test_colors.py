@@ -10,9 +10,23 @@ class TestCreateColors:
 
     def test_create_from_rgb(self):
         """test_create_colors_object."""
-        hex_number = (128, 51, 204)
-        color = Colors(hex_number)
-        assert color._color_value == [hex_number]
+        rgb_color = (128, 51, 204)
+        color = Colors(rgb_color)
+        assert color._color_value == [rgb_color]
+
+
+def test__is_valid_rgb():
+    """test_create_colors_object."""
+    rgb_color = (128, 51, 204)
+    color = Colors(rgb_color)
+    assert color._is_valid_rgb(rgb_color) is True
+
+
+def test_is_valid_rgb():
+    """test_create_colors_object."""
+    rgb_color = [(128, 51, 204), (0.5, 0.2, 0.8)]
+    color = Colors(rgb_color)
+    assert all(color.is_valid_rgb())
 
 
 def test_is_valid():

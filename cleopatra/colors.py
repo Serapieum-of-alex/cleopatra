@@ -8,14 +8,14 @@ class Colors:
     def __init__(
         self,
         color_value: Union[
-            List[str], str, Tuple[float, float, float], List[Tuple[float, int]]
+            List[str], str, Tuple[float, float, float], List[Tuple[float, float, float]]
         ],
     ):
         """
 
         Parameters
         ----------
-        color_value: List[str]/Tuple[float, float]/str.
+        color_value: List[str]/Tuple[float, float, float]/str.
             the color value could be a list of hex colors, a tuple of RGB values, or a single hex/RGB color.
 
         Examples
@@ -53,7 +53,7 @@ class Colors:
         self._color_value = color_value
 
     @property
-    def color_value(self) -> List[str]:
+    def color_value(self) -> Union[List[str], Tuple[float, float, float]]:
         """Color values given by the user.
 
         Returns
@@ -90,6 +90,29 @@ class Colors:
         return [
             True if mcolors.is_color_like(col) else False for col in self.color_value
         ]
+
+    def is_valid_rgb(self) -> List[bool]:
+        """is_valid_hex.
+
+            is_valid_hex
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        """
+        return [self._is_valid_rgb(col) for col in self.color_value]
+
+    @staticmethod
+    def _is_valid_rgb(rgb_tuple: Tuple) -> bool:
+        if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
+            if all(isinstance(value, int) for value in rgb_tuple):
+                return all(0 <= value <= 255 for value in rgb_tuple)
+            elif all(isinstance(value, float) for value in rgb_tuple):
+                return all(0.0 <= value <= 1.0 for value in rgb_tuple)
+        return False
 
     def to_rgb(
         self, normalized: bool = True
