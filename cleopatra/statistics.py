@@ -1,3 +1,56 @@
+"""
+The `Statistic` module provides a class for creating statistical plots, specifically histograms. The class, `Statistic`,
+is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) data.
+
+The class has the following key features:
+
+1. Initialization: The class is initialized with a set of values (1D or 2D array) and optional keyword arguments.
+    The keyword arguments can be used to customize the appearance of the histogram.
+
+2. Properties:
+    The class includes properties for accessing the values and default options.
+
+3. Histogram method:
+    The class has a method named `histogram` that generates a histogram plot based on the provided values and options.
+    The method handles both 1D and 2D data, and it allows customization of various aspects of the plot, such as the
+    number of bins, color, transparency, and axis labels.
+
+4. Error handling:
+    The class includes error handling mechanisms to ensure that the number of colors provided matches the number of
+    samples in the data. It also checks for invalid keyword arguments.
+
+5. Examples:
+    The class includes examples demonstrating how to use the histogram method with 1D and 2D data. The examples also
+    include doctests to verify the correctness of the code.
+
+Here's an example of how to use the `Statistic` class:
+
+```python
+import numpy as np
+import matplotlib
+matplotlib.use("TkAgg")
+from cleopatra.statistics import Statistic
+
+# Create some random 1D data
+np.random.seed(1)
+data_1d = 4 + np.random.normal(0, 1.5, 200)
+
+# Create a Statistic object with the 1D data
+stat_plot_1d = Statistic(data_1d)
+
+# Generate a histogram plot for the 1D data
+fig_1d, ax_1d, hist_1d = stat_plot_1d.histogram()
+
+# Create some random 2D data
+data_2d = 4 + np.random.normal(0, 1.5, (200, 3))
+
+# Create a Statistic object with the 2D data
+stat_plot_2d = Statistic(data_2d, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+
+# Generate a histogram plot for the 2D data
+fig_2d, ax_2d, hist_2d = stat_plot_2d.histogram()
+"""
+
 from typing import Union, List, Dict
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
