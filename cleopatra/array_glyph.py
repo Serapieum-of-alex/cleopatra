@@ -599,59 +599,58 @@ class ArrayGlyph:
         pid_size: [Any]
             size of the point annotation.
         **kwargs: [dict]
-            keys:
-                title: [str], optional
-                    title of the plot. The default is 'Total Discharge'.
-                title_size: [integer], optional
-                    title size. The default is 15.
-                cbar_orientation: [string], optional
-                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
-                cbar_label_rotation: [number], optional
-                    rotation of the color bar label. The default is -90.
-                cbar_label_location: str, optional, default is 'bottom'.
-                    location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
-                cbar_length: float, optional
-                    ratio to control the height of the color bar. The default is 0.75.
-                ticks_spacing: int, optional
-                    Spacing in the color bar ticks. The default is 2.
-                cbar_label_size: integer, optional
-                    size of the color bar label. The default is 12.
-                cbar_label: str, optional
-                    label of the color bar. The default is 'Discharge m3/s'.
-                color_scale : integer, optional
-                    there are 5 options to change the scale of the colors. The default is 1.
-                    1- `linear`:
-                        linear scale.
-                    2- `power` for the power scale
-                        Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
-                        range.
-                    3- `sym-lognorm`:
-                        the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
-                        negative directions from the origin.
-                    4- `boundary-norm`:
-                        the BoundaryNorm scale generates a colormap index based on discrete intervals.
-                    5- `midpoint`:
-                        the midpoint scale.
-                gamma: [float], optional
-                    value needed for option 2. The default is 1./2.
-                line_threshold: [float], optional
-                    value needed for option 3. The default is 0.0001.
-                line_scale: [float], optional
-                    value needed for option 3. The default is 0.001.
-                bounds: [List]
-                    a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-                midpoint: [float], optional
-                    value needed for option 5. The default is 0.
-                cmap: [str], optional
-                    color style. The default is 'coolwarm_r'.
-                display_cell_value: [bool]
-                    True if you want to display the values of the cells as a text
-                num_size: integer, optional
-                    size of the numbers plotted on top of each cell. The default is 8.
-                background_color_threshold: [float/integer], optional
-                    threshold value if the value of the cell is greater, the plotted
-                    numbers will be black, and if smaller the plotted number will be white
-                    if None given the maxvalue/2 is considered. The default is None.
+            title: [str], optional
+                title of the plot. The default is 'Total Discharge'.
+            title_size: [integer], optional
+                title size. The default is 15.
+            cbar_orientation: [string], optional
+                orientation of the color bar horizontal/vertical. The default is 'vertical'.
+            cbar_label_rotation: [number], optional
+                rotation of the color bar label. The default is -90.
+            cbar_label_location: str, optional, default is 'bottom'.
+                location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
+            cbar_length: float, optional
+                ratio to control the height of the color bar. The default is 0.75.
+            ticks_spacing: int, optional
+                Spacing in the color bar ticks. The default is 2.
+            cbar_label_size: integer, optional
+                size of the color bar label. The default is 12.
+            cbar_label: str, optional
+                label of the color bar. The default is 'Discharge m3/s'.
+            color_scale : integer, optional
+                there are 5 options to change the scale of the colors. The default is 1.
+                1- `linear`:
+                    linear scale.
+                2- `power` for the power scale
+                    Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
+                    range.
+                3- `sym-lognorm`:
+                    the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
+                    negative directions from the origin.
+                4- `boundary-norm`:
+                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                5- `midpoint`:
+                    the midpoint scale.
+            gamma: [float], optional, default is 0.5.
+                value needed for the color_scale `power`.
+            line_threshold: [float], optional, default is 0.0001.
+                value needed for the color_scale `sym-lognorm`.
+            line_scale: [float], optional
+                value needed for option 3. The default is 0.001.
+            bounds: [List]
+                a list of number to be used as a discrete bounds for the color scale 4.Default is None,
+            midpoint: [float], optional
+                value needed for option 5. The default is 0.
+            cmap: [str], optional
+                color style. The default is 'coolwarm_r'.
+            display_cell_value: [bool]
+                True if you want to display the values of the cells as a text
+            num_size: integer, optional
+                size of the numbers plotted on top of each cell. The default is 8.
+            background_color_threshold: [float/integer], optional
+                threshold value if the value of the cell is greater, the plotted
+                numbers will be black, and if smaller the plotted number will be white
+                if None given the maxvalue/2 is considered. The default is None.
 
         Returns
         -------
@@ -698,45 +697,45 @@ class ArrayGlyph:
 
             - Power scale.
 
-                - The default power scale uses a gamma value of 0.5.
+                The default power scale uses a gamma value of 0.5.
 
-                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
-                    >>> fig, ax = array.plot(
-                    ...     cbar_label_rotation=-90,
-                    ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="power",
-                    ...     cmap="coolwarm_r",
-                    ... )
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="power",
+                ...     cmap="coolwarm_r",
+                ... )
 
         .. image:: /_images/power-scale.png
             :alt: Example Image
             :align: center
 
-                - change the gamma of 0.8.
+                change the gamma of 0.8.
 
-                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
-                    >>> fig, ax = array.plot(
-                    ...     cbar_label_rotation=-90,
-                    ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="power",
-                    ...     gamma=0.8,
-                    ...     cmap="coolwarm_r",
-                    ... )
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="power",
+                ...     gamma=0.8,
+                ...     cmap="coolwarm_r",
+                ... )
 
         .. image:: /_images/power-scale-gamma-0.8.png
             :alt: Example Image
             :align: center
 
-                - change the gamma of 0.1.
+                change the gamma of 0.1.
 
-                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
-                    >>> fig, ax = array.plot(
-                    ...     cbar_label_rotation=-90,
-                    ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="power",
-                    ...     gamma=0.1,
-                    ...     cmap="coolwarm_r",
-                    ... )
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="power",
+                ...     gamma=0.1,
+                ...     cmap="coolwarm_r",
+                ... )
 
         .. image:: /_images/power-scale-gamma-0.1.png
             :alt: Example Image
@@ -770,19 +769,19 @@ class ArrayGlyph:
             :alt: Example Image
             :align: center
 
-                - You can also define the boundaries.
+            You can also define the boundaries.
 
-                    >>> array = ArrayGlyph(
-                    ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
-                    ... )
-                    >>> bounds = [0, 5, 10]
-                    >>> fig, ax = array.plot(
-                    ...     cbar_label_rotation=-90,
-                    ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="boundary-norm",
-                    ...     bounds=bounds,
-                    ...     cmap="coolwarm_r",
-                    ... )
+                >>> array = ArrayGlyph(
+                ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
+                ... )
+                >>> bounds = [0, 5, 10]
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="boundary-norm",
+                ...     bounds=bounds,
+                ...     cmap="coolwarm_r",
+                ... )
 
         .. image:: /_images/boundary-scale-defined-bounds.png
             :alt: Example Image
