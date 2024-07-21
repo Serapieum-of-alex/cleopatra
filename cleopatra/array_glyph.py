@@ -589,12 +589,13 @@ class ArrayGlyph:
                 size of the color bar label. The default is 12.
             cbar_label: str, optional
                 label of the color bar. The default is 'Discharge m3/s'.
-            color_scale : integer, optional
-                there are 5 options to change the scale of the colors. The default is 1.
+            color_scale : integer, optional, default is 1.
+                there are 5 options to change the scale of the colors.
                 1- `linear`:
                     linear scale.
-                2- `power` for the power scale
-                    Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
+                2- `power`:
+                    for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
+                    normalization over that
                     range.
                 3- `sym-lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
@@ -679,9 +680,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-        .. image:: /_images/power-scale.png
-            :alt: Example Image
-            :align: center
+                    .. image:: /_images/power-scale.png
+                        :alt: Example Image
+                        :align: center
 
                 - change the gamma of 0.8.
 
@@ -694,9 +695,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-        .. image:: /_images/power-scale-gamma-0.8.png
-            :alt: Example Image
-            :align: center
+                    .. image:: /_images/power-scale-gamma-0.8.png
+                        :alt: Example Image
+                        :align: center
 
                 - change the gamma of 0.1.
 
@@ -709,9 +710,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-        .. image:: /_images/power-scale-gamma-0.1.png
-            :alt: Example Image
-            :align: center
+                    .. image:: /_images/power-scale-gamma-0.1.png
+                        :alt: Example Image
+                        :align: center
 
             - Logarithmic scale.
 
@@ -723,9 +724,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/log-scale.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/log-scale.png
+                    :alt: Example Image
+                    :align: center
 
                 - Logarithmic scale.
 
@@ -739,9 +740,9 @@ class ArrayGlyph:
                     ...     line_scale=0.001,
                     ... )
 
-        .. image:: /_images/log-scale.png
-            :alt: Example Image
-            :align: center
+                    .. image:: /_images/log-scale.png
+                        :alt: Example Image
+                        :align: center
 
             - Defined boundary scale.
 
@@ -753,9 +754,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/boundary-scale.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/boundary-scale.png
+                    :alt: Example Image
+                    :align: center
 
                 - You can also define the boundaries.
 
@@ -771,9 +772,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-        .. image:: /_images/boundary-scale-defined-bounds.png
-            :alt: Example Image
-            :align: center
+                    .. image:: /_images/boundary-scale-defined-bounds.png
+                        :alt: Example Image
+                        :align: center
 
             - Midpoint scale.
 
@@ -785,9 +786,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/midpoint-scale.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/midpoint-scale.png
+                    :alt: Example Image
+                    :align: center
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
