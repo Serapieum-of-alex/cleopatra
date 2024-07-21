@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import numpy as np
-from cleopatra.array import Array
+from cleopatra.arrayglyph import ArrayGlyph
 
 # from matplotlib.transforms import blended_transform_factory
 # %%
@@ -14,6 +14,8 @@ rgb = np.clip(arr2 / 10000, 0, 1)
 plt.imshow(rgb)
 plt.show()
 # %%
+array = ArrayGlyph(arr, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
+# %%
 arr = np.load("tests/data/arr.npy")
 exclude_value = arr[0, 0]
 cmap = "terrain"
@@ -22,7 +24,7 @@ exculde_value2 = arr2[0, 0]
 color_scale = [1, 2, 3, 4, 5]
 ticks_spacing = 500
 # %%
-array = Array(arr, exclude_value=[exclude_value])
+array = ArrayGlyph(arr, exclude_value=[exclude_value])
 fig, ax = array.plot(title="Flow Accumulation")
 # %% test_plot_array_color_scale_1
 fig, ax = array.plot(
@@ -92,7 +94,7 @@ fig, ax = array.plot(
 coello_data = np.load("tests/data/coello.npy")
 exclude_value = arr[0, 0]
 animate_time_list = list(range(1, 11))
-array = Array(coello_data, exclude_value=[exclude_value])
+array = ArrayGlyph(coello_data, exclude_value=[exclude_value])
 anim = array.animate(
     animate_time_list, title="Flow Accumulation", display_cell_value=True
 )

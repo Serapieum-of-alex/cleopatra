@@ -52,7 +52,7 @@ DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
-class Array:
+class ArrayGlyph:
     """Array.
 
     A class to handle 3D arrays and perform various operations on them.
@@ -124,7 +124,7 @@ class Array:
 
             >>> import numpy as np
             >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-            >>> array = Array(arr)
+            >>> array = ArrayGlyph(arr)
             >>> fig, ax = array.plot()
 
         .. image:: /_images/image-plot.png
