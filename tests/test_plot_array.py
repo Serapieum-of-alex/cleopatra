@@ -8,7 +8,7 @@ matplotlib.use("agg")
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
-from cleopatra.arrayglyph import ArrayGlyph
+from cleopatra.array_glyph import ArrayGlyph
 
 
 class TestProperties:

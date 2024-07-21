@@ -2,7 +2,7 @@ import matplotlib
 
 matplotlib.use("TkAgg")
 import numpy as np
-from cleopatra.arrayglyph import ArrayGlyph
+from cleopatra.array_glyph import ArrayGlyph
 
 sentinel_2 = np.load("tests/data/s2a.npy")
 

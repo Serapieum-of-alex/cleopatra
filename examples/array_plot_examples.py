@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import numpy as np
-from cleopatra.arrayglyph import ArrayGlyph
+from cleopatra.array_glyph import ArrayGlyph
 
 # from matplotlib.transforms import blended_transform_factory
 # %%

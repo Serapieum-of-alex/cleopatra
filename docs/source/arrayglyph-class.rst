@@ -2,8 +2,8 @@
 Array Class
 ###########
 
-.. automodule:: array
-   :members: Array
+.. automodule:: array_glyph
+   :members: ArrayGlyph
    :undoc-members:
    :show-inheritance:
    :special-members: __init__
