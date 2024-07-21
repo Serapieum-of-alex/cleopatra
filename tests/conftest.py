@@ -30,7 +30,7 @@ def cmap() -> str:
 
 @pytest.fixture(scope="module")
 def color_scale() -> List[str]:
-    return ["power", "power", "sym-lognorm", "power-norm", "boundary-norm"]
+    return ["linear", "power", "sym-lognorm", "boundary-norm", "midpoint"]
 
 
 @pytest.fixture(scope="module")

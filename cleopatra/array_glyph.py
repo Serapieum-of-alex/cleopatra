@@ -446,7 +446,7 @@ class ArrayGlyph:
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale.lower() == "power-norm":
+        elif color_scale.lower() == "boundary-norm":
             if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
@@ -455,7 +455,7 @@ class ArrayGlyph:
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
-        elif color_scale.lower() == "boundary-norm":
+        elif color_scale.lower() == "midpoint":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -605,11 +605,18 @@ class ArrayGlyph:
                     label of the color bar. The default is 'Discharge m3/s'.
                 color_scale : integer, optional
                     there are 5 options to change the scale of the colors. The default is 1.
-                    1- `linear` for linear scale
+                    1- `linear`:
+                        linear scale.
                     2- `power` for the power scale
-                    3- `sym-lognorm` for the SymLogNorm scale
-                    4- `power-norm` for the PowerNorm scale
-                    5- `boundary-norm` for the BoundaryNorm scale
+                        Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
+                        range.
+                    3- `sym-lognorm`:
+                        the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
+                        negative directions from the origin.
+                    4- `boundary-norm`:
+                        the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                    5- `midpoint`:
+                        the midpoint scale.
                 gamma: [float], optional
                     value needed for option 2. The default is 1./2.
                 line_threshold: [float], optional
@@ -773,11 +780,18 @@ class ArrayGlyph:
                 label of the color bar. The default is 'Discharge m3/s'.
             color_scale: integer, optional
                 there are 5 options to change the scale of the colors. The default is 1.
-                1- `linear` for linear scale
+                1- `linear`:
+                    linear scale.
                 2- `power` for the power scale
-                3- `sym-lognorm` for the SymLogNorm scale
-                4- `power-norm` for the PowerNorm scale
-                5- `boundary-norm` for the BoundaryNorm scale
+                    Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
+                    range.
+                3- `sym-lognorm`:
+                    the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
+                    negative directions from the origin.
+                4- `boundary-norm`:
+                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                5- `midpoint`:
+                    the midpoint scale.
             gamma: [float], optional
                 value needed for option 2. The default is 1./2.
             line_threshold: [float], optional
