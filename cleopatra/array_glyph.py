@@ -556,16 +556,21 @@ class ArrayGlyph:
             im,
             ax=ax,
             shrink=self.default_options["cbar_length"],
-            orientation=self.default_options["orientation"],
+            orientation=self.default_options["cbar_orientation"],
             **cbar_kw,
         )
-        cbar.ax.set_ylabel(
-            self.default_options["cbar_label"],
-            rotation=self.default_options["rotation"],
-            va="bottom",
-            fontsize=self.default_options["cbar_label_size"],
-        )
+        # cbar.ax.set_ylabel(
+        #     self.default_options["cbar_label"],
+        #     rotation=self.default_options["cbar_label_rotation"],
+        #     va=self.default_options["cbar_label_location"],
+        #     fontsize=self.default_options["cbar_label_size"],
+        # )
         cbar.ax.tick_params(labelsize=10)
+        cbar.set_label(
+            self.default_options["cbar_label"],
+            fontsize=self.default_options["cbar_label_size"],
+            loc=self.default_options["cbar_label_location"],
+        )
 
         return cbar
 
@@ -596,21 +601,19 @@ class ArrayGlyph:
             size of the point annotation.
         **kwargs: [dict]
             keys:
-                figsize : [tuple], optional
-                    figure size. The default is (8,8).
                 title: [str], optional
                     title of the plot. The default is 'Total Discharge'.
                 title_size: [integer], optional
                     title size. The default is 15.
-                orientation: [string], optional
+                cbar_orientation: [string], optional
                     orientation of the color bar horizontal/vertical. The default is 'vertical'.
-                rotation: [number], optional
+                cbar_label_rotation: [number], optional
                     rotation of the color bar label. The default is -90.
-                orientation: [string], optional
-                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
-                cbar_length: [float], optional
+                cbar_label_location: str, optional, default is 'bottom'.
+                    location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
+                cbar_length: float, optional
                     ratio to control the height of the color bar. The default is 0.75.
-                ticks_spacing: [integer], optional
+                ticks_spacing: int, optional
                     Spacing in the color bar ticks. The default is 2.
                 cbar_label_size: integer, optional
                     size of the color bar label. The default is 12.
@@ -777,11 +780,11 @@ class ArrayGlyph:
                 title of the plot. The default is 'Total Discharge'.
             title_size: [integer], optional
                 title size. The default is 15.
-            orientation: [string], optional
+            cbar_orientation: [string], optional
                 orientation of the colorbar horizontal/vertical. The default is 'vertical'.
-            rotation: [number], optional
+            cbar_label_rotation: [number], optional
                 rotation of the colorbar label. The default is -90.
-            orientation: [string], optional
+            cbar_orientation: [string], optional
                 orientation of the colorbar horizontal/vertical. The default is 'vertical'.
             cbar_length: [float], optional
                 ratio to control the height of the colorbar. The default is 0.75.
@@ -871,13 +874,13 @@ class ArrayGlyph:
             im,
             ax=ax,
             shrink=self.default_options["cbar_length"],
-            orientation=self.default_options["orientation"],
+            orientation=self.default_options["cbar_orientation"],
             **cbar_kw,
         )
         cbar.ax.set_ylabel(
             self.default_options["cbar_label"],
-            rotation=self.default_options["rotation"],
-            va="bottom",
+            rotation=self.default_options["cbar_label_rotation"],
+            va=self.default_options["cbar_label_location"],
             fontsize=self.default_options["cbar_label_size"],
         )
         cbar.ax.tick_params(labelsize=10)
