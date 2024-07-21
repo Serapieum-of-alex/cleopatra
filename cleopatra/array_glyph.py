@@ -689,9 +689,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/color-bar-customization.png
-            :alt: Example Image
-            :align: center
+            .. image:: /_images/color-bar-customization.png
+                :alt: Example Image
+                :align: center
 
         - Color scale customization:
 
@@ -707,39 +707,39 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/power-scale.png
-            :alt: Example Image
-            :align: center
+            .. image:: /_images/power-scale.png
+                :alt: Example Image
+                :align: center
 
-                change the gamma of 0.8.
+                - change the gamma of 0.8.
 
-                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
-                >>> fig, ax = array.plot(
-                ...     cbar_label_rotation=-90,
-                ...     cbar_label="Discharge m3/s",
-                ...     color_scale="power",
-                ...     gamma=0.8,
-                ...     cmap="coolwarm_r",
-                ... )
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.8,
+                    ...     cmap="coolwarm_r",
+                    ... )
 
-        .. image:: /_images/power-scale-gamma-0.8.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/power-scale-gamma-0.8.png
+                    :alt: Example Image
+                    :align: center
 
-                change the gamma of 0.1.
+                - change the gamma of 0.1.
 
-                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
-                >>> fig, ax = array.plot(
-                ...     cbar_label_rotation=-90,
-                ...     cbar_label="Discharge m3/s",
-                ...     color_scale="power",
-                ...     gamma=0.1,
-                ...     cmap="coolwarm_r",
-                ... )
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.1,
+                    ...     cmap="coolwarm_r",
+                    ... )
 
-        .. image:: /_images/power-scale-gamma-0.1.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/power-scale-gamma-0.1.png
+                    :alt: Example Image
+                    :align: center
 
             - Logarithmic scale.
 
@@ -751,9 +751,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/log-scale.png
-            :alt: Example Image
-            :align: center
+            .. image:: /_images/log-scale.png
+                :alt: Example Image
+                :align: center
 
             - Defined boundary scale.
 
@@ -765,27 +765,27 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/boundary-scale.png
-            :alt: Example Image
-            :align: center
+            .. image:: /_images/boundary-scale.png
+                :alt: Example Image
+                :align: center
 
-            You can also define the boundaries.
+                - You can also define the boundaries.
 
-                >>> array = ArrayGlyph(
-                ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
-                ... )
-                >>> bounds = [0, 5, 10]
-                >>> fig, ax = array.plot(
-                ...     cbar_label_rotation=-90,
-                ...     cbar_label="Discharge m3/s",
-                ...     color_scale="boundary-norm",
-                ...     bounds=bounds,
-                ...     cmap="coolwarm_r",
-                ... )
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
+                    ... )
+                    >>> bounds = [0, 5, 10]
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="boundary-norm",
+                    ...     bounds=bounds,
+                    ...     cmap="coolwarm_r",
+                    ... )
 
-        .. image:: /_images/boundary-scale-defined-bounds.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/boundary-scale-defined-bounds.png
+                    :alt: Example Image
+                    :align: center
 
             - Midpoint scale.
 
@@ -797,9 +797,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/midpoint-scale.png
-            :alt: Example Image
-            :align: center
+            .. image:: /_images/midpoint-scale.png
+                :alt: Example Image
+                :align: center
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
