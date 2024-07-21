@@ -637,20 +637,20 @@ class ArrayGlyph:
                 value needed for the color_scale `sym-lognorm`.
             line_scale: [float], optional
                 value needed for option 3. The default is 0.001.
-            bounds: [List]
-                a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-            midpoint: [float], optional
-                value needed for option 5. The default is 0.
-            cmap: [str], optional
-                color style. The default is 'coolwarm_r'.
+            bounds: [List], default is None,
+                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+            midpoint: [float], optional, default is 0.
+                value needed for option 5.
+            cmap: [str], optional, default is 'coolwarm_r'.
+                color style.
             display_cell_value: [bool]
                 True if you want to display the values of the cells as a text
-            num_size: integer, optional
-                size of the numbers plotted on top of each cell. The default is 8.
-            background_color_threshold: [float/integer], optional
+            num_size: integer, optional, default is 8.
+                size of the numbers plotted on top of each cell.
+            background_color_threshold: [float/integer], optional, default is None.
                 threshold value if the value of the cell is greater, the plotted
                 numbers will be black, and if smaller the plotted number will be white
-                if None given the maxvalue/2 is considered. The default is None.
+                if None given the maxvalue/2 is considered.
 
         Returns
         -------
@@ -689,27 +689,27 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-            .. image:: /_images/color-bar-customization.png
-                :alt: Example Image
-                :align: center
+        .. image:: /_images/color-bar-customization.png
+            :alt: Example Image
+            :align: center
 
         - Color scale customization:
 
             - Power scale.
 
-                The default power scale uses a gamma value of 0.5.
+                - The default power scale uses a gamma value of 0.5.
 
-                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
-                >>> fig, ax = array.plot(
-                ...     cbar_label_rotation=-90,
-                ...     cbar_label="Discharge m3/s",
-                ...     color_scale="power",
-                ...     cmap="coolwarm_r",
-                ... )
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     cmap="coolwarm_r",
+                    ... )
 
-            .. image:: /_images/power-scale.png
-                :alt: Example Image
-                :align: center
+        .. image:: /_images/power-scale.png
+            :alt: Example Image
+            :align: center
 
                 - change the gamma of 0.8.
 
@@ -722,9 +722,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-                .. image:: /_images/power-scale-gamma-0.8.png
-                    :alt: Example Image
-                    :align: center
+        .. image:: /_images/power-scale-gamma-0.8.png
+            :alt: Example Image
+            :align: center
 
                 - change the gamma of 0.1.
 
@@ -737,9 +737,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-                .. image:: /_images/power-scale-gamma-0.1.png
-                    :alt: Example Image
-                    :align: center
+        .. image:: /_images/power-scale-gamma-0.1.png
+            :alt: Example Image
+            :align: center
 
             - Logarithmic scale.
 
@@ -751,9 +751,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-            .. image:: /_images/log-scale.png
-                :alt: Example Image
-                :align: center
+        .. image:: /_images/log-scale.png
+            :alt: Example Image
+            :align: center
 
             - Defined boundary scale.
 
@@ -765,9 +765,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-            .. image:: /_images/boundary-scale.png
-                :alt: Example Image
-                :align: center
+        .. image:: /_images/boundary-scale.png
+            :alt: Example Image
+            :align: center
 
                 - You can also define the boundaries.
 
@@ -783,9 +783,9 @@ class ArrayGlyph:
                     ...     cmap="coolwarm_r",
                     ... )
 
-                .. image:: /_images/boundary-scale-defined-bounds.png
-                    :alt: Example Image
-                    :align: center
+        .. image:: /_images/boundary-scale-defined-bounds.png
+            :alt: Example Image
+            :align: center
 
             - Midpoint scale.
 
@@ -797,9 +797,9 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-            .. image:: /_images/midpoint-scale.png
-                :alt: Example Image
-                :align: center
+        .. image:: /_images/midpoint-scale.png
+            :alt: Example Image
+            :align: center
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
