@@ -22,8 +22,7 @@ The `Array` class has the following methods:
 - `display`: Display the array with optional parameters.
 """
 
-from typing import Any, Union, List, Tuple
-
+from typing import Any, Union, List, Tuple, Dict
 import math
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
@@ -392,8 +391,10 @@ class ArrayGlyph:
             )
         return ticks
 
-    def plot_get_im_cbar_kw(self, ax: Axes, arr: np.ndarray, ticks: np.ndarray):
-        """
+    def plot_im_get_cbar_kw(
+        self, ax: Axes, arr: np.ndarray, ticks: np.ndarray
+    ) -> Tuple[AxesImage, Dict[str, str]]:
+        """Plot a single image and get color bar keyword arguments.
 
         Parameters
         ----------
@@ -406,17 +407,21 @@ class ArrayGlyph:
 
         Returns
         -------
-        im, cbar
+        im: AxesImage
+            image axes.
+        cbar: Dict[str,str]
+            color bar keyword arguments.
         """
         color_scale = self.default_options["color_scale"]
         cmap = self.default_options["cmap"]
-        vmin = self.default_options["vmin"]
-        vmax = self.default_options["vmax"]
+        # get the vmin and vmax from the tick instead of the default values.
+        vmin: float = ticks[0]  # self.default_options["vmin"]
+        vmax: float = ticks[-1]  # self.default_options["vmax"]
 
-        if color_scale == 1:
+        if color_scale.lower() == "linear":
             im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=self.extent)
             cbar_kw = dict(ticks=ticks)
-        elif color_scale == 2:
+        elif color_scale.lower() == "power":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -426,7 +431,7 @@ class ArrayGlyph:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
-        elif color_scale == 3:
+        elif color_scale.lower() == "sym-lognorm":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -441,7 +446,7 @@ class ArrayGlyph:
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale == 4:
+        elif color_scale.lower() == "power-norm":
             if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
@@ -450,7 +455,7 @@ class ArrayGlyph:
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
-        else:
+        elif color_scale.lower() == "boundary-norm":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -462,6 +467,11 @@ class ArrayGlyph:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
+        else:
+            raise ValueError(
+                f"Invalid color scale option: {color_scale}. Use 'linear', 'power', 'power-norm',"
+                "'sym-lognorm', 'boundary-norm'"
+            )
 
         return im, cbar_kw
 
@@ -595,11 +605,11 @@ class ArrayGlyph:
                     label of the color bar. The default is 'Discharge m3/s'.
                 color_scale : integer, optional
                     there are 5 options to change the scale of the colors. The default is 1.
-                    1- color_scale 1 is the normal scale
-                    2- color_scale 2 is the power scale
-                    3- color_scale 3 is the SymLogNorm scale
-                    4- color_scale 4 is the PowerNorm scale
-                    5- color_scale 5 is the BoundaryNorm scale
+                    1- `linear` for linear scale
+                    2- `power` for the power scale
+                    3- `sym-lognorm` for the SymLogNorm scale
+                    4- `power-norm` for the PowerNorm scale
+                    5- `boundary-norm` for the BoundaryNorm scale
                 gamma: [float], optional
                     value needed for option 2. The default is 1./2.
                 line_threshold: [float], optional
@@ -661,7 +671,7 @@ class ArrayGlyph:
 
             # creating the ticks/bounds
             ticks = self.get_ticks()
-            im, cbar_kw = self.plot_get_im_cbar_kw(ax, arr, ticks)
+            im, cbar_kw = self.plot_im_get_cbar_kw(ax, arr, ticks)
 
             # Create colorbar
             self.create_color_bar(ax, im, cbar_kw)
@@ -763,11 +773,11 @@ class ArrayGlyph:
                 label of the color bar. The default is 'Discharge m3/s'.
             color_scale: integer, optional
                 there are 5 options to change the scale of the colors. The default is 1.
-                1- color_scale 1 is the normal scale
-                2- color_scale 2 is the power scale
-                3- color_scale 3 is the SymLogNorm scale
-                4- color_scale 4 is the PowerNorm scale
-                5- color_scale 5 is the BoundaryNorm scale
+                1- `linear` for linear scale
+                2- `power` for the power scale
+                3- `sym-lognorm` for the SymLogNorm scale
+                4- `power-norm` for the PowerNorm scale
+                5- `boundary-norm` for the BoundaryNorm scale
             gamma: [float], optional
                 value needed for option 2. The default is 1./2.
             line_threshold: [float], optional
@@ -827,7 +837,7 @@ class ArrayGlyph:
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
-        im, cbar_kw = self.plot_get_im_cbar_kw(ax, array[0, :, :], ticks)
+        im, cbar_kw = self.plot_im_get_cbar_kw(ax, array[0, :, :], ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
