@@ -205,7 +205,6 @@ class ArrayGlyph:
             no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
 
         self.no_elem = no_elem
-        self._default_options = DEFAULT_OPTIONS.copy()
         if fig is None:
             self.fig, self.ax = self.create_figure_axes()
         else:
@@ -660,6 +659,148 @@ class ArrayGlyph:
             the axes of the matplotlib figure
         fig: [matplotlib figure object]
             the figure object
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
+            >>> fig, ax = array.plot()
+
+        .. image:: /_images/array-plot.png
+            :alt: Example Image
+            :align: center
+
+        - Color bar customization:
+
+            - Create an array and instantiate the `Array` object with custom options.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized color bar", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_orientation="horizontal",
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label_location="center",
+                ...     cbar_length=0.7,
+                ...     cbar_label_size=12,
+                ...     cbar_label="Discharge m3/s",
+                ...     ticks_spacing=5,
+                ...     color_scale="linear",
+                ...     cmap="coolwarm_r",
+                ... )
+
+        .. image:: /_images/color-bar-customization.png
+            :alt: Example Image
+            :align: center
+
+        - Color scale customization:
+
+            - Power scale.
+
+                - The default power scale uses a gamma value of 0.5.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+        .. image:: /_images/power-scale.png
+            :alt: Example Image
+            :align: center
+
+                - change the gamma of 0.8.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.8,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+        .. image:: /_images/power-scale-gamma-0.8.png
+            :alt: Example Image
+            :align: center
+
+                - change the gamma of 0.1.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.1,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+        .. image:: /_images/power-scale-gamma-0.1.png
+            :alt: Example Image
+            :align: center
+
+            - Logarithmic scale.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="sym-lognorm",
+                ...     cmap="coolwarm_r",
+                ... )
+
+        .. image:: /_images/log-scale.png
+            :alt: Example Image
+            :align: center
+
+            - Defined boundary scale.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Defined boundary scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="boundary-norm",
+                ...     cmap="coolwarm_r",
+                ... )
+
+        .. image:: /_images/boundary-scale.png
+            :alt: Example Image
+            :align: center
+
+                - You can also define the boundaries.
+
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
+                    ... )
+                    >>> bounds = [0, 5, 10]
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="boundary-norm",
+                    ...     bounds=bounds,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+        .. image:: /_images/boundary-scale-defined-bounds.png
+            :alt: Example Image
+            :align: center
+
+            - Midpoint scale.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="midpoint",
+                ...     cmap="coolwarm_r",
+                ... )
+
+        .. image:: /_images/midpoint-scale.png
+            :alt: Example Image
+            :align: center
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
