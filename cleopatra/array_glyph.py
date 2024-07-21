@@ -24,6 +24,7 @@ The `Array` class has the following methods:
 
 from typing import Any, Union, List, Tuple
 
+import math
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -373,11 +374,13 @@ class ArrayGlyph:
         ticks_spacing = self.default_options["ticks_spacing"]
         vmax = self.default_options["vmax"]
         vmin = self.default_options["vmin"]
-        if np.mod(vmax, ticks_spacing) == 0:
+        remainder = np.round(math.remainder(vmax, ticks_spacing), 3)
+        # np.mod(vmax, ticks_spacing) gives float point error, so we use the round function.
+        if remainder == 0:
             ticks = np.arange(vmin, vmax + ticks_spacing, ticks_spacing)
         else:
             try:
-                ticks = np.arange(vmin, vmax, ticks_spacing)
+                ticks = np.arange(vmin, vmax + ticks_spacing, ticks_spacing)
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
