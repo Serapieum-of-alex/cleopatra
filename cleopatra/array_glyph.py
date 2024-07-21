@@ -34,6 +34,8 @@ from hpc.indexing import get_indices2
 # from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
 from matplotlib import animation
+from matplotlib.image import AxesImage
+from matplotlib.colorbar import Colorbar
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
@@ -387,7 +389,7 @@ class ArrayGlyph:
             )
         return ticks
 
-    def get_im_cbar(self, ax, arr: np.ndarray, ticks: np.ndarray):
+    def plot_get_im_cbar_kw(self, ax: Axes, arr: np.ndarray, ticks: np.ndarray):
         """
 
         Parameters
@@ -505,6 +507,42 @@ class ArrayGlyph:
         )
         return list(map(write_points, point_table))
 
+    def create_color_bar(self, ax: Axes, im: AxesImage, cbar_kw: dict) -> Colorbar:
+        """Create Color bar.
+
+        Parameters
+        ----------
+        ax: Axes
+            matplotlib axes.
+        im: AxesImage
+            Image axes.
+        cbar_kw: dict
+            color bar keyword arguments.
+
+        Returns
+        -------
+        Colorbar:
+            colorbar object.
+        """
+        # im or cax is the last image added to the axes
+        # im = ax.images[-1]
+        cbar = ax.figure.colorbar(
+            im,
+            ax=ax,
+            shrink=self.default_options["cbar_length"],
+            orientation=self.default_options["orientation"],
+            **cbar_kw,
+        )
+        cbar.ax.set_ylabel(
+            self.default_options["cbar_label"],
+            rotation=self.default_options["rotation"],
+            va="bottom",
+            fontsize=self.default_options["cbar_label_size"],
+        )
+        cbar.ax.tick_params(labelsize=10)
+
+        return cbar
+
     def plot(
         self,
         points: np.ndarray = None,
@@ -620,23 +658,10 @@ class ArrayGlyph:
 
             # creating the ticks/bounds
             ticks = self.get_ticks()
-            im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
+            im, cbar_kw = self.plot_get_im_cbar_kw(ax, arr, ticks)
 
             # Create colorbar
-            cbar = ax.figure.colorbar(
-                im,
-                ax=ax,
-                shrink=self.default_options["cbar_length"],
-                orientation=self.default_options["orientation"],
-                **cbar_kw,
-            )
-            cbar.ax.set_ylabel(
-                self.default_options["cbar_label"],
-                rotation=self.default_options["rotation"],
-                va="bottom",
-                fontsize=self.default_options["cbar_label_size"],
-            )
-            cbar.ax.tick_params(labelsize=10)
+            self.create_color_bar(ax, im, cbar_kw)
 
         ax.set_title(
             self.default_options["title"], fontsize=self.default_options["title_size"]
@@ -799,7 +824,7 @@ class ArrayGlyph:
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
-        im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
+        im, cbar_kw = self.plot_get_im_cbar_kw(ax, array[0, :, :], ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
