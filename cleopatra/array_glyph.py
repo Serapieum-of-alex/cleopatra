@@ -55,35 +55,7 @@ SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
 class ArrayGlyph:
-    """Array.
-
-    A class to handle 3D arrays and perform various operations on them.
-
-    Attributes
-    ----------
-    arr : np.ndarray
-        The 3D array to be processed.
-    default_options : dict
-        A dictionary containing default options for plotting and animation.
-
-    Methods
-    -------
-    scale_percentile(arr, percentile)
-        Scale the array using percentile values.
-    _plot_text(ax, arr, indices, default_options_dict)
-        Plot values as text in each cell.
-    _plot_point_values(ax, point_table, pid_color, pid_size)
-        Plot points on the array.
-    get_ticks()
-        Get a list of ticks for the color bar.
-    get_im_cbar(ax, arr, ticks)
-        Get the image and color bar for the plot.
-    plot(points=None, point_color='red', point_size=100, pid_color='blue', pid_size=10, **kwargs)
-        Plot an array.
-    animate(time, points=None, text_colors=('white', 'black'), interval=200, text_loc=[0.1, 0.2],
-             point_color='red', point_size=100, pid_color='blue', pid_size=10, **kwargs)
-        Animate an array.
-    """
+    """A class to handle 3D arrays and perform various operations on them."""
 
     def __init__(
         self,
@@ -635,8 +607,8 @@ class ArrayGlyph:
                 value needed for the color_scale `power`.
             line_threshold: [float], optional, default is 0.0001.
                 value needed for the color_scale `sym-lognorm`.
-            line_scale: [float], optional
-                value needed for option 3. The default is 0.001.
+            line_scale: [float], optional, default is 0.001.
+                value needed for the color_scale `sym-lognorm`.
             bounds: [List], default is None,
                 a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
             midpoint: [float], optional, default is 0.
@@ -750,6 +722,22 @@ class ArrayGlyph:
                 ...     color_scale="sym-lognorm",
                 ...     cmap="coolwarm_r",
                 ... )
+
+        .. image:: /_images/log-scale.png
+            :alt: Example Image
+            :align: center
+
+                - Logarithmic scale.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ...     line_threshold=0.0001,
+                    ...     line_scale=0.001,
+                    ... )
 
         .. image:: /_images/log-scale.png
             :alt: Example Image
