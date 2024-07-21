@@ -117,6 +117,9 @@ class ArrayGlyph:
             and scale them back to between 0 and 1.
         percentile: int
             The percentile value to be used for scaling.
+        **kwargs:
+            figsize : [tuple], optional
+                    figure size. The default is (8,8).
 
         the object does not need any parameters to be initialized.
 
@@ -133,6 +136,16 @@ class ArrayGlyph:
             :alt: Example Image
             :align: center
         """
+        self._default_options = DEFAULT_OPTIONS.copy()
+
+        for key, val in kwargs.items():
+            if key not in self.default_options.keys():
+                raise ValueError(
+                    f"The given keyword argument:{key} is not correct, possible parameters are,"
+                    f" {DEFAULT_OPTIONS}"
+                )
+            else:
+                self.default_options[key] = val
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
         if exclude_value is not np.nan:
