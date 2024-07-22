@@ -121,10 +121,10 @@ repos:
         language: system
         files: \.ipynb$
 
-#   - repo: local
-#     hooks:
-#       - id: doctest
-#         name: doctest
-#         entry: pytest --doctest-modules #pyramids/dataset.py
-#         language: system
-#         files: \.py$
+  - repo: local
+    hooks:
+      - id: doctest
+        name: doctest
+        entry: pytest --doctest-modules
+        language: system
+        files: \.py$

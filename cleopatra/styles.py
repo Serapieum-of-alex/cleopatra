@@ -1,4 +1,5 @@
 """style related functionality"""
+
 from collections import OrderedDict
 from typing import Union
 import matplotlib.colors as colors
@@ -20,13 +21,14 @@ DEFAULT_OPTIONS = dict(
     color_2="#DC143C",
     line_width=3,
     cbar_length=0.75,
-    orientation="vertical",
+    cbar_orientation="vertical",
     cmap="coolwarm_r",
     cbar_label_size=12,
     cbar_label=None,
-    rotation=-90,
+    cbar_label_rotation=-90,
+    cbar_label_location="center",
     ticks_spacing=5,
-    color_scale=1,
+    color_scale="linear",
     gamma=0.5,
     line_scale=0.001,
     line_threshold=0.0001,
@@ -158,35 +160,38 @@ class Scale:
         return np.log10(val)
 
     @staticmethod
-    def power_scale(minval):
+    def power_scale(min_val) -> float:
         """power_scale.
 
             power scale
 
         Parameters
         ----------
-        minval
+        min_val: float
+            minimum value.
 
         Returns
         -------
+        float:
+            power scale value.
         """
 
         def scalar(val):
-            val = val + abs(minval) + 1
+            val = val + abs(min_val) + 1
             return (val / 1000) ** 2
 
         return scalar
 
     @staticmethod
-    def identity_scale(minval, maxval):
+    def identity_scale(min_val, max_val):
         """identity_scale.
 
             identity_scale
 
         Parameters
         ----------
-        minval
-        maxval
+        min_val
+        max_val
 
         Returns
         -------
@@ -198,31 +203,34 @@ class Scale:
         return scalar
 
     @staticmethod
-    def rescale(OldValue, OldMin, OldMax, NewMin, NewMax):
+    def rescale(old_value, old_min, old_max, new_min, new_max):
         """Rescale.
 
-        Rescale nethod rescales a value between two boundaries to a new value
-        bewteen two other boundaries
-        inputs:
-            1-OldValue:
-                [float] value need to transformed
-            2-OldMin:
-                [float] min old value
-            3-OldMax:
-                [float] max old value
-            4-NewMin:
-                [float] min new value
-            5-NewMax:
-                [float] max new value
-        output:
-            1-NewValue:
-                [float] transformed new value
-        """
-        OldRange = OldMax - OldMin
-        NewRange = NewMax - NewMin
-        NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+        Rescale method rescales a value between two boundaries to a new value between two other boundaries
 
-        return NewValue
+        Parameters
+        ----------
+        old_value: float
+            The value that need to be transformed.
+        old_min: float
+            min old value
+        old_max: float
+            max old value
+        new_min: float
+            min new value
+        new_max: float
+            max new value
+
+        Returns
+        -------
+        new_value: float
+            transformed new value
+        """
+        old_range = old_max - old_min
+        new_range = new_max - new_min
+        new_value = (((old_value - old_min) * new_range) / old_range) + new_min
+
+        return new_value
 
 
 class MidpointNormalize(colors.Normalize):

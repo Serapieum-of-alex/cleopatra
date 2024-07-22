@@ -1,7 +1,29 @@
-"""plotting Array."""
+"""
+Module: Array.
 
-from typing import Any, Union, List, Tuple
+This module provides a class, `Array`, to handle 3D arrays and perform various operations on them,
+such as plotting, animating, and displaying the array.
 
+The `Array` class has the following functionalities:
+- Initialize an array object with the provided parameters.
+- Plot the array with optional parameters to customize the appearance and display cell values.
+- Animate the array over time with optional parameters to customize the animation speed and display points.
+- Display the array with optional parameters to customize the appearance and display point IDs.
+
+The `Array` class has the following attributes:
+- `arr`: The 3D array to be handled.
+- `time`: The time values for animation.
+- `points`: The points to be displayed on the array.
+- `default_options`: A dictionary to store default options for plotting, animating, and displaying.
+
+The `Array` class has the following methods:
+- `plot`: Plot the array with optional parameters.
+- `animate`: Animate the array over time with optional parameters.
+- `display`: Display the array with optional parameters.
+"""
+
+from typing import Any, Union, List, Tuple, Dict
+import math
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -12,6 +34,8 @@ from hpc.indexing import get_indices2
 # from matplotlib import gridspec
 from matplotlib.animation import FuncAnimation
 from matplotlib import animation
+from matplotlib.image import AxesImage
+from matplotlib.colorbar import Colorbar
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
@@ -30,8 +54,8 @@ DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
 
 
-class Array:
-    """Array."""
+class ArrayGlyph:
+    """A class to handle 3D arrays and perform various operations on them."""
 
     def __init__(
         self,
@@ -39,10 +63,11 @@ class Array:
         exclude_value: List = np.nan,
         extent: List = None,
         rgb: List[int] = None,
-        surface_reflectance: int = 10000,
+        surface_reflectance: int = None,
         cutoff: List = None,
         ax: Axes = None,
         fig: Figure = None,
+        percentile: int = 1,
         **kwargs,
     ):
         """Array.
@@ -62,6 +87,11 @@ class Array:
         cutoff: List, Default is None.
             clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
             and scale them back to between 0 and 1.
+        percentile: int
+            The percentile value to be used for scaling.
+        **kwargs:
+            figsize : [tuple], optional
+                    figure size. The default is (8,8).
 
         the object does not need any parameters to be initialized.
 
@@ -69,14 +99,25 @@ class Array:
         --------
         - Create an array and instantiate the `Array` object.
 
+            >>> import numpy as np
             >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-            >>> array = Array(arr)
-            >>> array.plot()
+            >>> array = ArrayGlyph(arr)
+            >>> fig, ax = array.plot()
 
         .. image:: /_images/image-plot.png
             :alt: Example Image
             :align: center
         """
+        self._default_options = DEFAULT_OPTIONS.copy()
+
+        for key, val in kwargs.items():
+            if key not in self.default_options.keys():
+                raise ValueError(
+                    f"The given keyword argument:{key} is not correct, possible parameters are,"
+                    f" {DEFAULT_OPTIONS}"
+                )
+            else:
+                self.default_options[key] = val
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
         if exclude_value is not np.nan:
@@ -105,11 +146,12 @@ class Array:
                     f"{array.shape[0]}"
                 )
             else:
-                array = self._prepare_sentinel_rgb(
+                array = self.prepare_array(
                     array,
                     rgb=rgb,
                     surface_reflectance=surface_reflectance,
                     cutoff=cutoff,
+                    percentile=percentile,
                 )
         else:
             self.rgb = False
@@ -135,11 +177,54 @@ class Array:
             no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
 
         self.no_elem = no_elem
-        self._default_options = DEFAULT_OPTIONS.copy()
         if fig is None:
             self.fig, self.ax = self.create_figure_axes()
         else:
             self.fig, self.ax = fig, ax
+
+    def prepare_array(
+        self,
+        array: np.ndarray,
+        rgb: List[int] = None,
+        surface_reflectance: int = None,
+        cutoff: List = None,
+        percentile: int = 1,
+    ) -> np.ndarray:
+        """Prepare Array.
+
+        Parameters
+        ----------
+        array: np.ndarray
+            array.
+        rgb: List, Default is [3,2,1]
+            the indices of the red, green, and blue bands in the given array.
+        surface_reflectance: int, Default is 10000.
+            surface reflectance value of the sentinel data.
+        cutoff: List, Default is None.
+            clip the range of pixel values for each band. (take only the pixel values from 0 to the value of the cutoff
+            and scale them back to between 0 and 1).
+        percentile: int
+            The percentile value to be used for scaling.
+
+        Returns
+        -------
+        np.ndarray:
+            the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
+        """
+        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
+        # order as sentinel data. [3, 2, 1]
+        array = array[rgb].transpose(1, 2, 0)
+
+        if surface_reflectance is None:
+            array = self.scale_percentile(array, percentile=percentile)
+        else:
+            array = self._prepare_sentinel_rgb(
+                array,
+                rgb=rgb,
+                surface_reflectance=surface_reflectance,
+                cutoff=cutoff,
+            )
+        return array
 
     def _prepare_sentinel_rgb(
         self,
@@ -167,9 +252,6 @@ class Array:
         np.ndarray:
             the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
         """
-        # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
-        # order as sentinel data. [3, 2, 1]
-        array = array[rgb].transpose(1, 2, 0)
         array = np.clip(array / surface_reflectance, 0, 1)
         if cutoff is not None:
             array[0] = np.clip(rgb[0], 0, cutoff[0]) / cutoff[0]
@@ -177,6 +259,37 @@ class Array:
             array[2] = np.clip(rgb[2], 0, cutoff[2]) / cutoff[2]
 
         return array
+
+    @staticmethod
+    def scale_percentile(arr: np.ndarray, percentile: int = 1) -> np.ndarray:
+        """Scale the array.
+
+        Parameters
+        ----------
+        arr: np.ndarray
+            The array to be scaled.
+        percentile: int
+            The percentile value to be used for scaling.
+
+        Returns
+        -------
+        np.ndarray
+            The scaled array, normalized between 0 and 1. using the percentile values.
+        """
+        rows, columns, bands = arr.shape
+        # flatten image.
+        arr = np.reshape(arr, [rows * columns, bands]).astype(np.float32)
+        # lower percentile values (one value for each band).
+        lower_percent = np.percentile(arr, percentile, axis=0)
+        # 98 percentile values.
+        upper_percent = np.percentile(arr, 100 - percentile, axis=0) - lower_percent
+        # normalize the 3 bands using the percentile values for each band.
+        arr = (arr - lower_percent[None, :]) / upper_percent[None, :]
+        arr = np.reshape(arr, [rows, columns, bands])
+        # discard outliers.
+        arr = arr.clip(0, 1)
+
+        return arr
 
     def __str__(self):
         """String representation of the Array object."""
@@ -244,11 +357,13 @@ class Array:
         ticks_spacing = self.default_options["ticks_spacing"]
         vmax = self.default_options["vmax"]
         vmin = self.default_options["vmin"]
-        if np.mod(vmax, ticks_spacing) == 0:
+        remainder = np.round(math.remainder(vmax, ticks_spacing), 3)
+        # np.mod(vmax, ticks_spacing) gives float point error, so we use the round function.
+        if remainder == 0:
             ticks = np.arange(vmin, vmax + ticks_spacing, ticks_spacing)
         else:
             try:
-                ticks = np.arange(vmin, vmax, ticks_spacing)
+                ticks = np.arange(vmin, vmax + ticks_spacing, ticks_spacing)
             except ValueError:
                 raise ValueError(
                     "The number of ticks exceeded the max allowed size, possible errors"
@@ -260,8 +375,10 @@ class Array:
             )
         return ticks
 
-    def get_im_cbar(self, ax, arr: np.ndarray, ticks: np.ndarray):
-        """
+    def _plot_im_get_cbar_kw(
+        self, ax: Axes, arr: np.ndarray, ticks: np.ndarray
+    ) -> Tuple[AxesImage, Dict[str, str]]:
+        """Plot a single image and get color bar keyword arguments.
 
         Parameters
         ----------
@@ -274,17 +391,21 @@ class Array:
 
         Returns
         -------
-        im, cbar
+        im: AxesImage
+            image axes.
+        cbar: Dict[str,str]
+            color bar keyword arguments.
         """
         color_scale = self.default_options["color_scale"]
         cmap = self.default_options["cmap"]
-        vmin = self.default_options["vmin"]
-        vmax = self.default_options["vmax"]
+        # get the vmin and vmax from the tick instead of the default values.
+        vmin: float = ticks[0]  # self.default_options["vmin"]
+        vmax: float = ticks[-1]  # self.default_options["vmax"]
 
-        if color_scale == 1:
+        if color_scale.lower() == "linear":
             im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=self.extent)
             cbar_kw = dict(ticks=ticks)
-        elif color_scale == 2:
+        elif color_scale.lower() == "power":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -294,7 +415,7 @@ class Array:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
-        elif color_scale == 3:
+        elif color_scale.lower() == "sym-lognorm":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -309,7 +430,7 @@ class Array:
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale == 4:
+        elif color_scale.lower() == "boundary-norm":
             if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
@@ -318,7 +439,7 @@ class Array:
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
-        else:
+        elif color_scale.lower() == "midpoint":
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -330,6 +451,11 @@ class Array:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
+        else:
+            raise ValueError(
+                f"Invalid color scale option: {color_scale}. Use 'linear', 'power', 'power-norm',"
+                "'sym-lognorm', 'boundary-norm'"
+            )
 
         return im, cbar_kw
 
@@ -353,6 +479,7 @@ class Array:
         list:
             list of the text object
         """
+        # https://github.com/Serapieum-of-alex/cleopatra/issues/75
         # add text for the cell values
         add_text = lambda elem: ax.text(
             elem[1],
@@ -377,6 +504,47 @@ class Array:
             fontsize=pid_size,
         )
         return list(map(write_points, point_table))
+
+    def create_color_bar(self, ax: Axes, im: AxesImage, cbar_kw: dict) -> Colorbar:
+        """Create Color bar.
+
+        Parameters
+        ----------
+        ax: Axes
+            matplotlib axes.
+        im: AxesImage
+            Image axes.
+        cbar_kw: dict
+            color bar keyword arguments.
+
+        Returns
+        -------
+        Colorbar:
+            colorbar object.
+        """
+        # im or cax is the last image added to the axes
+        # im = ax.images[-1]
+        cbar = ax.figure.colorbar(
+            im,
+            ax=ax,
+            shrink=self.default_options["cbar_length"],
+            orientation=self.default_options["cbar_orientation"],
+            **cbar_kw,
+        )
+        # cbar.ax.set_ylabel(
+        #     self.default_options["cbar_label"],
+        #     rotation=self.default_options["cbar_label_rotation"],
+        #     va=self.default_options["cbar_label_location"],
+        #     fontsize=self.default_options["cbar_label_size"],
+        # )
+        cbar.ax.tick_params(labelsize=10)
+        cbar.set_label(
+            self.default_options["cbar_label"],
+            fontsize=self.default_options["cbar_label_size"],
+            loc=self.default_options["cbar_label_location"],
+        )
+
+        return cbar
 
     def plot(
         self,
@@ -404,54 +572,59 @@ class Array:
         pid_size: [Any]
             size of the point annotation.
         **kwargs: [dict]
-            keys:
-                figsize : [tuple], optional
-                    figure size. The default is (8,8).
-                title: [str], optional
-                    title of the plot. The default is 'Total Discharge'.
-                title_size: [integer], optional
-                    title size. The default is 15.
-                orientation: [string], optional
-                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
-                rotation: [number], optional
-                    rotation of the color bar label. The default is -90.
-                orientation: [string], optional
-                    orientation of the color bar horizontal/vertical. The default is 'vertical'.
-                cbar_length: [float], optional
-                    ratio to control the height of the color bar. The default is 0.75.
-                ticks_spacing: [integer], optional
-                    Spacing in the color bar ticks. The default is 2.
-                cbar_label_size: integer, optional
-                    size of the color bar label. The default is 12.
-                cbar_label: str, optional
-                    label of the color bar. The default is 'Discharge m3/s'.
-                color_scale : integer, optional
-                    there are 5 options to change the scale of the colors. The default is 1.
-                    1- color_scale 1 is the normal scale
-                    2- color_scale 2 is the power scale
-                    3- color_scale 3 is the SymLogNorm scale
-                    4- color_scale 4 is the PowerNorm scale
-                    5- color_scale 5 is the BoundaryNorm scale
-                gamma: [float], optional
-                    value needed for option 2. The default is 1./2.
-                line_threshold: [float], optional
-                    value needed for option 3. The default is 0.0001.
-                line_scale: [float], optional
-                    value needed for option 3. The default is 0.001.
-                bounds: [List]
-                    a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-                midpoint: [float], optional
-                    value needed for option 5. The default is 0.
-                cmap: [str], optional
-                    color style. The default is 'coolwarm_r'.
-                display_cell_value: [bool]
-                    True if you want to display the values of the cells as a text
-                num_size: integer, optional
-                    size of the numbers plotted on top of each cell. The default is 8.
-                background_color_threshold: [float/integer], optional
-                    threshold value if the value of the cell is greater, the plotted
-                    numbers will be black, and if smaller the plotted number will be white
-                    if None given the maxvalue/2 is considered. The default is None.
+            title: [str], optional
+                title of the plot. The default is 'Total Discharge'.
+            title_size: [integer], optional
+                title size. The default is 15.
+            cbar_orientation: [string], optional
+                orientation of the color bar horizontal/vertical. The default is 'vertical'.
+            cbar_label_rotation: [number], optional
+                rotation of the color bar label. The default is -90.
+            cbar_label_location: str, optional, default is 'bottom'.
+                location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
+            cbar_length: float, optional
+                ratio to control the height of the color bar. The default is 0.75.
+            ticks_spacing: int, optional
+                Spacing in the color bar ticks. The default is 2.
+            cbar_label_size: integer, optional
+                size of the color bar label. The default is 12.
+            cbar_label: str, optional
+                label of the color bar. The default is 'Discharge m3/s'.
+            color_scale : integer, optional, default is 1.
+                there are 5 options to change the scale of the colors.
+
+                1- `linear`:
+                    linear scale.
+                2- `power`:
+                    for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
+                    normalization over that range.
+                3- `sym-lognorm`:
+                    the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
+                    negative directions from the origin.
+                4- `boundary-norm`:
+                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                5- `midpoint`:
+                    the midpoint scale splits the scale into 2 halfs, be the given value.
+            gamma: [float], optional, default is 0.5.
+                value needed for the color_scale `power`.
+            line_threshold: float, optional, default is 0.0001.
+                value needed for the color_scale `sym-lognorm`.
+            line_scale: float, optional, default is 0.001.
+                value needed for the color_scale `sym-lognorm`.
+            bounds: List, default is None,
+                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+            midpoint: float, optional, default is 0.
+                value needed for the color_scale `midpoint`.
+            cmap: str, optional, default is 'coolwarm_r'.
+                color style.
+            display_cell_value: bool
+                True if you want to display the values of the cells as a text
+            num_size: integer, optional, default is 8.
+                size of the numbers plotted on top of each cell.
+            background_color_threshold: [float/integer], optional, default is None.
+                threshold value if the value of the cell is greater, the plotted
+                numbers will be black, and if smaller the plotted number will be white
+                if None given the max value/2 is considered.
 
         Returns
         -------
@@ -459,6 +632,210 @@ class Array:
             the axes of the matplotlib figure
         fig: [matplotlib figure object]
             the figure object
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
+            >>> fig, ax = array.plot()
+
+        .. image:: /_images/array-plot.png
+            :alt: Example Image
+            :align: center
+
+        - Color bar customization:
+
+            - Create an array and instantiate the `Array` object with custom options.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized color bar", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_orientation="horizontal",
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label_location="center",
+                ...     cbar_length=0.7,
+                ...     cbar_label_size=12,
+                ...     cbar_label="Discharge m3/s",
+                ...     ticks_spacing=5,
+                ...     color_scale="linear",
+                ...     cmap="coolwarm_r",
+                ... )
+
+                .. image:: /_images/color-bar-customization.png
+                    :alt: Example Image
+                    :align: center
+                - Color bar customization:
+
+        - Display values for each cell:
+
+            - you can display the values for each cell by using thr parameter `display_cell_value`, and customize how
+                the values are displayed using the parameter `background_color_threshold` and `num_size`.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display array values", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     display_cell_value=True,
+                ...     num_size=12
+                ... )
+
+                .. image:: /_images/display-cell-values.png
+                    :alt: Example Image
+                    :align: center
+
+        - Plot points at specific locations in the array:
+
+            - you can display points in specific cells in the array and also display a value for each of these points.
+                The point parameter takes an array with the first column as the values to be displayed on top of the
+                points, the second and third columns are the row and column index of the point in the array.
+            - The `point_color` and `point_size` parameters are used to customize the appearance of the points,
+                while the `pid_color` and `pid_size` parameters are used to customize the appearance of the point
+                IDs/text.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display Points in top of the array", title_size=14)
+                >>> points = np.array([[1, 0, 0], [2, 1, 1], [3, 2, 2]])
+                >>> fig, ax = array.plot(
+                ...     points=points,
+                ...     point_color="black",
+                ...     point_size=100,
+                ...     pid_color="orange",
+                ...     pid_size=30,
+                ... )
+
+                .. image:: /_images/display-points.png
+                    :alt: Example Image
+                    :align: center
+
+        - Color scale customization:
+
+            - Power scale.
+
+                - The default power scale uses a gamma value of 0.5.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    .. image:: /_images/power-scale.png
+                        :alt: Example Image
+                        :align: center
+
+                - change the gamma of 0.8.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.8,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    .. image:: /_images/power-scale-gamma-0.8.png
+                        :alt: Example Image
+                        :align: center
+
+                - change the gamma of 0.1.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     gamma=0.1,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    .. image:: /_images/power-scale-gamma-0.1.png
+                        :alt: Example Image
+                        :align: center
+
+            - Logarithmic scale.
+
+                - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
+                value if 0.0001, and 0.001 respectively.
+
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    .. image:: /_images/log-scale.png
+                        :alt: Example Image
+                        :align: center
+
+                - you can change the `line_threshold` and `line_scale` values.
+
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Logarithmic scale: Customized Parameter", title_size=12
+                    ... )
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ...     line_threshold=0.015,
+                    ...     line_scale=0.1,
+                    ... )
+
+                    .. image:: /_images/log-scale-custom-parameters.png
+                        :alt: Example Image
+                        :align: center
+
+            - Defined boundary scale.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Defined boundary scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="boundary-norm",
+                ...     cmap="coolwarm_r",
+                ... )
+
+                .. image:: /_images/boundary-scale.png
+                    :alt: Example Image
+                    :align: center
+
+                - You can also define the boundaries.
+
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
+                    ... )
+                    >>> bounds = [0, 5, 10]
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="boundary-norm",
+                    ...     bounds=bounds,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    .. image:: /_images/boundary-scale-defined-bounds.png
+                        :alt: Example Image
+                        :align: center
+
+            - Midpoint scale.
+
+                in the midpoint scale you can define a value that splits the scale into half.
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="midpoint",
+                ...     cmap="coolwarm_r",
+                ...     midpoint=2,
+                ... )
+
+                .. image:: /_images/midpoint-scale-costom-parameters.png
+                    :alt: Example Image
+                    :align: center
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
@@ -493,23 +870,10 @@ class Array:
 
             # creating the ticks/bounds
             ticks = self.get_ticks()
-            im, cbar_kw = self.get_im_cbar(ax, arr, ticks)
+            im, cbar_kw = self._plot_im_get_cbar_kw(ax, arr, ticks)
 
             # Create colorbar
-            cbar = ax.figure.colorbar(
-                im,
-                ax=ax,
-                shrink=self.default_options["cbar_length"],
-                orientation=self.default_options["orientation"],
-                **cbar_kw,
-            )
-            cbar.ax.set_ylabel(
-                self.default_options["cbar_label"],
-                rotation=self.default_options["rotation"],
-                va="bottom",
-                fontsize=self.default_options["cbar_label_size"],
-            )
-            cbar.ax.tick_params(labelsize=10)
+            self.create_color_bar(ax, im, cbar_kw)
 
         ax.set_title(
             self.default_options["title"], fontsize=self.default_options["title_size"]
@@ -565,26 +929,26 @@ class Array:
 
         Parameters
         ----------
-        time : [dataframe]
-            dataframe contains the date of values.
-        points : [array]
-            3 column array with the first column as the value you want to display for the point, the second is the rows
-            index of the point in the array, and the third column as the column index in the array.
+        time : List[Any]
+            A list containing the date of values for each frame in the animation.
+        points : np.ndarray, optional
+            A 3 column array with the first column as the value you want to display for the point, the second is the
+            rows index of the point in the array, and the third column as the column index in the array.
             - the second and third column tells the location of the point in the array.
-        point_color: [str]
-            color of the points. The default is 'red'.
-        point_size: [Any]
-            size of the point. The default is 100.
-        pid_color: [str]
-            the annotation color of the point. Default is blue.
-        pid_size: [Any]
-            size of the point annotation. The default is 10.
-        text_colors : TYPE, optional
-            Two colors to be used to plot the values on top of each cell. The default is ("white","black").
-        interval: [integer], optional
-            number to control the speed of the animation. The default is 200.
-        text_loc: [list], optional
-            location of the date text. The default is [0.1,0.2].
+        point_color : str, optional, default is 'red'.
+            The color of the points.
+        point_size: int, optional, default is 100.
+            The size of the point.
+        pid_color : str, optional, default is blue.
+            The annotation color of the point.
+        pid_size : int, optional, default is 10.
+            The size of the point annotation.
+        text_colors : Tuple[str, str], optional, The default is ("white","black").
+            Two colors to be used to plot the values on top of each cell.
+        interval: int, optional, default is 200.
+            number to control the speed of the animation.
+        text_loc: list, optional, default is [0.1,0.2].
+            location of the date text.
         **kwargs: [dict]
             figsize: [tuple], optional
                 figure size. The default is (8,8).
@@ -592,51 +956,80 @@ class Array:
                 title of the plot. The default is 'Total Discharge'.
             title_size: [integer], optional
                 title size. The default is 15.
-            orientation: [string], optional
-                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
-            rotation: [number], optional
-                rotation of the colorbar label. The default is -90.
-            orientation: [string], optional
-                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
-            cbar_length: [float], optional
-                ratio to control the height of the colorbar. The default is 0.75.
-            ticks_spacing: [integer], optional
-                Spacing in the colorbar ticks. The default is 2.
+            cbar_orientation: [string], optional
+                orientation of the color bar horizontal/vertical. The default is 'vertical'.
+            cbar_label_rotation: [number], optional
+                rotation of the color bar label. The default is -90.
+            cbar_label_location: str, optional, default is 'bottom'.
+                location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
+            cbar_length: float, optional
+                ratio to control the height of the color bar. The default is 0.75.
+            ticks_spacing: int, optional
+                Spacing in the color bar ticks. The default is 2.
             cbar_label_size: integer, optional
                 size of the color bar label. The default is 12.
             cbar_label: str, optional
                 label of the color bar. The default is 'Discharge m3/s'.
-            color_scale: integer, optional
-                there are 5 options to change the scale of the colors. The default is 1.
-                1- color_scale 1 is the normal scale
-                2- color_scale 2 is the power scale
-                3- color_scale 3 is the SymLogNorm scale
-                4- color_scale 4 is the PowerNorm scale
-                5- color_scale 5 is the BoundaryNorm scale
-            gamma: [float], optional
-                value needed for option 2. The default is 1./2.
-            line_threshold: [float], optional
-                value needed for option 3. The default is 0.0001.
-            line_scale: [float], optional
-                value needed for option 3. The default is 0.001.
-            bounds: [List]
-                a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-            midpoint: [float], optional
-                value needed for option 5. The default is 0.
-            cmap: [str], optional
-                color style. The default is 'coolwarm_r'.
-            display_cell_value : [bool]
+            color_scale : integer, optional, default is 1.
+                there are 5 options to change the scale of the colors.
+
+                1- `linear`:
+                    linear scale.
+                2- `power`:
+                    for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
+                    normalization over that range.
+                3- `sym-lognorm`:
+                    the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
+                    negative directions from the origin.
+                4- `boundary-norm`:
+                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                5- `midpoint`:
+                    the midpoint scale splits the scale into 2 halfs, be the given value.
+            gamma: [float], optional, default is 0.5.
+                value needed for the color_scale `power`.
+            line_threshold: float, optional, default is 0.0001.
+                value needed for the color_scale `sym-lognorm`.
+            line_scale: float, optional, default is 0.001.
+                value needed for the color_scale `sym-lognorm`.
+            bounds: List, default is None,
+                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+            midpoint: float, optional, default is 0.
+                value needed for the color_scale `midpoint`.
+            cmap: str, optional, default is 'coolwarm_r'.
+                color style.
+            display_cell_value: bool
                 True if you want to display the values of the cells as a text
-            num_size : integer, optional
-                size of the numbers plotted on top of each cell. The default is 8.
-            background_color_threshold: [float/integer], optional
+            num_size: integer, optional, default is 8.
+                size of the numbers plotted on top of each cell.
+            background_color_threshold: [float/integer], optional, default is None.
                 threshold value if the value of the cell is greater, the plotted
-                numbers will be black and if smaller the plotted number will be white
-                if None given the max value/2 is considered. The default is None.
+                numbers will be black, and if smaller the plotted number will be white
+                if None given the max value/2 is considered.
 
         Returns
         -------
         animation.FuncAnimation.
+
+        Examples
+        --------
+        - First create a 3D array with the first dimension `frame_0 = arr[0, :, :]` as the dimension that the function
+            will loop over as the frame, then create a list of what you want to be displayed with each frame (i.e.,
+            time stamp, counter, ...)
+
+            >>> import numpy as np
+            >>> arr = np.random.randint(1, 10, size=(5, 10, 10))
+            >>> animate_time_list = [1, 2, 3, 4, 5]
+            >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated 3D array", title_size=18)
+            >>> anim_obj = animated_array.animate(animate_time_list)
+
+            .. image:: /_images/animated_array.gif
+                :alt: Example Image
+                :align: center
+
+        - To save the animation to a file, use the `save_animation` method, and provide the frame per second `fps`
+            parameter.
+
+            >>> animated_array.save_animation("animated_array.gif", fps=2)
         """
         if text_loc is None:
             text_loc = [0.1, 0.2]
@@ -672,20 +1065,20 @@ class Array:
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
-        im, cbar_kw = self.get_im_cbar(ax, array[0, :, :], ticks)
+        im, cbar_kw = self._plot_im_get_cbar_kw(ax, array[0, :, :], ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
             im,
             ax=ax,
             shrink=self.default_options["cbar_length"],
-            orientation=self.default_options["orientation"],
+            orientation=self.default_options["cbar_orientation"],
             **cbar_kw,
         )
         cbar.ax.set_ylabel(
             self.default_options["cbar_label"],
-            rotation=self.default_options["rotation"],
-            va="bottom",
+            rotation=self.default_options["cbar_label_rotation"],
+            va=self.default_options["cbar_label_location"],
             fontsize=self.default_options["cbar_label_size"],
         )
         cbar.ax.tick_params(labelsize=10)
@@ -795,10 +1188,11 @@ class Array:
             blit=True,
         )
         self._anim = anim
+        plt.show()
         return anim
 
     def save_animation(self, path: str, fps: int = 2):
-        """Save gif file.
+        """Save the animation.
 
             - video format is taken from the given path. available ["gif", "mov", "avi", "mp4"].
 

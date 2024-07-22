@@ -1,24 +1,27 @@
 import os
 from typing import List
 import numpy as np
+import matplotlib
+
+matplotlib.use("agg")
 
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
-from cleopatra.array import Array
+from cleopatra.array_glyph import ArrayGlyph
 
 
 class TestProperties:
 
     def test__str__(self):
         arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        array = Array(arr)
+        array = ArrayGlyph(arr)
         assert isinstance(array.__str__(), str)
 
 
 class TestCreateArray:
     def test_create_instance(self, arr: np.ndarray, no_data_value: float):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         assert isinstance(array.arr, np.ndarray)
         assert np.isnan(array.arr[0, 0])
         assert array.no_elem == 89
@@ -34,7 +37,9 @@ class TestRGB:
             31.82337186561403,
             31.8504762335605,
         ]
-        array = Array(sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3], extent=extent)
+        array = ArrayGlyph(
+            sentinel_2, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3], extent=extent
+        )
         fig, ax = array.plot(title="Flow Accumulation")
         im = ax.get_images()[0]
         assert im.get_extent() == [extent[0], extent[2], extent[1], extent[3]]
@@ -47,7 +52,7 @@ class TestPlotArray:
         arr: np.ndarray,
         no_data_value: float,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
@@ -58,7 +63,7 @@ class TestPlotArray:
     ):
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot()
-        array = Array(arr, exclude_value=[no_data_value], fig=fig, ax=ax)
+        array = ArrayGlyph(arr, exclude_value=[no_data_value], fig=fig, ax=ax)
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
@@ -73,7 +78,7 @@ class TestPlotArray:
             -75.09878783366909,
             4.704560448076901,
         ]
-        array = Array(arr, exclude_value=[no_data_value], extent=extent)
+        array = ArrayGlyph(arr, exclude_value=[no_data_value], extent=extent)
         fig, ax = array.plot(title="Flow Accumulation")
         assert isinstance(fig, Figure)
 
@@ -85,7 +90,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[0], cmap=cmap, ticks_spacing=ticks_spacing
         )
@@ -100,7 +105,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[1],
             cmap=cmap,
@@ -119,7 +124,7 @@ class TestPlotArray:
         color_scale_3_linscale: float,
         color_scale_3_linthresh: float,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[2],
             line_scale=color_scale_3_linscale,
@@ -138,7 +143,7 @@ class TestPlotArray:
         color_scale: List[int],
         ticks_spacing: int,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(color_scale=color_scale[3], cmap=cmap, ticks_spacing=5)
 
         assert isinstance(fig, Figure)
@@ -152,7 +157,7 @@ class TestPlotArray:
         bounds: list,
         rhine_no_data_val: float,
     ):
-        array = Array(rhine_dem_arr, exclude_value=[rhine_no_data_val])
+        array = ArrayGlyph(rhine_dem_arr, exclude_value=[rhine_no_data_val])
         fig, ax = array.plot(
             color_scale=color_scale[3],
             cmap=cmap,
@@ -171,7 +176,7 @@ class TestPlotArray:
         ticks_spacing: int,
         midpoint: int,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             color_scale=color_scale[4],
             midpoint=midpoint,
@@ -190,7 +195,7 @@ class TestPlotArray:
         num_size,
         background_color_threshold,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             display_cell_value=display_cell_value,
             num_size=num_size,
@@ -214,7 +219,7 @@ class TestPlotArray:
         point_size: int,
         gauge_color: str,
     ):
-        array = Array(arr, exclude_value=[no_data_value])
+        array = ArrayGlyph(arr, exclude_value=[no_data_value])
         fig, ax = array.plot(
             points=points,
             point_color=gauge_color,
@@ -237,7 +242,7 @@ class TestAnimate:
         animate_time_list: list,
         no_data_value: float,
     ):
-        array = Array(coello_data, exclude_value=[no_data_value])
+        array = ArrayGlyph(coello_data, exclude_value=[no_data_value])
         anim_obj = array.animate(animate_time_list, title="Flow Accumulation")
         assert isinstance(anim_obj, FuncAnimation)
 
@@ -252,7 +257,7 @@ class TestAnimate:
         if os.path.exists(path):
             os.remove(path)
 
-        array = Array(coello_data, exclude_value=[no_data_value])
+        array = ArrayGlyph(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
@@ -269,7 +274,7 @@ class TestAnimate:
         if os.path.exists(path):
             os.remove(path)
 
-        array = Array(coello_data, exclude_value=[no_data_value])
+        array = ArrayGlyph(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
@@ -286,7 +291,7 @@ class TestAnimate:
         if os.path.exists(path):
             os.remove(path)
 
-        array = Array(coello_data, exclude_value=[no_data_value])
+        array = ArrayGlyph(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
@@ -303,8 +308,28 @@ class TestAnimate:
         if os.path.exists(path):
             os.remove(path)
 
-        array = Array(coello_data, exclude_value=[no_data_value])
+        array = ArrayGlyph(coello_data, exclude_value=[no_data_value])
         anim = array.animate(animate_time_list, title="Flow Accumulation")
         array.save_animation(path, fps=2)
         # assert Path(path).exists()
         # os.remove(path)
+
+
+def test_scale_percentile():
+    arr = np.array(
+        [
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        ]
+    )
+    array = ArrayGlyph(arr)
+
+    scaled_arr = np.array(
+        [
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+            [[0, 0, 0], [0.5, 0.5, 0.5], [1, 1, 1]],
+        ]
+    )
+    np.testing.assert_array_almost_equal(array.scale_percentile(arr), scaled_arr)

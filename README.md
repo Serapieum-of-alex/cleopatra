@@ -19,9 +19,22 @@ Current release info
 
 cleopatra - matplotlib utility package
 =====================================================================
-**cleopatra** is a matplotlib utility package
+**cleopatra** is a Python package providing fast and flexible way to build visualize data using matplotlib. it
+provides functionalities to handle 3D arrays and perform various operations on them,
+such as plotting, animating, and displaying the array. it also provides functionalities for creating statistical plots,
 
-cleopatra
+
+Main Features
+-------------
+The `Array` class has the following functionalities:
+- Initialize an array object with the provided parameters.
+- Plot the array with optional parameters to customize the appearance and display cell values.
+- Animate the array over time with optional parameters to customize the animation speed and display points.
+- Display the array with optional parameters to customize the appearance and display point IDs.
+
+The `Statistic` module provides a class for creating statistical plots, specifically histograms. The class, `Statistic`,
+is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) data.
+
 
 
 Installing cleopatra
@@ -48,7 +61,7 @@ pip install git+https://github.com/Serapieum-of-alex/cleopatra
 ## pip
 to install the last release, you can easily use pip
 ```
-pip install cleopatra==0.4.3
+pip install cleopatra==0.4.4
 ```
 
 Quick start
