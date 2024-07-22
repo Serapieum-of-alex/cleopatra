@@ -679,7 +679,7 @@ class ArrayGlyph:
                 ...     num_size=12
                 ... )
 
-                .. image:: /_images/display-cell-values.png.png
+                .. image:: /_images/display-cell-values.png
                     :alt: Example Image
                     :align: center
 
@@ -702,7 +702,7 @@ class ArrayGlyph:
                 ...     pid_size=30,
                 ... )
 
-                .. image:: /_images/display-points.png.png
+                .. image:: /_images/display-points.png
                     :alt: Example Image
                     :align: center
 
@@ -957,7 +957,7 @@ class ArrayGlyph:
             title_size: [integer], optional
                 title size. The default is 15.
             cbar_orientation: [string], optional
-                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
+                orientation of the color bar horizontal/vertical. The default is 'vertical'.
             cbar_label_rotation: [number], optional
                 rotation of the colorbar label. The default is -90.
             cbar_orientation: [string], optional
