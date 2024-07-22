@@ -375,7 +375,7 @@ class ArrayGlyph:
             )
         return ticks
 
-    def plot_im_get_cbar_kw(
+    def _plot_im_get_cbar_kw(
         self, ax: Axes, arr: np.ndarray, ticks: np.ndarray
     ) -> Tuple[AxesImage, Dict[str, str]]:
         """Plot a single image and get color bar keyword arguments.
@@ -870,7 +870,7 @@ class ArrayGlyph:
 
             # creating the ticks/bounds
             ticks = self.get_ticks()
-            im, cbar_kw = self.plot_im_get_cbar_kw(ax, arr, ticks)
+            im, cbar_kw = self._plot_im_get_cbar_kw(ax, arr, ticks)
 
             # Create colorbar
             self.create_color_bar(ax, im, cbar_kw)
@@ -1065,7 +1065,7 @@ class ArrayGlyph:
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
-        im, cbar_kw = self.plot_im_get_cbar_kw(ax, array[0, :, :], ticks)
+        im, cbar_kw = self._plot_im_get_cbar_kw(ax, array[0, :, :], ticks)
 
         # Create colorbar
         cbar = ax.figure.colorbar(
