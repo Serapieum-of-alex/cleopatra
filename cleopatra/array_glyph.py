@@ -959,55 +959,77 @@ class ArrayGlyph:
             cbar_orientation: [string], optional
                 orientation of the color bar horizontal/vertical. The default is 'vertical'.
             cbar_label_rotation: [number], optional
-                rotation of the colorbar label. The default is -90.
-            cbar_orientation: [string], optional
-                orientation of the colorbar horizontal/vertical. The default is 'vertical'.
-            cbar_length: [float], optional
-                ratio to control the height of the colorbar. The default is 0.75.
-            ticks_spacing: [integer], optional
-                Spacing in the colorbar ticks. The default is 2.
+                rotation of the color bar label. The default is -90.
+            cbar_label_location: str, optional, default is 'bottom'.
+                location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
+            cbar_length: float, optional
+                ratio to control the height of the color bar. The default is 0.75.
+            ticks_spacing: int, optional
+                Spacing in the color bar ticks. The default is 2.
             cbar_label_size: integer, optional
                 size of the color bar label. The default is 12.
             cbar_label: str, optional
                 label of the color bar. The default is 'Discharge m3/s'.
-            color_scale: integer, optional
-                there are 5 options to change the scale of the colors. The default is 1.
+            color_scale : integer, optional, default is 1.
+                there are 5 options to change the scale of the colors.
+
                 1- `linear`:
                     linear scale.
-                2- `power` for the power scale
-                    Linearly map a given value to the 0-1 range and then apply a power-law normalization over that
-                    range.
+                2- `power`:
+                    for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
+                    normalization over that range.
                 3- `sym-lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
                 4- `boundary-norm`:
                     the BoundaryNorm scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
-                    the midpoint scale.
-            gamma: [float], optional
-                value needed for option 2. The default is 1./2.
-            line_threshold: [float], optional
-                value needed for option 3. The default is 0.0001.
-            line_scale: [float], optional
-                value needed for option 3. The default is 0.001.
-            bounds: [List]
-                a list of number to be used as a discrete bounds for the color scale 4.Default is None,
-            midpoint: [float], optional
-                value needed for option 5. The default is 0.
-            cmap: [str], optional
-                color style. The default is 'coolwarm_r'.
-            display_cell_value : [bool]
+                    the midpoint scale splits the scale into 2 halfs, be the given value.
+            gamma: [float], optional, default is 0.5.
+                value needed for the color_scale `power`.
+            line_threshold: float, optional, default is 0.0001.
+                value needed for the color_scale `sym-lognorm`.
+            line_scale: float, optional, default is 0.001.
+                value needed for the color_scale `sym-lognorm`.
+            bounds: List, default is None,
+                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+            midpoint: float, optional, default is 0.
+                value needed for the color_scale `midpoint`.
+            cmap: str, optional, default is 'coolwarm_r'.
+                color style.
+            display_cell_value: bool
                 True if you want to display the values of the cells as a text
-            num_size : integer, optional
-                size of the numbers plotted on top of each cell. The default is 8.
-            background_color_threshold: [float/integer], optional
+            num_size: integer, optional, default is 8.
+                size of the numbers plotted on top of each cell.
+            background_color_threshold: [float/integer], optional, default is None.
                 threshold value if the value of the cell is greater, the plotted
-                numbers will be black and if smaller the plotted number will be white
-                if None given the max value/2 is considered. The default is None.
+                numbers will be black, and if smaller the plotted number will be white
+                if None given the max value/2 is considered.
 
         Returns
         -------
         animation.FuncAnimation.
+
+        Examples
+        --------
+        - First create a 3D array with the first dimension `frame_0 = arr[0, :, :]` as the dimension that the function
+            will loop over as the frame, then create a list of what you want to be displayed with each frame (i.e.,
+            time stamp, counter, ...)
+
+            >>> import numpy as np
+            >>> arr = np.random.randint(1, 10, size=(5, 10, 10))
+            >>> animate_time_list = [1, 2, 3, 4, 5]
+            >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated 3D array", title_size=18)
+            >>> anim_obj = animated_array.animate(animate_time_list)
+
+            .. image:: /_images/animated_array.gif
+                :alt: Example Image
+                :align: center
+
+        - To save the animation to a file, use the `save_animation` method, and provide the frame per second `fps`
+            parameter.
+
+            >>> animated_array.save_animation("animated_array.gif", fps=2)
         """
         if text_loc is None:
             text_loc = [0.1, 0.2]
@@ -1166,10 +1188,11 @@ class ArrayGlyph:
             blit=True,
         )
         self._anim = anim
+        plt.show()
         return anim
 
     def save_animation(self, path: str, fps: int = 2):
-        """Save gif file.
+        """Save the animation.
 
             - video format is taken from the given path. available ["gif", "mov", "avi", "mp4"].
 
