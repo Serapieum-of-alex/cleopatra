@@ -591,32 +591,32 @@ class ArrayGlyph:
                 label of the color bar. The default is 'Discharge m3/s'.
             color_scale : integer, optional, default is 1.
                 there are 5 options to change the scale of the colors.
+
                 1- `linear`:
                     linear scale.
                 2- `power`:
                     for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
-                    normalization over that
-                    range.
+                    normalization over that range.
                 3- `sym-lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
                 4- `boundary-norm`:
                     the BoundaryNorm scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
-                    the midpoint scale.
+                    the midpoint scale splits the scale into 2 halfs, be the given value.
             gamma: [float], optional, default is 0.5.
                 value needed for the color_scale `power`.
-            line_threshold: [float], optional, default is 0.0001.
+            line_threshold: float, optional, default is 0.0001.
                 value needed for the color_scale `sym-lognorm`.
-            line_scale: [float], optional, default is 0.001.
+            line_scale: float, optional, default is 0.001.
                 value needed for the color_scale `sym-lognorm`.
-            bounds: [List], default is None,
+            bounds: List, default is None,
                 a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
-            midpoint: [float], optional, default is 0.
-                value needed for option 5.
-            cmap: [str], optional, default is 'coolwarm_r'.
+            midpoint: float, optional, default is 0.
+                value needed for the color_scale `midpoint`.
+            cmap: str, optional, default is 'coolwarm_r'.
                 color style.
-            display_cell_value: [bool]
+            display_cell_value: bool
                 True if you want to display the values of the cells as a text
             num_size: integer, optional, default is 8.
                 size of the numbers plotted on top of each cell.
@@ -716,19 +716,8 @@ class ArrayGlyph:
 
             - Logarithmic scale.
 
-                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
-                >>> fig, ax = array.plot(
-                ...     cbar_label_rotation=-90,
-                ...     cbar_label="Discharge m3/s",
-                ...     color_scale="sym-lognorm",
-                ...     cmap="coolwarm_r",
-                ... )
-
-                .. image:: /_images/log-scale.png
-                    :alt: Example Image
-                    :align: center
-
-                - Logarithmic scale.
+                - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
+                value if 0.0001, and 0.001 respectively.
 
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
                     >>> fig, ax = array.plot(
@@ -736,11 +725,27 @@ class ArrayGlyph:
                     ...     cbar_label="Discharge m3/s",
                     ...     color_scale="sym-lognorm",
                     ...     cmap="coolwarm_r",
-                    ...     line_threshold=0.0001,
-                    ...     line_scale=0.001,
                     ... )
 
                     .. image:: /_images/log-scale.png
+                        :alt: Example Image
+                        :align: center
+
+                - you can change the `line_threshold` and `line_scale` values.
+
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Logarithmic scale: Customized Parameter", title_size=12
+                    ... )
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ...     line_threshold=0.015,
+                    ...     line_scale=0.1,
+                    ... )
+
+                    .. image:: /_images/log-scale-custom-parameters.png
                         :alt: Example Image
                         :align: center
 
@@ -778,15 +783,17 @@ class ArrayGlyph:
 
             - Midpoint scale.
 
+                in the midpoint scale you can define a value that splits the scale into half.
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
                 >>> fig, ax = array.plot(
                 ...     cbar_label_rotation=-90,
                 ...     cbar_label="Discharge m3/s",
                 ...     color_scale="midpoint",
                 ...     cmap="coolwarm_r",
+                ...     midpoint=2,
                 ... )
 
-                .. image:: /_images/midpoint-scale.png
+                .. image:: /_images/midpoint-scale-costom-parameters.png
                     :alt: Example Image
                     :align: center
         """
