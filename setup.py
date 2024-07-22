@@ -12,7 +12,7 @@ requirements_docs = [line.strip() for line in open("docs/requirements.txt").read
 
 setup(
     name="cleopatra",
-    version="0.4.3",
+    version="0.5.0",
     description="visualization package",
     author="Mostafa Farrag",
     author_email="moah.farag@gmail.come",

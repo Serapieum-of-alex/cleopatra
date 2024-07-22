@@ -75,3 +75,21 @@ History
 * Add extent to the array plot when plotting an rgb array.
 * Add `ax`, and `fig` parameters to the `Array` constructor method to take an Axes and plot the array on it.
 * Add `__str__` to the `Array` class.
+
+0.5.0 (2024-07-22)
+------------------
+
+ArrayGlyph
+^^^^^^^^^^
+* rename the `Array` class to `ArrayGlyph`.
+* add `scale_percentile` method to the `Array` class to scale the array using the percentile values.
+* the `statistic.histogram` can plot multiple column array.
+* change the `color_scale` values to be string (`linear`, "power", ...)
+* the `kwargs` can be provided to the constructor or the `plot` method to plot the array.
+
+Colors
+^^^^^^
+* rename the `get_rgb` to `to_rgb`
+* add `get_type` to get the type of the color.
+* add `to_hex` to convert the color to hex.
+* add `to_rgb` to convert the color to rgb.
