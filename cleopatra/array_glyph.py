@@ -479,6 +479,7 @@ class ArrayGlyph:
         list:
             list of the text object
         """
+        # https://github.com/Serapieum-of-alex/cleopatra/issues/75
         # add text for the cell values
         add_text = lambda elem: ax.text(
             elem[1],
@@ -623,7 +624,7 @@ class ArrayGlyph:
             background_color_threshold: [float/integer], optional, default is None.
                 threshold value if the value of the cell is greater, the plotted
                 numbers will be black, and if smaller the plotted number will be white
-                if None given the maxvalue/2 is considered.
+                if None given the max value/2 is considered.
 
         Returns
         -------
@@ -662,9 +663,48 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ... )
 
-        .. image:: /_images/color-bar-customization.png
-            :alt: Example Image
-            :align: center
+                .. image:: /_images/color-bar-customization.png
+                    :alt: Example Image
+                    :align: center
+                - Color bar customization:
+
+        - Display values for each cell:
+
+            - you can display the values for each cell by using thr parameter `display_cell_value`, and customize how
+                the values are displayed using the parameter `background_color_threshold` and `num_size`.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display array values", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     display_cell_value=True,
+                ...     num_size=12
+                ... )
+
+                .. image:: /_images/display-cell-values.png.png
+                    :alt: Example Image
+                    :align: center
+
+        - Plot points at specific locations in the array:
+
+            - you can display points in specific cells in the array and also display a value for each of these points.
+                The point parameter takes an array with the first column as the values to be displayed on top of the
+                points, the second and third columns are the row and column index of the point in the array.
+            - The `point_color` and `point_size` parameters are used to customize the appearance of the points,
+                while the `pid_color` and `pid_size` parameters are used to customize the appearance of the point
+                IDs/text.
+
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display Points in top of the array", title_size=14)
+                >>> points = np.array([[1, 0, 0], [2, 1, 1], [3, 2, 2]])
+                >>> fig, ax = array.plot(
+                ...     points=points,
+                ...     point_color="black",
+                ...     point_size=100,
+                ...     pid_color="orange",
+                ...     pid_size=30,
+                ... )
+
+                .. image:: /_images/display-points.png.png
+                    :alt: Example Image
+                    :align: center
 
         - Color scale customization:
 
