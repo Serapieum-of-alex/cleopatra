@@ -23,7 +23,8 @@ class TestCreateArray:
     def test_create_instance(self, arr: np.ndarray, no_data_value: float):
         array = ArrayGlyph(arr, exclude_value=[no_data_value])
         assert isinstance(array.arr, np.ndarray)
-        assert np.isnan(array.arr[0, 0])
+        # check if the first element is masked
+        assert array.arr.mask[0, 0]
         assert array.no_elem == 89
         assert array.vmin == 0
         assert array.vmax == 88
