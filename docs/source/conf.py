@@ -9,7 +9,7 @@
 
 import os
 import sys
-
+from importlib.metadata import version, PackageNotFoundError
 
 # for the auto documentation to work
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -21,7 +21,11 @@ sys.path.insert(0, os.path.abspath("../../cleopatra"))
 project = "cleopatra"
 copyright = "2024, Mostafa Farrag"
 author = "Mostafa Farrag"
-release = "0.4.4"
+# Read the version from the package
+try:
+    release = version("cleopatra")
+except PackageNotFoundError:
+    release = "unknown"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
