@@ -29,6 +29,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 import numpy as np
+import numpy.ma as ma
 from hpc.indexing import get_indices2
 
 # from matplotlib import gridspec
@@ -67,7 +68,7 @@ class ArrayGlyph:
         cutoff: List = None,
         ax: Axes = None,
         fig: Figure = None,
-        percentile: int = 1,
+        percentile: int = None,
         **kwargs,
     ):
         """Array.
@@ -80,8 +81,9 @@ class ArrayGlyph:
             value used to fill cells out of the domain.
         extent: List, Default is None.
             [xmin, ymin, xmax, ymax].
-        rgb: List, Default is [3,2,1]
-            the indices of the red, green, and blue bands in the given array.
+        rgb: List
+            the indices of the red, green, and blue bands in the given array. the `rgb` parameter can be a list of
+            three values, or a list of four values if the alpha band is also included.
         surface_reflectance: int, Default is 10000.
             surface reflectance value of the sentinel data.
         cutoff: List, Default is None.
@@ -121,7 +123,6 @@ class ArrayGlyph:
         # first replace the no_data_value by nan
         # convert the array to float32 to be able to replace the no data value with nan
         if exclude_value is not np.nan:
-            array = array.astype(np.float32)
             if len(exclude_value) > 1:
                 mask = np.logical_or(
                     np.isclose(array, exclude_value[0], rtol=0.001),
@@ -129,8 +130,9 @@ class ArrayGlyph:
                 )
             else:
                 mask = np.isclose(array, exclude_value[0], rtol=0.0000001)
-
-            array[mask] = np.nan
+            array = ma.array(array, mask=mask, dtype=array.dtype)
+        else:
+            array = ma.array(array)
 
         # convert the extent from [xmin, ymin, xmax, ymax] to [xmin, xmax, ymin, ymax] as required by matplotlib.
         if extent is not None:
@@ -170,11 +172,9 @@ class ArrayGlyph:
         self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
         if len(shape) == 3:
-            no_elem = np.size(array[0, :, :]) - np.count_nonzero(
-                (array[0, np.isnan(array[0, :, :])])
-            )
+            no_elem = array[0, :, :].count()
         else:
-            no_elem = np.size(array[:, :]) - np.count_nonzero((array[np.isnan(array)]))
+            no_elem = array.count()
 
         self.no_elem = no_elem
         if fig is None:
@@ -188,7 +188,7 @@ class ArrayGlyph:
         rgb: List[int] = None,
         surface_reflectance: int = None,
         cutoff: List = None,
-        percentile: int = 1,
+        percentile: int = None,
     ) -> np.ndarray:
         """Prepare Array.
 
@@ -208,16 +208,17 @@ class ArrayGlyph:
 
         Returns
         -------
-        np.ndarray:
+        np.ndarray: np.float32
             the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
+            a float32 array normalized between 0 and 1 using the percentile values.
         """
         # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
         array = array[rgb].transpose(1, 2, 0)
 
-        if surface_reflectance is None:
+        if percentile is not None:
             array = self.scale_percentile(array, percentile=percentile)
-        else:
+        elif surface_reflectance is not None:
             array = self._prepare_sentinel_rgb(
                 array,
                 rgb=rgb,
@@ -273,7 +274,7 @@ class ArrayGlyph:
 
         Returns
         -------
-        np.ndarray
+        np.ndarray: float32
             The scaled array, normalized between 0 and 1. using the percentile values.
         """
         rows, columns, bands = arr.shape
@@ -440,6 +441,7 @@ class ArrayGlyph:
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
         elif color_scale.lower() == "midpoint":
+            arr = arr.filled(np.nan)
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -484,7 +486,7 @@ class ArrayGlyph:
         add_text = lambda elem: ax.text(
             elem[1],
             elem[0],
-            round(arr[elem[0], elem[1]], 2),
+            np.round(arr[elem[0], elem[1]], 2),
             ha="center",
             va="center",
             color="w",
@@ -574,12 +576,12 @@ class ArrayGlyph:
         **kwargs: [dict]
             title: [str], optional
                 title of the plot. The default is 'Total Discharge'.
-            title_size: [integer], optional
-                title size. The default is 15.
-            cbar_orientation: [string], optional
-                orientation of the color bar horizontal/vertical. The default is 'vertical'.
-            cbar_label_rotation: [number], optional
-                rotation of the color bar label. The default is -90.
+            title_size: [integer], optional, default is 15.
+                title size.
+            cbar_orientation: [string], optional, default is 'vertical'
+                orientation of the color bar horizontal/vertical.
+            cbar_label_rotation: [number], optional, default is -90.
+                rotation of the color bar label.
             cbar_label_location: str, optional, default is 'bottom'.
                 location of the color bar title 'top', 'bottom', 'center', 'baseline', 'center_baseline'.
             cbar_length: float, optional
