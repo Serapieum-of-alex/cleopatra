@@ -24,7 +24,7 @@ class TestCreateColors:
 class TestColorRamp:
     def test_create_color_ramp(self, color_ramp_image: str):
         colors = Colors.create_from_image(color_ramp_image)
-        color_ramp = colors.get_color_ramp()
+        color_ramp = colors.get_color_map()
         assert isinstance(color_ramp, LinearSegmentedColormap)
 
 

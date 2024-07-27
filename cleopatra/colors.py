@@ -1,6 +1,6 @@
 from typing import List, Union, Tuple, Any
 from matplotlib import colors as mcolors
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import LinearSegmentedColormap, Colormap
 from pathlib import Path
 from PIL import Image
 
@@ -272,6 +272,21 @@ class Colors:
 
         return rgb
 
-    def get_color_ramp(self):
-        """get_color_ramp."""
-        return LinearSegmentedColormap.from_list("custom_ramp", self.color_value)
+    def get_color_map(self, ramp_name: str = None) -> Colormap:
+        """Get color ramp from a color values in stored in the object.
+
+        Parameters
+        ----------
+        ramp_name: str, Default is None.
+            The name of the color ramp.
+
+        Returns
+        -------
+        Colormap:
+            A color map.
+        """
+        vals = self.to_rgb(normalized=True)
+        if ramp_name:
+            ramp_name = "custom_ramp"
+
+        return LinearSegmentedColormap.from_list(ramp_name, vals)
