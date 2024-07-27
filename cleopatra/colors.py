@@ -1,5 +1,6 @@
 from typing import List, Union, Tuple, Any
 from matplotlib import colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
 from pathlib import Path
 from PIL import Image
 
@@ -270,3 +271,7 @@ class Colors:
                     rgb.append(tuple([int(c * 255) for c in mcolors.to_rgb(color_i)]))
 
         return rgb
+
+    def get_color_ramp(self):
+        """get_color_ramp."""
+        return LinearSegmentedColormap.from_list("custom_ramp", self.color_value)

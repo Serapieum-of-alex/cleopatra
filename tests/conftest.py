@@ -126,3 +126,8 @@ def animate_time_list() -> list:
 @pytest.fixture(scope="module")
 def sentinel_2() -> np.ndarray:
     return np.load("tests/data/s2a.npy")
+
+
+@pytest.fixture(scope="module")
+def color_ramp_image() -> str:
+    return "tests/data/colors/color-ramp.png"

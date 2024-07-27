@@ -1,4 +1,5 @@
 from cleopatra.colors import Colors
+from matplotlib.colors import LinearSegmentedColormap
 
 
 class TestCreateColors:
@@ -14,11 +15,17 @@ class TestCreateColors:
         color = Colors(rgb_color)
         assert color._color_value == [rgb_color]
 
-    def test_create_from_image(self):
-        path = "tests\data\colors\color-ramp.png"
-        colors = Colors.create_from_image(path)
+    def test_create_from_image(self, color_ramp_image: str):
+        colors = Colors.create_from_image(color_ramp_image)
         assert isinstance(colors.color_value, list)
         assert len(colors.color_value) == 2713
+
+
+class TestColorRamp:
+    def test_create_color_ramp(self, color_ramp_image: str):
+        colors = Colors.create_from_image(color_ramp_image)
+        color_ramp = colors.get_color_ramp()
+        assert isinstance(color_ramp, LinearSegmentedColormap)
 
 
 def test_get_type():
