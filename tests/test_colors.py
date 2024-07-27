@@ -14,6 +14,12 @@ class TestCreateColors:
         color = Colors(rgb_color)
         assert color._color_value == [rgb_color]
 
+    def test_create_from_image(self):
+        path = "tests\data\colors\color-ramp.png"
+        colors = Colors.create_from_image(path)
+        assert isinstance(colors.color_value, list)
+        assert len(colors.color_value) == 2713
+
 
 def test_get_type():
     """test_create_colors_object."""

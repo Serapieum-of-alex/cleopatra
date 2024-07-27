@@ -1,5 +1,7 @@
 from typing import List, Union, Tuple, Any
 from matplotlib import colors as mcolors
+from pathlib import Path
+from PIL import Image
 
 
 class Colors:
@@ -51,6 +53,47 @@ class Colors:
             )
 
         self._color_value = color_value
+
+    @classmethod
+    def create_from_image(cls, path: str) -> "Colors":
+        """Create a color object from an image.
+
+        if you have an image of a color ramp, and you want to extract the colors from it, you can use this method.
+
+        .. image:: /_images/colors/color-ramp.png
+            :alt: Example Image
+            :align: center
+
+        Parameters
+        ----------
+        path : str
+            The path to the image file.
+
+        Returns
+        -------
+        Colors
+            A color object.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the file does not exist.
+
+        Examples
+        --------
+        >>> path = "examples/data/colors/color-ramp.png"
+        >>> colors = Colors.create_from_image(path)
+        >>> print(colors.color_value) # doctest: +SKIP
+        [(9, 63, 8), (8, 68, 9), (5, 78, 7), (1, 82, 3), (0, 84, 0), (0, 85, 0), (1, 83, 0), (1, 81, 0), (1, 80, 1)
+        """
+        if not Path(path).exists():
+            raise FileNotFoundError(f"The file {path} does not exist.")
+
+        image = Image.open(path).convert("RGB")
+        width, height = image.size
+        color_values = [image.getpixel((x, int(height / 2))) for x in range(width)]
+
+        return cls(color_values)
 
     def get_type(self) -> List[str]:
         """get_type.
