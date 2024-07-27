@@ -485,6 +485,27 @@ class ArrayGlyph:
         -------
         np.ndarray: 8-bit array
             the array with the colormap applied.
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = ArrayGlyph(arr)
+            >>> rgb_array = array.apply_colormap("coolwarm_r")
+            >>> print(rgb_array)
+            [[[179   3  38]
+              [221  96  76]
+              [244 154 123]]
+             [[244 196 173]
+              [220 220 221]
+              [183 207 249]]
+             [[139 17 4 253]
+              [ 96 128 232]
+              [ 58  76 192]]]
+              >>> print(rgb_array.dtype)
+                uint8
         """
         colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
         normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
