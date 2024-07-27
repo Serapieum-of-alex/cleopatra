@@ -9,6 +9,7 @@ from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
 from cleopatra.array_glyph import ArrayGlyph
+from PIL import Image
 
 
 class TestProperties:
@@ -343,3 +344,20 @@ def test_appy_color_map():
     colored_arr = my_glyph.apply_colormap(cmap)
     assert colored_arr.shape == (4, 4, 3)
     assert colored_arr.dtype == "uint8"
+
+
+def test_scale_to_rgb():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    my_glyph = ArrayGlyph(arr)
+
+    rgb_arr = my_glyph.scale_to_rgb()
+    assert rgb_arr.shape == (4, 4)
+    assert rgb_arr.dtype == "uint8"
+
+
+def test_to_image():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    my_glyph = ArrayGlyph(arr)
+
+    image = my_glyph.to_image()
+    assert isinstance(image, Image.Image)

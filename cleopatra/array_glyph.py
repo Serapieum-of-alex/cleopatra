@@ -37,10 +37,11 @@ from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.image import AxesImage
 from matplotlib.colorbar import Colorbar
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import Colormap
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
+from PIL import Image
 
 DEFAULT_OPTIONS = dict(
     vmin=None,
@@ -471,7 +472,7 @@ class ArrayGlyph:
 
         return im, cbar_kw
 
-    def apply_colormap(self, cmap: Union[LinearSegmentedColormap, str]) -> np.ndarray:
+    def apply_colormap(self, cmap: Union[Colormap, str]) -> np.ndarray:
         """Apply a matplotlib colormap to an array.
 
             Create an RGB channel from the given array using the given colormap.
@@ -511,6 +512,42 @@ class ArrayGlyph:
         normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
         colored = colormap(normed_data)
         return (colored[:, :, :3] * 255).astype("uint8")
+
+    def to_image(self) -> Image.Image:
+        """Create an RGB image from an array.
+
+            convert the array to an image.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> image = array.to_image()
+        >>> print(image) # doctest: +SKIP
+        <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
+        """
+        # This is done to scale the values between 0 and 255
+        # TODO: not sure if scaling the array to rgb is necessary here.
+        return Image.fromarray(self.scale_to_rgb()).convert("RGB")
+
+    def scale_to_rgb(self) -> np.ndarray:
+        """Create an RGB image.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> rgb_array = array.scale_to_rgb()
+        >>> print(rgb_array)
+        [[28 56 85]
+         [113 141 170]
+         [198 226 255]]
+         >>> print(rgb_array.dtype)
+        """
+        # This is done to scale the values between 0 and 255
+        return (self.arr * 255 / self.arr.max()).astype("uint8")
 
     @staticmethod
     def _plot_text(
