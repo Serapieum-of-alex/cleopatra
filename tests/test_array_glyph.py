@@ -334,3 +334,12 @@ def test_scale_percentile():
         ]
     )
     np.testing.assert_array_almost_equal(array.scale_percentile(arr), scaled_arr)
+
+
+def test_appy_color_map():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    my_glyph = ArrayGlyph(arr)
+    cmap = "viridis"
+    colored_arr = my_glyph.apply_colormap(cmap)
+    assert colored_arr.shape == (4, 4, 3)
+    assert colored_arr.dtype == "uint8"

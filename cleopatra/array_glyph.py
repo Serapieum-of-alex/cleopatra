@@ -37,6 +37,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.image import AxesImage
 from matplotlib.colorbar import Colorbar
+from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.ticker import LogFormatter
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
@@ -167,7 +168,7 @@ class ArrayGlyph:
             np.nanmin(array) if kwargs.get("vmin") is None else kwargs.get("vmin")
         )
 
-        self.arr = array
+        self._arr = array
         # get the tick spacing that has 10 ticks only
         self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
@@ -181,6 +182,15 @@ class ArrayGlyph:
             self.fig, self.ax = self.create_figure_axes()
         else:
             self.fig, self.ax = fig, ax
+
+    @property
+    def arr(self):
+        """array"""
+        return self._arr
+
+    @arr.setter
+    def arr(self, value):
+        self._arr = value
 
     def prepare_array(
         self,
@@ -460,6 +470,26 @@ class ArrayGlyph:
             )
 
         return im, cbar_kw
+
+    def apply_colormap(self, cmap: Union[LinearSegmentedColormap, str]) -> np.ndarray:
+        """Apply a matplotlib colormap to an array.
+
+            Create an RGB channel from the given array using the given colormap.
+
+        Parameters
+        ----------
+        cmap: LinearSegmentedColormap
+            colormap.
+
+        Returns
+        -------
+        np.ndarray: 8-bit array
+            the array with the colormap applied.
+        """
+        colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
+        normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
+        colored = colormap(normed_data)
+        return (colored[:, :, :3] * 255).astype("uint8")
 
     @staticmethod
     def _plot_text(
