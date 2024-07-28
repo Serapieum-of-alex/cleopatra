@@ -219,9 +219,71 @@ class ArrayGlyph:
 
         Returns
         -------
-        np.ndarray: np.float32
+        np.ndarray: np.float32/input dtype
             the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
-            a float32 array normalized between 0 and 1 using the percentile values.
+            a float32 array normalized between 0 and 1 using the `percentile` values or the `surface_reflectance`.
+            if the `percentile` or `surface_reflectance` values are not given, the function just reorders the values
+            to have the red-green-blue order.
+
+        .. note::
+
+            The prepare function moves the first axes (the channel axis) to the last axes, and then scales the array
+            using the percentile values. If the percentile is not given, the function scales the array using the
+            surface reflectance values. If the surface reflectance is not given, the function scales the array using
+            the cutoff values. If the cutoff is not given, the function scales the array using the sentinel data
+
+        Examples
+        --------
+        - Create an array and instantiate the `ArrayGlyph` class.
+
+            >>> import numpy as np
+            >>> arr = np.random.randint(0, 255, size=(3, 5, 5)).astype(np.float32)
+            >>> array_glyph = ArrayGlyph(arr)
+            >>> print(array_glyph.arr.shape)
+            (3, 5, 5)
+
+        `rgb` channels:
+            - Now let's use the `prepare_array` function with `rgb` channels as [0, 1, 2]. so the finction does not to
+                reorder the chennels. but it just needs to move the first axis to the last axis.
+
+            >>> rgb_array = array_glyph.prepare_array(arr, rgb=[0, 1, 2])
+            >>> print(rgb_array.shape)
+            (5, 5, 3)
+
+            - If we compare the values of the first channel in the original array with the first array in the rgb array it
+                should be the same.
+
+            >>> np.testing.assert_equal(arr[0, :, :],rgb_array[:, :, 0])
+
+        surface_reflectance:
+            - if you provide the surface reflectance value, the function will scale the array using the surface reflectance
+                value to a normalized rgb values.
+
+            >>> array_glyph = ArrayGlyph(arr)
+            >>> rgb_array = array_glyph.prepare_array(arr, surface_reflectance=10000, rgb=[0, 1, 2])
+            >>> print(rgb_array.shape)
+            (5, 5, 3)
+
+            - if you print the values of the first channel, you will find all the values are between 0 and 1.
+            >>> print(rgb_array[:, :, 0])
+            [[0.0195 0.02   0.0109 0.0211 0.0087]
+             [0.0112 0.0221 0.0035 0.0234 0.0141]
+             [0.0116 0.0188 0.0001 0.0176 0.    ]
+             [0.0014 0.0147 0.0043 0.0167 0.0117]
+             [0.0083 0.0139 0.0186 0.02   0.0058]]
+
+            - With the `surface_reflectance` parameter, you can also use the `cutoff` parameter to affect values that
+                are above it, by rescaling them.
+
+            >>> rgb_array = array_glyph.prepare_array(
+            ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
+            ... )
+            >>> print(rgb_array[:, :, 0])
+            [[0.     0.     0.     0.     0.    ]
+             [1.     1.     1.     1.     1.    ]
+             [1.     1.     1.     1.     1.    ]
+             [0.0014 0.0147 0.0043 0.0167 0.0117]
+             [0.0083 0.0139 0.0186 0.02   0.0058]]
         """
         # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
