@@ -582,10 +582,15 @@ class ArrayGlyph:
         colored = colormap(normed_data)
         return (colored[:, :, :3] * 255).astype("uint8")
 
-    def to_image(self) -> Image.Image:
+    def to_image(self, arr: np.ndarray = None) -> Image.Image:
         """Create an RGB image from an array.
 
             convert the array to an image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
 
         Examples
         --------
@@ -596,12 +601,19 @@ class ArrayGlyph:
         >>> print(image) # doctest: +SKIP
         <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
         """
+        if arr is None:
+            arr = self.arr
         # This is done to scale the values between 0 and 255
-        arr = self.arr if self.arr.dtype == "uint8" else self.scale_to_rgb()
+        arr = arr if arr.dtype == "uint8" else self.scale_to_rgb()
         return Image.fromarray(arr).convert("RGB")
 
-    def scale_to_rgb(self) -> np.ndarray:
+    def scale_to_rgb(self, arr: np.ndarray = None) -> np.ndarray:
         """Create an RGB image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
 
         Examples
         --------
@@ -615,8 +627,10 @@ class ArrayGlyph:
          [198 226 255]]
          >>> print(rgb_array.dtype)
         """
+        if arr is None:
+            arr = self.arr
         # This is done to scale the values between 0 and 255
-        return (self.arr * 255 / self.arr.max()).astype("uint8")
+        return (arr * 255 / arr.max()).astype("uint8")
 
     @staticmethod
     def _plot_text(

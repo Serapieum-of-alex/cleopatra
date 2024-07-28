@@ -346,13 +346,18 @@ def test_appy_color_map():
     assert colored_arr.dtype == "uint8"
 
 
-def test_scale_to_rgb():
-    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
-    my_glyph = ArrayGlyph(arr)
+class TestScaleToRGB:
+    def test_scale_to_rgb(self):
+        arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+        my_glyph = ArrayGlyph(arr)
 
-    rgb_arr = my_glyph.scale_to_rgb()
-    assert rgb_arr.shape == (4, 4)
-    assert rgb_arr.dtype == "uint8"
+        rgb_arr = my_glyph.scale_to_rgb()
+        assert rgb_arr.shape == (4, 4)
+        assert rgb_arr.dtype == "uint8"
+
+        rgb_arr = my_glyph.scale_to_rgb(arr=arr)
+        assert rgb_arr.shape == (4, 4)
+        assert rgb_arr.dtype == "uint8"
 
 
 class TestToImage:
@@ -361,6 +366,10 @@ class TestToImage:
         my_glyph = ArrayGlyph(arr)
 
         image = my_glyph.to_image()
+        assert isinstance(image, Image.Image)
+
+        # test if you provide the arr
+        image = my_glyph.to_image(arr=arr)
         assert isinstance(image, Image.Image)
 
     def test_uint_arr(self):
