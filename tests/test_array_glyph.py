@@ -355,12 +355,20 @@ def test_scale_to_rgb():
     assert rgb_arr.dtype == "uint8"
 
 
-def test_to_image():
-    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
-    my_glyph = ArrayGlyph(arr)
+class TestToImage:
+    def test_int64_arr(self):
+        arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+        my_glyph = ArrayGlyph(arr)
 
-    image = my_glyph.to_image()
-    assert isinstance(image, Image.Image)
+        image = my_glyph.to_image()
+        assert isinstance(image, Image.Image)
+
+    def test_uint_arr(self):
+        arr = np.random.randint(0, 255, size=(4, 4)).astype(np.uint8)
+        my_glyph = ArrayGlyph(arr)
+
+        image = my_glyph.to_image()
+        assert isinstance(image, Image.Image)
 
 
 def test_adjust_ticks():

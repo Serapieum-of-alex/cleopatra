@@ -548,7 +548,7 @@ class ArrayGlyph:
 
         Parameters
         ----------
-        cmap: LinearSegmentedColormap
+        cmap: LinearSegmentedColormap/str
             colormap.
 
         Returns
@@ -597,8 +597,8 @@ class ArrayGlyph:
         <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
         """
         # This is done to scale the values between 0 and 255
-        # TODO: not sure if scaling the array to rgb is necessary here.
-        return Image.fromarray(self.scale_to_rgb()).convert("RGB")
+        arr = self.arr if self.arr.dtype == "uint8" else self.scale_to_rgb()
+        return Image.fromarray(arr).convert("RGB")
 
     def scale_to_rgb(self) -> np.ndarray:
         """Create an RGB image.
