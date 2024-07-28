@@ -38,7 +38,7 @@ from matplotlib import animation
 from matplotlib.image import AxesImage
 from matplotlib.colorbar import Colorbar
 from matplotlib.colors import Colormap
-from matplotlib.ticker import LogFormatter
+import matplotlib.ticker as ticker
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
 from PIL import Image
@@ -508,7 +508,7 @@ class ArrayGlyph:
                 ),
                 extent=self.extent,
             )
-            formatter = LogFormatter(10, labelOnlyBase=False)
+            formatter = ticker.LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
         elif color_scale.lower() == COLOR_SCALE[3]:
             # boundary
@@ -1068,6 +1068,89 @@ class ArrayGlyph:
         #     im.norm(self.vmax) / 2.0
         plt.show()
         return fig, ax
+
+    def adjust_ticks(
+        self,
+        axis: str,
+        multiply_value: Union[float, int] = 1,
+        add_value: Union[float, int] = 0,
+        fmt: str = "{0:g}",
+        visible: bool = True,
+    ):
+        """Adjust the ticks of the axes.
+
+        Parameters
+        ----------
+        axis: str
+            x or y.
+        multiply_value: Union[float, int]
+            value to be multiplied.
+        add_value: Union[float, int]
+            value to be added.
+        fmt: str, default is "{0:g}".
+            format of the ticks.
+            - 123.456 with the format "{0:f}" will give '123.456000'.
+            - 123.456 with the format "{0:.2f}" will give '123.46'.
+            - 123456.789 with the format "{0:e}" will give '1.234568e+05'.
+            - 123456.789 with the format "{0:.2e}" will give '1.23e+05'.
+            - 123456.789 with the format "{0:g}" will give '123457'.
+            - 123456.789 with the format "{0:.2g}" will give '1.2e+05'.
+            - 123 with the format "{0:d}" will give '123'.
+         visible: bool, optional, default is True.
+            Whether the ticks are visible or not.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        - Create an array and instantiate the `ArrayGlyph` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+            >>> extent = [34.62, 34.65, 31.82, 31.85]
+            >>> my_glyph = ArrayGlyph(arr, extent=extent)
+            >>> fig, ax = my_glyph.plot()
+
+            .. image:: /_images/adjust_tick.png
+                :alt: Example Image
+                :align: center
+
+        - Adjust the ticks of the x-axis.
+
+            >>> my_glyph.adjust_ticks(axis='x', multiply_value=0.01, add_value=34.62, fmt="{0:.2f}")
+
+            .. image:: /_images/adjust_tick-x.png
+                :alt: Example Image
+                :align: center
+
+        - Adjust the ticks of the y-axis.
+
+            >>> my_glyph.adjust_ticks(axis='y', multiply_value=0.01, add_value=31.82, fmt="{0:.2e}")
+
+            .. image:: /_images/adjust_tick-y.png
+                :alt: Example Image
+                :align: center
+        """
+        if axis == "x":
+            ticks_x = ticker.FuncFormatter(
+                lambda x, pos: fmt.format(x * multiply_value + add_value)
+            )
+            self.ax.xaxis.set_major_formatter(ticks_x)
+        else:
+            ticks_y = ticker.FuncFormatter(
+                lambda y, pos: fmt.format(y * multiply_value + add_value)
+            )
+            self.ax.yaxis.set_major_formatter(ticks_y)
+
+        if not visible:
+            if axis == "x":
+                self.ax.get_xaxis().set_visible(visible)
+            else:
+                self.ax.get_yaxis().set_visible(visible)
+
+        plt.show()
 
     def animate(
         self,

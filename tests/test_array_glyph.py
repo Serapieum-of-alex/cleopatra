@@ -361,3 +361,19 @@ def test_to_image():
 
     image = my_glyph.to_image()
     assert isinstance(image, Image.Image)
+
+
+def test_adjust_ticks():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    extent = [
+        34.626902783650785,
+        34.654007151597256,
+        31.82337186561403,
+        31.8504762335605,
+    ]
+    my_glyph = ArrayGlyph(arr, extent=extent)
+    fig, ax = my_glyph.plot()
+    my_glyph.adjust_ticks(axis="x", multiply_value=100)
+    ax = my_glyph.ax
+    values = [val.get_text() for val in ax.xaxis.get_ticklabels()]
+    assert values == ["3100", "3200", "3300", "3400", "3500"]
