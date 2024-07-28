@@ -55,6 +55,7 @@ DEFAULT_OPTIONS = dict(
 )
 DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
+COLOR_SCALE = ["linear", "power", "lognorm", "boundary", "midpoint"]
 
 
 class ArrayGlyph:
@@ -476,10 +477,12 @@ class ArrayGlyph:
         vmin: float = ticks[0]  # self.default_options["vmin"]
         vmax: float = ticks[-1]  # self.default_options["vmax"]
 
-        if color_scale.lower() == "linear":
+        if color_scale.lower() == COLOR_SCALE[0]:
+            # linear
             im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=self.extent)
             cbar_kw = dict(ticks=ticks)
-        elif color_scale.lower() == "power":
+        elif color_scale.lower() == COLOR_SCALE[1]:
+            # power
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -489,7 +492,8 @@ class ArrayGlyph:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
-        elif color_scale.lower() == "sym-lognorm":
+        elif color_scale.lower() == COLOR_SCALE[2]:
+            # lognorm
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -504,7 +508,8 @@ class ArrayGlyph:
             )
             formatter = LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale.lower() == "boundary-norm":
+        elif color_scale.lower() == COLOR_SCALE[3]:
+            # boundary
             if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
@@ -513,7 +518,8 @@ class ArrayGlyph:
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
-        elif color_scale.lower() == "midpoint":
+        elif color_scale.lower() == COLOR_SCALE[4]:
+            # midpoint
             arr = arr.filled(np.nan)
             im = ax.matshow(
                 arr,
@@ -528,8 +534,7 @@ class ArrayGlyph:
             cbar_kw = dict(ticks=ticks)
         else:
             raise ValueError(
-                f"Invalid color scale option: {color_scale}. Use 'linear', 'power', 'power-norm',"
-                "'sym-lognorm', 'boundary-norm'"
+                f"Invalid color scale option: {color_scale}. Use {COLOR_SCALE}"
             )
 
         return im, cbar_kw
@@ -750,21 +755,21 @@ class ArrayGlyph:
                 2- `power`:
                     for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
                     normalization over that range.
-                3- `sym-lognorm`:
+                3- `lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
-                4- `boundary-norm`:
-                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                4- `boundary`:
+                    the Boundary scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
                     the midpoint scale splits the scale into 2 halfs, be the given value.
             gamma: [float], optional, default is 0.5.
                 value needed for the color_scale `power`.
             line_threshold: float, optional, default is 0.0001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             line_scale: float, optional, default is 0.001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             bounds: List, default is None,
-                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+                a list of number to be used as a discrete bounds for the color scale `boundary`.
             midpoint: float, optional, default is 0.
                 value needed for the color_scale `midpoint`.
             cmap: str, optional, default is 'coolwarm_r'.
@@ -915,7 +920,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="sym-lognorm",
+                    ...     color_scale="lognorm",
                     ...     cmap="coolwarm_r",
                     ... )
 
@@ -931,7 +936,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="sym-lognorm",
+                    ...     color_scale="lognorm",
                     ...     cmap="coolwarm_r",
                     ...     line_threshold=0.015,
                     ...     line_scale=0.1,
@@ -947,7 +952,7 @@ class ArrayGlyph:
                 >>> fig, ax = array.plot(
                 ...     cbar_label_rotation=-90,
                 ...     cbar_label="Discharge m3/s",
-                ...     color_scale="boundary-norm",
+                ...     color_scale="boundary",
                 ...     cmap="coolwarm_r",
                 ... )
 
@@ -964,7 +969,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="boundary-norm",
+                    ...     color_scale="boundary",
                     ...     bounds=bounds,
                     ...     cmap="coolwarm_r",
                     ... )
@@ -1130,21 +1135,21 @@ class ArrayGlyph:
                 2- `power`:
                     for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
                     normalization over that range.
-                3- `sym-lognorm`:
+                3- `lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
-                4- `boundary-norm`:
-                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                4- `boundary`:
+                    the Boundary scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
                     the midpoint scale splits the scale into 2 halfs, be the given value.
             gamma: [float], optional, default is 0.5.
                 value needed for the color_scale `power`.
             line_threshold: float, optional, default is 0.0001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             line_scale: float, optional, default is 0.001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             bounds: List, default is None,
-                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+                a list of number to be used as a discrete bounds for the color scale `boundary`.
             midpoint: float, optional, default is 0.
                 value needed for the color_scale `midpoint`.
             cmap: str, optional, default is 'coolwarm_r'.
