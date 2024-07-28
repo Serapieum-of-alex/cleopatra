@@ -229,11 +229,11 @@ class ArrayGlyph:
         .. note::
 
             - The `prepare_array` function is called in the constructor of the `ArrayGlyph` class to prepare the array,
-                so you can provide the same parameters of the `prepare_array` function to the `ArrayGlyph constructor`.
+              so you can provide the same parameters of the `prepare_array` function to the `ArrayGlyph constructor`.
             - The prepare function moves the first axes (the channel axis) to the last axes, and then scales the array
-                using the percentile values. If the percentile is not given, the function scales the array using the
-                surface reflectance values. If the surface reflectance is not given, the function scales the array using
-                the cutoff values. If the cutoff is not given, the function scales the array using the sentinel data
+              using the percentile values. If the percentile is not given, the function scales the array using the
+              surface reflectance values. If the surface reflectance is not given, the function scales the array using
+              the cutoff values. If the cutoff is not given, the function scales the array using the sentinel data
 
         Examples
         --------
