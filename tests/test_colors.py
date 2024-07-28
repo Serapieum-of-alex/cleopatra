@@ -40,10 +40,10 @@ def test_is_valid_rgb_norm_255():
     """test_create_colors_object."""
     rgb_color = (128, 51, 204)
     color = Colors(rgb_color)
-    assert color.is_valid_rgb_255(rgb_color) is True
+    assert color._is_valid_rgb_255(rgb_color) is True
     rgb_color = (0.5, 0.2, 0.8)
     color = Colors(rgb_color)
-    assert color.is_valid_rgb_norm(rgb_color) is True
+    assert color._is_valid_rgb_norm(rgb_color) is True
 
 
 def test_is_valid_rgb():
@@ -53,12 +53,12 @@ def test_is_valid_rgb():
     assert all(color.is_valid_rgb())
 
 
-def test_is_valid():
+def test_is_valid_hex():
     """test_create_colors_object."""
-    hex_number = ["ff0000", "#23a9dd"]
+    hex_number = ["ff0000", "#23a9dd", (128, 51, 204), (0.5, 0.2, 0.8)]
     color = Colors(hex_number)
     valid = color.is_valid_hex()
-    assert valid == [False, True]
+    assert valid == [False, True, False, False]
 
 
 def test_to_rgb():
