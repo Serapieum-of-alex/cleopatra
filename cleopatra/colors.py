@@ -319,12 +319,12 @@ class Colors:
 
         return rgb
 
-    def get_color_map(self, ramp_name: str = None) -> Colormap:
+    def get_color_map(self, name: str = None) -> Colormap:
         """Get color ramp from a color values in stored in the object.
 
         Parameters
         ----------
-        ramp_name: str, Default is None.
+        name: str, Default is None.
             The name of the color ramp.
 
         Returns
@@ -343,7 +343,5 @@ class Colors:
             <matplotlib.colors.LinearSegmentedColormap object at 0x7f8a2e1b5e50>
         """
         vals = self.to_rgb(normalized=True)
-        if ramp_name:
-            ramp_name = "custom_ramp"
-
-        return LinearSegmentedColormap.from_list(ramp_name, vals)
+        name = "custom_color_map" if name is None else name
+        return LinearSegmentedColormap.from_list(name, vals)
