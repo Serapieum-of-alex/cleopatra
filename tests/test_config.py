@@ -8,7 +8,7 @@ class TestSetMatplotlibBackend:
     def test_set_set_matplotlib_backend(self):
         Config.set_matplotlib_backend()
         backend = plt.get_backend()
-        assert backend == 'TkAgg'
+        assert backend == 'TkAgg' or backend == 'Agg'
 
 
 def test_is_notebook():

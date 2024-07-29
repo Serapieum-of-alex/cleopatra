@@ -37,9 +37,13 @@ class Config:
                     get_ipython().run_line_magic('matplotlib', 'inline')
                     print("Matplotlib backend set to inline for static plots in Jupyter notebook")
             else:
-                # Running in an IDE or script
-                plt.switch_backend('TkAgg')
-                print("Matplotlib backend set to TkAgg for script or IDE")
+                try:
+                    # Running in an IDE or script
+                    plt.switch_backend('TkAgg')
+                    print("Matplotlib backend set to TkAgg for script or IDE")
+                except ImportError:
+                    plt.switch_backend('Agg')
+                    print("Matplotlib backend set to Agg (non-interactive)")
 
 
 def is_notebook():
