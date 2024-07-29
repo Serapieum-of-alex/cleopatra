@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -32,7 +33,9 @@ class Config:
                 if interactive:
                     get_ipython().run_line_magic("matplotlib", "notebook")  # noqa: F821
                     # plt.switch_backend('nbAgg')
-                    print("Matplotlib backend set to nbAgg for Jupyter notebook")
+                    print(
+                        "Matplotlib backend set to interactive backend for Jupyter notebook"
+                    )
                 else:
                     # Running in a Jupyter notebook
                     get_ipython().run_line_magic("matplotlib", "inline")  # noqa: F821
@@ -42,7 +45,8 @@ class Config:
             else:
                 try:
                     # Running in an IDE or script
-                    plt.switch_backend("TkAgg")
+                    # plt.switch_backend("TkAgg")
+                    matplotlib.use("TkAgg")
                     print("Matplotlib backend set to TkAgg for script or IDE")
                 except ImportError:
                     plt.switch_backend("Agg")
