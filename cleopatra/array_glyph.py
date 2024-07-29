@@ -79,7 +79,7 @@ class ArrayGlyph:
         Parameters
         ----------
         array: np.ndarray
-            array.
+            array, if 3D (i.e., (3, 5, 5)) the chennel dimenstion is the first dimension.
         exclude_value: numeric, Optional, Default is np.nan.
             value used to fill cells out of the domain.
         extent: List, Default is None.
@@ -209,8 +209,8 @@ class ArrayGlyph:
         ----------
         array: np.ndarray
             array.
-        rgb: List, Default is [3,2,1]
-            the indices of the red, green, and blue bands in the given array.
+        rgb: List, Default is None.
+            The indices of the red, green, and blue bands in the given array.
         surface_reflectance: int, Default is 10000.
             surface reflectance value of the sentinel data.
         cutoff: List, Default is None.
@@ -317,7 +317,7 @@ class ArrayGlyph:
         ----------
         array: np.ndarray
             array.
-        rgb: List, Default is [3,2,1]
+        rgb: List, Default is None.
             the indices of the red, green, and blue bands in the given array.
         surface_reflectance: int, Default is 10000.
             surface reflectance value of the sentinel data.
