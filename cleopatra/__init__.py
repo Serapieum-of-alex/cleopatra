@@ -1,3 +1,11 @@
+"""
+cleopatra - visualization package
+"""
+
+from cleopatra.config import Config
+
+__all__ = ["array_glyph", "colors", "config", "statistical_glyph", "styles"]
+
 try:
     from importlib.metadata import PackageNotFoundError  # type: ignore
     from importlib.metadata import version
@@ -10,6 +18,9 @@ try:
     __version__ = version(__name__)
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
+
+config = Config()
+config.set_matplotlib_backend()
 
 # documentation format
 __author__ = "Mostafa Farrag"
