@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 class Config:
     """Configuration class for the cleopatra package."""
+
     def __init__(self):
         pass
 
@@ -29,20 +30,22 @@ class Config:
         else:
             if is_notebook():
                 if interactive:
-                    get_ipython().run_line_magic('matplotlib', 'notebook')
+                    get_ipython().run_line_magic("matplotlib", "notebook")  # noqa: F821
                     # plt.switch_backend('nbAgg')
                     print("Matplotlib backend set to nbAgg for Jupyter notebook")
                 else:
                     # Running in a Jupyter notebook
-                    get_ipython().run_line_magic('matplotlib', 'inline')
-                    print("Matplotlib backend set to inline for static plots in Jupyter notebook")
+                    get_ipython().run_line_magic("matplotlib", "inline")  # noqa: F821
+                    print(
+                        "Matplotlib backend set to inline for static plots in Jupyter notebook"
+                    )
             else:
                 try:
                     # Running in an IDE or script
-                    plt.switch_backend('TkAgg')
+                    plt.switch_backend("TkAgg")
                     print("Matplotlib backend set to TkAgg for script or IDE")
                 except ImportError:
-                    plt.switch_backend('Agg')
+                    plt.switch_backend("Agg")
                     print("Matplotlib backend set to Agg (non-interactive)")
 
 
@@ -52,9 +55,9 @@ def is_notebook():
     """
     try:
         shell = get_ipython().__class__.__name__
-        if shell == 'ZMQInteractiveShell':
+        if shell == "ZMQInteractiveShell":
             return True  # Jupyter notebook or qtconsole
-        elif shell == 'TerminalInteractiveShell':
+        elif shell == "TerminalInteractiveShell":
             return False  # Terminal running IPython
         else:
             return False  # Other type (probably not an IPython environment)
