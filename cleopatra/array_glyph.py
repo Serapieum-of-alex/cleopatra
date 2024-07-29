@@ -37,9 +37,11 @@ from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 from matplotlib.image import AxesImage
 from matplotlib.colorbar import Colorbar
-from matplotlib.ticker import LogFormatter
+from matplotlib.colors import Colormap
+import matplotlib.ticker as ticker
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
+from PIL import Image
 
 DEFAULT_OPTIONS = dict(
     vmin=None,
@@ -53,6 +55,7 @@ DEFAULT_OPTIONS = dict(
 )
 DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 SUPPORTED_VIDEO_FORMAT = ["gif", "mov", "avi", "mp4"]
+COLOR_SCALE = ["linear", "power", "lognorm", "boundary", "midpoint"]
 
 
 class ArrayGlyph:
@@ -76,7 +79,7 @@ class ArrayGlyph:
         Parameters
         ----------
         array: np.ndarray
-            array.
+            array, if 3D (i.e., (3, 5, 5)) the chennel dimenstion is the first dimension.
         exclude_value: numeric, Optional, Default is np.nan.
             value used to fill cells out of the domain.
         extent: List, Default is None.
@@ -167,7 +170,7 @@ class ArrayGlyph:
             np.nanmin(array) if kwargs.get("vmin") is None else kwargs.get("vmin")
         )
 
-        self.arr = array
+        self._arr = array
         # get the tick spacing that has 10 ticks only
         self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
@@ -177,10 +180,20 @@ class ArrayGlyph:
             no_elem = array.count()
 
         self.no_elem = no_elem
-        if fig is None:
-            self.fig, self.ax = self.create_figure_axes()
-        else:
+
+        if fig is not None:
             self.fig, self.ax = fig, ax
+        else:
+            self.fig = None
+
+    @property
+    def arr(self):
+        """array"""
+        return self._arr
+
+    @arr.setter
+    def arr(self, value):
+        self._arr = value
 
     def prepare_array(
         self,
@@ -196,8 +209,8 @@ class ArrayGlyph:
         ----------
         array: np.ndarray
             array.
-        rgb: List, Default is [3,2,1]
-            the indices of the red, green, and blue bands in the given array.
+        rgb: List, Default is None.
+            The indices of the red, green, and blue bands in the given array.
         surface_reflectance: int, Default is 10000.
             surface reflectance value of the sentinel data.
         cutoff: List, Default is None.
@@ -208,9 +221,73 @@ class ArrayGlyph:
 
         Returns
         -------
-        np.ndarray: np.float32
+        np.ndarray: np.float32/input dtype
             the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
-            a float32 array normalized between 0 and 1 using the percentile values.
+            a float32 array normalized between 0 and 1 using the `percentile` values or the `surface_reflectance`.
+            if the `percentile` or `surface_reflectance` values are not given, the function just reorders the values
+            to have the red-green-blue order.
+
+        .. note::
+
+            - The `prepare_array` function is called in the constructor of the `ArrayGlyph` class to prepare the array,
+              so you can provide the same parameters of the `prepare_array` function to the `ArrayGlyph constructor`.
+            - The prepare function moves the first axes (the channel axis) to the last axes, and then scales the array
+              using the percentile values. If the percentile is not given, the function scales the array using the
+              surface reflectance values. If the surface reflectance is not given, the function scales the array using
+              the cutoff values. If the cutoff is not given, the function scales the array using the sentinel data
+
+        Examples
+        --------
+        - Create an array and instantiate the `ArrayGlyph` class.
+
+            >>> import numpy as np
+            >>> arr = np.random.randint(0, 255, size=(3, 5, 5)).astype(np.float32)
+            >>> array_glyph = ArrayGlyph(arr)
+            >>> print(array_glyph.arr.shape)
+            (3, 5, 5)
+
+        `rgb` channels:
+            - Now let's use the `prepare_array` function with `rgb` channels as [0, 1, 2]. so the finction does not to
+                reorder the chennels. but it just needs to move the first axis to the last axis.
+
+            >>> rgb_array = array_glyph.prepare_array(arr, rgb=[0, 1, 2])
+            >>> print(rgb_array.shape)
+            (5, 5, 3)
+
+            - If we compare the values of the first channel in the original array with the first array in the rgb array it
+                should be the same.
+
+            >>> np.testing.assert_equal(arr[0, :, :],rgb_array[:, :, 0])
+
+        surface_reflectance:
+            - if you provide the surface reflectance value, the function will scale the array using the surface reflectance
+                value to a normalized rgb values.
+
+            >>> array_glyph = ArrayGlyph(arr)
+            >>> rgb_array = array_glyph.prepare_array(arr, surface_reflectance=10000, rgb=[0, 1, 2])
+            >>> print(rgb_array.shape)
+            (5, 5, 3)
+
+            - if you print the values of the first channel, you will find all the values are between 0 and 1.
+            >>> print(rgb_array[:, :, 0])
+            [[0.0195 0.02   0.0109 0.0211 0.0087]
+             [0.0112 0.0221 0.0035 0.0234 0.0141]
+             [0.0116 0.0188 0.0001 0.0176 0.    ]
+             [0.0014 0.0147 0.0043 0.0167 0.0117]
+             [0.0083 0.0139 0.0186 0.02   0.0058]]
+
+            - With the `surface_reflectance` parameter, you can also use the `cutoff` parameter to affect values that
+                are above it, by rescaling them.
+
+            >>> rgb_array = array_glyph.prepare_array(
+            ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
+            ... )
+            >>> print(rgb_array[:, :, 0])
+            [[0.     0.     0.     0.     0.    ]
+             [1.     1.     1.     1.     1.    ]
+             [1.     1.     1.     1.     1.    ]
+             [0.0014 0.0147 0.0043 0.0167 0.0117]
+             [0.0083 0.0139 0.0186 0.02   0.0058]]
         """
         # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
@@ -240,7 +317,7 @@ class ArrayGlyph:
         ----------
         array: np.ndarray
             array.
-        rgb: List, Default is [3,2,1]
+        rgb: List, Default is None.
             the indices of the red, green, and blue bands in the given array.
         surface_reflectance: int, Default is 10000.
             surface reflectance value of the sentinel data.
@@ -350,7 +427,6 @@ class ArrayGlyph:
         fig = plt.figure(figsize=self.default_options["figsize"])
         # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
         ax = fig.add_subplot()  # gs[:,:]
-
         return fig, ax
 
     def get_ticks(self) -> np.ndarray:
@@ -403,10 +479,12 @@ class ArrayGlyph:
         vmin: float = ticks[0]  # self.default_options["vmin"]
         vmax: float = ticks[-1]  # self.default_options["vmax"]
 
-        if color_scale.lower() == "linear":
+        if color_scale.lower() == COLOR_SCALE[0]:
+            # linear
             im = ax.matshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, extent=self.extent)
             cbar_kw = dict(ticks=ticks)
-        elif color_scale.lower() == "power":
+        elif color_scale.lower() == COLOR_SCALE[1]:
+            # power
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -416,7 +494,8 @@ class ArrayGlyph:
                 extent=self.extent,
             )
             cbar_kw = dict(ticks=ticks)
-        elif color_scale.lower() == "sym-lognorm":
+        elif color_scale.lower() == COLOR_SCALE[2]:
+            # lognorm
             im = ax.matshow(
                 arr,
                 cmap=cmap,
@@ -429,9 +508,10 @@ class ArrayGlyph:
                 ),
                 extent=self.extent,
             )
-            formatter = LogFormatter(10, labelOnlyBase=False)
+            formatter = ticker.LogFormatter(10, labelOnlyBase=False)
             cbar_kw = dict(ticks=ticks, format=formatter)
-        elif color_scale.lower() == "boundary-norm":
+        elif color_scale.lower() == COLOR_SCALE[3]:
+            # boundary
             if not self.default_options["bounds"]:
                 bounds = ticks
                 cbar_kw = dict(ticks=ticks)
@@ -440,7 +520,8 @@ class ArrayGlyph:
                 cbar_kw = dict(ticks=self.default_options["bounds"])
             norm = colors.BoundaryNorm(boundaries=bounds, ncolors=256)
             im = ax.matshow(arr, cmap=cmap, norm=norm, extent=self.extent)
-        elif color_scale.lower() == "midpoint":
+        elif color_scale.lower() == COLOR_SCALE[4]:
+            # midpoint
             arr = arr.filled(np.nan)
             im = ax.matshow(
                 arr,
@@ -455,11 +536,101 @@ class ArrayGlyph:
             cbar_kw = dict(ticks=ticks)
         else:
             raise ValueError(
-                f"Invalid color scale option: {color_scale}. Use 'linear', 'power', 'power-norm',"
-                "'sym-lognorm', 'boundary-norm'"
+                f"Invalid color scale option: {color_scale}. Use {COLOR_SCALE}"
             )
 
         return im, cbar_kw
+
+    def apply_colormap(self, cmap: Union[Colormap, str]) -> np.ndarray:
+        """Apply a matplotlib colormap to an array.
+
+            Create an RGB channel from the given array using the given colormap.
+
+        Parameters
+        ----------
+        cmap: Colormap/str
+            colormap.
+
+        Returns
+        -------
+        np.ndarray: 8-bit array
+            the array with the colormap applied.
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = ArrayGlyph(arr)
+            >>> rgb_array = array.apply_colormap("coolwarm_r")
+            >>> print(rgb_array)
+            [[[179   3  38]
+              [221  96  76]
+              [244 154 123]]
+             [[244 196 173]
+              [220 220 221]
+              [183 207 249]]
+             [[139 17 4 253]
+              [ 96 128 232]
+              [ 58  76 192]]]
+              >>> print(rgb_array.dtype)
+                uint8
+        """
+        colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
+        normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
+        colored = colormap(normed_data)
+        return (colored[:, :, :3] * 255).astype("uint8")
+
+    def to_image(self, arr: np.ndarray = None) -> Image.Image:
+        """Create an RGB image from an array.
+
+            convert the array to an image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> image = array.to_image()
+        >>> print(image) # doctest: +SKIP
+        <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
+        """
+        if arr is None:
+            arr = self.arr
+        # This is done to scale the values between 0 and 255
+        arr = arr if arr.dtype == "uint8" else self.scale_to_rgb()
+        return Image.fromarray(arr).convert("RGB")
+
+    def scale_to_rgb(self, arr: np.ndarray = None) -> np.ndarray:
+        """Create an RGB image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> rgb_array = array.scale_to_rgb()
+        >>> print(rgb_array)
+        [[28 56 85]
+         [113 141 170]
+         [198 226 255]]
+         >>> print(rgb_array.dtype)
+        """
+        if arr is None:
+            arr = self.arr
+        # This is done to scale the values between 0 and 255
+        return (arr * 255 / arr.max()).astype("uint8")
 
     @staticmethod
     def _plot_text(
@@ -600,21 +771,21 @@ class ArrayGlyph:
                 2- `power`:
                     for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
                     normalization over that range.
-                3- `sym-lognorm`:
+                3- `lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
-                4- `boundary-norm`:
-                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                4- `boundary`:
+                    the Boundary scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
                     the midpoint scale splits the scale into 2 halfs, be the given value.
             gamma: [float], optional, default is 0.5.
                 value needed for the color_scale `power`.
             line_threshold: float, optional, default is 0.0001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             line_scale: float, optional, default is 0.001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             bounds: List, default is None,
-                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+                a list of number to be used as a discrete bounds for the color scale `boundary`.
             midpoint: float, optional, default is 0.
                 value needed for the color_scale `midpoint`.
             cmap: str, optional, default is 'coolwarm_r'.
@@ -765,7 +936,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="sym-lognorm",
+                    ...     color_scale="lognorm",
                     ...     cmap="coolwarm_r",
                     ... )
 
@@ -781,7 +952,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="sym-lognorm",
+                    ...     color_scale="lognorm",
                     ...     cmap="coolwarm_r",
                     ...     line_threshold=0.015,
                     ...     line_scale=0.1,
@@ -797,7 +968,7 @@ class ArrayGlyph:
                 >>> fig, ax = array.plot(
                 ...     cbar_label_rotation=-90,
                 ...     cbar_label="Discharge m3/s",
-                ...     color_scale="boundary-norm",
+                ...     color_scale="boundary",
                 ...     cmap="coolwarm_r",
                 ... )
 
@@ -814,7 +985,7 @@ class ArrayGlyph:
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
                     ...     cbar_label="Discharge m3/s",
-                    ...     color_scale="boundary-norm",
+                    ...     color_scale="boundary",
                     ...     bounds=bounds,
                     ...     cmap="coolwarm_r",
                     ... )
@@ -847,6 +1018,9 @@ class ArrayGlyph:
                 )
             else:
                 self.default_options[key] = val
+
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
 
         arr = self.arr
         fig, ax = self.fig, self.ax
@@ -911,6 +1085,89 @@ class ArrayGlyph:
         #     im.norm(self.vmax) / 2.0
         plt.show()
         return fig, ax
+
+    def adjust_ticks(
+        self,
+        axis: str,
+        multiply_value: Union[float, int] = 1,
+        add_value: Union[float, int] = 0,
+        fmt: str = "{0:g}",
+        visible: bool = True,
+    ):
+        """Adjust the ticks of the axes.
+
+        Parameters
+        ----------
+        axis: str
+            x or y.
+        multiply_value: Union[float, int]
+            value to be multiplied.
+        add_value: Union[float, int]
+            value to be added.
+        fmt: str, default is "{0:g}".
+            format of the ticks.
+            - 123.456 with the format "{0:f}" will give '123.456000'.
+            - 123.456 with the format "{0:.2f}" will give '123.46'.
+            - 123456.789 with the format "{0:e}" will give '1.234568e+05'.
+            - 123456.789 with the format "{0:.2e}" will give '1.23e+05'.
+            - 123456.789 with the format "{0:g}" will give '123457'.
+            - 123456.789 with the format "{0:.2g}" will give '1.2e+05'.
+            - 123 with the format "{0:d}" will give '123'.
+         visible: bool, optional, default is True.
+            Whether the ticks are visible or not.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        - Create an array and instantiate the `ArrayGlyph` object.
+
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+            >>> extent = [34.62, 34.65, 31.82, 31.85]
+            >>> my_glyph = ArrayGlyph(arr, extent=extent)
+            >>> fig, ax = my_glyph.plot()
+
+            .. image:: /_images/adjust_tick.png
+                :alt: Example Image
+                :align: center
+
+        - Adjust the ticks of the x-axis.
+
+            >>> my_glyph.adjust_ticks(axis='x', multiply_value=0.01, add_value=34.62, fmt="{0:.2f}")
+
+            .. image:: /_images/adjust_tick-x.png
+                :alt: Example Image
+                :align: center
+
+        - Adjust the ticks of the y-axis.
+
+            >>> my_glyph.adjust_ticks(axis='y', multiply_value=0.01, add_value=31.82, fmt="{0:.2e}")
+
+            .. image:: /_images/adjust_tick-y.png
+                :alt: Example Image
+                :align: center
+        """
+        if axis == "x":
+            ticks_x = ticker.FuncFormatter(
+                lambda x, pos: fmt.format(x * multiply_value + add_value)
+            )
+            self.ax.xaxis.set_major_formatter(ticks_x)
+        else:
+            ticks_y = ticker.FuncFormatter(
+                lambda y, pos: fmt.format(y * multiply_value + add_value)
+            )
+            self.ax.yaxis.set_major_formatter(ticks_y)
+
+        if not visible:
+            if axis == "x":
+                self.ax.get_xaxis().set_visible(visible)
+            else:
+                self.ax.get_yaxis().set_visible(visible)
+
+        plt.show()
 
     def animate(
         self,
@@ -980,21 +1237,21 @@ class ArrayGlyph:
                 2- `power`:
                     for the power scale. Linearly map a given value to the 0-1 range and then apply a power-law
                     normalization over that range.
-                3- `sym-lognorm`:
+                3- `lognorm`:
                     the symmetrical logarithmic scale `SymLogNorm` is logarithmic in both the positive and
                     negative directions from the origin.
-                4- `boundary-norm`:
-                    the BoundaryNorm scale generates a colormap index based on discrete intervals.
+                4- `boundary`:
+                    the Boundary scale generates a colormap index based on discrete intervals.
                 5- `midpoint`:
                     the midpoint scale splits the scale into 2 halfs, be the given value.
             gamma: [float], optional, default is 0.5.
                 value needed for the color_scale `power`.
             line_threshold: float, optional, default is 0.0001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             line_scale: float, optional, default is 0.001.
-                value needed for the color_scale `sym-lognorm`.
+                value needed for the color_scale `lognorm`.
             bounds: List, default is None,
-                a list of number to be used as a discrete bounds for the color scale `boundary-norm`.
+                a list of number to be used as a discrete bounds for the color scale `boundary`.
             midpoint: float, optional, default is 0.
                 value needed for the color_scale `midpoint`.
             cmap: str, optional, default is 'coolwarm_r'.
@@ -1064,6 +1321,10 @@ class ArrayGlyph:
         # if optional_display
         precision = self.default_options["precision"]
         array = self.arr
+
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()

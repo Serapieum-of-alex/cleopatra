@@ -1,5 +1,8 @@
 from typing import List, Union, Tuple, Any
 from matplotlib import colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap, Colormap
+from pathlib import Path
+from PIL import Image
 
 
 class Colors:
@@ -52,6 +55,47 @@ class Colors:
 
         self._color_value = color_value
 
+    @classmethod
+    def create_from_image(cls, path: str) -> "Colors":
+        """Create a color object from an image.
+
+        if you have an image of a color ramp, and you want to extract the colors from it, you can use this method.
+
+        .. image:: /_images/colors/color-ramp.png
+            :alt: Example Image
+            :align: center
+
+        Parameters
+        ----------
+        path : str
+            The path to the image file.
+
+        Returns
+        -------
+        Colors
+            A color object.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the file does not exist.
+
+        Examples
+        --------
+        >>> path = "examples/data/colors/color-ramp.png"
+        >>> colors = Colors.create_from_image(path)
+        >>> print(colors.color_value) # doctest: +SKIP
+        [(9, 63, 8), (8, 68, 9), (5, 78, 7), (1, 82, 3), (0, 84, 0), (0, 85, 0), (1, 83, 0), (1, 81, 0), (1, 80, 1)
+        """
+        if not Path(path).exists():
+            raise FileNotFoundError(f"The file {path} does not exist.")
+
+        image = Image.open(path).convert("RGB")
+        width, height = image.size
+        color_values = [image.getpixel((x, int(height / 2))) for x in range(width)]
+
+        return cls(color_values)
+
     def get_type(self) -> List[str]:
         """get_type.
 
@@ -81,14 +125,21 @@ class Colors:
             >>> color = Colors(rgb_color)
             >>> print(color.get_type())
             ['rgb']
+
+        - Create a color object from a mixed list of hex and RGB colors:
+
+            >>> color_values = ["ff0000", "#23a9dd", (128, 51, 204), (0.5, 0.2, 0.8)]
+            >>> color = Colors(color_values)
+            >>> print(color.get_type())
+            ['hex', 'rgb', 'rgb-normalized']
         """
         color_type = []
         for color_i in self.color_value:
-            if self.is_valid_rgb_norm(color_i):
+            if self._is_valid_rgb_norm(color_i):
                 color_type.append("rgb-normalized")
-            elif self.is_valid_rgb_255(color_i):
+            elif self._is_valid_rgb_255(color_i):
                 color_type.append("rgb")
-            elif self.is_valid_hex_i(color_i):
+            elif self._is_valid_hex_i(color_i):
                 color_type.append("hex")
 
         return color_type
@@ -143,12 +194,22 @@ class Colors:
 
         Returns
         -------
+        List[bool]
+            List of boolean values for
 
+        Examples
+        --------
+        - Create a color object from a mixed list of hex and RGB colors:
+
+            >>> mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+            >>> color = Colors(mixed_color)
+            >>> print(color.is_valid_hex())
+            [False, True, False]
         """
-        return [self.is_valid_hex_i(col) for col in self.color_value]
+        return [self._is_valid_hex_i(col) for col in self.color_value]
 
     @staticmethod
-    def is_valid_hex_i(hex_color: str) -> bool:
+    def _is_valid_hex_i(hex_color: str) -> bool:
         """is_valid_hex for single color.
 
 
@@ -160,7 +221,10 @@ class Colors:
         -------
         bool
         """
-        return True if mcolors.is_color_like(hex_color) else False
+        if not isinstance(hex_color, str):
+            return False
+        else:
+            return True if mcolors.is_color_like(hex_color) else False
 
     def is_valid_rgb(self) -> List[bool]:
         """is_valid_rgb.
@@ -169,14 +233,23 @@ class Colors:
         -------
         List[bool]
             List of boolean values for each color
+
+        Examples
+        --------
+        - Create a color object from a mixed list of hex and RGB colors:
+
+            >>> mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+            >>> color = Colors(mixed_color)
+            >>> print(color.is_valid_rgb())
+            [True, False, True]
         """
         return [
-            self.is_valid_rgb_norm(col) or self.is_valid_rgb_255(col)
+            self._is_valid_rgb_norm(col) or self._is_valid_rgb_255(col)
             for col in self.color_value
         ]
 
     @staticmethod
-    def is_valid_rgb_255(rgb_tuple: Any) -> bool:
+    def _is_valid_rgb_255(rgb_tuple: Any) -> bool:
         """validate a single color whither it is rgb or not."""
         if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
             if all(isinstance(value, int) for value in rgb_tuple):
@@ -184,7 +257,7 @@ class Colors:
         return False
 
     @staticmethod
-    def is_valid_rgb_norm(rgb_tuple: Any) -> bool:
+    def _is_valid_rgb_norm(rgb_tuple: Any) -> bool:
         """validate a single color whither it is rgb or not."""
         if isinstance(rgb_tuple, tuple) and len(rgb_tuple) == 3:
             if all(isinstance(value, float) for value in rgb_tuple):
@@ -205,6 +278,24 @@ class Colors:
         Returns
         -------
         List[Tuples]
+            List of RGB values, default is normalized values.
+        Examples
+        --------
+        - Create a color object from a mixed list of hex and RGB colors:
+
+            >>> mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
+            >>> color = Colors(mixed_color)
+
+        - There are two types of RGB coor values (0-255), and (0-1), you can get the RGB values in any format, the
+            default is the normalized format (0-1):
+
+            >>> print(color.to_rgb())
+            [(0.5019607843137255, 0.2, 0.8), (0.13725490196078433, 0.6627450980392157, 0.8666666666666667), (0.5, 0.2, 0.8)]
+
+        - If you want the RGB values to be between 0 and 255, you can set the normalized parameter to False:
+
+            >>> print(color.to_rgb(normalized=False))
+            [(128, 51, 204), (35, 169, 221), (127, 51, 204)]
         """
         color_type = self.get_type()
         rgb = []
@@ -227,3 +318,30 @@ class Colors:
                     rgb.append(tuple([int(c * 255) for c in mcolors.to_rgb(color_i)]))
 
         return rgb
+
+    def get_color_map(self, name: str = None) -> Colormap:
+        """Get color ramp from a color values in stored in the object.
+
+        Parameters
+        ----------
+        name: str, Default is None.
+            The name of the color ramp.
+
+        Returns
+        -------
+        Colormap:
+            A color map.
+
+        Examples
+        --------
+        - Create a color object from an image and get the color ramp:
+
+            >>> path = "examples/data/colors/color-ramp.png"
+            >>> colors = Colors.create_from_image(path)
+            >>> color_ramp = colors.get_color_map()
+            >>> print(color_ramp)
+            <matplotlib.colors.LinearSegmentedColormap object at 0x7f8a2e1b5e50>
+        """
+        vals = self.to_rgb(normalized=True)
+        name = "custom_color_map" if name is None else name
+        return LinearSegmentedColormap.from_list(name, vals)

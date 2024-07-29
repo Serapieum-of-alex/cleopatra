@@ -4,14 +4,14 @@ import matplotlib
 matplotlib.use("agg")
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
-from cleopatra.statistics import Statistic
+from cleopatra.statistical_glyph import StatisticalGlyph
 
 
 def test_histogram_one_sample():
     # make data
     np.random.seed(1)
     x = 4 + np.random.normal(0, 1.5, 200)
-    stat_plot = Statistic(x)
+    stat_plot = StatisticalGlyph(x)
     fig, ax, hist = stat_plot.histogram()
     assert isinstance(fig, Figure)
     assert isinstance(ax, Axes)
@@ -24,7 +24,7 @@ def test_histogram_multiple_sample():
     np.random.seed(1)
     x = 4 + np.random.normal(0, 1.5, (200, 3))
     colors = ["red", "green", "blue"]
-    stat_plot = Statistic(x, color=colors)
+    stat_plot = StatisticalGlyph(x, color=colors)
     fig, ax, hist = stat_plot.histogram()
     assert isinstance(fig, Figure)
     assert isinstance(ax, Axes)

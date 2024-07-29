@@ -64,7 +64,7 @@ DEFAULT_OPTIONS = dict(
 DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 
 
-class Statistic:
+class StatisticalGlyph:
     """
     A class for creating statistical plots, specifically histograms.
 
@@ -87,7 +87,7 @@ class Statistic:
     Example:
     >>> np.random.seed(1)
     >>> x = 4 + np.random.normal(0, 1.5, 200)
-    >>> stat_plot = Statistic(x)
+    >>> stat_plot = StatisticalGlyph(x)
     >>> fig, ax, hist = stat_plot.histogram()
     >>> print(hist) # doctest: +SKIP
     {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
@@ -176,7 +176,7 @@ class Statistic:
 
                 >>> np.random.seed(1)
                 >>> x = 4 + np.random.normal(0, 1.5, 200)
-                >>> stat_plot = Statistic(x)
+                >>> stat_plot = StatisticalGlyph(x)
                 >>> fig, ax, hist = stat_plot.histogram()
                 >>> print(hist) # doctest: +SKIP
                 {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
@@ -195,7 +195,7 @@ class Statistic:
 
                 >>> np.random.seed(1)
                 >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
-                >>> stat_plot = Statistic(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+                >>> stat_plot = StatisticalGlyph(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
                 >>> fig, ax, hist = stat_plot.histogram()
                 >>> print(hist) # doctest: +SKIP
                 {'n': [array([ 1.,  2.,  4., 10., 13., 19., 20., 32., 27., 23., 24., 11.,  5.,
