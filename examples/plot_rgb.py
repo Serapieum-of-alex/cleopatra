@@ -1,6 +1,6 @@
-import matplotlib
+from cleopatra.config import Config
 
-matplotlib.use("TkAgg")
+Config.set_matplotlib_backend()
 
 import numpy as np
 from cleopatra.array_glyph import ArrayGlyph

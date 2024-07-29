@@ -1,25 +1,22 @@
-import matplotlib
-
-matplotlib.use("TkAgg")
-import matplotlib.pyplot as plt
 import numpy as np
 import numpy.ma as ma
+from cleopatra.config import Config
+
+Config.set_matplotlib_backend()
 from cleopatra.array_glyph import ArrayGlyph
 
 # from matplotlib.transforms import blended_transform_factory
-# %%
+# %% create the glyph from a masked array
 arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 mask = np.array([[1, 0, 1], [0, 1, 0], [1, 0, 1]])
 arr = ma.masked_array(arr, mask=mask)
 array = ArrayGlyph(arr)
 # array.plot()
 # %%
-# arr = np.load("tests/data/s2a.npy")
-# arr = np.moveaxis(arr, 0, -1)
+arr = np.load("tests/data/s2a.npy")
+arr = np.moveaxis(arr, 0, -1)
 # %%
 arr = np.load("tests/data/arr.npy")
-arr = np.array([arr, arr])
-# arr = np.moveaxis(arr, 0, -1)
 exclude_value = arr[0, 0]
 cmap = "terrain"
 # arr2 = np.load("tests/data/DEM5km_Rhine_burned_fill.npy")
