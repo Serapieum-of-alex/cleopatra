@@ -180,10 +180,11 @@ class ArrayGlyph:
             no_elem = array.count()
 
         self.no_elem = no_elem
-        if fig is None:
-            self.fig, self.ax = self.create_figure_axes()
-        else:
+
+        if fig is not None:
             self.fig, self.ax = fig, ax
+        else:
+            self.fig = None
 
     @property
     def arr(self):
@@ -426,7 +427,6 @@ class ArrayGlyph:
         fig = plt.figure(figsize=self.default_options["figsize"])
         # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
         ax = fig.add_subplot()  # gs[:,:]
-
         return fig, ax
 
     def get_ticks(self) -> np.ndarray:
@@ -548,7 +548,7 @@ class ArrayGlyph:
 
         Parameters
         ----------
-        cmap: LinearSegmentedColormap/str
+        cmap: Colormap/str
             colormap.
 
         Returns
@@ -1019,6 +1019,9 @@ class ArrayGlyph:
             else:
                 self.default_options[key] = val
 
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+
         arr = self.arr
         fig, ax = self.fig, self.ax
 
@@ -1318,6 +1321,10 @@ class ArrayGlyph:
         # if optional_display
         precision = self.default_options["precision"]
         array = self.arr
+
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
