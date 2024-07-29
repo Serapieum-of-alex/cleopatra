@@ -20,6 +20,8 @@ class TestCreateColors:
         colors = Colors.create_from_image(color_ramp_image)
         assert isinstance(colors.color_value, list)
         assert len(colors.color_value) == 2713
+        with pytest.raises(FileNotFoundError):
+            Colors.create_from_image("color_ramp_image")
 
     def test_raise_error(self, color_ramp_image: str):
         with pytest.raises(ValueError):
