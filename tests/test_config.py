@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 from cleopatra.config import Config, is_notebook
 
 
+def test_create_config():
+    assert Config()
+
+
 class TestSetMatplotlibBackend:
 
     def test_set_set_matplotlib_backend(self):
