@@ -1,0 +1,70 @@
+[project]
+name = "cleopatra"
+version = "0.5.1"
+description = "visualization package"
+readme = "README.md"
+requires-python = ">=3.11,<4"
+license = { text = "GNU General Public License v3" }
+authors = [
+    { name = "Mostafa Farrag", email = "moah.farag@gmail.come" }
+]
+keywords = ["matplotlib", "visualization"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers"
+]
+
+dependencies = [
+    "ffmpeg-python",
+    "hpc-utils >=0.1.4",
+    "matplotlib >=3.8.4",
+    "numpy >=2.0.0",
+    "pip >=24.0.0",
+    "pytest >=8.2.2",
+    "pytest-cov >=5.0.0"
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "nbval >=0.11.0",
+    "pre-commit >=3.7.1",
+    "pre-commit-hooks >=4.6.0",
+    "pytest >=8.2.2",
+    "pytest-cov >=5.0.0",
+]
+docs = [
+    "graphviz",
+    "matplotlib >=3.8.4",
+    "nbsphinx",
+    "numpy >=2.0.0",
+    "numpydoc ==1.8.0",
+    "pip >=21.3.1",
+    "pydata_sphinx_theme >=0.15.2",
+    "sphinxcontrib-napoleon",
+    "typing-extensions ==4.12.*"
+]
+
+[tool.setuptools.packages.find]
+include = ["cleopatra", "cleopatra.*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://github.com/MAfarrag/cleopatra"
+Documentation = "https://celopatra.readthedocs.io/"
+Repository = "https://github.com/MAfarrag/celopatra"
+
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
