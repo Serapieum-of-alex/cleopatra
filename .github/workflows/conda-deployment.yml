@@ -30,7 +30,7 @@ jobs:
         shell: bash -el {0}
         run: |
             conda info
-            pip install .[dev] --no-deps
+            pip install .[dev]
             conda list
             pip list
 
