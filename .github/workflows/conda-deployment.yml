@@ -32,6 +32,7 @@ jobs:
             conda info
             pip install .[dev] --no-deps
             conda list
+            pip list
 
       - name: Generate coverage report
         shell: bash -el {0}
@@ -40,4 +41,5 @@ jobs:
           conda list
           conda config --show-sources
           conda config --show
+          pip list
           pytest -sv
