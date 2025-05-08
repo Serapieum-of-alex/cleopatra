@@ -29,10 +29,7 @@ jobs:
       - name: Install dev-dependencies
         shell: bash -el {0}
         run: |
-            conda info
             pip install .[dev]
-            conda list
-            pip list
 
       - name: Generate coverage report
         shell: bash -el {0}
