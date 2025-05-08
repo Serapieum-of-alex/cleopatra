@@ -54,6 +54,7 @@ docs = [
 ]
 
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["cleopatra", "cleopatra.*"]
 
 
