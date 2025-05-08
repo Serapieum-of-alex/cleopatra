@@ -56,14 +56,19 @@ docs = [
 [tool.setuptools.packages.find]
 include = ["cleopatra", "cleopatra.*"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
 
 [project.urls]
 Homepage = "https://github.com/MAfarrag/cleopatra"
 Documentation = "https://celopatra.readthedocs.io/"
 Repository = "https://github.com/MAfarrag/celopatra"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: mark test as slow.",
+    "fast: mark test as fast.",
+    "plot: test plotting function optional package (deselect with '-m \"not plot\"')"
+]
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
