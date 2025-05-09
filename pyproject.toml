@@ -50,7 +50,7 @@ docs = [
     "pip >=21.3.1",
     "pydata_sphinx_theme >=0.15.2",
     "sphinxcontrib-napoleon",
-    "typing-extensions ==4.12.*"
+    "typing-extensions >=4.12,<4.14"
 ]
 
 [tool.setuptools.packages.find]
