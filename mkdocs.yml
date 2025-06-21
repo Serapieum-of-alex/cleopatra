@@ -1,36 +1,91 @@
 site_name: Cleopatra
 site_description: Visualization package
-site_url: https://mafarrag.github.io/cleopatra/
+site_url: https://serapieum-of-alex.github.io/cleopatra/
 repo_url: https://github.com/Serapieum-of-alex/cleopatra
 repo_name: Serapieum-of-alex/cleopatra
-# docs_dir: docs
 
 theme:
   name: material
-  palette:
-    primary: indigo
-    accent: indigo
-  icon:
-    repo: fontawesome/brands/github
+  language: en
   features:
     - navigation.instant
     - navigation.tracking
     - navigation.expand
     - navigation.indexes
+    - navigation.footer
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
     - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - search.highlight
+    - search.suggest
+    - toc.follow
+    - announce.dismiss
+  palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: teal
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to system preference
+  primary: indigo
+  accent: indigo
+  icon:
+    repo: fontawesome/brands/github
 
-nav:
-  - Home: api/index.md
-  - Installation: api/installation.md
-  - Statistical plots: api/statistics-class.md
-  - ArrayGlyph: api/array-glyph-class.md
-  - Colors: api/colors-class.md
-  - Styles: api/styles-class.md
+
+plugins:
+  - search
+  - mkdocs-jupyter
+  - autorefs
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+            docstring_style: numpy
+  - table-reader
+  - tags
+  - mike:
+      # These fields are all optional; the defaults are as below...
+      alias_type: symlink
+      redirect_template: null
+      deploy_prefix: ''
+      canonical_version: null
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.tabbed:
@@ -42,20 +97,23 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: "#"
+      toc_depth: 1-4
+      anchorlink: true
 
-plugins:
-  - search
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          options:
-            show_source: true
-            show_root_heading: true
-            heading_level: 2
-            docstring_style: numpy
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Statistical plots: api/statistics-class.md
+  - ArrayGlyph: api/array-glyph-class.md
+  - Colors: api/colors-class.md
+  - Styles: api/styles-class.md
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/MAfarrag/cleopatra
+      link: https://github.com/Serapieum-of-alex/cleopatra
+  version:
+      provider: mike
+  version_selector: true
