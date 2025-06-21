@@ -109,6 +109,7 @@ nav:
   - ArrayGlyph: api/array-glyph-class.md
   - Colors: api/colors-class.md
   - Styles: api/styles-class.md
+  - Change-log: change-log.md
 
 extra:
   social:
