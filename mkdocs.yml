@@ -20,12 +20,12 @@ theme:
     - content.code.copy
 
 nav:
-  - Home: md/index.md
-  - Installation: md/installation.md
-  - Statistical plots: md/statistics-class.md
-  - ArrayGlyph: md/array-glyph-class.md
-  - Colors: md/colors-class.md
-  - Styles: md/styles-class.md
+  - Home: api/index.md
+  - Installation: api/installation.md
+  - Statistical plots: api/statistics-class.md
+  - ArrayGlyph: api/array-glyph-class.md
+  - Colors: api/colors-class.md
+  - Styles: api/styles-class.md
 
 markdown_extensions:
   - pymdownx.highlight:
