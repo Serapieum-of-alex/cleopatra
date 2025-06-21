@@ -42,15 +42,13 @@ dev = [
     "pytest-cov >=5.0.0",
 ]
 docs = [
-    "graphviz",
+    "mkdocs >=1.5.3",
+    "mkdocs-material >=9.5.3",
+    "mkdocstrings >=0.24.0",
+    "mkdocstrings-python >=1.7.5",
     "matplotlib >=3.8.4",
-    "nbsphinx",
     "numpy >=2.0.0",
-    "numpydoc ==1.8.0",
-    "pip >=21.3.1",
-    "pydata_sphinx_theme >=0.15.2",
-    "sphinxcontrib-napoleon",
-    "typing-extensions ==4.12.*"
+    "pip >=21.3.1"
 ]
 
 [tool.setuptools.packages.find]
@@ -60,8 +58,8 @@ include = ["cleopatra", "cleopatra.*"]
 
 [project.urls]
 Homepage = "https://github.com/MAfarrag/cleopatra"
-Documentation = "https://celopatra.readthedocs.io/"
-Repository = "https://github.com/MAfarrag/celopatra"
+Documentation = "https://mafarrag.github.io/cleopatra/"
+Repository = "https://github.com/MAfarrag/cleopatra"
 
 [tool.flake8]
 ignore = "E203, E266, E501, W503, D403, D414, C901, E731"
