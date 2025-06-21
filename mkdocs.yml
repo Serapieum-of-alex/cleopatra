@@ -1,0 +1,61 @@
+site_name: Cleopatra
+site_description: Visualization package
+site_url: https://mafarrag.github.io/cleopatra/
+repo_url: https://github.com/Serapieum-of-alex/cleopatra
+repo_name: Serapieum-of-alex/cleopatra
+# docs_dir: docs
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.indexes
+    - content.code.copy
+
+nav:
+  - Home: md/index.md
+  - Installation: md/installation.md
+  - Statistical plots: md/statistics-class.md
+  - ArrayGlyph: md/array-glyph-class.md
+  - Colors: md/colors-class.md
+  - Styles: md/styles-class.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - footnotes
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+            docstring_style: numpy
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/MAfarrag/cleopatra
