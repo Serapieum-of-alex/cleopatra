@@ -77,7 +77,6 @@ jobs:
 
     - name: Install dependencies
       run: |
-          poetry --version
           pip install .[docs]
 
     - name: Set release notes tag
