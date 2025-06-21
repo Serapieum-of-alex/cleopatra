@@ -93,3 +93,18 @@ Colors
 * add `get_type` to get the type of the color.
 * add `to_hex` to convert the color to hex.
 * add `to_rgb` to convert the color to rgb.
+
+0.5.1 (2024-07-24)
+------------------
+
+ArrayGlyph
+^^^^^^^^^^
+* the ArrayGlyph constructor uses a masked array instead of a numpy array.
+
+
+0.5.2 (2025-05-08)
+------------------
+
+Dev
+^^^
+* replace the setup.py with pyproject.toml
