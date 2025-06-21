@@ -48,7 +48,6 @@ docs = [
     "mkdocstrings-python >=1.7.5",
     "matplotlib >=3.8.4",
     "numpy >=2.0.0",
-    "pip >=21.3.1",
     "mike >=2.1.3"
 ]
 
