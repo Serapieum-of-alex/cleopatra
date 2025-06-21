@@ -1,4 +1,5 @@
-from typing import List, Union, Tuple, Any
+from typing import Any, List, Tuple, Union
+
 from matplotlib import colors as mcolors
 
 
@@ -21,25 +22,26 @@ class Colors:
         Examples
         --------
         - Create a color object from a hex color:
-
+            ```python
             >>> hex_number = "ff0000"
             >>> color = Colors(hex_number)
             >>> print(color.color_value)
             ['ff0000']
-
+            ```
         - Create a color object from an RGB color (values are between 0 and 1):
-
+            ```python
             >>> rgb_color = (0.5, 0.2, 0.8)
             >>> color = Colors(rgb_color)
             >>> print(color.color_value)
             [(0.5, 0.2, 0.8)]
-
+            ```
         - Create a color object from an RGB color (values are between 0 and 255):
-
+            ```python
             >>> rgb_color = (128, 51, 204)
             >>> color = Colors(rgb_color)
             >>> print(color.color_value)
             [(128, 51, 204)]
+            ```
         """
         # convert the hex color to a list if it is a string
         if isinstance(color_value, str) or isinstance(color_value, tuple):
@@ -62,25 +64,26 @@ class Colors:
         Examples
         --------
         - Create a color object from a hex color:
-
+            ```python
             >>> hex_number = "#23a9dd"
             >>> color = Colors(hex_number)
             >>> print(color.get_type())
             ['hex']
-
+            ```
         - Create a color object from an RGB color (values are between 0 and 1):
-
+            ```python
             >>> rgb_color = (0.5, 0.2, 0.8)
             >>> color = Colors(rgb_color)
             >>> print(color.get_type())
             ['rgb-normalized']
-
+            ```
         - Create a color object from an RGB color (values are between 0 and 255):
-
+            ```python
             >>> rgb_color = (128, 51, 204)
             >>> color = Colors(rgb_color)
             >>> print(color.get_type())
             ['rgb']
+            ```
         """
         color_type = []
         for color_i in self.color_value:
@@ -114,11 +117,12 @@ class Colors:
         Examples
         --------
         - Create a color object from a mixed list of hex and RGB colors:
-
+            ```python
             >>> mixed_color = [(128, 51, 204), "#23a9dd", (0.5, 0.2, 0.8)]
             >>> color = Colors(mixed_color)
             >>> print(color.to_hex())
             ['#8033cc', '#23a9dd', '#8033cc']
+            ```
         """
         converted_color = []
         color_type = self.get_type()
