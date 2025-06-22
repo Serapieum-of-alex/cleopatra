@@ -71,7 +71,7 @@ class ArrayGlyph:
         percentile: int = None,
         **kwargs,
     ):
-        """Array.
+        """ArrayGlyph.
 
         Parameters
         ----------
@@ -347,8 +347,8 @@ class ArrayGlyph:
         ax: matplotlib.axes.Axes
             the created axes.
         """
-        fig = plt.figure(figsize=self.default_options["figsize"])
-        ax = fig.add_subplot()
+        plt.ioff()  # to prevent the empty figure from being displayed
+        fig, ax = plt.subplots(figsize=self.default_options["figsize"])
 
         return fig, ax
 
