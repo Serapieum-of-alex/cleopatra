@@ -111,10 +111,10 @@ nav:
     - Colors: api/colors-class.md
     - Styles: api/styles-class.md
   - Examples:
-    - ArrayGlyph: notebooks/array_glyph/array_glyph_examples.py
-    - Statistics: notebooks/statistics/statistics_examples.py
-    - Colors: notebooks/colors/colors_examples.py
-    - Styles: notebooks/styles/styles_examples.py
+    - ArrayGlyph: notebooks/array_glyph/array_glyph_examples.ipynb
+    - Statistics: notebooks/statistics/statistics_examples.ipynb
+    - Colors: notebooks/colors/colors_examples.ipynb
+    - Styles: notebooks/styles/styles_examples.ipynb
   - Change-log: change-log.md
 
 extra:
