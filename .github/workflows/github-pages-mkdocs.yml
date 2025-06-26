@@ -20,7 +20,7 @@ jobs:
       if: github.event_name == 'pull_request'
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -41,7 +41,7 @@ jobs:
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
 
           # Replace the remote URL to include the PAT
-          git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_TOKEN }}@github.com/${{ github.repository }}
+          #git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_TOKEN }}@github.com/${{ github.repository }}
 
           mike deploy --push develop
 
