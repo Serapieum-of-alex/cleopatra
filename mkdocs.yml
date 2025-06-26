@@ -105,10 +105,16 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Installation: installation.md
-  - Statistical plots: api/statistics-class.md
-  - ArrayGlyph: api/array-glyph-class.md
-  - Colors: api/colors-class.md
-  - Styles: api/styles-class.md
+  - API Documentation:
+    - Statistical plots: api/statistics-class.md
+    - ArrayGlyph: api/array-glyph-class.md
+    - Colors: api/colors-class.md
+    - Styles: api/styles-class.md
+  - Examples:
+    - ArrayGlyph: notebooks/array_glyph/array_glyph_examples.py
+    - Statistics: notebooks/statistics/statistics_examples.py
+    - Colors: notebooks/colors/colors_examples.py
+    - Styles: notebooks/styles/styles_examples.py
   - Change-log: change-log.md
 
 extra:

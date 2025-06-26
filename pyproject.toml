@@ -56,6 +56,11 @@ docs = [
     "notebook <7.0"
 ]
 
+examples = [
+    "jupyter",
+    "notebook"
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["cleopatra", "cleopatra.*"]
