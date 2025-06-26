@@ -39,11 +39,11 @@ jobs:
         run: |
           git config --global user.name '${{ github.actor }}'
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          echo "Token length: ${#ACTIONS_DEPLOY_TOKEN}"
-          git remote -v
 
           # Replace the remote URL to include the PAT
-          #git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_TOKEN }}@github.com/${{ github.repository }}
+          git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_TOKEN }}@github.com/${{ github.repository }}
+          echo "Token length: ${#ACTIONS_DEPLOY_TOKEN}"
+          git remote -v
 
           mike deploy --push develop
 
