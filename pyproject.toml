@@ -58,7 +58,6 @@ docs = [
 
 examples = [
     "jupyter",
-    "notebook"
 ]
 
 [tool.setuptools.packages.find]
