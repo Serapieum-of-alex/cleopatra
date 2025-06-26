@@ -39,6 +39,10 @@ jobs:
         run: |
           git config --global user.name '${{ github.actor }}'
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
+
+          # Replace the remote URL to include the PAT
+          git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_TOKEN }}@github.com/${{ github.repository }}
+
           mike deploy --push develop
 
   deploy-main:
