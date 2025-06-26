@@ -22,22 +22,22 @@ The `Array` class has the following methods:
 - `display`: Display the array with optional parameters.
 """
 
-from typing import Any, Union, List, Tuple, Dict
 import math
+from typing import Any, Dict, List, Tuple, Union
+
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from matplotlib.axes import Axes
 import numpy as np
 import numpy.ma as ma
 from hpc.indexing import get_indices2
-
-# from matplotlib import gridspec
-from matplotlib.animation import FuncAnimation
 from matplotlib import animation
-from matplotlib.image import AxesImage
+from matplotlib.animation import FuncAnimation
+from matplotlib.axes import Axes
 from matplotlib.colorbar import Colorbar
+from matplotlib.figure import Figure
+from matplotlib.image import AxesImage
 from matplotlib.ticker import LogFormatter
+
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
 
@@ -71,7 +71,7 @@ class ArrayGlyph:
         percentile: int = None,
         **kwargs,
     ):
-        """Array.
+        """ArrayGlyph.
 
         Parameters
         ----------
@@ -100,15 +100,15 @@ class ArrayGlyph:
         Examples
         --------
         - Create an array and instantiate the `Array` object.
-
+            ```python
             >>> import numpy as np
             >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
             >>> array = ArrayGlyph(arr)
             >>> fig, ax = array.plot()
+            ```
 
-        .. image:: /_images/image-plot.png
-            :alt: Example Image
-            :align: center
+          ![image](../_images/image-plot.png)
+
         """
         self._default_options = DEFAULT_OPTIONS.copy()
 
@@ -347,9 +347,8 @@ class ArrayGlyph:
         ax: matplotlib.axes.Axes
             the created axes.
         """
-        fig = plt.figure(figsize=self.default_options["figsize"])
-        # gs = gridspec.GridSpec(nrows=2, ncols=2, figure=fig)
-        ax = fig.add_subplot()  # gs[:,:]
+        plt.ioff()  # to prevent the empty figure from being displayed
+        fig, ax = plt.subplots(figsize=self.default_options["figsize"])
 
         return fig, ax
 
@@ -638,20 +637,18 @@ class ArrayGlyph:
         Examples
         --------
         - Create an array and instantiate the `Array` object.
-
+            ```python
             >>> import numpy as np
             >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
             >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
             >>> fig, ax = array.plot()
-
-        .. image:: /_images/array-plot.png
-            :alt: Example Image
-            :align: center
+            ```
+        ![image](../_images/array-plot.png)
 
         - Color bar customization:
 
             - Create an array and instantiate the `Array` object with custom options.
-
+                ```python
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized color bar", title_size=18)
                 >>> fig, ax = array.plot(
                 ...     cbar_orientation="horizontal",
@@ -664,26 +661,23 @@ class ArrayGlyph:
                 ...     color_scale="linear",
                 ...     cmap="coolwarm_r",
                 ... )
+                ```
+                ![image](../_images/color-bar-customization.png)
 
-                .. image:: /_images/color-bar-customization.png
-                    :alt: Example Image
-                    :align: center
                 - Color bar customization:
 
         - Display values for each cell:
 
             - you can display the values for each cell by using thr parameter `display_cell_value`, and customize how
                 the values are displayed using the parameter `background_color_threshold` and `num_size`.
-
+                ```python
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display array values", title_size=18)
                 >>> fig, ax = array.plot(
                 ...     display_cell_value=True,
                 ...     num_size=12
                 ... )
-
-                .. image:: /_images/display-cell-values.png
-                    :alt: Example Image
-                    :align: center
+                ```
+                ![image](../_images/display-cell-values.png)
 
         - Plot points at specific locations in the array:
 
@@ -693,7 +687,7 @@ class ArrayGlyph:
             - The `point_color` and `point_size` parameters are used to customize the appearance of the points,
                 while the `pid_color` and `pid_size` parameters are used to customize the appearance of the point
                 IDs/text.
-
+                ```python
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display Points in top of the array", title_size=14)
                 >>> points = np.array([[1, 0, 0], [2, 1, 1], [3, 2, 2]])
                 >>> fig, ax = array.plot(
@@ -703,17 +697,15 @@ class ArrayGlyph:
                 ...     pid_color="orange",
                 ...     pid_size=30,
                 ... )
-
-                .. image:: /_images/display-points.png
-                    :alt: Example Image
-                    :align: center
+                ```
+                ![image](../_images/display-points.png)
 
         - Color scale customization:
 
             - Power scale.
 
                 - The default power scale uses a gamma value of 0.5.
-
+                    ```python
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
@@ -721,13 +713,11 @@ class ArrayGlyph:
                     ...     color_scale="power",
                     ...     cmap="coolwarm_r",
                     ... )
-
-                    .. image:: /_images/power-scale.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/power-scale.png)
 
                 - change the gamma of 0.8.
-
+                    ```python
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.8", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
@@ -736,13 +726,11 @@ class ArrayGlyph:
                     ...     gamma=0.8,
                     ...     cmap="coolwarm_r",
                     ... )
-
-                    .. image:: /_images/power-scale-gamma-0.8.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/power-scale-gamma-0.8.png)
 
                 - change the gamma of 0.1.
-
+                    ```python
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale: gamma=0.1", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
@@ -751,16 +739,14 @@ class ArrayGlyph:
                     ...     gamma=0.1,
                     ...     cmap="coolwarm_r",
                     ... )
-
-                    .. image:: /_images/power-scale-gamma-0.1.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/power-scale-gamma-0.1.png)
 
             - Logarithmic scale.
 
                 - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
                 value if 0.0001, and 0.001 respectively.
-
+                    ```python
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="logarithmic scale", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     cbar_label_rotation=-90,
@@ -768,13 +754,11 @@ class ArrayGlyph:
                     ...     color_scale="sym-lognorm",
                     ...     cmap="coolwarm_r",
                     ... )
-
-                    .. image:: /_images/log-scale.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/log-scale.png)
 
                 - you can change the `line_threshold` and `line_scale` values.
-
+                    ```python
                     >>> array = ArrayGlyph(
                     ...     arr, figsize=(6, 6), title="Logarithmic scale: Customized Parameter", title_size=12
                     ... )
@@ -786,13 +770,11 @@ class ArrayGlyph:
                     ...     line_threshold=0.015,
                     ...     line_scale=0.1,
                     ... )
-
-                    .. image:: /_images/log-scale-custom-parameters.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/log-scale-custom-parameters.png)
 
             - Defined boundary scale.
-
+                ```python
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Defined boundary scale", title_size=18)
                 >>> fig, ax = array.plot(
                 ...     cbar_label_rotation=-90,
@@ -800,13 +782,11 @@ class ArrayGlyph:
                 ...     color_scale="boundary-norm",
                 ...     cmap="coolwarm_r",
                 ... )
-
-                .. image:: /_images/boundary-scale.png
-                    :alt: Example Image
-                    :align: center
+                ```
+                ![image](../_images/boundary-scale.png)
 
                 - You can also define the boundaries.
-
+                    ```python
                     >>> array = ArrayGlyph(
                     ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
                     ... )
@@ -818,13 +798,11 @@ class ArrayGlyph:
                     ...     bounds=bounds,
                     ...     cmap="coolwarm_r",
                     ... )
-
-                    .. image:: /_images/boundary-scale-defined-bounds.png
-                        :alt: Example Image
-                        :align: center
+                    ```
+                    ![image](../_images/boundary-scale-defined-bounds.png)
 
             - Midpoint scale.
-
+                ```python
                 in the midpoint scale you can define a value that splits the scale into half.
                 >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
                 >>> fig, ax = array.plot(
@@ -834,10 +812,8 @@ class ArrayGlyph:
                 ...     cmap="coolwarm_r",
                 ...     midpoint=2,
                 ... )
-
-                .. image:: /_images/midpoint-scale-costom-parameters.png
-                    :alt: Example Image
-                    :align: center
+                ```
+                ![image](../_images/midpoint-scale-costom-parameters.png)
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
@@ -1018,20 +994,23 @@ class ArrayGlyph:
             will loop over as the frame, then create a list of what you want to be displayed with each frame (i.e.,
             time stamp, counter, ...)
 
-            >>> import numpy as np
-            >>> arr = np.random.randint(1, 10, size=(5, 10, 10))
-            >>> animate_time_list = [1, 2, 3, 4, 5]
-            >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated 3D array", title_size=18)
-            >>> anim_obj = animated_array.animate(animate_time_list)
+        ```python
+        >>> import numpy as np
+        >>> arr = np.random.randint(1, 10, size=(5, 10, 10))
+        >>> animate_time_list = [1, 2, 3, 4, 5]
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated 3D array", title_size=18)
+        >>> anim_obj = animated_array.animate(animate_time_list)
+        ```
 
-            .. image:: /_images/animated_array.gif
-                :alt: Example Image
-                :align: center
+        ![image](../_images/animated_array.gif)
 
         - To save the animation to a file, use the `save_animation` method, and provide the frame per second `fps`
             parameter.
 
+            ```python
             >>> animated_array.save_animation("animated_array.gif", fps=2)
+            ```
+
         """
         if text_loc is None:
             text_loc = [0.1, 0.2]
@@ -1180,7 +1159,7 @@ class ArrayGlyph:
             return output
 
         plt.tight_layout()
-        # global anim
+
         anim = FuncAnimation(
             fig,
             animate_a,
@@ -1205,8 +1184,6 @@ class ArrayGlyph:
         fps: [int]
             frames per second. Default is 2.
         """
-        # ffmpegPath = os.getenv("HOME") + "/.matplotlib/ffmpeg-static/bin/ffmpeg.exe"
-        # mpl.rcParams["animation.ffmpeg_path"] = ffmpegPath
         video_format = path.split(".")[-1]
         if video_format not in SUPPORTED_VIDEO_FORMAT:
             raise ValueError(
