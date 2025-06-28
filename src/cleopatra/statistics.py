@@ -61,46 +61,69 @@ from matplotlib.figure import Figure
 
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 
-DEFAULT_OPTIONS = dict(
-    figsize=(5, 5), bins=15, color=["#0504aa"], alpha=0.7, rwidth=0.85
-)
+DEFAULT_OPTIONS = {
+    "figsize": (5, 5),
+    "bins": 15,
+    "color": ["#0504aa"],
+    "alpha": 0.7,
+    "rwidth": 0.85,
+}
 DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 
 
 class Statistic:
-    """
-    A class for creating statistical plots, specifically histograms.
+    """A class for creating statistical plots, specifically histograms.
 
-    This class provides methods for initializing the class with numerical values and optional keyword arguments,
-    and for creating histograms from the given values.
+    This class provides functionality for creating histogram plots from 1D or 2D numerical data.
+    It supports customization of various aspects of the plots, including bin count, colors,
+    transparency, and axis labels.
 
-    Attributes:
-    _values: numpy.ndarray
+    Attributes
+    ----------
+    values : numpy.ndarray
         The numerical values to be plotted as histograms.
-    _default_options: dict
-        The default options for creating histograms, including the number of bins, color, alpha, rwidth, grid_alpha,
-        xlabel, ylabel, xlabel_font_size, ylabel_font_size, xtick_font_size, and ytick_font_size.
+    default_options : dict
+        The default options for creating histograms, including:
+        - bins: Number of histogram bins
+        - color: Colors for the histogram bars
+        - alpha: Transparency of the bars
+        - rwidth: Width of the bars
+        - grid_alpha: Transparency of the grid
+        - xlabel, ylabel: Axis labels
+        - xlabel_font_size, ylabel_font_size: Font sizes for axis labels
+        - xtick_font_size, ytick_font_size: Font sizes for axis ticks
 
-    Methods:
-    __init__(self, values: Union[List, np.ndarray], **kwargs):
-        Initializes the class with numerical values and optional keyword arguments.
-    histogram(self, **kwargs) -> [Figure, Axes, Dict]:
-        Creates a histogram from the given values and optional keyword arguments.
-
-    Example
+    Methods
     -------
-        >>> np.random.seed(1)
-        >>> x = 4 + np.random.normal(0, 1.5, 200)
-        >>> stat_plot = Statistic(x)
-        >>> fig, ax, hist = stat_plot.histogram()
-        >>> print(hist) # doctest: +SKIP
-        {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
-                            6.,  1.])], 'bins': [array([0.34774335, 0.8440597 , 1.34037605, 1.8366924 , 2.33300874,
-                           2.82932509, 3.32564144, 3.82195778, 4.31827413, 4.81459048,
-                           5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
-                           7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
+    histogram(**kwargs)
+        Creates a histogram from the given values with customizable options.
 
-    ![image](../_images/one-histogram.png)
+    Notes
+    -----
+    The class can handle both 1D data (single histogram) and 2D data (multiple histograms
+    overlaid on the same plot). For 2D data, the number of colors provided should match
+    the number of data series (columns in the array).
+
+    Examples
+    --------
+    Create a histogram from 1D data:
+    ```python
+    >>> import numpy as np
+    >>> from cleopatra.statistics import Statistic
+    >>> np.random.seed(1)
+    >>> x = 4 + np.random.normal(0, 1.5, 200)
+    >>> stat_plot = Statistic(x)
+    >>> fig, ax, hist = stat_plot.histogram()
+
+    ```
+    Create a histogram from 2D data with custom colors:
+    ```python
+    >>> np.random.seed(1)
+    >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
+    >>> stat_plot = Statistic(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+    >>> fig, ax, hist = stat_plot.histogram()
+
+    ```
     """
 
     def __init__(
@@ -108,12 +131,76 @@ class Statistic:
         values: Union[List, np.ndarray],
         **kwargs,
     ):
-        """
+        """Initialize the Statistic object with values and optional customization parameters.
 
         Parameters
         ----------
-        values: [list/array]
-            values to be plotted as histogram.
+        values : Union[List, np.ndarray]
+            The numerical values to be plotted as histograms. Can be:
+            - 1D array/list for a single histogram
+            - 2D array/list for multiple histograms (one per column)
+        **kwargs : dict, optional
+            Additional keyword arguments to customize the histogram appearance.
+            Supported arguments include:
+            - figsize : tuple, optional
+                Figure size as (width, height) in inches, by default (5, 5).
+            - bins : int, optional
+                Number of histogram bins, by default 15.
+            - color : List[str], optional
+                Colors for the histogram bars, by default ["#0504aa"].
+                For 2D data, the number of colors should match the number of columns.
+            - alpha : float, optional
+                Transparency of the histogram bars, by default 0.7.
+                Values range from 0 (transparent) to 1 (opaque).
+            - rwidth : float, optional
+                Relative width of the bars, by default 0.85.
+                Values range from 0 to 1.
+            - grid_alpha : float, optional
+                Transparency of the grid lines, by default 0.75.
+            - xlabel, ylabel : str, optional
+                Labels for the x and y axes.
+            - xlabel_font_size, ylabel_font_size : int, optional
+                Font sizes for the axis labels.
+            - xtick_font_size, ytick_font_size : int, optional
+                Font sizes for the axis tick labels.
+
+        Examples
+        --------
+        Initialize with default options:
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.statistics import Statistic
+        >>> np.random.seed(1)
+        >>> x = np.random.normal(0, 1, 100)
+        >>> stat = Statistic(x)
+
+        ```
+        Initialize with custom options:
+        ```python
+        >>> stat_custom = Statistic(
+        ...     x,
+        ...     figsize=(8, 6),
+        ...     bins=20,
+        ...     color=["#FF5733"],
+        ...     alpha=0.5,
+        ...     rwidth=0.9,
+        ...     xlabel="Values",
+        ...     ylabel="Frequency",
+        ...     xlabel_font_size=14,
+        ...     ylabel_font_size=14
+        ... )
+
+        ```
+        Initialize with 2D data:
+        ```python
+        >>> data_2d = np.random.normal(0, 1, (100, 3))
+        >>> stat_2d = Statistic(
+        ...     data_2d,
+        ...     color=["red", "green", "blue"],
+        ...     alpha=0.4
+        ... )
+
+        ```
         """
         self._values = values
         options_dict = DEFAULT_OPTIONS.copy()
@@ -122,99 +209,208 @@ class Statistic:
 
     @property
     def values(self):
-        """numerical values"""
+        """Get the numerical values to be plotted.
+
+        Returns
+        -------
+        numpy.ndarray or list
+            The numerical values stored in the object, which can be:
+            - 1D array/list for a single histogram
+            - 2D array/list for multiple histograms (one per column)
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from cleopatra.statistics import Statistic
+        >>> np.random.seed(1)
+        >>> x = np.random.normal(0, 1, 100)
+        >>> stat = Statistic(x)
+        >>> values = stat.values
+        >>> values.shape
+        (100,)
+        """
         return self._values
 
     @values.setter
     def values(self, values):
+        """Set the numerical values to be plotted.
+
+        Parameters
+        ----------
+        values : numpy.ndarray or list
+            The new numerical values to be plotted as histograms. Can be:
+            - 1D array/list for a single histogram
+            - 2D array/list for multiple histograms (one per column)
+
+        Examples
+        --------
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.statistics import Statistic
+        >>> np.random.seed(1)
+        >>> x1 = np.random.normal(0, 1, 100)
+        >>> stat = Statistic(x1)
+        >>> # Update with new values
+        >>> x2 = np.random.normal(5, 2, 100)
+        >>> stat.values = x2
+
+        ```
+        """
         self._values = values
 
     @property
     def default_options(self) -> Dict:
-        """Default plot options"""
+        """Get the default options for histogram plotting.
+
+        This property returns the dictionary of default options used for creating
+        histogram plots. These options can be modified by passing keyword arguments
+        to the class constructor or to the histogram method.
+
+        Returns
+        -------
+        Dict
+            A dictionary containing the default options for histogram plotting, including:
+            - figsize : tuple
+                Figure size as (width, height) in inches.
+            - bins : int
+                Number of histogram bins.
+            - color : List[str]
+                Colors for the histogram bars.
+            - alpha : float
+                Transparency of the histogram bars.
+            - rwidth : float
+                Relative width of the bars.
+            - grid_alpha : float
+                Transparency of the grid lines.
+            - xlabel, ylabel : str
+                Labels for the x and y axes.
+            - xlabel_font_size, ylabel_font_size : int
+                Font sizes for the axis labels.
+            - xtick_font_size, ytick_font_size : int
+                Font sizes for the axis tick labels.
+
+        Examples
+        --------
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.statistics import Statistic
+        >>> np.random.seed(1)
+        >>> x = np.random.normal(0, 1, 100)
+        >>> stat = Statistic(x)
+        >>> options = stat.default_options
+        >>> print(options['bins'])
+        15
+        >>> print(options['alpha'])
+        0.7
+
+        ```
+        """
         return self._default_options
 
     def histogram(self, **kwargs) -> [Figure, Axes, Dict]:
-        """
+        """Create a histogram from the stored numerical values.
+
+        This method generates a histogram visualization of the numerical values stored
+        in the object. It can handle both 1D data (single histogram) and 2D data
+        (multiple histograms overlaid on the same plot).
 
         Parameters
         ----------
-        **kwargs: [dict]
-            keys:
-                bins: int, Default is 15.
-                    number of bins.
-                color: List[str], default is ["#0504aa"]
-                    color of the bins, the number of colors should be equal to the number of samples (columns of the
-                    given array).
-                alpha: float, default is 0.7
-                     degree of transparency.
-                rwidth: float, default is 0.85
-                    width of the bins.
-                grid_alpha:
-                    alpha of the grid.
-                xlabel: str
-                    x-axis label.
-                ylabel: str
-                    y-axis label.
-                xlabel_font_size: int
-                    x-axis label font size.
-                ylabel_font_size: int
-                    y-axis label font size.
-                xtick_font_size: int
-                    x-axis tick font size.
-                 ytick_font_size: int
-                    y-axis tick font size.
+        **kwargs : dict, optional
+            Additional keyword arguments to customize the histogram appearance.
+            These will override any options set during initialization.
+            Supported arguments include:
+            - figsize : tuple, optional
+                Figure size as (width, height) in inches, by default (5, 5).
+            - bins : int, optional
+                Number of histogram bins, by default 15.
+            - color : List[str], optional
+                Colors for the histogram bars, by default ["#0504aa"].
+                For 2D data, the number of colors should match the number of columns.
+            - alpha : float, optional
+                Transparency of the histogram bars, by default 0.7.
+                Values range from 0 (transparent) to 1 (opaque).
+            - rwidth : float, optional
+                Relative width of the bars, by default 0.85.
+                Values range from 0 to 1.
+            - grid_alpha : float, optional
+                Transparency of the grid lines, by default 0.75.
+            - xlabel, ylabel : str, optional
+                Labels for the x and y axes.
+            - xlabel_font_size, ylabel_font_size : int, optional
+                Font sizes for the axis labels.
+            - xtick_font_size, ytick_font_size : int, optional
+                Font sizes for the axis tick labels.
+
+        Returns
+        -------
+        Figure
+            The matplotlib Figure object containing the histogram.
+        Axes
+            The matplotlib Axes object on which the histogram is drawn.
+        Dict
+            A dictionary containing the histogram data with keys:
+            - 'n': List of arrays containing the histogram bin counts
+            - 'bins': List of arrays containing the bin edges
+            - 'patches': List of BarContainer objects representing the histogram bars
 
         Raises
         ------
         ValueError
-            If the number of colors given by the `color` kwars is not equal to the number of samples.
+            If an invalid keyword argument is provided.
+        ValueError
+            If the number of colors provided doesn't match the number of data series
+            (columns) in 2D data.
 
-        Example
-        -------
-            - 1D data.
+        Notes
+        -----
+        For 2D data, multiple histograms will be overlaid on the same plot with
+        different colors. The transparency (alpha) can be adjusted to make overlapping
+        regions visible.
 
-                - First genearte some random data and plot the histogram.
-                    ```python
-                    >>> np.random.seed(1)
-                    >>> x = 4 + np.random.normal(0, 1.5, 200)
-                    >>> stat_plot = Statistic(x)
-                    >>> fig, ax, hist = stat_plot.histogram()
-                    >>> print(hist) # doctest: +SKIP
-                    {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
-                            6.,  1.])], 'bins': [array([0.34774335, 0.8440597 , 1.34037605, 1.8366924 , 2.33300874,
-                           2.82932509, 3.32564144, 3.82195778, 4.31827413, 4.81459048,
-                           5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
-                           7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
-                    ```
-                ![image](../_images/one-histogram.png)
+        Examples
+        --------
+        Create a histogram from 1D data:
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.statistics import Statistic
+        >>> np.random.seed(1)
+        >>> x = 4 + np.random.normal(0, 1.5, 200)
+        >>> stat_plot = Statistic(x)
+        >>> fig, ax, hist = stat_plot.histogram()
 
-            - 2D data.
+        ```
+        Create a histogram with custom bin count and labels:
+        ```python
+        >>> fig, ax, hist = stat_plot.histogram(
+        ...     bins=20,
+        ...     xlabel="Values",
+        ...     ylabel="Frequency",
+        ...     xlabel_font_size=14,
+        ...     ylabel_font_size=14
+        ... )
 
-                - First genearte some random data and plot the histogram.
-                    ```python
-                    >>> np.random.seed(1)
-                    >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
-                    >>> stat_plot = Statistic(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
-                    >>> fig, ax, hist = stat_plot.histogram()
-                    >>> print(hist) # doctest: +SKIP
-                    {'n': [array([ 1.,  2.,  4., 10., 13., 19., 20., 32., 27., 23., 24., 11.,  5.,
-                            5.,  4.]), array([ 3.,  4.,  9., 12., 20., 41., 29., 32., 25., 14.,  9.,  1.,  0.,
-                            0.,  1.]), array([ 3.,  4.,  6.,  7., 25., 26., 31., 24., 30., 19., 11.,  9.,  4.,
-                            0.,  1.])], 'bins': [array([-0.1896275 ,  0.33461786,  0.85886323,  1.38310859,  1.90735396,
-                            2.43159932,  2.95584469,  3.48009005,  4.00433542,  4.52858078,
-                            5.05282615,  5.57707151,  6.10131688,  6.62556224,  7.14980761,
-                            7.67405297]), array([-0.1738017 ,  0.50031202,  1.17442573,  1.84853945,  2.52265317,
-                            3.19676688,  3.8708806 ,  4.54499432,  5.21910804,  5.89322175,
-                            6.56733547,  7.24144919,  7.9155629 ,  8.58967662,  9.26379034,
-                            9.93790406]), array([0.24033902, 0.7940688 , 1.34779857, 1.90152835, 2.45525813,
-                           3.0089879 , 3.56271768, 4.11644746, 4.67017723, 5.22390701,
-                           5.77763679, 6.33136656, 6.88509634, 7.43882612, 7.99255589,
-                           8.54628567])], 'patches': [<BarContainer object of 15 artists>,
-                           <BarContainer object of 15 artists>, <BarContainer object of 15 artists>]}
-                    ```
+        ```
+        Create a histogram from 2D data with custom colors:
+        ```python
+        >>> np.random.seed(1)
+        >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
+        >>> stat_plot = Statistic(x)
+        >>> fig, ax, hist = stat_plot.histogram(
+        ...     color=["red", "green", "blue"],
+        ...     alpha=0.4,
+        ...     rwidth=0.8
+        ... )
 
-                ![image](../_images/three-histogram.png)
+        ```
+        Access the histogram data:
+        ```python
+        >>> # Get the bin counts for the first data series
+        >>> bin_counts = hist['n'][0]
+        >>> # Get the bin edges for the first data series
+        >>> bin_edges = hist['bins'][0]
+
+        ```
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
