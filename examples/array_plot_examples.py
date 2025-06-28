@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import numpy as np
+
 from cleopatra.array_glyph import ArrayGlyph
 
 # from matplotlib.transforms import blended_transform_factory
@@ -14,6 +15,7 @@ rgb = np.clip(arr2 / 10000, 0, 1)
 plt.imshow(rgb)
 plt.show()
 # %%
+plt.ioff()
 array = ArrayGlyph(arr, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
 # %%
 arr = np.load("tests/data/arr.npy")
@@ -99,8 +101,8 @@ anim = array.animate(
     animate_time_list, title="Flow Accumulation", display_cell_value=True
 )
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # path = Path(sys.executable)
 # f"{path.parent}/{}"
