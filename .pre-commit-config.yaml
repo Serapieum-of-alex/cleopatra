@@ -148,7 +148,7 @@ repos:
     hooks:
       - id: pytest-check
         name: pytest-check
-        entry: pytest -v --cov=cleopatra --cov-report term-missing
+        entry: pytest -v --cov=src/cleopatra --cov-report term-missing
         language: system
         pass_filenames: false
         always_run: true
@@ -167,4 +167,4 @@ repos:
         name: doctest
         entry: pytest --doctest-modules
         language: system
-        files: cleopatra\.py$
+        files: ^src/cleopatra/.*\.py$
