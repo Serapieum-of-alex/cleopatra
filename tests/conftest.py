@@ -1,4 +1,5 @@
 from typing import List
+
 import numpy as np
 import pytest
 
@@ -30,7 +31,7 @@ def cmap() -> str:
 
 @pytest.fixture(scope="module")
 def color_scale() -> List[str]:
-    return ["linear", "power", "lognorm", "boundary", "midpoint"]
+    return ["linear", "power", "sym-lognorm", "boundary-norm", "midpoint"]
 
 
 @pytest.fixture(scope="module")
@@ -106,11 +107,6 @@ def id_color() -> str:
 @pytest.fixture(scope="module")
 def point_size() -> int:
     return 100
-
-
-# @pytest.fixture(scope="module")
-# def point_color() -> str:
-#     return "blue"
 
 
 @pytest.fixture(scope="module")

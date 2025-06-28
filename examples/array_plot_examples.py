@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.ma as ma
+
 from cleopatra.config import Config
 
 Config.set_matplotlib_backend()
@@ -15,6 +16,13 @@ array = ArrayGlyph(arr)
 # %%
 arr = np.load("tests/data/s2a.npy")
 arr = np.moveaxis(arr, 0, -1)
+arr2 = arr[:, :, [3, 2, 1]]
+rgb = np.clip(arr2 / 10000, 0, 1)
+plt.imshow(rgb)
+plt.show()
+# %%
+plt.ioff()
+array = ArrayGlyph(arr, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
 # %%
 arr = np.load("tests/data/arr.npy")
 exclude_value = arr[0, 0]
@@ -123,8 +131,8 @@ anim = array.animate(
     animate_time_list, title="Flow Accumulation", display_cell_value=True
 )
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # path = Path(sys.executable)
 # f"{path.parent}/{}"
