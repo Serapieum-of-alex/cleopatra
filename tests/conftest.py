@@ -1,4 +1,5 @@
 from typing import List
+
 import numpy as np
 import pytest
 
@@ -106,11 +107,6 @@ def id_color() -> str:
 @pytest.fixture(scope="module")
 def point_size() -> int:
     return 100
-
-
-# @pytest.fixture(scope="module")
-# def point_color() -> str:
-#     return "blue"
 
 
 @pytest.fixture(scope="module")
