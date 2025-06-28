@@ -1,13 +1,15 @@
 import os
 from typing import List
-import numpy as np
+
 import matplotlib
+import numpy as np
 
 matplotlib.use("agg")
 
-from matplotlib.figure import Figure
-from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+from matplotlib.figure import Figure
+
 from cleopatra.array_glyph import ArrayGlyph
 
 

@@ -2,6 +2,7 @@ import matplotlib
 
 matplotlib.use("TkAgg")
 import numpy as np
+
 from cleopatra.statistics import Statistic
 
 # %%
