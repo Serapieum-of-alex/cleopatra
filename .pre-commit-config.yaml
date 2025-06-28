@@ -165,6 +165,6 @@ repos:
     hooks:
       - id: doctest
         name: doctest
-        entry: pytest --doctest-modules
+        entry: python -c "import matplotlib; matplotlib.use('Agg'); import pytest; pytest.main(['--doctest-modules'])"
         language: system
         files: ^src/cleopatra/.*\.py$
