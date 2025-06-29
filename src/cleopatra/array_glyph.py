@@ -670,7 +670,6 @@ class ArrayGlyph:
         ax: matplotlib.axes.Axes
             the created axes.
         """
-        # plt.ioff()  # to prevent the empty figure from being displayed
         fig, ax = plt.subplots(figsize=self.default_options["figsize"])
 
         return fig, ax
@@ -839,12 +838,15 @@ class ArrayGlyph:
 
         Examples
         --------
+        ```python
         >>> import numpy as np
         >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         >>> array = ArrayGlyph(arr)
         >>> image = array.to_image()
         >>> print(image) # doctest: +SKIP
         <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
+
+        ```
         """
         if arr is None:
             arr = self.arr
