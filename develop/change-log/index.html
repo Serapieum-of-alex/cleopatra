@@ -982,19 +982,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#052-2025-05-08" class="md-nav__link">
+  <a href="#060-2025-06-25" class="md-nav__link">
     <span class="md-ellipsis">
-      0.5.2 (2025-05-08)
+      0.6.0 (2025-06-25)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.5.2 (2025-05-08)">
+    <nav class="md-nav" aria-label="0.6.0 (2025-06-25)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#dev" class="md-nav__link">
     <span class="md-ellipsis">
       Dev
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrayglyph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ArrayGlyph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      colors
     </span>
   </a>
   
@@ -1232,19 +1259,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#052-2025-05-08" class="md-nav__link">
+  <a href="#060-2025-06-25" class="md-nav__link">
     <span class="md-ellipsis">
-      0.5.2 (2025-05-08)
+      0.6.0 (2025-06-25)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.5.2 (2025-05-08)">
+    <nav class="md-nav" aria-label="0.6.0 (2025-06-25)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#dev" class="md-nav__link">
     <span class="md-ellipsis">
       Dev
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrayglyph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ArrayGlyph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      colors
     </span>
   </a>
   
@@ -1379,10 +1433,35 @@
 <ul>
 <li>the ArrayGlyph constructor uses a masked array instead of a numpy array.</li>
 </ul>
-<h3 id="052-2025-05-08"><a class="toclink" href="#052-2025-05-08">0.5.2 (2025-05-08)</a><a class="headerlink" href="#052-2025-05-08" title="Permanent link">#</a></h3>
+<h3 id="060-2025-06-25"><a class="toclink" href="#060-2025-06-25">0.6.0 (2025-06-25)</a><a class="headerlink" href="#060-2025-06-25" title="Permanent link">#</a></h3>
 <h4 id="dev"><a class="toclink" href="#dev">Dev</a><a class="headerlink" href="#dev" title="Permanent link">#</a></h4>
 <ul>
 <li>replace the setup.py with pyproject.toml</li>
+<li>convert the documentation to use mkdocs instead of sphinx.</li>
+<li>remove the CI test workflow based on conda.</li>
+<li>test the jupyter notebook in ci.</li>
+</ul>
+<h4 id="config"><a class="toclink" href="#config">config</a><a class="headerlink" href="#config" title="Permanent link">#</a></h4>
+<ul>
+<li>add a config file to the package to handle the configuration of the matplotlib backend.</li>
+<li>in the <strong>init</strong>.py file, load the config file and set the matplotlib backend to <code>Agg</code>.</li>
+</ul>
+<h4 id="arrayglyph_2"><a class="toclink" href="#arrayglyph_2">ArrayGlyph</a><a class="headerlink" href="#arrayglyph_2" title="Permanent link">#</a></h4>
+<ul>
+<li>rename the statistics module to statistical_glyph.</li>
+<li>move creating the ax, and fig from the constructor to the <code>plot</code>/<code>animate</code> methods .</li>
+<li>create <code>arr</code> property to access the array data.</li>
+<li>create <code>apply_colormap</code> method to apply a colormap to the array.</li>
+<li>create <code>to_image</code> method to convert the array to an RGB image.</li>
+<li>create <code>scale_to_rgb</code> method to scale the array to RGB values.</li>
+<li>create <code>adjust_ticks</code> method to adjust the plot ticks.</li>
+</ul>
+<h4 id="colors_1"><a class="toclink" href="#colors_1">colors</a><a class="headerlink" href="#colors_1" title="Permanent link">#</a></h4>
+<ul>
+<li>add <code>get_color_map</code> function to create a color map from a list of colors.</li>
+<li>make the <code>_is_valid_rgb_norm</code>, and <code>_is_valid_rgb_255</code> protected and the public method is only <code>is_valid_rgb</code>.</li>
+<li>make the <code>_is_valid_hex_i</code> protected and the public method is only <code>is_valid_hex</code> to process single value and lists.</li>
+<li>create a <code>create_from_image</code> function to create a color map from an image.</li>
 </ul>
 
 
