@@ -172,9 +172,7 @@ class Colors:
 
         if you have an image of a color ramp, and you want to extract the colors from it, you can use this method.
 
-        .. image:: /_images/colors/color-ramp.png
-            :alt: Example Image
-            :align: center
+        ![color-ramp](./../_images/colors/color-ramp.png)
 
         Parameters
         ----------

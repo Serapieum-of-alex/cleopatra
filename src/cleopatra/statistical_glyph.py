@@ -109,10 +109,10 @@ class StatisticalGlyph:
     Create a histogram from 1D data:
     ```python
     >>> import numpy as np
-    >>> from cleopatra.statistics import Statistic
+    >>> from cleopatra.statistical_glyph import StatisticalGlyph
     >>> np.random.seed(1)
     >>> x = 4 + np.random.normal(0, 1.5, 200)
-    >>> stat_plot = Statistic(x)
+    >>> stat_plot = StatisticalGlyph(x)
     >>> fig, ax, hist = stat_plot.histogram()
 
     ```
@@ -120,7 +120,7 @@ class StatisticalGlyph:
     ```python
     >>> np.random.seed(1)
     >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
-    >>> stat_plot = Statistic(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+    >>> stat_plot = StatisticalGlyph(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
     >>> fig, ax, hist = stat_plot.histogram()
 
     ```
@@ -139,9 +139,7 @@ class StatisticalGlyph:
                        7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
 
     ```
-    .. image:: /_images/one-histogram.png
-        :alt: Example Image
-        :align: center
+    ![one-histogram](./../_images/statistical_glyph/one-histogram.png)
     """
 
     def __init__(
@@ -187,15 +185,15 @@ class StatisticalGlyph:
         Initialize with default options:
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
 
         ```
         Initialize with custom options:
         ```python
-        >>> stat_custom = Statistic(
+        >>> stat_custom = StatisticalGlyph(
         ...     x,
         ...     figsize=(8, 6),
         ...     bins=20,
@@ -212,7 +210,7 @@ class StatisticalGlyph:
         Initialize with 2D data:
         ```python
         >>> data_2d = np.random.normal(0, 1, (100, 3))
-        >>> stat_2d = Statistic(
+        >>> stat_2d = StatisticalGlyph(
         ...     data_2d,
         ...     color=["red", "green", "blue"],
         ...     alpha=0.4
@@ -239,10 +237,10 @@ class StatisticalGlyph:
         Examples
         --------
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
         >>> values = stat.values
         >>> values.shape
         (100,)
@@ -264,10 +262,10 @@ class StatisticalGlyph:
         --------
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x1 = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x1)
+        >>> stat = StatisticalGlyph(x1)
         >>> # Update with new values
         >>> x2 = np.random.normal(5, 2, 100)
         >>> stat.values = x2
@@ -311,10 +309,10 @@ class StatisticalGlyph:
         --------
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
         >>> options = stat.default_options
         >>> print(options['bins'])
         15
@@ -395,7 +393,7 @@ class StatisticalGlyph:
 
                 ```python
                 >>> import numpy as np
-                >>> from cleopatra.statistics import Statistic
+                >>> from cleopatra.statistical_glyph import StatisticalGlyph
                 >>> np.random.seed(1)
                 >>> x = 4 + np.random.normal(0, 1.5, 200)
                 >>> stat_plot = StatisticalGlyph(x)
@@ -407,10 +405,7 @@ class StatisticalGlyph:
                        5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
                        7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
                 ```
-
-                .. image:: /_images/one-histogram.png
-                    :alt: Example Image
-                    :align: center
+                ![one-histogram](./../_images/statistical_glyph/one-histogram.png)
 
             - Create a histogram with custom bin count and labels:
 
@@ -449,10 +444,7 @@ class StatisticalGlyph:
                        8.54628567])], 'patches': [<BarContainer object of 15 artists>,
                        <BarContainer object of 15 artists>, <BarContainer object of 15 artists>]}
                 ```
-
-                .. image:: /_images/three-histogram.png
-                    :alt: Example Image
-                    :align: center
+                ![three-histogram](./../_images/statistical_glyph/three-histogram.png)
 
             Access the histogram data:
 
