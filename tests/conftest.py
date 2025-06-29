@@ -2,7 +2,9 @@ from typing import List
 
 import numpy as np
 import pytest
+from cleopatra.config import Config
 
+Config.set_matplotlib_backend(backend="Agg")
 
 @pytest.fixture(scope="module")
 def arr() -> np.ndarray:
