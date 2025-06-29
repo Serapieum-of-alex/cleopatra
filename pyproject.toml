@@ -78,7 +78,6 @@ max-complexity = 18
 select = "B,C,E,F,W,T4"
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
 markers = [
     "slow: mark test as slow.",
     "fast: mark test as fast.",
