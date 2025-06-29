@@ -3,7 +3,7 @@ from typing import Any, List, Tuple, Union
 
 from matplotlib import colors as mcolors
 from matplotlib.colors import Colormap, LinearSegmentedColormap
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 
 class Colors:
@@ -199,8 +199,10 @@ class Colors:
         """
         if not Path(path).exists():
             raise FileNotFoundError(f"The file {path} does not exist.")
-
-        image = Image.open(path).convert("RGB")
+        try:
+            image = Image.open(path).convert("RGB")
+        except UnidentifiedImageError:
+            raise ValueError(f"The file {path} is not a valid image.")
         width, height = image.size
         color_values = [image.getpixel((x, int(height / 2))) for x in range(width)]
 
