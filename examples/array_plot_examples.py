@@ -5,7 +5,7 @@ from cleopatra.config import Config
 
 Config.set_matplotlib_backend()
 from cleopatra.array_glyph import ArrayGlyph
-
+import matplotlib.pyplot as plt
 # from matplotlib.transforms import blended_transform_factory
 # %% create the glyph from a masked array
 arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -21,7 +21,7 @@ rgb = np.clip(arr2 / 10000, 0, 1)
 plt.imshow(rgb)
 plt.show()
 # %%
-plt.ioff()
+# plt.ioff()
 array = ArrayGlyph(arr, rgb=[3, 2, 1], cutoff=[0.3, 0.3, 0.3])
 # %%
 arr = np.load("tests/data/arr.npy")
@@ -29,7 +29,7 @@ exclude_value = arr[0, 0]
 cmap = "terrain"
 # arr2 = np.load("tests/data/DEM5km_Rhine_burned_fill.npy")
 # exclude_value2 = arr2[0, 0]
-color_scale = ["linear", "power", "lognorm", "boundary", "midpoint"]
+color_scale = ["linear", "power", "sym-lognorm", "boundary-norm", "midpoint"]
 ticks_spacing = 10
 
 
