@@ -2294,7 +2294,7 @@ and manipulation of colors.</p>
 <a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">            &gt;&gt;&gt; hex_color.get_type()</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="sd">            [&#39;hex&#39;]</span>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a>
-<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">        ```</span>
+<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">            ```</span>
 <a id="__codelineno-0-241" name="__codelineno-0-241"></a>
 <a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="sd">        - Determine the type of an RGB color with normalized values (0-1):</span>
 <a id="__codelineno-0-243" name="__codelineno-0-243"></a>
@@ -3602,40 +3602,31 @@ Possible values are:
     <ul>
 <li>
 <p>Determine the type of a hex color:</p>
-<p>```python</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>from cleopatra.colors import Colors
-hex_color = Colors("#23a9dd")
-hex_color.get_type()
-['hex']</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Colors</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">hex_color</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">(</span><span class="s2">&quot;#23a9dd&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">hex_color</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">[</span><span class="s1">&#39;hex&#39;</span><span class="p">]</span>
+</code></pre></div>
 </li>
-</ul>
-<p>```</p>
-<ul>
 <li>
 <p>Determine the type of an RGB color with normalized values (0-1):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_norm</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">))</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_norm</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">[</span><span class="s1">&#39;rgb-normalized&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_norm</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">))</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_norm</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">[</span><span class="s1">&#39;rgb-normalized&#39;</span><span class="p">]</span>
 </code></pre></div>
 </li>
 <li>
 <p>Determine the type of an RGB color with values between 0-255:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_255</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">204</span><span class="p">))</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_255</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">[</span><span class="s1">&#39;rgb&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_255</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">204</span><span class="p">))</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb_255</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">[</span><span class="s1">&#39;rgb&#39;</span><span class="p">]</span>
 </code></pre></div>
 </li>
 <li>
 <p>Determine types of mixed color formats:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">mixed</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">([</span><span class="s2">&quot;#ff0000&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)])</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">mixed</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">[</span><span class="s1">&#39;hex&#39;</span><span class="p">,</span> <span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="s1">&#39;rgb-normalized&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">mixed</span> <span class="o">=</span> <span class="n">Colors</span><span class="p">([</span><span class="s2">&quot;#ff0000&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)])</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">mixed</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">[</span><span class="s1">&#39;hex&#39;</span><span class="p">,</span> <span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="s1">&#39;rgb-normalized&#39;</span><span class="p">]</span>
 </code></pre></div>
 </li>
 </ul>
@@ -3745,7 +3736,7 @@ hex_color.get_type()
 <a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        &gt;&gt;&gt; hex_color.get_type()</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="sd">        [&#39;hex&#39;]</span>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a>
-<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">    ```</span>
+<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">        ```</span>
 <a id="__codelineno-0-241" name="__codelineno-0-241"></a>
 <a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="sd">    - Determine the type of an RGB color with normalized values (0-1):</span>
 <a id="__codelineno-0-243" name="__codelineno-0-243"></a>
