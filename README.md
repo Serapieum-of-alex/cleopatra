@@ -1,8 +1,7 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/cleopatra.png)](https://img.shields.io/pypi/pyversions/cleopatra)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MAfarrag/cleopatra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MAfarrag/cleopatra/context:python)
-[![Documentation Status](https://readthedocs.org/projects/cleopatra/badge/?version=latest)](https://cleopatra.readthedocs.io/en/latest/?badge=latest)
+[![Docs](https://img.shields.io/badge/docs-latest-blue)](https://serapieum-of-alex.github.io/cleopatra/latest/)
 [![codecov](https://codecov.io/github/Serapieum-of-alex/cleopatra/branch/main/graph/badge.svg?token=gHxH7ljIC3)](https://codecov.io/github/Serapieum-of-alex/cleopatra)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/MAfarrag/cleopatra)
@@ -32,8 +31,8 @@ The `Array` class has the following functionalities:
 - Animate the array over time with optional parameters to customize the animation speed and display points.
 - Display the array with optional parameters to customize the appearance and display point IDs.
 
-The `Statistic` module provides a class for creating statistical plots, specifically histograms. The class, `Statistic`,
-is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) data.
+The `statistical_glyph` module provides a class for creating statistical plots, specifically histograms. The class, 
+`StatisticalGlyph`, is designed to handle both 1D (single-dimensional) and 2D (multi-dimensional) data.
 
 
 
@@ -61,7 +60,7 @@ pip install git+https://github.com/Serapieum-of-alex/cleopatra
 ## pip
 to install the last release, you can easily use pip
 ```
-pip install cleopatra==0.5.1
+pip install cleopatra==0.6.0
 ```
 
 Quick start
