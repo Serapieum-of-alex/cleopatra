@@ -1,14 +1,12 @@
 import os
 from typing import List
 
-import matplotlib
 import numpy as np
-
-matplotlib.use("agg")
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.figure import Figure
+from PIL import Image
 
 from cleopatra.array_glyph import ArrayGlyph
 
@@ -336,3 +334,62 @@ def test_scale_percentile():
         ]
     )
     np.testing.assert_array_almost_equal(array.scale_percentile(arr), scaled_arr)
+
+
+def test_apply_color_map():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    my_glyph = ArrayGlyph(arr)
+    cmap = "viridis"
+    colored_arr = my_glyph.apply_colormap(cmap)
+    assert colored_arr.shape == (4, 4, 3)
+    assert colored_arr.dtype == "uint8"
+
+
+class TestScaleToRGB:
+    def test_scale_to_rgb(self):
+        arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+        my_glyph = ArrayGlyph(arr)
+
+        rgb_arr = my_glyph.scale_to_rgb()
+        assert rgb_arr.shape == (4, 4)
+        assert rgb_arr.dtype == "uint8"
+
+        rgb_arr = my_glyph.scale_to_rgb(arr=arr)
+        assert rgb_arr.shape == (4, 4)
+        assert rgb_arr.dtype == "uint8"
+
+
+class TestToImage:
+    def test_int64_arr(self):
+        arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+        my_glyph = ArrayGlyph(arr)
+
+        image = my_glyph.to_image()
+        assert isinstance(image, Image.Image)
+
+        # test if you provide the arr
+        image = my_glyph.to_image(arr=arr)
+        assert isinstance(image, Image.Image)
+
+    def test_uint_arr(self):
+        arr = np.random.randint(0, 255, size=(4, 4)).astype(np.uint8)
+        my_glyph = ArrayGlyph(arr)
+
+        image = my_glyph.to_image()
+        assert isinstance(image, Image.Image)
+
+
+def test_adjust_ticks():
+    arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+    extent = [
+        34.626902783650785,
+        34.654007151597256,
+        31.82337186561403,
+        31.8504762335605,
+    ]
+    my_glyph = ArrayGlyph(arr, extent=extent)
+    fig, ax = my_glyph.plot()
+    my_glyph.adjust_ticks(axis="x", multiply_value=100)
+    ax = my_glyph.ax
+    values = [val.get_text() for val in ax.xaxis.get_ticklabels()]
+    assert values == ["3100", "3200", "3300", "3400", "3500"]

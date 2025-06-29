@@ -1,4 +1,4 @@
-name: pypi-deployment
+name: tests
 
 on: [push]
 
@@ -26,7 +26,11 @@ jobs:
 
       - name: Run Tests
         run: |
-          python -m pytest -vvv --cov=cleopatra --cov-report=xml
+          pytest -vvv --cov=src/cleopatra --cov-report=xml
 
       - name: Upload coverage reports to Codecov with GitHub Action
         uses: codecov/codecov-action@v3
+
+      - name: test Jupyter notebook
+        run: |
+          pytest --nbval --nbval-lax --verbose

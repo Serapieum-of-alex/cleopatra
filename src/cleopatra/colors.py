@@ -1,6 +1,9 @@
+from pathlib import Path
 from typing import Any, List, Tuple, Union
 
 from matplotlib import colors as mcolors
+from matplotlib.colors import Colormap, LinearSegmentedColormap
+from PIL import Image, UnidentifiedImageError
 
 
 class Colors:
@@ -41,7 +44,6 @@ class Colors:
     ['hex']
 
     ```
-
     Create a Colors object with an RGB color (values between 0 and 1):
     ```python
     >>> rgb_norm = Colors((0.5, 0.2, 0.8))
@@ -61,7 +63,6 @@ class Colors:
     ['rgb']
 
     ```
-
     Convert between color formats:
     ```python
     >>> hex_color.to_rgb()  # Convert hex to RGB (normalized)
@@ -104,49 +105,53 @@ class Colors:
 
         Examples
         --------
-        Initialize with a hex color:
-        ```python
-        >>> from cleopatra.colors import Colors
-        >>> # With hash symbol
-        >>> color1 = Colors("#ff0000")
-        >>> color1.color_value
-        ['#ff0000']
-        >>> # Without hash symbol
-        >>> color2 = Colors("ff0000")
-        >>> color2.color_value
-        ['ff0000']
+        - Initialize with a hex color:
 
-        ```
+            ```python
+            >>> from cleopatra.colors import Colors
+            >>> # With hash symbol
+            >>> color1 = Colors("#ff0000")
+            >>> color1.color_value
+            ['#ff0000']
+            >>> # Without hash symbol
+            >>> color2 = Colors("ff0000")
+            >>> color2.color_value
+            ['ff0000']
 
-        Initialize with an RGB color (normalized, values between 0 and 1):
-        ```python
-        >>> rgb_norm = Colors((1.0, 0.0, 0.0))
-        >>> rgb_norm.color_value
-        [(1.0, 0.0, 0.0)]
-        >>> rgb_norm.get_type()
-        ['rgb-normalized']
+            ```
 
-        ```
+        - Initialize with an RGB color (normalized, values between 0 and 1):
 
-        Initialize with an RGB color (values between 0 and 255):
-        ```python
-        >>> rgb_255 = Colors((255, 0, 0))
-        >>> rgb_255.color_value
-        [(255, 0, 0)]
-        >>> rgb_255.get_type()
-        ['rgb']
+            ```python
+            >>> rgb_norm = Colors((1.0, 0.0, 0.0))
+            >>> rgb_norm.color_value
+            [(1.0, 0.0, 0.0)]
+            >>> rgb_norm.get_type()
+            ['rgb-normalized']
 
-        ```
+            ```
 
-        Initialize with a list of colors:
-        ```python
-        >>> mixed_colors = Colors(["#ff0000", (0, 255, 0), (0.0, 0.0, 1.0)])
-        >>> mixed_colors.color_value
-        ['#ff0000', (0, 255, 0), (0.0, 0.0, 1.0)]
-        >>> mixed_colors.get_type()
-        ['hex', 'rgb', 'rgb-normalized']
+        - Initialize with an RGB color (values between 0 and 255):
 
-        ```
+            ```python
+            >>> rgb_255 = Colors((255, 0, 0))
+            >>> rgb_255.color_value
+            [(255, 0, 0)]
+            >>> rgb_255.get_type()
+            ['rgb']
+
+            ```
+
+        - Initialize with a list of colors:
+
+            ```python
+            >>> mixed_colors = Colors(["#ff0000", (0, 255, 0), (0.0, 0.0, 1.0)])
+            >>> mixed_colors.color_value
+            ['#ff0000', (0, 255, 0), (0.0, 0.0, 1.0)]
+            >>> mixed_colors.get_type()
+            ['hex', 'rgb', 'rgb-normalized']
+
+            ```
         """
         # convert the hex color to a list if it is a string
         if isinstance(color_value, str) or isinstance(color_value, tuple):
@@ -158,6 +163,50 @@ class Colors:
             )
 
         self._color_value = color_value
+
+    @classmethod
+    def create_from_image(cls, path: str) -> "Colors":
+        """Create a color object from an image.
+
+        if you have an image of a color ramp, and you want to extract the colors from it, you can use this method.
+
+        ![color-ramp](./../_images/colors/color-ramp.png)
+
+        Parameters
+        ----------
+        path : str
+            The path to the image file.
+
+        Returns
+        -------
+        Colors
+            A color object.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the file does not exist.
+
+        Examples
+        --------
+        ```python
+        >>> path = "examples/data/colors/color-ramp.png"
+        >>> colors = Colors.create_from_image(path)
+        >>> print(colors.color_value) # doctest: +SKIP
+        [(9, 63, 8), (8, 68, 9), (5, 78, 7), (1, 82, 3), (0, 84, 0), (0, 85, 0), (1, 83, 0), (1, 81, 0), (1, 80, 1)
+
+        ```
+        """
+        if not Path(path).exists():
+            raise FileNotFoundError(f"The file {path} does not exist.")
+        try:
+            image = Image.open(path).convert("RGB")
+        except UnidentifiedImageError:
+            raise ValueError(f"The file {path} is not a valid image.")
+        width, height = image.size
+        color_values = [image.getpixel((x, int(height / 2))) for x in range(width)]
+
+        return cls(color_values)
 
     def get_type(self) -> List[str]:
         """Determine the type of each color value.
@@ -183,46 +232,50 @@ class Colors:
 
         Examples
         --------
-        Determine the type of a hex color:
-        ```python
-        >>> from cleopatra.colors import Colors
-        >>> hex_color = Colors("#23a9dd")
-        >>> hex_color.get_type()
-        ['hex']
+        - Determine the type of a hex color:
 
-        ```
+            ```python
+            >>> from cleopatra.colors import Colors
+            >>> hex_color = Colors("#23a9dd")
+            >>> hex_color.get_type()
+            ['hex']
 
-        Determine the type of an RGB color with normalized values (0-1):
-        ```python
-        >>> rgb_norm = Colors((0.5, 0.2, 0.8))
-        >>> rgb_norm.get_type()
-        ['rgb-normalized']
+            ```
 
-        ```
+        - Determine the type of an RGB color with normalized values (0-1):
 
-        Determine the type of an RGB color with values between 0-255:
-        ```python
-        >>> rgb_255 = Colors((128, 51, 204))
-        >>> rgb_255.get_type()
-        ['rgb']
+            ```python
+            >>> rgb_norm = Colors((0.5, 0.2, 0.8))
+            >>> rgb_norm.get_type()
+            ['rgb-normalized']
 
-        ```
+            ```
 
-        Determine types of mixed color formats:
-        ```python
-        >>> mixed = Colors(["#ff0000", (0, 255, 0), (0.0, 0.0, 1.0)])
-        >>> mixed.get_type()
-        ['hex', 'rgb', 'rgb-normalized']
+        - Determine the type of an RGB color with values between 0-255:
 
-        ```
+            ```python
+            >>> rgb_255 = Colors((128, 51, 204))
+            >>> rgb_255.get_type()
+            ['rgb']
+
+            ```
+
+        - Determine types of mixed color formats:
+
+            ```python
+            >>> mixed = Colors(["#ff0000", (0, 255, 0), (0.0, 0.0, 1.0)])
+            >>> mixed.get_type()
+            ['hex', 'rgb', 'rgb-normalized']
+
+            ```
         """
         color_type = []
         for color_i in self.color_value:
-            if self.is_valid_rgb_norm(color_i):
+            if self._is_valid_rgb_norm(color_i):
                 color_type.append("rgb-normalized")
-            elif self.is_valid_rgb_255(color_i):
+            elif self._is_valid_rgb_255(color_i):
                 color_type.append("rgb")
-            elif self.is_valid_hex_i(color_i):
+            elif self._is_valid_hex_i(color_i):
                 color_type.append("hex")
 
         return color_type
@@ -379,10 +432,10 @@ class Colors:
 
         ```
         """
-        return [self.is_valid_hex_i(col) for col in self.color_value]
+        return [self._is_valid_hex_i(col) for col in self.color_value]
 
     @staticmethod
-    def is_valid_hex_i(hex_color: str) -> bool:
+    def _is_valid_hex_i(hex_color: str) -> bool:
         """Check if a single color value is a valid hexadecimal color.
 
         This static method checks if the provided color value is a valid
@@ -410,27 +463,30 @@ class Colors:
         Check valid hex colors:
         ```python
         >>> from cleopatra.colors import Colors
-        >>> Colors.is_valid_hex_i("#ff0000")
+        >>> Colors._is_valid_hex_i("#ff0000")
         True
-        >>> Colors.is_valid_hex_i("00ff00")
+        >>> Colors._is_valid_hex_i("00ff00")
         False
-        >>> Colors.is_valid_hex_i("#0000FF")
+        >>> Colors._is_valid_hex_i("#0000FF")
         True
 
         ```
 
         Check invalid hex colors:
         ```python
-        >>> Colors.is_valid_hex_i("not-a-color")
+        >>> Colors._is_valid_hex_i("not-a-color")
         False
-        >>> Colors.is_valid_hex_i("#12345")  # Too short
+        >>> Colors._is_valid_hex_i("#12345")  # Too short
         False
-        >>> Colors.is_valid_hex_i((255, 0, 0))  # doctest: +ELLIPSIS
+        >>> Colors._is_valid_hex_i((255, 0, 0))  # doctest: +ELLIPSIS
         False
 
         ```
         """
-        return True if mcolors.is_color_like(hex_color) else False
+        if not isinstance(hex_color, str):
+            return False
+        else:
+            return True if mcolors.is_color_like(hex_color) else False
 
     def is_valid_rgb(self) -> List[bool]:
         """Check if each color value is a valid RGB color.
@@ -483,12 +539,12 @@ class Colors:
         ```
         """
         return [
-            self.is_valid_rgb_norm(col) or self.is_valid_rgb_255(col)
+            self._is_valid_rgb_norm(col) or self._is_valid_rgb_255(col)
             for col in self.color_value
         ]
 
     @staticmethod
-    def is_valid_rgb_255(rgb_tuple: Any) -> bool:
+    def _is_valid_rgb_255(rgb_tuple: Any) -> bool:
         """Check if a single color value is a valid RGB tuple with values between 0-255.
 
         This static method checks if the provided value is a valid RGB tuple with
@@ -511,23 +567,23 @@ class Colors:
         Check valid RGB tuples (0-255 range):
         ```python
         >>> from cleopatra.colors import Colors
-        >>> Colors.is_valid_rgb_255((255, 0, 0))
+        >>> Colors._is_valid_rgb_255((255, 0, 0))
         True
-        >>> Colors.is_valid_rgb_255((128, 64, 32))
+        >>> Colors._is_valid_rgb_255((128, 64, 32))
         True
-        >>> Colors.is_valid_rgb_255((0, 0, 0))
+        >>> Colors._is_valid_rgb_255((0, 0, 0))
         True
 
         ```
         Check invalid RGB tuples:
         ```python
-        >>> Colors.is_valid_rgb_255((1.0, 0.0, 0.0))  # Floats, not integers
+        >>> Colors._is_valid_rgb_255((1.0, 0.0, 0.0))  # Floats, not integers
         False
-        >>> Colors.is_valid_rgb_255((256, 0, 0))  # Value > 255
+        >>> Colors._is_valid_rgb_255((256, 0, 0))  # Value > 255
         False
-        >>> Colors.is_valid_rgb_255((0, 0))  # Not 3 values
+        >>> Colors._is_valid_rgb_255((0, 0))  # Not 3 values
         False
-        >>> Colors.is_valid_rgb_255("#ff0000")  # Not a tuple
+        >>> Colors._is_valid_rgb_255("#ff0000")  # Not a tuple
         False
 
         ```
@@ -538,7 +594,7 @@ class Colors:
         return False
 
     @staticmethod
-    def is_valid_rgb_norm(rgb_tuple: Any) -> bool:
+    def _is_valid_rgb_norm(rgb_tuple: Any) -> bool:
         """Check if a single color value is a valid normalized RGB tuple with values between 0-1.
 
         This static method checks if the provided value is a valid RGB tuple with
@@ -561,23 +617,23 @@ class Colors:
         Check valid normalized RGB tuples:
         ```python
         >>> from cleopatra.colors import Colors
-        >>> Colors.is_valid_rgb_norm((1.0, 0.0, 0.0))
+        >>> Colors._is_valid_rgb_norm((1.0, 0.0, 0.0))
         True
-        >>> Colors.is_valid_rgb_norm((0.5, 0.5, 0.5))
+        >>> Colors._is_valid_rgb_norm((0.5, 0.5, 0.5))
         True
-        >>> Colors.is_valid_rgb_norm((0.0, 0.0, 0.0))
+        >>> Colors._is_valid_rgb_norm((0.0, 0.0, 0.0))
         True
 
         ```
         Check invalid normalized RGB tuples:
         ```python
-        >>> Colors.is_valid_rgb_norm((255, 0, 0))  # Integers, not floats
+        >>> Colors._is_valid_rgb_norm((255, 0, 0))  # Integers, not floats
         False
-        >>> Colors.is_valid_rgb_norm((1.2, 0.0, 0.0))  # Value > 1.0
+        >>> Colors._is_valid_rgb_norm((1.2, 0.0, 0.0))  # Value > 1.0
         False
-        >>> Colors.is_valid_rgb_norm((0.5, 0.5))  # Not 3 values
+        >>> Colors._is_valid_rgb_norm((0.5, 0.5))  # Not 3 values
         False
-        >>> Colors.is_valid_rgb_norm("#ff0000")  # Not a tuple
+        >>> Colors._is_valid_rgb_norm("#ff0000")  # Not a tuple
         False
 
         ```
@@ -613,34 +669,40 @@ class Colors:
 
         Examples
         --------
-        Convert hex colors to normalized RGB (0-1 range):
-        ```python
-        >>> from cleopatra.colors import Colors
-        >>> hex_colors = Colors(["#ff0000", "#00ff00", "#0000ff"])
-        >>> hex_colors.to_rgb(normalized=True)
-        [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
+        - Convert hex colors to normalized RGB (0-1 range):
+            ```python
+            >>> from cleopatra.colors import Colors
+            >>> hex_colors = Colors(["#ff0000", "#00ff00", "#0000ff"])
+            >>> hex_colors.to_rgb(normalized=True)
+            [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
 
-        Convert hex colors to standard RGB (0-255 range):
-        ```python
-        >>> hex_colors.to_rgb(normalized=False)
-        [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+            ```
 
-        ```
-        Convert RGB colors and maintain their format:
-        ```python
-        >>> rgb_255 = Colors([(255, 0, 0), (0, 255, 0)])
-        >>> rgb_255.to_rgb(normalized=False)  # Keep as 0-255 range
-        [(255, 0, 0), (0, 255, 0)]
-        >>> rgb_255.to_rgb(normalized=True)  # Convert to 0-1 range
-        [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
+        - Convert hex colors to standard RGB (0-255 range):
+            ```python
+            >>> hex_colors.to_rgb(normalized=False)
+            [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 
-        >>> rgb_norm = Colors([(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)])
-        >>> rgb_norm.to_rgb(normalized=True)  # Keep as 0-1 range
-        [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
-        >>> rgb_norm.to_rgb(normalized=False)  # Convert to 0-255 range
-        [(255, 0, 0), (0, 255, 0)]
+            ```
+        - Convert RGB colors and maintain their format:
+            There are two types of RGB coor values (0-255), and (0-1), you can get the RGB values in any format, the
+            default is the normalized format (0-1):
 
-        ```
+            ```python
+            >>> rgb_255 = Colors([(255, 0, 0), (0, 255, 0)])
+            >>> rgb_255.to_rgb(normalized=False)  # Keep as 0-255 range
+            [(255, 0, 0), (0, 255, 0)]
+            >>> rgb_255.to_rgb(normalized=True)  # Convert to 0-1 range
+            [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
+
+            >>> rgb_norm = Colors([(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)])
+            >>> rgb_norm.to_rgb(normalized=True)  # Keep as 0-1 range
+            [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
+            >>> rgb_norm.to_rgb(normalized=False)  # Convert to 0-255 range
+            [(255, 0, 0), (0, 255, 0)]
+
+            ```
+
         Convert mixed color formats:
         ```python
         >>> mixed = Colors(["#ff0000", (0, 255, 0), (0.0, 0.0, 1.0)])
@@ -670,3 +732,32 @@ class Colors:
                     rgb.append(tuple([int(c * 255) for c in mcolors.to_rgb(color_i)]))
 
         return rgb
+
+    def get_color_map(self, name: str = None) -> Colormap:
+        """Get color ramp from a color values in stored in the object.
+
+        Parameters
+        ----------
+        name: str, Default is None.
+            The name of the color ramp.
+
+        Returns
+        -------
+        Colormap:
+            A color map.
+
+        Examples
+        --------
+        - Create a color object from an image and get the color ramp:
+            ```python
+            >>> path = "examples/data/colors/color-ramp.png"
+            >>> colors = Colors.create_from_image(path)
+            >>> color_ramp = colors.get_color_map()
+            >>> print(color_ramp) # doctest: +SKIP
+            <matplotlib.colors.LinearSegmentedColormap object at 0x7f8a2e1b5e50>
+
+            ```
+        """
+        vals = self.to_rgb(normalized=True)
+        name = "custom_color_map" if name is None else name
+        return LinearSegmentedColormap.from_list(name, vals)

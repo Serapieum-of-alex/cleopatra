@@ -27,6 +27,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
 import numpy.ma as ma
 from hpc.indexing import get_indices2
@@ -34,9 +35,11 @@ from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 from matplotlib.axes import Axes
 from matplotlib.colorbar import Colorbar
+from matplotlib.colors import Colormap
 from matplotlib.figure import Figure
 from matplotlib.image import AxesImage
 from matplotlib.ticker import LogFormatter
+from PIL import Image
 
 from cleopatra.styles import DEFAULT_OPTIONS as STYLE_DEFAULTS
 from cleopatra.styles import MidpointNormalize
@@ -87,26 +90,30 @@ class ArrayGlyph:
 
     Examples
     --------
-    Create a simple array plot:
-    ```python
-    >>> import numpy as np
-    >>> from cleopatra.array_glyph import ArrayGlyph
-    >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    >>> array_glyph = ArrayGlyph(arr)
-    >>> fig, ax = array_glyph.plot()
+    - Create a simple array plot:
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.array_glyph import ArrayGlyph
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array_glyph = ArrayGlyph(arr)
+        >>> fig, ax = array_glyph.plot()
 
-    Create an RGB plot from a 3D array:
+        ```
+    - Create an RGB plot from a 3D array:
     ```python
     >>> rgb_array = np.random.randint(0, 255, size=(3, 10, 10))
     >>> rgb_glyph = ArrayGlyph(rgb_array, rgb=[0, 1, 2])
     >>> fig, ax = rgb_glyph.plot()
 
-    Create an animated plot from a 3D array:
+    ```
+    - Create an animated plot from a 3D array:
     ```python
     >>> time_series = np.random.randint(1, 10, size=(5, 10, 10))
     >>> time_labels = ["Frame 1", "Frame 2", "Frame 3", "Frame 4", "Frame 5"]
     >>> animated_glyph = ArrayGlyph(time_series)
     >>> anim = animated_glyph.animate(time_labels)
+
+    ```
     """
 
     def __init__(
@@ -265,7 +272,7 @@ class ArrayGlyph:
             np.nanmin(array) if kwargs.get("vmin") is None else kwargs.get("vmin")
         )
 
-        self.arr = array
+        self._arr = array
         # get the tick spacing that has 10 ticks only
         self.ticks_spacing = (self._vmax - self._vmin) / 10
         shape = array.shape
@@ -275,10 +282,20 @@ class ArrayGlyph:
             no_elem = array.count()
 
         self.no_elem = no_elem
-        if fig is None:
-            self.fig, self.ax = self.create_figure_axes()
-        else:
+
+        if fig is not None:
             self.fig, self.ax = fig, ax
+        else:
+            self.fig = None
+
+    @property
+    def arr(self):
+        """array"""
+        return self._arr
+
+    @arr.setter
+    def arr(self, value):
+        self._arr = value
 
     def prepare_array(
         self,
@@ -319,48 +336,120 @@ class ArrayGlyph:
         np.ndarray
             The prepared array with shape (height, width, 3) suitable for RGB visualization.
             Values are normalized to the range [0, 1].
+            the rgb 3d array is converted into 2d array to be plotted using the plt.imshow function.
+            a float32 array normalized between 0 and 1 using the `percentile` values or the `surface_reflectance`.
+            if the `percentile` or `surface_reflectance` values are not given, the function just reorders the values
+            to have the red-green-blue order.
 
         Raises
         ------
         ValueError
             If the array shape is incompatible with the provided RGB indices.
 
+        Notes
+        -----
+            - The `prepare_array` function is called in the constructor of the `ArrayGlyph` class to prepare the array,
+              so you can provide the same parameters of the `prepare_array` function to the `ArrayGlyph constructor`.
+            - The prepare function moves the first axes (the channel axis) to the last axes, and then scales the array
+              using the percentile values. If the percentile is not given, the function scales the array using the
+              surface reflectance values. If the surface reflectance is not given, the function scales the array using
+              the cutoff values. If the cutoff is not given, the function scales the array using the sentinel data
+
         Examples
         --------
         Prepare an array using percentile-based scaling:
-        ```python
-        >>> import numpy as np
-        >>> from cleopatra.array_glyph import ArrayGlyph
-        >>> # Create a 3-band array (e.g., satellite image)
-        >>> bands = np.random.randint(0, 10000, size=(3, 100, 100))
-        >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
-        >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], percentile=2)
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> import numpy as np
+            >>> from cleopatra.array_glyph import ArrayGlyph
+            >>> # Create a 3-band array (e.g., satellite image)
+            >>> bands = np.random.randint(0, 10000, size=(3, 100, 100))
+            >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
+            >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], percentile=2)
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            np.True_
 
-        ```
+            ```
         Prepare an array using surface reflectance normalization:
-        ```python
-        >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], surface_reflectance=10000)
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], surface_reflectance=10000)
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            np.True_
 
-        ```
+            ```
         Prepare an array with cutoff values:
-        ```python
-        >>> rgb_array = glyph.prepare_array(
-        ...     bands, rgb=[0, 1, 2], surface_reflectance=10000, cutoff=[5000, 5000, 5000]
-        ... )
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> rgb_array = glyph.prepare_array(
+            ...     bands, rgb=[0, 1, 2], surface_reflectance=10000, cutoff=[5000, 5000, 5000]
+            ... )
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            np.True_
 
-        ```
+            ```
+
+        - Create an array and instantiate the `ArrayGlyph` class.
+            ```python
+            >>> import numpy as np
+            >>> arr = np.random.randint(0, 255, size=(3, 5, 5)).astype(np.float32)
+            >>> array_glyph = ArrayGlyph(arr)
+            >>> print(array_glyph.arr.shape)
+            (3, 5, 5)
+
+            ```
+        `rgb` channels:
+            - Now let's use the `prepare_array` function with `rgb` channels as [0, 1, 2]. so the finction does not to
+                reorder the chennels. but it just needs to move the first axis to the last axis.
+                ```python
+                >>> rgb_array = array_glyph.prepare_array(arr, rgb=[0, 1, 2])
+                >>> print(rgb_array.shape)
+                (5, 5, 3)
+
+                ```
+            - If we compare the values of the first channel in the original array with the first array in the rgb array it
+                should be the same.
+                ```python
+                >>> np.testing.assert_equal(arr[0, :, :],rgb_array[:, :, 0])
+
+                ```
+        surface_reflectance:
+            - if you provide the surface reflectance value, the function will scale the array using the surface reflectance
+                value to a normalized rgb values.
+                ```python
+                >>> array_glyph = ArrayGlyph(arr)
+                >>> rgb_array = array_glyph.prepare_array(arr, surface_reflectance=10000, rgb=[0, 1, 2])
+                >>> print(rgb_array.shape)
+                (5, 5, 3)
+
+                ```
+            - if you print the values of the first channel, you will find all the values are between 0 and 1.
+                ```python
+                >>> print(rgb_array[:, :, 0]) # doctest: +SKIP
+                [[0.0195 0.02   0.0109 0.0211 0.0087]
+                 [0.0112 0.0221 0.0035 0.0234 0.0141]
+                 [0.0116 0.0188 0.0001 0.0176 0.    ]
+                 [0.0014 0.0147 0.0043 0.0167 0.0117]
+                 [0.0083 0.0139 0.0186 0.02   0.0058]]
+
+                ```
+            - With the `surface_reflectance` parameter, you can also use the `cutoff` parameter to affect values that
+                are above it, by rescaling them.
+                ```python
+                >>> rgb_array = array_glyph.prepare_array(
+                ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
+                ... )
+                >>> print(rgb_array[:, :, 0]) # doctest: +SKIP
+                [[0.     0.     0.     0.     0.    ]
+                 [1.     1.     1.     1.     1.    ]
+                 [1.     1.     1.     1.     1.    ]
+                 [0.0014 0.0147 0.0043 0.0167 0.0117]
+                 [0.0083 0.0139 0.0186 0.02   0.0058]]
+
+                ```
         """
         # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
@@ -423,7 +512,7 @@ class ArrayGlyph:
         >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
         >>> normalized = glyph._prepare_sentinel_rgb(rgb_data)
         >>> np.all((0 <= normalized) & (normalized <= 1))
-        True
+        np.True_
 
         ```
         Prepare Sentinel-2 data with custom cutoff values:
@@ -431,7 +520,7 @@ class ArrayGlyph:
         >>> cutoffs = [8000, 7000, 9000]
         >>> normalized = glyph._prepare_sentinel_rgb(rgb_data, rgb=[0, 1, 2], cutoff=cutoffs)
         >>> np.all((0 <= normalized) & (normalized <= 1))
-        True
+        np.True_
 
         ```
         """
@@ -581,7 +670,6 @@ class ArrayGlyph:
         ax: matplotlib.axes.Axes
             the created axes.
         """
-        plt.ioff()  # to prevent the empty figure from being displayed
         fig, ax = plt.subplots(figsize=self.default_options["figsize"])
 
         return fig, ax
@@ -693,6 +781,107 @@ class ArrayGlyph:
             )
 
         return im, cbar_kw
+
+    def apply_colormap(self, cmap: Union[Colormap, str]) -> np.ndarray:
+        """Apply a matplotlib colormap to an array.
+
+            Create an RGB channel from the given array using the given colormap.
+
+        Parameters
+        ----------
+        cmap: Colormap/str
+            colormap.
+
+        Returns
+        -------
+        np.ndarray: 8-bit array
+            the array with the colormap applied.
+
+        Examples
+        --------
+        - Create an array and instantiate the `Array` object:
+        ```python
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> rgb_array = array.apply_colormap("coolwarm_r")
+        >>> print(rgb_array) # doctest: +SKIP
+        [[[179   3  38]
+          [221  96  76]
+          [244 154 123]]
+         [[244 196 173]
+          [220 220 221]
+          [183 207 249]]
+         [[139 174 253]
+          [ 96 128 232]
+          [ 58  76 192]]]
+
+        >>> print(rgb_array.dtype)
+        uint8
+
+        ```
+        """
+        colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
+        normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
+        colored = colormap(normed_data)
+        return (colored[:, :, :3] * 255).astype("uint8")
+
+    def to_image(self, arr: np.ndarray = None) -> Image.Image:
+        """Create an RGB image from an array.
+
+            convert the array to an image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
+
+        Examples
+        --------
+        ```python
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> image = array.to_image()
+        >>> print(image) # doctest: +SKIP
+        <PIL.Image.Image image mode=RGB size=3x3 at 0x7F5E0D2F4C40>
+
+        ```
+        """
+        if arr is None:
+            arr = self.arr
+        # This is done to scale the values between 0 and 255
+        arr = arr if arr.dtype == "uint8" else self.scale_to_rgb()
+        return Image.fromarray(arr).convert("RGB")
+
+    def scale_to_rgb(self, arr: np.ndarray = None) -> np.ndarray:
+        """Create an RGB image.
+
+        Parameters
+        ----------
+        arr: np.ndarray, default is None.
+            array. if None, the array in the object will be used.
+
+        Examples
+        --------
+        ```python
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> rgb_array = array.scale_to_rgb()
+        >>> print(rgb_array)
+        [[28 56 85]
+         [113 141 170]
+         [198 226 255]]
+        >>> print(rgb_array.dtype)
+        uint8
+
+        ```
+        """
+        if arr is None:
+            arr = self.arr
+        # This is done to scale the values between 0 and 255
+        return (arr * 255 / arr.max()).astype("uint8")
 
     @staticmethod
     def _plot_text(
@@ -899,123 +1088,202 @@ class ArrayGlyph:
 
         Examples
         --------
-        Basic array plot:
-        ```python
-        >>> import numpy as np
-        >>> from cleopatra.array_glyph import ArrayGlyph
-        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
-        >>> fig, ax = array.plot()
+        - Basic array plot:
 
-        ```
-        Color bar customization:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized color bar", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     cbar_orientation="horizontal",
-        ...     cbar_label_rotation=-90,
-        ...     cbar_label_location="center",
-        ...     cbar_length=0.7,
-        ...     cbar_label_size=12,
-        ...     cbar_label="Discharge m3/s",
-        ...     ticks_spacing=5,
-        ...     color_scale="linear",
-        ...     cmap="coolwarm_r",
-        ... )
+            ```python
+            >>> import numpy as np
+            >>> from cleopatra.array_glyph import ArrayGlyph
+            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+            >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
+            >>> fig, ax = array.plot()
 
-        ```
-        Display cell values:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display array values", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     display_cell_value=True,
-        ...     num_size=12
-        ... )
+            ```
+        ![array-plot](./../_images/array_glyph/array-plot.png)
 
-        ```
-        Plot points at specific locations:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display Points", title_size=14)
-        >>> points = np.array([[1, 0, 0], [2, 1, 1], [3, 2, 2]])
-        >>> fig, ax = array.plot(
-        ...     points=points,
-        ...     point_color="black",
-        ...     point_size=100,
-        ...     pid_color="orange",
-        ...     pid_size=30,
-        ... )
+        - Color bar customization:
 
-        ```
-        Power scale with different gamma values:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     cbar_label="Discharge m3/s",
-        ...     color_scale="power",
-        ...     gamma=0.5,  # Default value
-        ...     cmap="coolwarm_r",
-        ... )
+            - Create an array and instantiate the `Array` object with custom options.
+                ```python
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized color bar", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_orientation="horizontal",
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label_location="center",
+                ...     cbar_length=0.7,
+                ...     cbar_label_size=12,
+                ...     cbar_label="Discharge m3/s",
+                ...     ticks_spacing=5,
+                ...     color_scale="linear",
+                ...     cmap="coolwarm_r",
+                ... )
 
-        >>> # Higher gamma (0.8) emphasizes higher values less
-        >>> fig, ax = array.plot(
-        ...     color_scale="power",
-        ...     gamma=0.8,
-        ...     cmap="coolwarm_r",
-        ... )
+                ```
+                ![color-bar-customization](./../_images/array_glyph/color-bar-customization.png)
 
-        >>> # Lower gamma (0.1) emphasizes higher values more
-        >>> fig, ax = array.plot(
-        ...     color_scale="power",
-        ...     gamma=0.1,
-        ...     cmap="coolwarm_r",
-        ... )
+        - Display values for each cell:
 
-        ```
-        Logarithmic scale:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Logarithmic scale", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     cbar_label="Discharge m3/s",
-        ...     color_scale="sym-lognorm",
-        ...     cmap="coolwarm_r",
-        ... )
+            - you can display the values for each cell by using thr parameter `display_cell_value`, and customize how
+                the values are displayed using the parameter `background_color_threshold` and `num_size`.
 
-        >>> # Custom logarithmic scale parameters
-        >>> fig, ax = array.plot(
-        ...     color_scale="sym-lognorm",
-        ...     line_threshold=0.015,
-        ...     line_scale=0.1,
-        ...     cmap="coolwarm_r",
-        ... )
+                ```python
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display array values", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     display_cell_value=True,
+                ...     num_size=12
+                ... )
 
-        ```
-        Boundary scale with custom boundaries:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Boundary scale", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     color_scale="boundary-norm",
-        ...     cmap="coolwarm_r",
-        ... )
+                ```
+                ![display-cell-values](./../_images/array_glyph/display-cell-values.png)
 
-        >>> # Custom boundaries
-        >>> bounds = [0, 5, 10]
-        >>> fig, ax = array.plot(
-        ...     color_scale="boundary-norm",
-        ...     bounds=bounds,
-        ...     cmap="coolwarm_r",
-        ... )
+        - Plot points at specific locations in the array:
 
-        ```
-        Midpoint scale:
-        ```python
-        >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
-        >>> fig, ax = array.plot(
-        ...     color_scale="midpoint",
-        ...     midpoint=2,
-        ...     cmap="coolwarm_r",
-        ... )
+            - you can display points in specific cells in the array and also display a value for each of these points.
+                The point parameter takes an array with the first column as the values to be displayed on top of the
+                points, the second and third columns are the row and column index of the point in the array.
+            - The `point_color` and `point_size` parameters are used to customize the appearance of the points,
+                while the `pid_color` and `pid_size` parameters are used to customize the appearance of the point
+                IDs/text.
 
-        ```
+                ```python
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Display Points", title_size=14)
+                >>> points = np.array([[1, 0, 0], [2, 1, 1], [3, 2, 2]])
+                >>> fig, ax = array.plot(
+                ...     points=points,
+                ...     point_color="black",
+                ...     point_size=100,
+                ...     pid_color="orange",
+                ...     pid_size=30,
+                ... )
+
+                ```
+                ![display-points](./../_images/array_glyph/display-points.png)
+
+        - Color scale customization:
+
+            - Power scale (with different gamma values).
+
+                - The default power scale uses a gamma value of 0.5.
+
+                    ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="power",
+                    ...     cmap="coolwarm_r",
+                    ...     cbar_label_rotation=-90,
+                    ... )
+
+                    ```
+                    ![power-scale](./../_images/array_glyph/power-scale.png)
+
+                - change the gamma of 0.8 (emphasizes higher values less).
+
+                    ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale - gamma=0.8", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     color_scale="power",
+                    ...     gamma=0.8,
+                    ...     cmap="coolwarm_r",
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ... )
+
+                    ```
+                    ![power-scale-gamma-0.8](./../_images/array_glyph/power-scale-gamma-0.8.png)
+
+                - change the gamma of 0.1 (emphasizes higher values more).
+
+                    ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale - gamma=0.1", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     color_scale="power",
+                    ...     gamma=0.1,
+                    ...     cmap="coolwarm_r",
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ... )
+
+                    ```
+                    ![power-scale-gamma-0.1](./../_images/array_glyph/power-scale-gamma-0.1.png)
+
+            - Logarithmic scale.
+
+                - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
+                value if 0.0001, and 0.001 respectively.
+                    ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Logarithmic scale", title_size=18)
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ...     cbar_label_rotation=-90,
+                    ... )
+
+                    ```
+                    ![log-scale](./../_images/array_glyph/log-scale.png)
+
+                - you can change the `line_threshold` and `line_scale` values.
+                    ```python
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Logarithmic scale: Customized Parameter", title_size=12
+                    ... )
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="sym-lognorm",
+                    ...     cmap="coolwarm_r",
+                    ...     line_threshold=0.015,
+                    ...     line_scale=0.1,
+                    ... )
+
+                    ```
+                    ![log-scale](./../_images/array_glyph/log-scale-custom-parameters.png)
+
+            - Defined boundary scale.
+                ```python
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Defined boundary scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="boundary-norm",
+                ...     cmap="coolwarm_r",
+                ... )
+
+                ```
+                ![boundary-scale](./../_images/array_glyph/boundary-scale.png)
+
+                - You can also define the boundaries.
+                    ```python
+                    >>> array = ArrayGlyph(
+                    ...     arr, figsize=(6, 6), title="Defined boundary scale: defined bounds", title_size=18
+                    ... )
+                    >>> bounds = [0, 5, 10]
+                    >>> fig, ax = array.plot(
+                    ...     cbar_label_rotation=-90,
+                    ...     cbar_label="Discharge m3/s",
+                    ...     color_scale="boundary-norm",
+                    ...     bounds=bounds,
+                    ...     cmap="coolwarm_r",
+                    ... )
+
+                    ```
+                    ![boundary-scale-defined-bounds](./../_images/array_glyph/boundary-scale-defined-bounds.png)
+
+            - Midpoint scale.
+
+                in the midpoint scale you can define a value that splits the scale into half.
+                ```python
+                >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Midpoint scale", title_size=18)
+                >>> fig, ax = array.plot(
+                ...     cbar_label_rotation=-90,
+                ...     cbar_label="Discharge m3/s",
+                ...     color_scale="midpoint",
+                ...     cmap="coolwarm_r",
+                ...     midpoint=2,
+                ... )
+
+                ```
+                ![midpoint-scale-costom-parameters](./../_images/array_glyph/midpoint-scale-costom-parameters.png)
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
@@ -1025,6 +1293,9 @@ class ArrayGlyph:
                 )
             else:
                 self.default_options[key] = val
+
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
 
         arr = self.arr
         fig, ax = self.fig, self.ax
@@ -1089,6 +1360,86 @@ class ArrayGlyph:
         #     im.norm(self.vmax) / 2.0
         plt.show()
         return fig, ax
+
+    def adjust_ticks(
+        self,
+        axis: str,
+        multiply_value: Union[float, int] = 1,
+        add_value: Union[float, int] = 0,
+        fmt: str = "{0:g}",
+        visible: bool = True,
+    ):
+        """Adjust the ticks of the axes.
+
+        Parameters
+        ----------
+        axis: str
+            x or y.
+        multiply_value: Union[float, int]
+            value to be multiplied.
+        add_value: Union[float, int]
+            value to be added.
+        fmt: str, default is "{0:g}".
+            format of the ticks.
+            - 123.456 with the format "{0:f}" will give '123.456000'.
+            - 123.456 with the format "{0:.2f}" will give '123.46'.
+            - 123456.789 with the format "{0:e}" will give '1.234568e+05'.
+            - 123456.789 with the format "{0:.2e}" will give '1.23e+05'.
+            - 123456.789 with the format "{0:g}" will give '123457'.
+            - 123456.789 with the format "{0:.2g}" will give '1.2e+05'.
+            - 123 with the format "{0:d}" will give '123'.
+         visible: bool, optional, default is True.
+            Whether the ticks are visible or not.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        - Create an array and instantiate the `ArrayGlyph` object:
+            ```python
+            >>> import numpy as np
+            >>> arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+            >>> extent = [34.62, 34.65, 31.82, 31.85]
+            >>> my_glyph = ArrayGlyph(arr, extent=extent)
+            >>> fig, ax = my_glyph.plot()
+
+            ```
+            ![adjust_tick](./../_images/array_glyph/adjust_tick.png)
+
+        - Adjust the ticks of the x-axis:
+            ```python
+            >>> my_glyph.adjust_ticks(axis='x', multiply_value=0.01, add_value=34.62, fmt="{0:.2f}")
+
+            ```
+            ![adjust_tick](./../_images/array_glyph/adjust_tick-x.png)
+
+        - Adjust the ticks of the y-axis:
+            ```python
+            >>> my_glyph.adjust_ticks(axis='y', multiply_value=0.01, add_value=31.82, fmt="{0:.2e}")
+
+            ```
+            ![adjust_tick-y](./../_images/array_glyph/adjust_tick-y.png)
+        """
+        if axis == "x":
+            ticks_x = ticker.FuncFormatter(
+                lambda x, pos: fmt.format(x * multiply_value + add_value)
+            )
+            self.ax.xaxis.set_major_formatter(ticks_x)
+        else:
+            ticks_y = ticker.FuncFormatter(
+                lambda y, pos: fmt.format(y * multiply_value + add_value)
+            )
+            self.ax.yaxis.set_major_formatter(ticks_y)
+
+        if not visible:
+            if axis == "x":
+                self.ax.get_xaxis().set_visible(visible)
+            else:
+                self.ax.get_yaxis().set_visible(visible)
+
+        plt.show()
 
     def animate(
         self,
@@ -1257,8 +1608,10 @@ class ArrayGlyph:
         ```
         Animation with custom interval (speed):
         ```python
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> # Slower animation (500ms between frames)
         >>> anim_obj = animated_array.animate(frame_labels, interval=500)
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> # Faster animation (100ms between frames)
         >>> anim_obj = animated_array.animate(frame_labels, interval=100)
 
@@ -1267,6 +1620,7 @@ class ArrayGlyph:
         ```python
         >>> # Create points to display on the animation
         >>> points = np.array([[1, 2, 3], [2, 5, 5], [3, 8, 8]])
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(
         ...     frame_labels,
         ...     points=points,
@@ -1279,6 +1633,7 @@ class ArrayGlyph:
         ```
         Animation with cell values displayed:
         ```python
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(
         ...     frame_labels,
         ...     display_cell_value=True,
@@ -1287,9 +1642,12 @@ class ArrayGlyph:
         ... )
 
         ```
+        ![animated_array](./../_images/array_glyph/animated_array.gif)
+
         Saving the animation to a file:
         ```python
         >>> # Create the animation first
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(frame_labels)
         >>> # Then save it to a file
         >>> animated_array.save_animation("animation.gif", fps=2)
@@ -1327,6 +1685,10 @@ class ArrayGlyph:
         # if optional_display
         precision = self.default_options["precision"]
         array = self.arr
+
+        if self.fig is None:
+            self.fig, self.ax = self.create_figure_axes()
+
         fig, ax = self.fig, self.ax
 
         ticks = self.get_ticks()
@@ -1443,7 +1805,6 @@ class ArrayGlyph:
             return output
 
         plt.tight_layout()
-
         anim = FuncAnimation(
             fig,
             animate_a,
@@ -1496,17 +1857,17 @@ class ArrayGlyph:
         >>> frame_labels = ["Frame 1", "Frame 2", "Frame 3", "Frame 4", "Frame 5"]
         >>> animated_array = ArrayGlyph(arr)
         >>> anim_obj = animated_array.animate(frame_labels)
-        >>> animated_array.save_animation("animation.gif")
+        >>> animated_array.save_animation("animation.gif") # doctest: +SKIP
 
         ```
         Save with a higher frame rate for a faster animation:
         ```python
-        >>> animated_array.save_animation("animation.gif", fps=5)
+        >>> animated_array.save_animation("animation.gif", fps=5) # doctest: +SKIP
 
         ```
         Save in MP4 format (requires FFmpeg):
         ```python
-        >>> animated_array.save_animation("animation.mp4", fps=10)
+        >>> animated_array.save_animation("animation.mp4", fps=10) # doctest: +SKIP
 
         ```
         """

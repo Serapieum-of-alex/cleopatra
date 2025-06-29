@@ -71,12 +71,12 @@ DEFAULT_OPTIONS = {
 DEFAULT_OPTIONS = STYLE_DEFAULTS | DEFAULT_OPTIONS
 
 
-class Statistic:
-    """A class for creating statistical plots, specifically histograms.
+class StatisticalGlyph:
+    """
+    A class for creating statistical plots, specifically histograms.
 
-    This class provides functionality for creating histogram plots from 1D or 2D numerical data.
-    It supports customization of various aspects of the plots, including bin count, colors,
-    transparency, and axis labels.
+    This class provides methods for initializing the class with numerical values and optional keyword arguments,
+    and for creating histograms from the given values.
 
     Attributes
     ----------
@@ -109,10 +109,10 @@ class Statistic:
     Create a histogram from 1D data:
     ```python
     >>> import numpy as np
-    >>> from cleopatra.statistics import Statistic
+    >>> from cleopatra.statistical_glyph import StatisticalGlyph
     >>> np.random.seed(1)
     >>> x = 4 + np.random.normal(0, 1.5, 200)
-    >>> stat_plot = Statistic(x)
+    >>> stat_plot = StatisticalGlyph(x)
     >>> fig, ax, hist = stat_plot.histogram()
 
     ```
@@ -120,10 +120,26 @@ class Statistic:
     ```python
     >>> np.random.seed(1)
     >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
-    >>> stat_plot = Statistic(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+    >>> stat_plot = StatisticalGlyph(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
     >>> fig, ax, hist = stat_plot.histogram()
 
     ```
+
+    Example usage:
+    ```python
+    >>> np.random.seed(1)
+    >>> x = 4 + np.random.normal(0, 1.5, 200)
+    >>> stat_plot = StatisticalGlyph(x)
+    >>> fig, ax, hist = stat_plot.histogram()
+    >>> print(hist) # doctest: +SKIP
+    {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
+                        6.,  1.])], 'bins': [array([0.34774335, 0.8440597 , 1.34037605, 1.8366924 , 2.33300874,
+                       2.82932509, 3.32564144, 3.82195778, 4.31827413, 4.81459048,
+                       5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
+                       7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
+
+    ```
+    ![one-histogram](./../_images/statistical_glyph/one-histogram.png)
     """
 
     def __init__(
@@ -169,15 +185,15 @@ class Statistic:
         Initialize with default options:
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
 
         ```
         Initialize with custom options:
         ```python
-        >>> stat_custom = Statistic(
+        >>> stat_custom = StatisticalGlyph(
         ...     x,
         ...     figsize=(8, 6),
         ...     bins=20,
@@ -194,7 +210,7 @@ class Statistic:
         Initialize with 2D data:
         ```python
         >>> data_2d = np.random.normal(0, 1, (100, 3))
-        >>> stat_2d = Statistic(
+        >>> stat_2d = StatisticalGlyph(
         ...     data_2d,
         ...     color=["red", "green", "blue"],
         ...     alpha=0.4
@@ -221,10 +237,10 @@ class Statistic:
         Examples
         --------
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
         >>> values = stat.values
         >>> values.shape
         (100,)
@@ -246,10 +262,10 @@ class Statistic:
         --------
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x1 = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x1)
+        >>> stat = StatisticalGlyph(x1)
         >>> # Update with new values
         >>> x2 = np.random.normal(5, 2, 100)
         >>> stat.values = x2
@@ -293,10 +309,10 @@ class Statistic:
         --------
         ```python
         >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
+        >>> from cleopatra.statistical_glyph import StatisticalGlyph
         >>> np.random.seed(1)
         >>> x = np.random.normal(0, 1, 100)
-        >>> stat = Statistic(x)
+        >>> stat = StatisticalGlyph(x)
         >>> options = stat.default_options
         >>> print(options['bins'])
         15
@@ -368,49 +384,77 @@ class Statistic:
         different colors. The transparency (alpha) can be adjusted to make overlapping
         regions visible.
 
+
         Examples
         --------
-        Create a histogram from 1D data:
-        ```python
-        >>> import numpy as np
-        >>> from cleopatra.statistics import Statistic
-        >>> np.random.seed(1)
-        >>> x = 4 + np.random.normal(0, 1.5, 200)
-        >>> stat_plot = Statistic(x)
-        >>> fig, ax, hist = stat_plot.histogram()
+        - 1D data.
 
-        ```
-        Create a histogram with custom bin count and labels:
-        ```python
-        >>> fig, ax, hist = stat_plot.histogram(
-        ...     bins=20,
-        ...     xlabel="Values",
-        ...     ylabel="Frequency",
-        ...     xlabel_font_size=14,
-        ...     ylabel_font_size=14
-        ... )
+            - Create a histogram from 1D data:
 
-        ```
-        Create a histogram from 2D data with custom colors:
-        ```python
-        >>> np.random.seed(1)
-        >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
-        >>> stat_plot = Statistic(x)
-        >>> fig, ax, hist = stat_plot.histogram(
-        ...     color=["red", "green", "blue"],
-        ...     alpha=0.4,
-        ...     rwidth=0.8
-        ... )
+                ```python
+                >>> import numpy as np
+                >>> from cleopatra.statistical_glyph import StatisticalGlyph
+                >>> np.random.seed(1)
+                >>> x = 4 + np.random.normal(0, 1.5, 200)
+                >>> stat_plot = StatisticalGlyph(x)
+                >>> fig, ax, hist = stat_plot.histogram()
+                >>> print(hist) # doctest: +SKIP
+                {'n': [array([ 2.,  4.,  3., 10., 11., 20., 30., 27., 31., 25., 17.,  8.,  5.,
+                        6.,  1.])], 'bins': [array([0.34774335, 0.8440597 , 1.34037605, 1.8366924 , 2.33300874,
+                       2.82932509, 3.32564144, 3.82195778, 4.31827413, 4.81459048,
+                       5.31090682, 5.80722317, 6.30353952, 6.79985587, 7.29617221,
+                       7.79248856])], 'patches': [<BarContainer object of 15 artists>]}
+                ```
+                ![one-histogram](./../_images/statistical_glyph/one-histogram.png)
 
-        ```
-        Access the histogram data:
-        ```python
-        >>> # Get the bin counts for the first data series
-        >>> bin_counts = hist['n'][0]
-        >>> # Get the bin edges for the first data series
-        >>> bin_edges = hist['bins'][0]
+            - Create a histogram with custom bin count and labels:
 
-        ```
+                ```python
+                >>> fig, ax, hist = stat_plot.histogram(
+                ...     bins=20,
+                ...     xlabel="Values",
+                ...     ylabel="Frequency",
+                ...     xlabel_font_size=14,
+                ...     ylabel_font_size=14
+                ... )
+
+                ```
+
+        - 2D data.
+
+            - Create a histogram with custom bin count and labels:
+                ```python
+                >>> np.random.seed(1)
+                >>> x = 4 + np.random.normal(0, 1.5, (200, 3))
+                >>> stat_plot = StatisticalGlyph(x, color=["red", "green", "blue"], alpha=0.4, rwidth=0.8)
+                >>> fig, ax, hist = stat_plot.histogram()
+                >>> print(hist) # doctest: +SKIP
+                {'n': [array([ 1.,  2.,  4., 10., 13., 19., 20., 32., 27., 23., 24., 11.,  5.,
+                        5.,  4.]), array([ 3.,  4.,  9., 12., 20., 41., 29., 32., 25., 14.,  9.,  1.,  0.,
+                        0.,  1.]), array([ 3.,  4.,  6.,  7., 25., 26., 31., 24., 30., 19., 11.,  9.,  4.,
+                        0.,  1.])], 'bins': [array([-0.1896275 ,  0.33461786,  0.85886323,  1.38310859,  1.90735396,
+                        2.43159932,  2.95584469,  3.48009005,  4.00433542,  4.52858078,
+                        5.05282615,  5.57707151,  6.10131688,  6.62556224,  7.14980761,
+                        7.67405297]), array([-0.1738017 ,  0.50031202,  1.17442573,  1.84853945,  2.52265317,
+                        3.19676688,  3.8708806 ,  4.54499432,  5.21910804,  5.89322175,
+                        6.56733547,  7.24144919,  7.9155629 ,  8.58967662,  9.26379034,
+                        9.93790406]), array([0.24033902, 0.7940688 , 1.34779857, 1.90152835, 2.45525813,
+                       3.0089879 , 3.56271768, 4.11644746, 4.67017723, 5.22390701,
+                       5.77763679, 6.33136656, 6.88509634, 7.43882612, 7.99255589,
+                       8.54628567])], 'patches': [<BarContainer object of 15 artists>,
+                       <BarContainer object of 15 artists>, <BarContainer object of 15 artists>]}
+                ```
+                ![three-histogram](./../_images/statistical_glyph/three-histogram.png)
+
+            Access the histogram data:
+
+                ```python
+                >>> # Get the bin counts for the first data series
+                >>> bin_counts = hist['n'][0]
+                >>> # Get the bin edges for the first data series
+                >>> bin_edges = hist['bins'][0]
+
+                ``
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
@@ -468,5 +512,7 @@ class Statistic:
         plt.xticks(fontsize=self.default_options["xtick_font_size"])
         plt.yticks(fontsize=self.default_options["ytick_font_size"])
         hist = {"n": n, "bins": bins, "patches": patches}
+        # ax.yaxis.label.set_color("#27408B")
+        # ax1.tick_params(axis="y", color="#27408B")
         plt.show()
         return fig, ax, hist
