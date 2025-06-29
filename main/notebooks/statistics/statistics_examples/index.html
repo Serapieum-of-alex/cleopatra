@@ -1764,7 +1764,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -1778,13 +1778,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">Statistic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.statistical_glyph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatisticalGlyph</span>
 
 <span class="c1"># Set the random seed for reproducibility</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-1">import numpy as np
-from cleopatra.statistics import Statistic
+from cleopatra.statistical_glyph import StatisticalGlyph
 
 # Set the random seed for reproducibility
 np.random.seed(1)</div>
@@ -1824,7 +1824,7 @@ np.random.seed(1)</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -1862,7 +1862,7 @@ np.random.seed(1)</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
@@ -1875,9 +1875,9 @@ np.random.seed(1)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_1d</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span><span class="n">data_1d</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_1d</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span><span class="n">data_1d</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">stat_plot_1d = Statistic(data_1d)</div>
+<div class="clipboard-copy-txt" id="cell-3">stat_plot_1d = StatisticalGlyph(data_1d)</div>
 </div>
 </div>
 </div>
@@ -1900,7 +1900,7 @@ np.random.seed(1)</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -1982,7 +1982,7 @@ Bin edges: [0.34774335 0.8440597  1.34037605 1.8366924  2.33300874]... (showing 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-5">
@@ -1995,9 +1995,9 @@ Bin edges: [0.34774335 0.8440597  1.34037605 1.8366924  2.33300874]... (showing 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_1d_custom</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span><span class="n">data_1d</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_1d_custom</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span><span class="n">data_1d</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">stat_plot_1d_custom = Statistic(data_1d)</div>
+<div class="clipboard-copy-txt" id="cell-5">stat_plot_1d_custom = StatisticalGlyph(data_1d)</div>
 </div>
 </div>
 </div>
@@ -2020,7 +2020,7 @@ Bin edges: [0.34774335 0.8440597  1.34037605 1.8366924  2.33300874]... (showing 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -2104,7 +2104,7 @@ Bin edges: [0.34774335 0.8440597  1.34037605 1.8366924  2.33300874]... (showing 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
@@ -2148,7 +2148,7 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
@@ -2161,9 +2161,9 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_2d</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span><span class="n">data_2d</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_2d</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span><span class="n">data_2d</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-8">stat_plot_2d = Statistic(data_2d)</div>
+<div class="clipboard-copy-txt" id="cell-8">stat_plot_2d = StatisticalGlyph(data_2d)</div>
 </div>
 </div>
 </div>
@@ -2191,7 +2191,7 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
@@ -2254,7 +2254,7 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
@@ -2267,14 +2267,14 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_2d_custom</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_2d_custom</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span>
     <span class="n">data_2d</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">"#FF5733"</span><span class="p">,</span> <span class="s2">"#33FF57"</span><span class="p">,</span> <span class="s2">"#3357FF"</span><span class="p">],</span>  <span class="c1"># Custom colors</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>                                <span class="c1"># Set transparency</span>
     <span class="n">rwidth</span><span class="o">=</span><span class="mf">0.8</span>                                <span class="c1"># Set bin width</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-10">stat_plot_2d_custom = Statistic(
+<div class="clipboard-copy-txt" id="cell-10">stat_plot_2d_custom = StatisticalGlyph(
     data_2d,
     color=["#FF5733", "#33FF57", "#3357FF"],  # Custom colors
     alpha=0.5,                                # Set transparency
@@ -2302,7 +2302,7 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-11">
@@ -2386,7 +2386,7 @@ data_2d[:, 2] = 7 + np.random.normal(0, 0.8, 200)  # Mean of 7, std of 0.8</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-12">
@@ -2426,7 +2426,7 @@ data_distributions = np.zeros((n_samples, 3))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-13">
@@ -2464,7 +2464,7 @@ data_distributions = np.zeros((n_samples, 3))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-14">
@@ -2502,7 +2502,7 @@ data_distributions = np.zeros((n_samples, 3))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-15">
@@ -2540,7 +2540,7 @@ data_distributions = np.zeros((n_samples, 3))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-16">
@@ -2553,14 +2553,14 @@ data_distributions = np.zeros((n_samples, 3))</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_distributions</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">stat_plot_distributions</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span>
     <span class="n">data_distributions</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">"#3498DB"</span><span class="p">,</span> <span class="s2">"#E74C3C"</span><span class="p">,</span> <span class="s2">"#2ECC71"</span><span class="p">],</span>  <span class="c1"># Blue, Red, Green</span>
     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">rwidth</span><span class="o">=</span><span class="mf">0.9</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-16">stat_plot_distributions = Statistic(
+<div class="clipboard-copy-txt" id="cell-16">stat_plot_distributions = StatisticalGlyph(
     data_distributions,
     color=["#3498DB", "#E74C3C", "#2ECC71"],  # Blue, Red, Green
     alpha=0.6,
@@ -2588,7 +2588,7 @@ data_distributions = np.zeros((n_samples, 3))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-17">
@@ -2635,9 +2635,9 @@ ax_dist.legend(["Normal", "Exponential", "Uniform"])</div>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;matplotlib.legend.Legend at 0x175e8aba660&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x1b8fb7a51f0&gt;</pre>
 </div>
 </div>
 </div>
@@ -2664,7 +2664,7 @@ ax_dist.legend(["Normal", "Exponential", "Uniform"])</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-18">
@@ -2679,7 +2679,7 @@ ax_dist.legend(["Normal", "Exponential", "Uniform"])</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="c1"># Create a Statistic object with 2D data but only 2 colors for 3 columns</span>
-    <span class="n">stat_plot_error</span> <span class="o">=</span> <span class="n">Statistic</span><span class="p">(</span><span class="n">data_2d</span><span class="p">)</span>
+    <span class="n">stat_plot_error</span> <span class="o">=</span> <span class="n">StatisticalGlyph</span><span class="p">(</span><span class="n">data_2d</span><span class="p">)</span>
     
     <span class="c1"># This should raise an error because we're providing only 2 colors for 3 columns</span>
     <span class="n">fig_error</span><span class="p">,</span> <span class="n">ax_error</span><span class="p">,</span> <span class="n">hist_error</span> <span class="o">=</span> <span class="n">stat_plot_error</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">"red"</span><span class="p">,</span> <span class="s2">"green"</span><span class="p">])</span>
@@ -2688,7 +2688,7 @@ ax_dist.legend(["Normal", "Exponential", "Uniform"])</div>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-18">try:
     # Create a Statistic object with 2D data but only 2 colors for 3 columns
-    stat_plot_error = Statistic(data_2d)
+    stat_plot_error = StatisticalGlyph(data_2d)
     
     # This should raise an error because we're providing only 2 colors for 3 columns
     fig_error, ax_error, hist_error = stat_plot_error.histogram(color=["red", "green"])
