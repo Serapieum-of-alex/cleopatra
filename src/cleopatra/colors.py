@@ -566,23 +566,23 @@ class Colors:
         Check valid RGB tuples (0-255 range):
         ```python
         >>> from cleopatra.colors import Colors
-        >>> Colors.is_valid_rgb_255((255, 0, 0))
+        >>> Colors._is_valid_rgb_255((255, 0, 0))
         True
-        >>> Colors.is_valid_rgb_255((128, 64, 32))
+        >>> Colors._is_valid_rgb_255((128, 64, 32))
         True
-        >>> Colors.is_valid_rgb_255((0, 0, 0))
+        >>> Colors._is_valid_rgb_255((0, 0, 0))
         True
 
         ```
         Check invalid RGB tuples:
         ```python
-        >>> Colors.is_valid_rgb_255((1.0, 0.0, 0.0))  # Floats, not integers
+        >>> Colors._is_valid_rgb_255((1.0, 0.0, 0.0))  # Floats, not integers
         False
-        >>> Colors.is_valid_rgb_255((256, 0, 0))  # Value > 255
+        >>> Colors._is_valid_rgb_255((256, 0, 0))  # Value > 255
         False
-        >>> Colors.is_valid_rgb_255((0, 0))  # Not 3 values
+        >>> Colors._is_valid_rgb_255((0, 0))  # Not 3 values
         False
-        >>> Colors.is_valid_rgb_255("#ff0000")  # Not a tuple
+        >>> Colors._is_valid_rgb_255("#ff0000")  # Not a tuple
         False
 
         ```
@@ -616,23 +616,23 @@ class Colors:
         Check valid normalized RGB tuples:
         ```python
         >>> from cleopatra.colors import Colors
-        >>> Colors.is_valid_rgb_norm((1.0, 0.0, 0.0))
+        >>> Colors._is_valid_rgb_norm((1.0, 0.0, 0.0))
         True
-        >>> Colors.is_valid_rgb_norm((0.5, 0.5, 0.5))
+        >>> Colors._is_valid_rgb_norm((0.5, 0.5, 0.5))
         True
-        >>> Colors.is_valid_rgb_norm((0.0, 0.0, 0.0))
+        >>> Colors._is_valid_rgb_norm((0.0, 0.0, 0.0))
         True
 
         ```
         Check invalid normalized RGB tuples:
         ```python
-        >>> Colors.is_valid_rgb_norm((255, 0, 0))  # Integers, not floats
+        >>> Colors._is_valid_rgb_norm((255, 0, 0))  # Integers, not floats
         False
-        >>> Colors.is_valid_rgb_norm((1.2, 0.0, 0.0))  # Value > 1.0
+        >>> Colors._is_valid_rgb_norm((1.2, 0.0, 0.0))  # Value > 1.0
         False
-        >>> Colors.is_valid_rgb_norm((0.5, 0.5))  # Not 3 values
+        >>> Colors._is_valid_rgb_norm((0.5, 0.5))  # Not 3 values
         False
-        >>> Colors.is_valid_rgb_norm("#ff0000")  # Not a tuple
+        >>> Colors._is_valid_rgb_norm("#ff0000")  # Not a tuple
         False
 
         ```
@@ -748,12 +748,14 @@ class Colors:
         Examples
         --------
         - Create a color object from an image and get the color ramp:
-
+            ```python
             >>> path = "examples/data/colors/color-ramp.png"
             >>> colors = Colors.create_from_image(path)
             >>> color_ramp = colors.get_color_map()
-            >>> print(color_ramp)
+            >>> print(color_ramp) # doctest: +SKIP
             <matplotlib.colors.LinearSegmentedColormap object at 0x7f8a2e1b5e50>
+
+            ```
         """
         vals = self.to_rgb(normalized=True)
         name = "custom_color_map" if name is None else name
