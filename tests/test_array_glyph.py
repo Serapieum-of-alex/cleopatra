@@ -1,10 +1,7 @@
 import os
 from typing import List
 
-import matplotlib
 import numpy as np
-
-matplotlib.use("agg")
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
