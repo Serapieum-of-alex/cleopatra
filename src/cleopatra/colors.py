@@ -237,7 +237,7 @@ class Colors:
             >>> hex_color.get_type()
             ['hex']
 
-        ```
+            ```
 
         - Determine the type of an RGB color with normalized values (0-1):
 
