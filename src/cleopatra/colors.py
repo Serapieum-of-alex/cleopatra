@@ -44,7 +44,6 @@ class Colors:
     ['hex']
 
     ```
-
     Create a Colors object with an RGB color (values between 0 and 1):
     ```python
     >>> rgb_norm = Colors((0.5, 0.2, 0.8))
@@ -64,7 +63,6 @@ class Colors:
     ['rgb']
 
     ```
-
     Convert between color formats:
     ```python
     >>> hex_color.to_rgb()  # Convert hex to RGB (normalized)
@@ -191,10 +189,13 @@ class Colors:
 
         Examples
         --------
+        ```python
         >>> path = "examples/data/colors/color-ramp.png"
         >>> colors = Colors.create_from_image(path)
         >>> print(colors.color_value) # doctest: +SKIP
         [(9, 63, 8), (8, 68, 9), (5, 78, 7), (1, 82, 3), (0, 84, 0), (0, 85, 0), (1, 83, 0), (1, 81, 0), (1, 80, 1)
+
+        ```
         """
         if not Path(path).exists():
             raise FileNotFoundError(f"The file {path} does not exist.")
