@@ -90,26 +90,30 @@ class ArrayGlyph:
 
     Examples
     --------
-    Create a simple array plot:
-    ```python
-    >>> import numpy as np
-    >>> from cleopatra.array_glyph import ArrayGlyph
-    >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    >>> array_glyph = ArrayGlyph(arr)
-    >>> fig, ax = array_glyph.plot()
+    - Create a simple array plot:
+        ```python
+        >>> import numpy as np
+        >>> from cleopatra.array_glyph import ArrayGlyph
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array_glyph = ArrayGlyph(arr)
+        >>> fig, ax = array_glyph.plot()
 
-    Create an RGB plot from a 3D array:
+        ```
+    - Create an RGB plot from a 3D array:
     ```python
     >>> rgb_array = np.random.randint(0, 255, size=(3, 10, 10))
     >>> rgb_glyph = ArrayGlyph(rgb_array, rgb=[0, 1, 2])
     >>> fig, ax = rgb_glyph.plot()
 
-    Create an animated plot from a 3D array:
+    ```
+    - Create an animated plot from a 3D array:
     ```python
     >>> time_series = np.random.randint(1, 10, size=(5, 10, 10))
     >>> time_labels = ["Frame 1", "Frame 2", "Frame 3", "Frame 4", "Frame 5"]
     >>> animated_glyph = ArrayGlyph(time_series)
     >>> anim = animated_glyph.animate(time_labels)
+
+    ```
     """
 
     def __init__(
@@ -354,90 +358,98 @@ class ArrayGlyph:
         Examples
         --------
         Prepare an array using percentile-based scaling:
-        ```python
-        >>> import numpy as np
-        >>> from cleopatra.array_glyph import ArrayGlyph
-        >>> # Create a 3-band array (e.g., satellite image)
-        >>> bands = np.random.randint(0, 10000, size=(3, 100, 100))
-        >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
-        >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], percentile=2)
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> import numpy as np
+            >>> from cleopatra.array_glyph import ArrayGlyph
+            >>> # Create a 3-band array (e.g., satellite image)
+            >>> bands = np.random.randint(0, 10000, size=(3, 100, 100))
+            >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
+            >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], percentile=2)
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            True
 
-        ```
+            ```
         Prepare an array using surface reflectance normalization:
-        ```python
-        >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], surface_reflectance=10000)
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> rgb_array = glyph.prepare_array(bands, rgb=[0, 1, 2], surface_reflectance=10000)
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            True
 
-        ```
+            ```
         Prepare an array with cutoff values:
-        ```python
-        >>> rgb_array = glyph.prepare_array(
-        ...     bands, rgb=[0, 1, 2], surface_reflectance=10000, cutoff=[5000, 5000, 5000]
-        ... )
-        >>> rgb_array.shape
-        (100, 100, 3)
-        >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-        True
+            ```python
+            >>> rgb_array = glyph.prepare_array(
+            ...     bands, rgb=[0, 1, 2], surface_reflectance=10000, cutoff=[5000, 5000, 5000]
+            ... )
+            >>> rgb_array.shape
+            (100, 100, 3)
+            >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
+            True
 
-        ```
+            ```
 
         - Create an array and instantiate the `ArrayGlyph` class.
-
+            ```python
             >>> import numpy as np
             >>> arr = np.random.randint(0, 255, size=(3, 5, 5)).astype(np.float32)
             >>> array_glyph = ArrayGlyph(arr)
             >>> print(array_glyph.arr.shape)
             (3, 5, 5)
 
+            ```
         `rgb` channels:
             - Now let's use the `prepare_array` function with `rgb` channels as [0, 1, 2]. so the finction does not to
                 reorder the chennels. but it just needs to move the first axis to the last axis.
+                ```python
+                >>> rgb_array = array_glyph.prepare_array(arr, rgb=[0, 1, 2])
+                >>> print(rgb_array.shape)
+                (5, 5, 3)
 
-            >>> rgb_array = array_glyph.prepare_array(arr, rgb=[0, 1, 2])
-            >>> print(rgb_array.shape)
-            (5, 5, 3)
-
+                ```
             - If we compare the values of the first channel in the original array with the first array in the rgb array it
                 should be the same.
+                ```python
+                >>> np.testing.assert_equal(arr[0, :, :],rgb_array[:, :, 0])
 
-            >>> np.testing.assert_equal(arr[0, :, :],rgb_array[:, :, 0])
-
+                ```
         surface_reflectance:
             - if you provide the surface reflectance value, the function will scale the array using the surface reflectance
                 value to a normalized rgb values.
+                ```python
+                >>> array_glyph = ArrayGlyph(arr)
+                >>> rgb_array = array_glyph.prepare_array(arr, surface_reflectance=10000, rgb=[0, 1, 2])
+                >>> print(rgb_array.shape)
+                (5, 5, 3)
 
-            >>> array_glyph = ArrayGlyph(arr)
-            >>> rgb_array = array_glyph.prepare_array(arr, surface_reflectance=10000, rgb=[0, 1, 2])
-            >>> print(rgb_array.shape)
-            (5, 5, 3)
-
+                ```
             - if you print the values of the first channel, you will find all the values are between 0 and 1.
-            >>> print(rgb_array[:, :, 0])
-            [[0.0195 0.02   0.0109 0.0211 0.0087]
-             [0.0112 0.0221 0.0035 0.0234 0.0141]
-             [0.0116 0.0188 0.0001 0.0176 0.    ]
-             [0.0014 0.0147 0.0043 0.0167 0.0117]
-             [0.0083 0.0139 0.0186 0.02   0.0058]]
+                ```python
+                >>> print(rgb_array[:, :, 0])
+                [[0.0195 0.02   0.0109 0.0211 0.0087]
+                 [0.0112 0.0221 0.0035 0.0234 0.0141]
+                 [0.0116 0.0188 0.0001 0.0176 0.    ]
+                 [0.0014 0.0147 0.0043 0.0167 0.0117]
+                 [0.0083 0.0139 0.0186 0.02   0.0058]]
 
+                ```
             - With the `surface_reflectance` parameter, you can also use the `cutoff` parameter to affect values that
                 are above it, by rescaling them.
+                ```python
+                >>> rgb_array = array_glyph.prepare_array(
+                ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
+                ... )
+                >>> print(rgb_array[:, :, 0])
+                [[0.     0.     0.     0.     0.    ]
+                 [1.     1.     1.     1.     1.    ]
+                 [1.     1.     1.     1.     1.    ]
+                 [0.0014 0.0147 0.0043 0.0167 0.0117]
+                 [0.0083 0.0139 0.0186 0.02   0.0058]]
 
-            >>> rgb_array = array_glyph.prepare_array(
-            ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
-            ... )
-            >>> print(rgb_array[:, :, 0])
-            [[0.     0.     0.     0.     0.    ]
-             [1.     1.     1.     1.     1.    ]
-             [1.     1.     1.     1.     1.    ]
-             [0.0014 0.0147 0.0043 0.0167 0.0117]
-             [0.0083 0.0139 0.0186 0.02   0.0058]]
+                ```
         """
         # take the rgb arrays and reorder them to have the red-green-blue, if the order is not given, assume the
         # order as sentinel data. [3, 2, 1]
@@ -788,8 +800,8 @@ class ArrayGlyph:
 
         Examples
         --------
-        - Create an array and instantiate the `Array` object.
-
+        - Create an array and instantiate the `Array` object:
+            ```python
             >>> import numpy as np
             >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
             >>> array = ArrayGlyph(arr)
@@ -806,6 +818,7 @@ class ArrayGlyph:
               [ 58  76 192]]]
               >>> print(rgb_array.dtype)
                 uint8
+            ```
         """
         colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
         normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
@@ -1076,9 +1089,8 @@ class ArrayGlyph:
             >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Customized Plot", title_size=18)
             >>> fig, ax = array.plot()
 
-        .. image:: /_images/array-plot.png
-            :alt: Example Image
-            :align: center
+            ```
+        ![array-plot](./../_images/array_glyph/array-plot.png)
 
         - Color bar customization:
 
@@ -1098,10 +1110,7 @@ class ArrayGlyph:
                 ... )
 
                 ```
-                .. image:: /_images/color-bar-customization.png
-                    :alt: Example Image
-                    :align: center
-                - Color bar customization:
+                ![color-bar-customization](./../_images/array_glyph/color-bar-customization.png)
 
         - Display values for each cell:
 
@@ -1116,10 +1125,7 @@ class ArrayGlyph:
                 ... )
 
                 ```
-
-                .. image:: /_images/display-cell-values.png
-                    :alt: Example Image
-                    :align: center
+                ![display-cell-values](./../_images/array_glyph/display-cell-values.png)
 
         - Plot points at specific locations in the array:
 
@@ -1142,9 +1148,7 @@ class ArrayGlyph:
                 ... )
 
                 ```
-                .. image:: /_images/display-points.png
-                    :alt: Example Image
-                    :align: center
+                ![display-points](./../_images/array_glyph/display-points.png)
 
         - Color scale customization:
 
@@ -1162,9 +1166,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-                    .. image:: /_images/power-scale.png
-                        :alt: Example Image
-                        :align: center
+                    ![power-scale](./../_images/array_glyph/power-scale.png)
 
                 - change the gamma of 0.8 (emphasizes higher values less).
 
@@ -1178,9 +1180,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-                    .. image:: /_images/power-scale-gamma-0.8.png
-                        :alt: Example Image
-                        :align: center
+                    ![power-scale-gamma-0.8](./../_images/array_glyph/power-scale-gamma-0.8.png)
 
                 - change the gamma of 0.1 (emphasizes higher values more).
 
@@ -1194,10 +1194,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-
-                    .. image:: /_images/power-scale-gamma-0.1.png
-                        :alt: Example Image
-                        :align: center
+                    ![power-scale-gamma-0.1](./../_images/array_glyph/power-scale-gamma-0.1.png)
 
             - Logarithmic scale.
 
@@ -1212,9 +1209,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-                    .. image:: /_images/log-scale.png
-                        :alt: Example Image
-                        :align: center
+                    ![log-scale](./../_images/array_glyph/log-scale.png)
 
                 - you can change the `line_threshold` and `line_scale` values.
                     ```python
@@ -1231,10 +1226,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-                    .. image:: /_images/log-scale-custom-parameters.png
-                        :alt: Example Image
-                        :align: center
-
+                    ![log-scale](./../_images/array_glyph/log-scale-custom-parameters.png)
 
             - Defined boundary scale.
                 ```python
@@ -1247,9 +1239,7 @@ class ArrayGlyph:
                 ... )
 
                 ```
-                .. image:: /_images/boundary-scale.png
-                    :alt: Example Image
-                    :align: center
+                ![boundary-scale](./../_images/array_glyph/boundary-scale.png)
 
                 - You can also define the boundaries.
                     ```python
@@ -1266,9 +1256,7 @@ class ArrayGlyph:
                     ... )
 
                     ```
-                    .. image:: /_images/boundary-scale-defined-bounds.png
-                        :alt: Example Image
-                        :align: center
+                    ![boundary-scale-defined-bounds](./../_images/array_glyph/boundary-scale-defined-bounds.png)
 
             - Midpoint scale.
 
@@ -1284,9 +1272,7 @@ class ArrayGlyph:
                 ... )
 
                 ```
-                .. image:: /_images/midpoint-scale-costom-parameters.png
-                    :alt: Example Image
-                    :align: center
+                ![midpoint-scale-costom-parameters](./../_images/array_glyph/midpoint-scale-costom-parameters.png)
         """
         for key, val in kwargs.items():
             if key not in self.default_options.keys():
@@ -1400,33 +1386,30 @@ class ArrayGlyph:
 
         Examples
         --------
-        - Create an array and instantiate the `ArrayGlyph` object.
-
+        - Create an array and instantiate the `ArrayGlyph` object:
+            ```python
             >>> import numpy as np
             >>> arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
             >>> extent = [34.62, 34.65, 31.82, 31.85]
             >>> my_glyph = ArrayGlyph(arr, extent=extent)
             >>> fig, ax = my_glyph.plot()
 
-            .. image:: /_images/adjust_tick.png
-                :alt: Example Image
-                :align: center
+            ```
+            ![adjust_tick](./../_images/array_glyph/adjust_tick.png)
 
-        - Adjust the ticks of the x-axis.
-
+        - Adjust the ticks of the x-axis:
+            ```python
             >>> my_glyph.adjust_ticks(axis='x', multiply_value=0.01, add_value=34.62, fmt="{0:.2f}")
 
-            .. image:: /_images/adjust_tick-x.png
-                :alt: Example Image
-                :align: center
+            ```
+            ![adjust_tick](./../_images/array_glyph/adjust_tick-x.png)
 
-        - Adjust the ticks of the y-axis.
-
+        - Adjust the ticks of the y-axis:
+            ```python
             >>> my_glyph.adjust_ticks(axis='y', multiply_value=0.01, add_value=31.82, fmt="{0:.2e}")
 
-            .. image:: /_images/adjust_tick-y.png
-                :alt: Example Image
-                :align: center
+            ```
+            ![adjust_tick-y](./../_images/array_glyph/adjust_tick-y.png)
         """
         if axis == "x":
             ticks_x = ticker.FuncFormatter(
@@ -1644,9 +1627,7 @@ class ArrayGlyph:
         ... )
 
         ```
-        .. image:: /_images/animated_array.gif
-            :alt: Example Image
-            :align: center
+        ![animated_array](./../_images/array_glyph/animated_array.gif)
 
         Saving the animation to a file:
         ```python
