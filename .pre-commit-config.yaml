@@ -155,7 +155,7 @@ repos:
 
   - repo: local
     hooks:
-      - id: examples-notebook-check
+      - id: notebook-check
         name: nbval
         entry: pytest --nbval-lax
         language: system

@@ -1,4 +1,4 @@
-name: pypi-deployment
+name: tests
 
 on: [push]
 
