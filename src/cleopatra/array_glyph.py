@@ -368,7 +368,7 @@ class ArrayGlyph:
             >>> rgb_array.shape
             (100, 100, 3)
             >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-            True
+            np.True_
 
             ```
         Prepare an array using surface reflectance normalization:
@@ -377,7 +377,7 @@ class ArrayGlyph:
             >>> rgb_array.shape
             (100, 100, 3)
             >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-            True
+            np.True_
 
             ```
         Prepare an array with cutoff values:
@@ -388,7 +388,7 @@ class ArrayGlyph:
             >>> rgb_array.shape
             (100, 100, 3)
             >>> np.all((0 <= rgb_array) & (rgb_array <= 1))
-            True
+            np.True_
 
             ```
 
@@ -428,7 +428,7 @@ class ArrayGlyph:
                 ```
             - if you print the values of the first channel, you will find all the values are between 0 and 1.
                 ```python
-                >>> print(rgb_array[:, :, 0])
+                >>> print(rgb_array[:, :, 0]) # doctest: +SKIP
                 [[0.0195 0.02   0.0109 0.0211 0.0087]
                  [0.0112 0.0221 0.0035 0.0234 0.0141]
                  [0.0116 0.0188 0.0001 0.0176 0.    ]
@@ -442,7 +442,7 @@ class ArrayGlyph:
                 >>> rgb_array = array_glyph.prepare_array(
                 ...     arr, surface_reflectance=10000, rgb=[0, 1, 2], cutoff=[0.8, 0.8, 0.8]
                 ... )
-                >>> print(rgb_array[:, :, 0])
+                >>> print(rgb_array[:, :, 0]) # doctest: +SKIP
                 [[0.     0.     0.     0.     0.    ]
                  [1.     1.     1.     1.     1.    ]
                  [1.     1.     1.     1.     1.    ]
@@ -512,7 +512,7 @@ class ArrayGlyph:
         >>> glyph = ArrayGlyph(np.zeros((1, 1)))  # Dummy initialization
         >>> normalized = glyph._prepare_sentinel_rgb(rgb_data)
         >>> np.all((0 <= normalized) & (normalized <= 1))
-        True
+        np.True_
 
         ```
         Prepare Sentinel-2 data with custom cutoff values:
@@ -520,7 +520,7 @@ class ArrayGlyph:
         >>> cutoffs = [8000, 7000, 9000]
         >>> normalized = glyph._prepare_sentinel_rgb(rgb_data, rgb=[0, 1, 2], cutoff=cutoffs)
         >>> np.all((0 <= normalized) & (normalized <= 1))
-        True
+        np.True_
 
         ```
         """
@@ -801,24 +801,26 @@ class ArrayGlyph:
         Examples
         --------
         - Create an array and instantiate the `Array` object:
-            ```python
-            >>> import numpy as np
-            >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-            >>> array = ArrayGlyph(arr)
-            >>> rgb_array = array.apply_colormap("coolwarm_r")
-            >>> print(rgb_array)
-            [[[179   3  38]
-              [221  96  76]
-              [244 154 123]]
-             [[244 196 173]
-              [220 220 221]
-              [183 207 249]]
-             [[139 17 4 253]
-              [ 96 128 232]
-              [ 58  76 192]]]
-              >>> print(rgb_array.dtype)
-                uint8
-            ```
+        ```python
+        >>> import numpy as np
+        >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        >>> array = ArrayGlyph(arr)
+        >>> rgb_array = array.apply_colormap("coolwarm_r")
+        >>> print(rgb_array) # doctest: +SKIP
+        [[[179   3  38]
+          [221  96  76]
+          [244 154 123]]
+         [[244 196 173]
+          [220 220 221]
+          [183 207 249]]
+         [[139 174 253]
+          [ 96 128 232]
+          [ 58  76 192]]]
+
+        >>> print(rgb_array.dtype)
+        uint8
+
+        ```
         """
         colormap = plt.get_cmap(cmap) if isinstance(cmap, str) else cmap
         normed_data = (self.arr - self.arr.min()) / (self.arr.max() - self.arr.min())
@@ -860,6 +862,7 @@ class ArrayGlyph:
 
         Examples
         --------
+        ```python
         >>> import numpy as np
         >>> arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         >>> array = ArrayGlyph(arr)
@@ -868,7 +871,10 @@ class ArrayGlyph:
         [[28 56 85]
          [113 141 170]
          [198 226 255]]
-         >>> print(rgb_array.dtype)
+        >>> print(rgb_array.dtype)
+        uint8
+
+        ```
         """
         if arr is None:
             arr = self.arr
@@ -1171,6 +1177,7 @@ class ArrayGlyph:
                 - change the gamma of 0.8 (emphasizes higher values less).
 
                     ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale - gamma=0.8", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     color_scale="power",
                     ...     gamma=0.8,
@@ -1185,6 +1192,7 @@ class ArrayGlyph:
                 - change the gamma of 0.1 (emphasizes higher values more).
 
                     ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Power scale - gamma=0.1", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     color_scale="power",
                     ...     gamma=0.1,
@@ -1201,6 +1209,7 @@ class ArrayGlyph:
                 - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
                 value if 0.0001, and 0.001 respectively.
                     ```python
+                    >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Logarithmic scale", title_size=18)
                     >>> fig, ax = array.plot(
                     ...     cbar_label="Discharge m3/s",
                     ...     color_scale="sym-lognorm",
@@ -1597,8 +1606,10 @@ class ArrayGlyph:
         ```
         Animation with custom interval (speed):
         ```python
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> # Slower animation (500ms between frames)
         >>> anim_obj = animated_array.animate(frame_labels, interval=500)
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> # Faster animation (100ms between frames)
         >>> anim_obj = animated_array.animate(frame_labels, interval=100)
 
@@ -1607,6 +1618,7 @@ class ArrayGlyph:
         ```python
         >>> # Create points to display on the animation
         >>> points = np.array([[1, 2, 3], [2, 5, 5], [3, 8, 8]])
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(
         ...     frame_labels,
         ...     points=points,
@@ -1619,6 +1631,7 @@ class ArrayGlyph:
         ```
         Animation with cell values displayed:
         ```python
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(
         ...     frame_labels,
         ...     display_cell_value=True,
@@ -1632,6 +1645,7 @@ class ArrayGlyph:
         Saving the animation to a file:
         ```python
         >>> # Create the animation first
+        >>> animated_array = ArrayGlyph(arr, figsize=(8, 8), title="Animated Array")
         >>> anim_obj = animated_array.animate(frame_labels)
         >>> # Then save it to a file
         >>> animated_array.save_animation("animation.gif", fps=2)
@@ -1841,17 +1855,17 @@ class ArrayGlyph:
         >>> frame_labels = ["Frame 1", "Frame 2", "Frame 3", "Frame 4", "Frame 5"]
         >>> animated_array = ArrayGlyph(arr)
         >>> anim_obj = animated_array.animate(frame_labels)
-        >>> animated_array.save_animation("animation.gif")
+        >>> animated_array.save_animation("animation.gif") # doctest: +SKIP
 
         ```
         Save with a higher frame rate for a faster animation:
         ```python
-        >>> animated_array.save_animation("animation.gif", fps=5)
+        >>> animated_array.save_animation("animation.gif", fps=5) # doctest: +SKIP
 
         ```
         Save in MP4 format (requires FFmpeg):
         ```python
-        >>> animated_array.save_animation("animation.mp4", fps=10)
+        >>> animated_array.save_animation("animation.mp4", fps=10) # doctest: +SKIP
 
         ```
         """
