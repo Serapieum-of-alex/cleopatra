@@ -74,6 +74,29 @@
 ####   ArrayGlyph
 - the ArrayGlyph constructor uses a masked array instead of a numpy array.
 
-###  0.5.2 (2025-05-08)
+###  0.6.0 (2025-06-25)
 ####   Dev
 - replace the setup.py with pyproject.toml
+- convert the documentation to use mkdocs instead of sphinx.
+- remove the CI test workflow based on conda.
+- test the jupyter notebook in ci.
+#### config
+- add a config file to the package to handle the configuration of the matplotlib backend.
+- in the __init__.py file, load the config file and set the matplotlib backend to `Agg`.
+- 
+
+#### ArrayGlyph
+
+#### statistical_glyph
+- rename the statistics module to statistical_glyph.
+- move creating the ax, and fig from the constructor to the `plot`/`animate` methods .
+- create `arr` property to access the array data.
+- create `apply_colormap` method to apply a colormap to the array.
+- create `to_image` method to convert the array to an RGB image.
+- create `scale_to_rgb` method to scale the array to RGB values.
+- create `adjust_ticks` method to adjust the plot ticks.
+#### colors
+- add `get_color_map` function to create a color map from a list of colors.
+- make the `_is_valid_rgb_norm`, and `_is_valid_rgb_255` protected and the public method is only `is_valid_rgb`.
+- make the `_is_valid_hex_i` protected and the public method is only `is_valid_hex` to process single value and lists.
+- create a `create_from_image` function to create a color map from an image.
