@@ -15,50 +15,46 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Visualization",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers"
 ]
 
 dependencies = [
-    "numpy >=2.0.0",
-    "matplotlib >=3.8.4",
+    "numpy>=2.0.0",
+    "matplotlib>=3.8.4",
     "ffmpeg-python",
-    "hpc-utils >=0.1.4",
+    "hpc-utils>=0.1.4",
 ]
 
-
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "nbval >=0.11.0",
-    "pre-commit >=3.7.1",
-    "pre-commit-hooks >=4.6.0",
-    "pytest >=8.2.2",
-    "pytest-cov >=5.0.0",
+    "pytest>=8.2.2",
+    "pytest-cov>=5.0.0",
+    "pre-commit>=3.7.1",
+    "pre-commit-hooks>=4.6.0",
+    "nbval>=0.11.0",
 ]
+
 docs = [
-    "mkdocs >=1.5.3",
-    "mkdocs-material >=9.5.3",
-    "mkdocstrings >=0.24.0",
-    "mkdocstrings-python >=1.7.5",
-    "mike >=2.1.3",
-    "mkdocs-jupyter >=0.25.1",
-    "mkdocs-autorefs  >=1.2",
-    "mkdocs-macros-plugin  >=1.3.7",
-    "mkdocs-table-reader-plugin  >=3.1.0",
-    "mkdocs-mermaid2-plugin  >=1.2.1",
-    "jupyter-contrib-nbextensions  >=0.7.0",
-    "notebook <7.0",
-    "jupyter"
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.5.3",
+    "mkdocstrings>=0.24.0",
+    "mkdocstrings-python>=1.7.5",
+    "mike>=2.1.3",
+    "mkdocs-jupyter>=0.25.1",
+    "mkdocs-autorefs>=1.2",
+    "mkdocs-macros-plugin>=1.3.7",
+    "mkdocs-table-reader-plugin>=3.1.0",
+    "mkdocs-mermaid2-plugin>=1.2.1",
+    "jupyter-contrib-nbextensions>=0.7.0",
+    "notebook<7.0",
+    "jupyter",
+    "commitizen (>=4.8.3,<5.0.0)",
 ]
-
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["cleopatra", "cleopatra.*"]
-
 
 
 [project.urls]
@@ -66,13 +62,46 @@ Homepage = "https://github.com/MAfarrag/cleopatra"
 Documentation = "https://mafarrag.github.io/cleopatra/"
 Repository = "https://github.com/MAfarrag/cleopatra"
 
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cleopatra"]
+
+
+[tool.commitizen]
+name = "cz_customize"
+version_provider = "pep621"
+tag_format = "$version"
+changelog_file = "docs/change-log.md"
+changelog_incremental = true
+changelog_merge_prerelease = true
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}:{% if show_message %} {{message}}{% endif %}"
+example = "feature: this feature enables customize through config file"
+schema = "<type>: <body>"
+schema_pattern = "(feat|fix|refactor|perf|build|ci|chore)(\\(.+\\))?: (.+)"
+changelog_pattern = "^(feat|fix|refactor|perf|build|ci|chore)(\\(.+\\))?(!)?:"
+change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf", "build", "ci", "chore"]
+
 [tool.flake8]
 ignore = "E203, E266, E501, W503, D403, D414, C901, E731"
 max-line-length = 88
 max-complexity = 18
 select = "B,C,E,F,W,T4"
 
+[tool.black]
+line-length = 88
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+
 [tool.pytest.ini_options]
+
+testpaths = ["tests"]
+norecursedirs = ["docs"]
 markers = [
     "slow: mark test as slow.",
     "fast: mark test as fast.",
@@ -80,5 +109,5 @@ markers = [
 ]
 
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
