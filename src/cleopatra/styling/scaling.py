@@ -83,12 +83,13 @@ def _plain_tick_formatter() -> FuncFormatter:
 def _symlog_tick_positions(
     vmin: float, vmax: float, linthresh: float, fallback: np.ndarray
 ) -> np.ndarray:
-    """Decade-aligned symlog tick positions within `[vmin, vmax]`.
+    """Scale-aware symlog tick positions within `[vmin, vmax]`.
 
     Linear positions are meaningless on a symlog axis, so place the bar's ticks
     with matplotlib's `SymmetricalLogLocator` (the natural choice for a
-    `SymLogNorm`). Falls back to the caller's linear ladder if the locator yields
-    fewer than two in-range positions (e.g. a range entirely inside `linthresh`).
+    `SymLogNorm`) at the base-10 decades. Falls back to the caller's linear ladder
+    if the locator yields fewer than two in-range positions (e.g. a range entirely
+    inside `linthresh`), so the return is decade-aligned only in the common case.
 
     Args:
         vmin: Lower bound of the colour range.
@@ -99,6 +100,9 @@ def _symlog_tick_positions(
     Returns:
         numpy.ndarray: The symlog-appropriate tick positions.
     """
+    # base=10 ticks are intentional even though the SymLogNorm uses base=e: the
+    # labels people read are base-10 decades, and consecutive base-10 decades stay
+    # evenly spaced on a base-e symlog transform (ln(10x) - ln(x) = ln(10)).
     positions = np.asarray(
         SymmetricalLogLocator(base=10.0, linthresh=linthresh).tick_values(vmin, vmax),
         dtype=float,
@@ -108,11 +112,11 @@ def _symlog_tick_positions(
 
 
 def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.ndarray:
-    """Decade-aligned log tick positions within `[vmin, vmax]`.
+    """Scale-aware log tick positions within `[vmin, vmax]`.
 
     Places the bar's ticks with matplotlib's `LogLocator` (the natural choice for
-    a `LogNorm`), falling back to the caller's linear ladder if fewer than two
-    decades land in range.
+    a `LogNorm`) at the base-10 decades, falling back to the caller's linear ladder
+    if fewer than two decades land in range.
 
     Args:
         vmin: Lower (strictly positive) bound of the colour range.
