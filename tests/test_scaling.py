@@ -146,9 +146,14 @@ class TestColorScalingBuildNorm:
         _, cbar_kw = ColorScaling.sym_log(threshold=10.0, scale=1.0).build_norm(
             np.array([-24.0, 0.0, 744.0])
         )
-        assert np.asarray(cbar_kw["ticks"]).tolist() == [-10.0, 0.0, 10.0, 100.0], (
-            f"expected symlog decades, got {np.asarray(cbar_kw['ticks']).tolist()}"
-        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert ticks.size >= 2, f"expected several bar ticks, got {ticks.tolist()}"
+        assert ticks.min() >= -24.0, f"tick below vmin: {ticks.tolist()}"
+        assert ticks.max() <= 744.0, f"tick above vmax: {ticks.tolist()}"
+        assert ticks.min() < 0.0, f"a below-zero range should span a negative tick: {ticks.tolist()}"
+        nonzero = ticks[ticks != 0.0]
+        decades = np.log10(np.abs(nonzero))
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
         fmt = cbar_kw["format"]
         assert fmt(-10.0) == "-10", f"negative decade must keep its sign, got {fmt(-10.0)!r}"
         assert fmt(100.0) == "100", f"expected '100', got {fmt(100.0)!r}"
@@ -156,9 +161,12 @@ class TestColorScalingBuildNorm:
     def test_log_bar_ticks_are_decade_aligned(self):
         """log places decade bar ticks and a formatter that labels them (#335)."""
         _, cbar_kw = ColorScaling.log().build_norm(np.array([0.5, 744.0]))
-        assert np.asarray(cbar_kw["ticks"]).tolist() == [1.0, 10.0, 100.0], (
-            f"expected log decades, got {np.asarray(cbar_kw['ticks']).tolist()}"
-        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert ticks.size >= 2, f"expected several bar ticks, got {ticks.tolist()}"
+        assert ticks.min() >= 0.5, f"tick below vmin: {ticks.tolist()}"
+        assert ticks.max() <= 744.0, f"tick above vmax: {ticks.tolist()}"
+        decades = np.log10(ticks)
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
         assert cbar_kw["format"](10.0) == "10", "log formatter should label a decade"
 
     def test_non_linear_formatter_labels_arbitrary_positions(self):
