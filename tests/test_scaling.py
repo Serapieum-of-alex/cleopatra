@@ -194,6 +194,22 @@ class TestColorScalingBuildNorm:
             ladder.tolist()
         ), "symlog within one decade should fall back to the ladder"
 
+    def test_formatter_normalizes_signed_zero(self):
+        """The tick formatter renders a signed zero as '0', not '-0'."""
+        fmt = ColorScaling.sym_log(threshold=10.0).build_norm(
+            np.array([-24.0, 744.0])
+        )[1]["format"]
+        assert fmt(-0.0) == "0", f"signed zero should render '0', got {fmt(-0.0)!r}"
+        assert fmt(0.0) == "0", f"zero should render '0', got {fmt(0.0)!r}"
+
+    def test_log_ticks_stay_bounded_over_many_decades(self):
+        """A log bar spanning many decades stays a handful of decade ticks, not hundreds."""
+        _, cbar_kw = ColorScaling.log().build_norm(np.array([1e-6, 1e6]))
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert 2 <= ticks.size <= 30, f"decade set should stay bounded, got {ticks.size}"
+        decades = np.log10(ticks)
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
+
 
 class TestParamGroupsEmitOnlySetFields:
     """`Contour`/`CellValues`/`DataStyle`/`Classify` emit only the fields set."""
