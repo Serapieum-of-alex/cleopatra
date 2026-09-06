@@ -292,7 +292,13 @@ class ColorScaling:
 
         Args:
             threshold: The linear-region half-width (`linthresh`).
-                Defaults to `0.0001`.
+                Defaults to `0.0001`. Pick it near your data's scale -- the
+                boundary between the linear band around zero and the log tail.
+                A tiny `threshold` on wide-ranging data pushes almost everything
+                into the log region, so the colour bar shows many near-zero
+                sub-unit decade ticks (`0.001`, `0.01`, ...) below the data's
+                magnitude; a `threshold` around the smallest value you care
+                about keeps the bar to the decades that matter.
             scale: The linear-region scale factor (`linscale`). Defaults
                 to `0.001`.
 
