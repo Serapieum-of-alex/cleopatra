@@ -34,7 +34,7 @@ from typing import Any
 
 import matplotlib.colors as colors
 import numpy as np
-from matplotlib.ticker import LogFormatter
+from matplotlib.ticker import FuncFormatter, LogLocator, SymmetricalLogLocator
 
 from cleopatra.styling.colors import build_log_norm
 from cleopatra.styling.styles import ColorScale, MidpointNormalize
@@ -42,6 +42,71 @@ from cleopatra.styling.styles import ColorScale, MidpointNormalize
 #: Upper bound on an integer `levels` count. A single edge cannot form a
 #: `BoundaryNorm`, and an enormous count would OOM `np.linspace`.
 MAX_DISCRETE_LEVELS = 1000
+
+
+def _plain_tick_formatter() -> FuncFormatter:
+    """A colorbar formatter that labels every tick with its plain numeric value.
+
+    Used for the non-linear scales (`sym_log`, `log`) so their bars are readable.
+    Unlike matplotlib's `LogFormatter` -- which blanks any position that is not
+    decade-aligned and drops the sign of negative symlog values -- this labels
+    whatever positions it is given, signed. That keeps the default bar readable
+    and also means a later `cbar.set_ticks([...])` is labelled as asked, without
+    needing a paired `set_ticklabels`.
+
+    Returns:
+        matplotlib.ticker.FuncFormatter: Formats each value with `format(v, "g")`.
+    """
+    return FuncFormatter(lambda value, _pos=None: f"{value:g}")
+
+
+def _symlog_tick_positions(
+    vmin: float, vmax: float, linthresh: float, fallback: np.ndarray
+) -> np.ndarray:
+    """Decade-aligned symlog tick positions within `[vmin, vmax]`.
+
+    Linear positions are meaningless on a symlog axis, so place the bar's ticks
+    with matplotlib's `SymmetricalLogLocator` (the natural choice for a
+    `SymLogNorm`). Falls back to the caller's linear ladder if the locator yields
+    fewer than two in-range positions (e.g. a range entirely inside `linthresh`).
+
+    Args:
+        vmin: Lower bound of the colour range.
+        vmax: Upper bound of the colour range.
+        linthresh: The symlog linear threshold (the norm's `linthresh`).
+        fallback: Tick positions to use when the locator is too sparse.
+
+    Returns:
+        numpy.ndarray: The symlog-appropriate tick positions.
+    """
+    positions = np.asarray(
+        SymmetricalLogLocator(base=10.0, linthresh=linthresh).tick_values(vmin, vmax),
+        dtype=float,
+    )
+    positions = positions[(positions >= vmin) & (positions <= vmax)]
+    return positions if positions.size >= 2 else np.asarray(fallback, dtype=float)
+
+
+def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.ndarray:
+    """Decade-aligned log tick positions within `[vmin, vmax]`.
+
+    Places the bar's ticks with matplotlib's `LogLocator` (the natural choice for
+    a `LogNorm`), falling back to the caller's linear ladder if fewer than two
+    decades land in range.
+
+    Args:
+        vmin: Lower (strictly positive) bound of the colour range.
+        vmax: Upper bound of the colour range.
+        fallback: Tick positions to use when the locator is too sparse.
+
+    Returns:
+        numpy.ndarray: The log-appropriate tick positions.
+    """
+    positions = np.asarray(
+        LogLocator(base=10.0).tick_values(vmin, vmax), dtype=float
+    )
+    positions = positions[(positions >= vmin) & (positions <= vmax)]
+    return positions if positions.size >= 2 else np.asarray(fallback, dtype=float)
 
 #: Defaults for the colour-scale options, matching
 #: `cleopatra.styling.styles.DEFAULT_OPTIONS`. Kept here so
@@ -404,7 +469,12 @@ class ColorScaling:
                 vmin=vmin,
                 vmax=vmax,
             )
-            cbar_kw = {"ticks": ticks, "format": LogFormatter(10, labelOnlyBase=False)}
+            cbar_kw = {
+                "ticks": _symlog_tick_positions(
+                    vmin, vmax, self.line_threshold, ticks
+                ),
+                "format": _plain_tick_formatter(),
+            }
         elif self.kind == ColorScale.LOGNORM:
             lo, hi = float(vmin), float(vmax)
             # A constant *positive* field yields a single tick (vmin == vmax); a
@@ -417,7 +487,10 @@ class ColorScaling:
             norm = build_log_norm(
                 lo, hi, context="ColorScaling.log()", remedy="use ColorScaling.sym_log()"
             )
-            cbar_kw = {"ticks": ticks, "format": LogFormatter(10, labelOnlyBase=False)}
+            cbar_kw = {
+                "ticks": _log_tick_positions(lo, hi, ticks),
+                "format": _plain_tick_formatter(),
+            }
         elif self.kind == ColorScale.BOUNDARY_NORM:
             norm, cbar_kw = self._boundary_norm(ticks, bounds_from_levels)
         elif self.kind == ColorScale.MIDPOINT:
