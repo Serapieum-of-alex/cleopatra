@@ -1,5 +1,105 @@
 # Changelog
 
+## 0.36.0 (2026-09-06)
+
+
+- feat(compositing): add reusable alpha "over" array primitive (#333)
+- Add `cleopatra.glyphs.base.compositing.alpha_over`, a NumPy-only                                                  
+  Porter-Duff "over" operator, so the leaf render package owns the                                                  
+  alpha-compositing formula that higher layers otherwise re-derive                                                  
+  privately -- with the two fiddly edge cases handled in one place:                                                 
+  un-premultiplying the RGBA blend, and guarding the divide-by-zero                                                 
+  where the output alpha is zero.                                                                                   
+                                                                                                                    
+  - channel-last (H, W, C): an RGB background gives a 3-band result and                                             
+    an RGBA background a 4-band one; this matches cleopatra's                                                       
+    matplotlib/PIL image layout rather than the issue's band-first                                                  
+    (C, H, W) sketch, and lets the watermark halo delegate directly                                                 
+    (band-first callers transpose at their own boundary)                                                            
+  - floating-point inputs keep their own width (a float32 pair yields a                                             
+    float32 result, never upcast to float64); integer and boolean inputs                                            
+    are promoted to float64                                                                                         
+  - replace the private watermark _alpha_over copy with the shared                                                  
+    primitive -- verified bit-for-bit identical, so the halo renders                                                
+    unchanged -- and drop its forward-referencing TODO                                                              
+  - validate array shapes, naming the offending array in the error                                                  
+                                                                                                                    
+  Closes #306
+- feat(globe): add area sampling and a face_colors accessor (#332)
+- TexturedGlobeGlyph point-sampled one texture cell per mesh-face centre,                                           
+  so a feature narrower than one face fell between the sample points and                                            
+  vanished. Add an opt-in reduction and a way to inspect the result,                                                
+  keeping the sample-once/rotate-per-frame contract (the reduction runs                                             
+  once in _prepare).                                                                                                
+                                                                                                                    
+  - sampling="point"|"area": "point" (default) is unchanged, the cheap                                              
+    per-centre lookup; "area" reduces the whole texture block each face                                             
+    covers, alpha-aware -- a face's colour is the mean of the                                                       
+    non-transparent (alpha > 0) cells it spans (transparent if none), so                                            
+    a small feature stays visible. RGB is an un-premultiplied mean, and                                             
+    faces finer than one texture cell fall back to point sampling so a                                              
+    coarse texture never gains gaps.                                                                                
+  - face_colors: a read-only property returning the base per-face RGBA                                              
+    the mesh is filled with (before per-frame lighting), so a caller can                                            
+    check whether its data survived the sampling without a draw().                                                  
+  - expose the modes as SAMPLING_POINT / SAMPLING_AREA / SAMPLING_MODES.                                            
+                                                                                                                    
+  Closes #325
+- fix(glyphs): draw into a figure supplied without an axes (#331)
+- Constructing a glyph with a figure but no axes left self.ax = None,
+so the first plot()/animate() render crashed in
+_clear_projection_frame ('NoneType' has no attribute
+'_cleo_projection_frame'). ax-alone and fig+ax already worked.
+- - ArrayGlyph.plot()/animate() now resolve the axes from a bound
+  figure (its first axes, or a fresh add_subplot(111) if it has
+  none) instead of leaving self.ax None; a later plot(ax=) override
+  still wins and leaves no stray axes.
+- Extend the same fig-only resolution to MeshGlyph.plot()/animate().
+- Guard _clear_projection_frame(None) to a no-op backstop.
+- Reset the figure-ownership flags in animate()'s branch so teardown
+  never tightens or repaints a caller-owned figure, matching plot().
+- ax-alone / fig+ax / neither behaviour is unchanged; no new
+  dependencies.
+- Closes #326
+- feat(styling): add ColorScaling.log for a plain-logarithmic colour scale (#330)
+- ColorScaling could express linear/power/sym-lognorm/boundary-norm/
+midpoint but not a plain matplotlib LogNorm, even though the string-keyed
+data-style path already built one. So a caller using the typed grouped
+colour object could not ask for a log scale, and sym_log is not a
+substitute (it is linear within +/-linthresh, so it renders
+strictly-positive data's low end differently).
+- - Add a LOGNORM member to ColorScale and a ColorScaling.log() variant
+  constructor plus its build_norm branch, producing a LogNorm over the
+  positive tick range.
+- Extract a shared build_log_norm(vmin, vmax, *, context, remedy) helper
+  and route both the data-style norm='log' path and ColorScaling.log()
+  through it, so the two agree on the requirement -- a strictly-positive,
+  ascending range -- and each error names its own remedy (norm='symlog'
+  or ColorScaling.sym_log()).
+- Widen a degenerate constant-positive range to [v, v+1] (matching the
+  data-style path) so a uniform field renders; a non-positive range
+  raises with its real bound.
+- List the new scale in the in-source docstrings, the mesh/index/
+  array-glyph docs, and the norm-dispatch diagram; add unit, end-to-end
+  render, and round-trip tests.
+- Closes #329
+- fix(glyph): accept data_style at construction so the grouped options are reachable (#328)
+- A loose `style=` / `hillshade=` keyword is rejected with "pass
+data_style=DataStyle(...) instead", but no constructor accepted
+`data_style`, so the message named a remedy that did not exist. This also
+left MeshGlyph._construct_hillshade permanently False and its restore in
+plot() inert.
+- - accept `data_style` on Glyph.__init__, merged after the loose kwargs so
+  the group wins on a collision, as in plot()
+- refuse a group whose every key is unmodelled, naming the glyph and the
+  options it lacks; an empty DataStyle() stays a no-op
+- annotate the parameter DataStyle and raise TypeError for anything else
+- document it on ArrayGlyph, MeshGlyph and KDEGlyph
+- Also raise statement coverage from 98.9% to 99.96% and cut partial branches
+from 42 to 4. Every new test is mutation-checked: the code it covers was
+broken deliberately and the test confirmed to fail.
+- Closes #327
+
 ## 0.35.0 (2026-08-29)
 
 
