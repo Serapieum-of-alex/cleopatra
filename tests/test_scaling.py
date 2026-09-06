@@ -206,6 +206,9 @@ class TestColorScalingBuildNorm:
         """A log bar spanning many decades stays a handful of decade ticks, not hundreds."""
         _, cbar_kw = ColorScaling.log().build_norm(np.array([1e-6, 1e6]))
         ticks = np.asarray(cbar_kw["ticks"])
+        # LogLocator strides decades on wide ranges (13 decades here -> ~7 ticks); 30
+        # is generous headroom that only guards against an unbounded explosion. The
+        # decade-alignment assertion below is the load-bearing check.
         assert 2 <= ticks.size <= 30, f"decade set should stay bounded, got {ticks.size}"
         decades = np.log10(ticks)
         assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
