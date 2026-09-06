@@ -34,7 +34,12 @@ from typing import Any
 
 import matplotlib.colors as colors
 import numpy as np
-from matplotlib.ticker import FuncFormatter, LogLocator, SymmetricalLogLocator
+from matplotlib.ticker import (
+    FuncFormatter,
+    Locator,
+    LogLocator,
+    SymmetricalLogLocator,
+)
 
 from cleopatra.styling.colors import build_log_norm
 from cleopatra.styling.styles import ColorScale, MidpointNormalize
@@ -80,6 +85,30 @@ def _plain_tick_formatter() -> FuncFormatter:
     return FuncFormatter(_format_tick_value)
 
 
+def _decades_in_range(
+    locator: Locator, vmin: float, vmax: float, fallback: np.ndarray
+) -> np.ndarray:
+    """Run a matplotlib locator over `[vmin, vmax]`, clipped, or fall back.
+
+    Shared by the sym_log and log tick helpers: take the locator's tick values,
+    keep only those inside the colour range, and fall back to the caller's linear
+    ladder when fewer than two land in range (e.g. a range spanning less than one
+    decade).
+
+    Args:
+        locator: A matplotlib tick locator (`SymmetricalLogLocator` / `LogLocator`).
+        vmin: Lower bound of the colour range.
+        vmax: Upper bound of the colour range.
+        fallback: Tick positions to use when the locator is too sparse.
+
+    Returns:
+        numpy.ndarray: The in-range locator positions, or `fallback`.
+    """
+    positions = np.asarray(locator.tick_values(vmin, vmax), dtype=float)
+    positions = positions[(positions >= vmin) & (positions <= vmax)]
+    return positions if positions.size >= 2 else np.asarray(fallback, dtype=float)
+
+
 def _symlog_tick_positions(
     vmin: float, vmax: float, linthresh: float, fallback: np.ndarray
 ) -> np.ndarray:
@@ -103,12 +132,8 @@ def _symlog_tick_positions(
     # base=10 ticks are intentional even though the SymLogNorm uses base=e: the
     # labels people read are base-10 decades, and consecutive base-10 decades stay
     # evenly spaced on a base-e symlog transform (ln(10x) - ln(x) = ln(10)).
-    positions = np.asarray(
-        SymmetricalLogLocator(base=10.0, linthresh=linthresh).tick_values(vmin, vmax),
-        dtype=float,
-    )
-    positions = positions[(positions >= vmin) & (positions <= vmax)]
-    return positions if positions.size >= 2 else np.asarray(fallback, dtype=float)
+    locator = SymmetricalLogLocator(base=10.0, linthresh=linthresh)
+    return _decades_in_range(locator, vmin, vmax, fallback)
 
 
 def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.ndarray:
@@ -126,11 +151,7 @@ def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.nd
     Returns:
         numpy.ndarray: The log-appropriate tick positions.
     """
-    positions = np.asarray(
-        LogLocator(base=10.0).tick_values(vmin, vmax), dtype=float
-    )
-    positions = positions[(positions >= vmin) & (positions <= vmax)]
-    return positions if positions.size >= 2 else np.asarray(fallback, dtype=float)
+    return _decades_in_range(LogLocator(base=10.0), vmin, vmax, fallback)
 
 #: Defaults for the colour-scale options, matching
 #: `cleopatra.styling.styles.DEFAULT_OPTIONS`. Kept here so
