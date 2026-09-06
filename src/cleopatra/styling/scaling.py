@@ -44,6 +44,26 @@ from cleopatra.styling.styles import ColorScale, MidpointNormalize
 MAX_DISCRETE_LEVELS = 1000
 
 
+def _format_tick_value(value: float, _pos: int | None = None) -> str:
+    """Label a colorbar tick with its plain numeric value, sign-correct.
+
+    `format(v, "g")` keeps whole numbers compact (`100.0` -> `"100"`) and negatives
+    signed. `value + 0.0` normalises a signed zero so `-0.0` renders as `"0"`, not
+    `"-0"`. Note `"g"` switches to scientific notation and ~6 significant figures
+    for very large or very small magnitudes (`1e6` -> `"1e+06"`); the default log
+    ticks are clean powers of ten, so this only shows for a caller's own large
+    `set_ticks` value.
+
+    Args:
+        value: The tick value to label.
+        _pos: The tick index matplotlib passes; unused.
+
+    Returns:
+        str: The formatted label.
+    """
+    return f"{value + 0.0:g}"
+
+
 def _plain_tick_formatter() -> FuncFormatter:
     """A colorbar formatter that labels every tick with its plain numeric value.
 
@@ -55,9 +75,9 @@ def _plain_tick_formatter() -> FuncFormatter:
     needing a paired `set_ticklabels`.
 
     Returns:
-        matplotlib.ticker.FuncFormatter: Formats each value with `format(v, "g")`.
+        matplotlib.ticker.FuncFormatter: Wraps the module-level `_format_tick_value`.
     """
-    return FuncFormatter(lambda value, _pos=None: f"{value:g}")
+    return FuncFormatter(_format_tick_value)
 
 
 def _symlog_tick_positions(
