@@ -1,5 +1,72 @@
 # Changelog
 
+## 0.37.0 (2026-09-07)
+
+
+- feat(glyphs): floor a log colour scale's vmin past near-zero outliers (#340)
+- A LogNorm has no linear band, so a single near-zero pixel dragged the                                             
+  whole log scale down: the colour bar spanned decades far below the                                                
+  data's bulk and the map's real values collapsed into the top colours                                              
+  (issue #339). The norm code only sees vmin/vmax, so the fix runs at                                               
+  ArrayGlyph render time, where the data is in hand.                                                                
+                                                                                                                    
+  - When vmin is unset on a log scale, floor it at the smallest positive                                            
+    value that is not an extreme low outlier -- more than                                                           
+    LOG_OUTLIER_DECADES decades below the 2nd percentile of the positives.                                          
+    A stray near-zero pixel is dropped; clean and genuinely-low data keep                                           
+    their true minimum, and the true vmax is untouched.                                                             
+  - Apply it per-render on both plot() and animate() without mutating the                                           
+    glyph's persistent vmin, so reusing the glyph for a later linear or                                             
+    sym_log render still auto-ranges from the true minimum.                                                         
+  - Genuine negative data yields no floor, so the strictly-positive                                                 
+    guardrail still raises and steers to sym_log(); a lone zero is rescued.                                         
+  - An explicit vmin (constructor or call, remembered across sticky calls)                                          
+    and an explicit ticks_spacing still win.                                                                        
+  - Scope: ArrayGlyph + ColorScaling.log() only; the floor targets a small                                          
+    fraction of stray low pixels (documented on _log_safe_vmin).                                                    
+                                                                                                                    
+  Closes #339
+- feat(styling): auto-derive sym_log linthresh and linscale from the data range (#338)
+- ColorScaling.sym_log() defaulted linthresh to a fixed 0.0001, so on
+wide-ranging data almost everything fell in the log region and the
+colour bar filled with near-zero sub-scale decade ticks (a [-24, 744]
+terrain bar came back with 14 ticks, 8 below the data's magnitude).
+- - Derive linthresh from the range (1% of the peak magnitude) when the
+  caller passes no threshold, so the log decades track the data's own
+  scale; the same value drives the norm and the bar ticks.
+- Pair a sensible linscale (matplotlib's 1.0) with the widened linear
+  band when no scale is given, so the near-zero band stays legible and
+  the in-band -1/0/1 labels no longer overprint.
+- Flip the threshold/scale defaults 0.0001/0.001 -> None across the
+  dataclass field, _SCALE_DEFAULTS, and the flat DEFAULT_OPTIONS, so
+  the glyph path benefits too; an explicit threshold/scale still wins.
+- Extract build_norm's SYM_LOGNORM and LOGNORM branches into the
+  _sym_log_norm and _log_norm helpers to keep the dispatcher simple.
+- Add norm-level tests (auto-derivation, explicit override, flat path,
+  negative-only, O(1) straddle, in-band tick legibility).
+- The default rendered image for sym_log without explicit knobs changes
+(the norm, not just the labels); callers passing threshold/scale are
+unaffected. The data-style norm='symlog' path and the plain-log scale
+are unchanged.
+- Closes #337
+- fix(styling): give sym_log and log colour bars scale-aware, labelled ticks (#336)
+- Glyph.get_ticks() builds a linear tick ladder that never consults the
+colour scale, and the sym_log/log bars used matplotlib's LogFormatter,
+which blanks non-decade positions and drops the sign of negatives -- so
+a non-linear colour bar came back ~1 of 11 ticks labelled (#335).
+- get_ticks() must stay linear (it supplies vmin/vmax via ticks[0]/[-1]),
+so fix it in ColorScaling.build_norm():
+- - the sym_log/log branches place decade ticks with SymmetricalLogLocator
+  / LogLocator over [vmin, vmax] (shared via _decades_in_range, falling
+  back to the linear ladder when fewer than two decades land in range).
+- they format with a plain, sign-correct FuncFormatter (f"{v + 0.0:g}",
+  -0.0 -> "0") instead of LogFormatter, so a later cbar.set_ticks([...])
+  is labelled without a paired set_ticklabels().
+- linear, power, midpoint and boundary bars are unchanged.
+- Also add a stripped demo notebook (examples/colorbar_ticks_335.ipynb).
+A follow-up (#337) tracks auto-deriving the sym_log linear threshold.
+- Closes #335
+
 ## 0.36.0 (2026-09-06)
 
 
