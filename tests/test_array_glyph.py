@@ -263,6 +263,155 @@ class TestPlotArray:
         labelled = [t.get_text() for t in glyph.cbar.ax.get_yticklabels() if t.get_text()]
         assert len(labelled) >= 3, f"log bar should label multiple ticks, got {labelled}"
 
+    def test_log_floors_vmin_past_a_near_zero_outlier(self):
+        """A lone near-zero pixel no longer drags the log scale below the bulk (#339).
+
+        Test scenario:
+            A field whose bulk is ~1..744 with a single 0.0001 pixel: the default
+            log norm floors vmin at a robust positive percentile, so it spans the
+            data's bulk (vmin well above the outlier) while keeping the true max.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert type(glyph.im.norm).__name__ == "LogNorm"
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            "the 1e-4 outlier should be dropped, leaving the real min ~1.0, "
+            f"got vmin={glyph.im.norm.vmin}"
+        )
+        assert glyph.im.norm.vmax >= 700.0, (
+            f"the true maximum must be preserved, got vmax={glyph.im.norm.vmax}"
+        )
+
+    def test_log_explicit_vmin_overrides_the_floor(self):
+        """An explicit `vmin` still wins over the robust log floor (#339)."""
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log(), vmin=1e-4)
+        assert glyph.im.norm.vmin == pytest.approx(1e-4), (
+            f"explicit vmin must be honoured, got {glyph.im.norm.vmin}"
+        )
+
+    def test_log_vmin_floor_remembers_a_sticky_explicit_vmin(self):
+        """A `vmin` pinned on an earlier plot() stays pinned on a later log plot (#339).
+
+        Test scenario:
+            The glyph's options are sticky; once the caller pins `vmin`, a later
+            plot() with no `vmin` must not let the floor override it.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log(), vmin=0.5)
+        assert glyph.im.norm.vmin == pytest.approx(0.5)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(0.5), (
+            f"a previously-pinned vmin should survive a later plot, got {glyph.im.norm.vmin}"
+        )
+
+    def test_log_floor_does_not_leak_into_a_later_different_scale(self):
+        """The per-render log floor must not clip a later linear render (#339).
+
+        Test scenario:
+            Reusing one glyph: a log render floors the outlier vmin to 1.0, but a
+            later linear render on the same glyph (no vmin passed) must auto-range
+            from the true data minimum (1e-4), not inherit the floored value.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), "log render should floor the outlier"
+        glyph.plot(color=ColorScaling.linear())
+        assert glyph.im.get_clim()[0] == pytest.approx(1e-4), (
+            f"a later linear render must use the true minimum, got {glyph.im.get_clim()[0]}"
+        )
+
+    def test_log_preserves_genuinely_low_spanning_data(self):
+        """Data genuinely spread across the decades keeps its low vmin (#339).
+
+        Test scenario:
+            Values spread evenly across the decades (not a lone outlier) have a
+            low 2nd percentile, so the floor leaves vmin near the true minimum --
+            proving the fix distinguishes an outlier from real low data.
+        """
+        arr = np.geomspace(1e-4, 744.0, 500).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin < 1e-2, (
+            f"genuinely low data should keep a low vmin, got {glyph.im.norm.vmin}"
+        )
+
+    def test_log_safe_vmin_helper(self):
+        """`_log_safe_vmin` drops extreme low outliers, keeps clean data, else None."""
+        outlier = np.concatenate(([1e-4], np.arange(1.0, 745.0)))
+        assert ArrayGlyph._log_safe_vmin(outlier) == pytest.approx(1.0), (
+            "the 1e-4 outlier should be dropped, leaving the real min 1.0"
+        )
+        clean = np.array([1.0, 10.0, 100.0, 1000.0])
+        assert ArrayGlyph._log_safe_vmin(clean) == pytest.approx(1.0), (
+            "a clean log spread has no outlier, so the true min is kept"
+        )
+        assert ArrayGlyph._log_safe_vmin(np.array([-1.0, 0.0, -5.0])) is None, (
+            "no positive values should yield None"
+        )
+        assert ArrayGlyph._log_safe_vmin(np.array([-5.0, 1.0, 744.0])) is None, (
+            "a genuine negative should yield None so the log guardrail still fires"
+        )
+        assert ArrayGlyph._log_safe_vmin(np.array([0.0, 0.0])) is None, (
+            "all-zero data (no negatives, no positives) should yield None"
+        )
+
+    def test_log_with_negative_data_still_raises(self):
+        """Genuine negatives keep the log guardrail (steer to sym_log), not masked (#339).
+
+        Test scenario:
+            The vmin floor is derived from positives only; it must not rescue a
+            negative `vmin` into positive range, or `build_log_norm`'s
+            strictly-positive guardrail would be silently suppressed.
+        """
+        arr = np.concatenate(([-5.0], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        scale = ColorScaling.log()
+        with pytest.raises(ValueError, match="strictly-positive"):
+            glyph.plot(color=scale)
+
+    def test_log_rescues_a_lone_zero_pixel(self):
+        """A lone zero among positives is rescued to the positive min, not raised (#339)."""
+        arr = np.concatenate(([0.0], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"a zero pixel should be rescued to the positive min, got {glyph.im.norm.vmin}"
+        )
+
+    def test_log_vmin_floor_preserves_an_explicit_ticks_spacing(self):
+        """The log vmin floor still fires but leaves a pinned `ticks_spacing` (#339).
+
+        Test scenario:
+            A log plot with a near-zero outlier and an explicit `ticks_spacing`:
+            the outlier is still floored away, but the caller's tick spacing is
+            not recomputed from the new range.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log(), ticks_spacing=100)
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"the outlier should still be floored, got {glyph.im.norm.vmin}"
+        )
+        assert glyph.default_options["ticks_spacing"] == 100, (
+            f"a pinned ticks_spacing must be preserved, got {glyph.default_options['ticks_spacing']}"
+        )
+
+    def test_log_vmin_floor_applies_on_the_animate_path(self):
+        """A log animation floors a near-zero outlier vmin, like plot() does (#339)."""
+        frame = np.concatenate(([1e-4], np.arange(1.0, 100.0))).reshape(10, 10)
+        stack = np.stack([frame, frame, frame])
+        glyph = ArrayGlyph(stack)
+        glyph.animate(time=[0, 1, 2], color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"animate should floor the outlier vmin like plot, got {glyph.im.norm.vmin}"
+        )
+        plt.close("all")
+
     def test_sym_log_set_ticks_labels_without_set_ticklabels(self):
         """`cbar.set_ticks([...])` labels the given positions unaided (#335)."""
         glyph = ArrayGlyph(self._terrain_like())

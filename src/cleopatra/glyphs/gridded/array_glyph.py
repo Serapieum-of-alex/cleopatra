@@ -167,6 +167,11 @@ DIVERGING_DEFAULT_CMAP = "RdBu_r"
 ROBUST_LOWER_PERCENTILE = 2.0
 #: Upper percentile (98.0) used by xarray-style `robust=True` colour limits.
 ROBUST_UPPER_PERCENTILE = 98.0
+#: How many decades below the robust lower percentile a positive value must sit
+#: to count as an extreme low outlier for a log scale (`ArrayGlyph._log_safe_vmin`).
+#: A stray near-zero pixel is many decades below; genuinely low data is not, so it
+#: is preserved.
+LOG_OUTLIER_DECADES = 2.0
 #: Invariant phrase in the `ValueError` raised by `ArrayGlyph._validate_coords`
 #: when a coord array's shape does not match the data array. Kept stable so tests
 #: can match against it without coupling to the full (shape-interpolated) message.
@@ -1345,6 +1350,10 @@ class ArrayGlyph(GeoMixin, Glyph):
             vmin_explicit="vmin" in explicit_keys,
             vmax_explicit="vmax" in explicit_keys,
         )
+        #: Whether the caller pinned `vmin` themselves. A log scale floors an
+        #: un-pinned `vmin` at the smallest positive non-outlier (see
+        #: `_log_safe_vmin`); an explicit `vmin` must still win.
+        self._vmin_explicit: bool = "vmin" in explicit_keys
         if (
             self.default_options.get("center") is not None
             and "cmap" not in explicit_keys
@@ -2029,6 +2038,117 @@ class ArrayGlyph(GeoMixin, Glyph):
         vmin_robust = float(np.nanpercentile(values, ROBUST_LOWER_PERCENTILE))
         vmax_robust = float(np.nanpercentile(values, ROBUST_UPPER_PERCENTILE))
         return vmin_robust, vmax_robust
+
+    @staticmethod
+    def _log_safe_vmin(arr: np.ndarray) -> float | None:
+        """A positive lower bound for a log colour scale that drops low outliers.
+
+        A `LogNorm` has no linear band, so a single near-zero pixel drags the
+        whole scale down: the bar then spans decades far below the data's bulk
+        and the map's real values collapse into the top slice of colours. Unlike
+        the norm-building code -- which only sees `vmin`/`vmax` -- this has the
+        data, so it can tell a stray low outlier from genuinely low data.
+
+        A value counts as an extreme low outlier when it sits more than
+        `LOG_OUTLIER_DECADES` decades below the `ROBUST_LOWER_PERCENTILE`-th
+        percentile of the positive values. The floor is the smallest value that
+        is *not* an outlier: a stray near-zero pixel is dropped, but data whose
+        low end is genuine (its minimum is within those decades) keeps its true
+        minimum, so nothing is clipped needlessly.
+
+        This targets a *small fraction* of stray low pixels. Once the low
+        outliers make up more than about `ROBUST_LOWER_PERCENTILE`% of the
+        positive values, the reference percentile itself sinks into them and the
+        floor no longer fires -- for a field with many unmasked near-zero /
+        no-data pixels, mask them or pass an explicit `vmin` instead.
+
+        Args:
+            arr: The layer's data array (may be masked).
+
+        Genuine negative data is left for `build_log_norm` to reject: the floor
+        returns `None` so `vmin` stays negative and the norm raises, steering the
+        caller to `sym_log()` rather than silently masking the negatives. A lone
+        exact zero among positives is not negative, so it is still rescued.
+
+        Returns:
+            float or None: The outlier-safe positive lower bound, or `None` when
+                the array has no positive finite values, or when it contains a
+                genuine negative value (the log norm then raises on its own,
+                reporting the real non-positive range).
+
+        Examples:
+            - A lone near-zero pixel is dropped; the real minimum sets the floor:
+                ```python
+                >>> import numpy as np
+                >>> from cleopatra.glyphs.gridded.array_glyph import ArrayGlyph
+                >>> arr = np.concatenate(([1e-4], np.arange(1, 745.0)))
+                >>> round(ArrayGlyph._log_safe_vmin(arr))
+                1
+
+                ```
+        """
+        if isinstance(arr, ma.MaskedArray):
+            values = arr.compressed()
+        else:
+            values = np.asarray(arr).ravel()
+        finite = values[np.isfinite(values)]
+        if np.any(finite < 0.0):
+            return None
+        positive = finite[finite > 0.0]
+        if positive.size == 0:
+            return None
+        robust_low = float(np.nanpercentile(positive, ROBUST_LOWER_PERCENTILE))
+        cutoff = robust_low / 10.0**LOG_OUTLIER_DECADES
+        # `non_outliers` always contains the maximum (>= robust_low > cutoff), so
+        # it is non-empty whenever `positive` is.
+        non_outliers = positive[positive >= cutoff]
+        return float(non_outliers.min())
+
+    def _log_floored_vmin(
+        self,
+        arr: np.ndarray,
+        vmin: float,
+        vmin_pinned: bool,
+        ticks_spacing_pinned: bool,
+    ) -> float:
+        """Return `vmin` raised to an outlier-safe positive floor for a log scale.
+
+        Returns `vmin` unchanged unless the resolved colour scale is `lognorm`
+        and the caller did not pin `vmin`. Otherwise the floor from
+        `_log_safe_vmin` replaces `vmin` when it is higher (never lower), so a
+        near-zero outlier stops dragging the log bar's decades below the data's
+        bulk (issue #339); the true `vmax` is untouched and this render's tick
+        spacing is refreshed unless the caller pinned it.
+
+        This is a per-render adjustment: it does **not** mutate the glyph's
+        persistent `self._vmin`, so reusing the same glyph for a later non-log
+        render still auto-ranges from the true data minimum rather than
+        inheriting the floor.
+
+        Scope: applied on this glyph's `plot()` and `animate()` paths only. Other
+        glyphs, and the data-style `norm='log'` preset path (which does not set
+        `color_scale='lognorm'`), do not use this floor.
+
+        Args:
+            arr: The layer's data array (may be masked).
+            vmin: This render's current lower colour limit.
+            vmin_pinned: Whether the caller set `vmin` explicitly (it then wins).
+            ticks_spacing_pinned: Whether the caller set `ticks_spacing`
+                explicitly (it is then left as-is).
+
+        Returns:
+            float: The floored lower limit for this render, or `vmin` unchanged.
+        """
+        if vmin_pinned:
+            return vmin
+        if self.default_options.get("color_scale", "").lower() != "lognorm":
+            return vmin
+        log_floor = self._log_safe_vmin(arr)
+        if log_floor is None or log_floor <= vmin:
+            return vmin
+        if not ticks_spacing_pinned:
+            self.default_options["ticks_spacing"] = (self._vmax - log_floor) / 10 or 1.0
+        return log_floor
 
     @staticmethod
     def _center_limits(vmin: float, vmax: float, center: float) -> tuple[float, float]:
@@ -3599,7 +3719,16 @@ class ArrayGlyph(GeoMixin, Glyph):
             ):
                 self.default_options["cmap"] = DIVERGING_DEFAULT_CMAP
 
-            self.default_options["vmin"] = self.vmin
+            self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
+            self.default_options["vmin"] = self._log_floored_vmin(
+                arr,
+                self.vmin,
+                vmin_pinned=self._vmin_explicit,
+                ticks_spacing_pinned=(
+                    "ticks_spacing" in kwargs
+                    or "ticks_spacing" in resolved_colorbar
+                ),
+            )
             self.default_options["vmax"] = self.vmax
 
             ticks = self.get_ticks()
@@ -4436,10 +4565,18 @@ class ArrayGlyph(GeoMixin, Glyph):
             else:
                 self.default_options["ticks_spacing"] = self.ticks_spacing
 
+        self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
         if "vmin" in kwargs.keys():
             self.default_options["vmin"] = kwargs["vmin"]
         else:
-            self.default_options["vmin"] = self.vmin
+            self.default_options["vmin"] = self._log_floored_vmin(
+                self.arr,
+                self.vmin,
+                vmin_pinned=self._vmin_explicit,
+                ticks_spacing_pinned=(
+                    "ticks_spacing" in kwargs or "ticks_spacing" in resolved_colorbar
+                ),
+            )
 
         if "vmax" in kwargs.keys():
             self.default_options["vmax"] = kwargs["vmax"]

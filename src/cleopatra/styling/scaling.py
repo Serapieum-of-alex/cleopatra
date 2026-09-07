@@ -388,6 +388,12 @@ class ColorScaling:
         no extra knobs -- `vmin`/`vmax` come from the tick range at render
         time.
 
+        On `ArrayGlyph`, an un-pinned `vmin` is floored at the smallest positive
+        value that is not an extreme low outlier (`ArrayGlyph._log_safe_vmin`),
+        so a lone near-zero pixel does not drag the bar's decades below the
+        data's bulk (issue #339); pass an explicit `vmin` to keep the raw
+        minimum.
+
         Examples:
             - The log scale exposes no extra knobs:
                 ```python
