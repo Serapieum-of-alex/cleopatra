@@ -9,6 +9,7 @@ import pytest
 from cleopatra.styling.params import CellValues, Classify, Contour, DataStyle
 from cleopatra.styling.scaling import (
     ColorScaling,
+    _auto_linthresh,
     _log_tick_positions,
     _symlog_tick_positions,
 )
@@ -157,6 +158,148 @@ class TestColorScalingBuildNorm:
         fmt = cbar_kw["format"]
         assert fmt(-10.0) == "-10", f"negative decade must keep its sign, got {fmt(-10.0)!r}"
         assert fmt(100.0) == "100", f"expected '100', got {fmt(100.0)!r}"
+
+    def test_sym_log_default_auto_derives_linthresh_from_the_range(self):
+        """The default (no `threshold`) sizes the norm's `linthresh` to the data (#337).
+
+        Test scenario:
+            On a wide terrain range [-24, 744] the old fixed `0.0001` default
+            pushed almost everything into the log region, so the bar filled with
+            sub-scale near-zero decades. With no explicit `threshold`, the norm
+            now derives `linthresh` from the range (1% of the peak magnitude),
+            and the bar shows only decades near the data's magnitude -- this is a
+            norm-level change (the rendered image), not just the tick labels. The
+            `|tick| >= 1` assertion is specific to this large-magnitude range,
+            not a general guarantee -- see
+            `test_sym_log_auto_derivation_on_o1_range_still_shows_sub_scale_decades`.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-24.0, 744.0]))
+        assert isinstance(norm, mcolors.SymLogNorm)
+        assert norm.linthresh == pytest.approx(_auto_linthresh(-24.0, 744.0)), (
+            f"norm linthresh should be data-derived, got {norm.linthresh}"
+        )
+        assert norm.linthresh == pytest.approx(7.44), (
+            f"1% of peak 744 should be 7.44, got {norm.linthresh}"
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        nonzero = ticks[ticks != 0.0]
+        assert np.all(np.abs(nonzero) >= 1.0), (
+            f"default bar should not show sub-scale near-zero decades, got {ticks.tolist()}"
+        )
+
+    def test_sym_log_explicit_threshold_overrides_auto_derivation(self):
+        """An explicit `threshold` still wins, sub-scale decades and all (#337).
+
+        Test scenario:
+            The auto-derivation only applies when `threshold` is omitted. Passing
+            the old `0.0001` explicitly must reproduce the old norm exactly --
+            `linthresh` stays `0.0001` and the sub-unit decades reappear -- proving
+            the caller's value is never overridden.
+        """
+        norm, cbar_kw = ColorScaling.sym_log(threshold=0.0001).build_norm(
+            np.array([-24.0, 744.0])
+        )
+        assert norm.linthresh == 0.0001, (
+            f"explicit threshold must not be auto-derived, got {norm.linthresh}"
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert np.any((np.abs(ticks) > 0.0) & (np.abs(ticks) < 1.0)), (
+            f"an explicit tiny threshold should still expose sub-unit decades, got {ticks.tolist()}"
+        )
+
+    def test_auto_linthresh_tracks_the_peak_magnitude(self):
+        """`_auto_linthresh` is 1% of the peak magnitude, with a positive floor."""
+        assert _auto_linthresh(-24.0, 744.0) == pytest.approx(7.44)
+        assert _auto_linthresh(-1000.0, 1000.0) == pytest.approx(10.0)
+        assert _auto_linthresh(0.0, 0.0) == 1.0, "all-zero range needs a positive floor"
+
+    def test_sym_log_auto_derivation_flows_through_from_options(self):
+        """The flat `line_threshold=None` option derives `linthresh` too (#337).
+
+        Test scenario:
+            Glyphs reach the norm via `from_options` on their flat option dict,
+            whose `line_threshold` now defaults to `None`. Rebuilding a
+            sym-lognorm scale from a bare `{"color_scale": "sym-lognorm"}` (no
+            `line_threshold`) must derive the threshold from the range, exactly
+            like the `sym_log()` object path -- not fall back to a fixed value.
+        """
+        scaling = ColorScaling.from_options({"color_scale": "sym-lognorm"})
+        assert scaling.line_threshold is None, (
+            "flat default should defer to auto-derivation"
+        )
+        norm, _ = scaling.build_norm(np.array([-24.0, 744.0]))
+        assert norm.linthresh == pytest.approx(_auto_linthresh(-24.0, 744.0)), (
+            f"flat path should derive linthresh, got {norm.linthresh}"
+        )
+
+    def test_sym_log_auto_derivation_on_a_negative_only_range(self):
+        """A negative-only range derives `linthresh` from `|vmin|` (#337).
+
+        Test scenario:
+            `_auto_linthresh` is the peak *magnitude*, so an all-negative range
+            like [-744, -24] must size the band off `|vmin| = 744`, not the
+            near-zero `vmax`.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-744.0, -24.0]))
+        assert norm.linthresh == pytest.approx(7.44), (
+            f"|vmin|=744 should drive linthresh to 7.44, got {norm.linthresh}"
+        )
+        # Only one decade (-100) lands inside [-744, -24], so the bar ticks fall
+        # back to the endpoints: the derivation sizes the norm correctly but a
+        # narrow (<2-decade) negative-only span yields no decade ticks.
+        assert np.asarray(cbar_kw["ticks"]).tolist() == [-744.0, -24.0], (
+            f"expected the endpoint fallback, got {cbar_kw['ticks']}"
+        )
+
+    def test_sym_log_auto_derivation_on_o1_range_still_shows_sub_scale_decades(self):
+        """An O(1) range straddling zero still shows sub-unit decades (#337).
+
+        Test scenario:
+            The derivation bounds how far the decades reach below the data; it
+            does not pin the smallest decade to the data's scale. For [-5, 5] the
+            1%-of-peak `linthresh` is 0.05, so the bar legitimately still shows
+            sub-unit decades (0.1, 0.01) -- the honest counterpart to the
+            wide-range case, and the limit of the auto-derivation.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-5.0, 5.0]))
+        assert norm.linthresh == pytest.approx(0.05), (
+            f"1% of peak 5 should be 0.05, got {norm.linthresh}"
+        )
+        # The honest counterpart to the wide-range case: a sub-unit `linthresh`
+        # keeps the linear band below the data's own scale, so the log region --
+        # and any decade ticks in it -- reaches below 1 rather than stopping near
+        # the data magnitude. Assert that invariant (robust) rather than the exact
+        # locator tick set, which is matplotlib-version dependent.
+        assert norm.linthresh < 1.0, (
+            f"an O(1) straddle range keeps a sub-unit linear band, got {norm.linthresh}"
+        )
+        nonzero = np.asarray(cbar_kw["ticks"])
+        nonzero = nonzero[nonzero != 0.0]
+        decades = np.log10(np.abs(nonzero))
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {nonzero.tolist()}"
+
+    def test_sym_log_default_keeps_in_band_ticks_legible(self):
+        """The auto default spaces the near-zero in-band ticks legibly (#337).
+
+        Test scenario:
+            Auto-deriving `linthresh` widens the linear band, so pairing it with
+            the old tiny `linscale=0.001` crushed that band to a sliver and the
+            in-band ticks (-1, 0, 1 on [-24, 744]) overprinted. With the auto
+            `linscale` the surviving ticks map to distinct colour-bar positions;
+            an explicit `scale` still reproduces the old (crushed) spacing.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-24.0, 744.0]))
+        positions = np.sort([float(norm(t)) for t in np.asarray(cbar_kw["ticks"])])
+        assert np.diff(positions).min() > 0.01, (
+            f"adjacent bar ticks must be legibly spaced, got positions {positions.tolist()}"
+        )
+        crushed_norm, crushed_kw = ColorScaling.sym_log(scale=0.001).build_norm(
+            np.array([-24.0, 744.0])
+        )
+        crushed = np.sort([float(crushed_norm(t)) for t in np.asarray(crushed_kw["ticks"])])
+        assert np.diff(crushed).min() < 0.001, (
+            f"an explicit scale should still win (old crushed spacing), got {crushed.tolist()}"
+        )
 
     def test_log_bar_ticks_are_decade_aligned(self):
         """log places decade bar ticks and a formatter that labels them (#335)."""
