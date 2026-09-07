@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2929,7 +2929,7 @@ ramps.</p>
 <span class="normal"><a href="#__codelineno-0-100">100</a></span>
 <span class="normal"><a href="#__codelineno-0-101">101</a></span>
 <span class="normal"><a href="#__codelineno-0-102">102</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="k">def</span><span class="w"> </span><span class="nf">srgb_to_lab</span><span class="p">(</span><span class="n">rgb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sRGB colours to CIELAB.</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="w">    </span><span class="sd">"""Convert sRGB colours to CIELAB.</span>
 <a id="__codelineno-0-75" name="__codelineno-0-75"></a>
 <a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-77" name="__codelineno-0-77"></a><span class="sd">        rgb: An `(..., 3)` array (or array-like) of sRGB values in `[0, 1]`.</span>
@@ -2949,7 +2949,7 @@ ramps.</p>
 <a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">        100.0</span>
 <a id="__codelineno-0-92" name="__codelineno-0-92"></a>
 <a id="__codelineno-0-93" name="__codelineno-0-93"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="sd">    """</span>
 <a id="__codelineno-0-95" name="__codelineno-0-95"></a>    <span class="n">rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-96" name="__codelineno-0-96"></a>    <span class="n">xyz</span> <span class="o">=</span> <span class="n">_srgb_to_linear</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">@</span> <span class="n">_M_RGB2XYZ</span><span class="o">.</span><span class="n">T</span>
 <a id="__codelineno-0-97" name="__codelineno-0-97"></a>    <span class="n">t</span> <span class="o">=</span> <span class="n">xyz</span> <span class="o">/</span> <span class="n">_WHITE_D65</span>
@@ -3079,7 +3079,7 @@ ramps.</p>
 <span class="normal"><a href="#__codelineno-0-128">128</a></span>
 <span class="normal"><a href="#__codelineno-0-129">129</a></span>
 <span class="normal"><a href="#__codelineno-0-130">130</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-105" name="__codelineno-0-105"></a><span class="k">def</span><span class="w"> </span><span class="nf">lab_to_srgb</span><span class="p">(</span><span class="n">lab</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-106" name="__codelineno-0-106"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CIELAB colours back to sRGB, clipped to the `[0, 1]` gamut.</span>
+<a id="__codelineno-0-106" name="__codelineno-0-106"></a><span class="w">    </span><span class="sd">"""Convert CIELAB colours back to sRGB, clipped to the `[0, 1]` gamut.</span>
 <a id="__codelineno-0-107" name="__codelineno-0-107"></a>
 <a id="__codelineno-0-108" name="__codelineno-0-108"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-109" name="__codelineno-0-109"></a><span class="sd">        lab: An `(..., 3)` array of CIELAB `(L*, a*, b*)`.</span>
@@ -3097,7 +3097,7 @@ ramps.</p>
 <a id="__codelineno-0-121" name="__codelineno-0-121"></a><span class="sd">        True</span>
 <a id="__codelineno-0-122" name="__codelineno-0-122"></a>
 <a id="__codelineno-0-123" name="__codelineno-0-123"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-124" name="__codelineno-0-124"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-124" name="__codelineno-0-124"></a><span class="sd">    """</span>
 <a id="__codelineno-0-125" name="__codelineno-0-125"></a>    <span class="n">lab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-126" name="__codelineno-0-126"></a>    <span class="n">fy</span> <span class="o">=</span> <span class="p">(</span><span class="n">lab</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span> <span class="o">/</span> <span class="mi">116</span>
 <a id="__codelineno-0-127" name="__codelineno-0-127"></a>    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">fy</span> <span class="o">+</span> <span class="n">lab</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">500</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">fy</span> <span class="o">-</span> <span class="n">lab</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">200</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -3228,7 +3228,7 @@ interpolate between, ordered low to high.</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp_perceptual</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lut</span> <span class="o">=</span> <span class="n">interp_perceptual</span><span class="p">([</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff6a00&quot;</span><span class="p">,</span> <span class="s2">&quot;#2a0800&quot;</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lut</span> <span class="o">=</span> <span class="n">interp_perceptual</span><span class="p">([</span><span class="s2">"#ffffff"</span><span class="p">,</span> <span class="s2">"#ff6a00"</span><span class="p">,</span> <span class="s2">"#2a0800"</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lut</span><span class="o">.</span><span class="n">shape</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">lut</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>  <span class="c1"># first anchor preserved exactly</span>
@@ -3283,7 +3283,7 @@ interpolate between, ordered low to high.</p>
 <span class="normal"><a href="#__codelineno-0-180">180</a></span>
 <span class="normal"><a href="#__codelineno-0-181">181</a></span>
 <span class="normal"><a href="#__codelineno-0-182">182</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-138" name="__codelineno-0-138"></a><span class="k">def</span><span class="w"> </span><span class="nf">interp_perceptual</span><span class="p">(</span><span class="n">anchors</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpolate colour anchors in CIELAB at uniform perceptual arc-length.</span>
+<a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="w">    </span><span class="sd">"""Interpolate colour anchors in CIELAB at uniform perceptual arc-length.</span>
 <a id="__codelineno-0-140" name="__codelineno-0-140"></a>
 <a id="__codelineno-0-141" name="__codelineno-0-141"></a><span class="sd">    Unlike RGB interpolation, consecutive output colours are (near) equally</span>
 <a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="sd">    spaced in perceived colour difference, so the ramp reads as an even</span>
@@ -3304,19 +3304,19 @@ interpolate between, ordered low to high.</p>
 <a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="sd">        ```python</span>
 <a id="__codelineno-0-158" name="__codelineno-0-158"></a><span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="sd">        &gt;&gt;&gt; from cleopatra.styling.perceptual import interp_perceptual</span>
-<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="sd">        &gt;&gt;&gt; lut = interp_perceptual([&quot;#ffffff&quot;, &quot;#ff6a00&quot;, &quot;#2a0800&quot;], n=16)</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="sd">        &gt;&gt;&gt; lut = interp_perceptual(["#ffffff", "#ff6a00", "#2a0800"], n=16)</span>
 <a id="__codelineno-0-161" name="__codelineno-0-161"></a><span class="sd">        &gt;&gt;&gt; lut.shape</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">        (16, 3)</span>
 <a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">        &gt;&gt;&gt; bool(np.allclose(lut[0], [1, 1, 1]))  # first anchor preserved exactly</span>
 <a id="__codelineno-0-164" name="__codelineno-0-164"></a><span class="sd">        True</span>
 <a id="__codelineno-0-165" name="__codelineno-0-165"></a>
 <a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="sd">    """</span>
 <a id="__codelineno-0-168" name="__codelineno-0-168"></a>    <span class="n">rgb</span> <span class="o">=</span> <span class="n">_to_rgb</span><span class="p">(</span><span class="n">anchors</span><span class="p">)</span>
 <a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="k">if</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;interp_perceptual needs at least two anchor colours&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"interp_perceptual needs at least two anchor colours"</span><span class="p">)</span>
 <a id="__codelineno-0-171" name="__codelineno-0-171"></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n must be &gt;= 2&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n must be &gt;= 2"</span><span class="p">)</span>
 <a id="__codelineno-0-173" name="__codelineno-0-173"></a>    <span class="n">lab</span> <span class="o">=</span> <span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
 <a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="n">seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">lab</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">lab</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 <a id="__codelineno-0-175" name="__codelineno-0-175"></a>    <span class="n">cum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">seg</span><span class="p">)])</span>
@@ -3439,9 +3439,9 @@ ramp reads as an even progression rather than banding.</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">perceptual_colormap</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">&quot;dust&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff6a00&quot;</span><span class="p">,</span> <span class="s2">&quot;#2a0800&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">"dust"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"#ffffff"</span><span class="p">,</span> <span class="s2">"#ff6a00"</span><span class="p">,</span> <span class="s2">"#2a0800"</span><span class="p">])</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span><span class="o">.</span><span class="n">name</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="s1">&#39;dust&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="s1">'dust'</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cmap</span><span class="p">(</span><span class="mf">0.0</span><span class="p">))</span>  <span class="c1"># starts at the first anchor</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </code></pre></div>
@@ -3477,7 +3477,7 @@ ramp reads as an even progression rather than banding.</p>
 <span class="normal"><a href="#__codelineno-0-210">210</a></span>
 <span class="normal"><a href="#__codelineno-0-211">211</a></span>
 <span class="normal"><a href="#__codelineno-0-212">212</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="k">def</span><span class="w"> </span><span class="nf">perceptual_colormap</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">anchors</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinearSegmentedColormap</span><span class="p">:</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a `LinearSegmentedColormap` from anchors interpolated in CIELAB.</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="w">    </span><span class="sd">"""Build a `LinearSegmentedColormap` from anchors interpolated in CIELAB.</span>
 <a id="__codelineno-0-187" name="__codelineno-0-187"></a>
 <a id="__codelineno-0-188" name="__codelineno-0-188"></a><span class="sd">    A perceptually-uniform, drop-in replacement for</span>
 <a id="__codelineno-0-189" name="__codelineno-0-189"></a><span class="sd">    `matplotlib.colors.LinearSegmentedColormap.from_list`: the same call shape and</span>
@@ -3495,14 +3495,14 @@ ramp reads as an even progression rather than banding.</p>
 <a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">    Examples:</span>
 <a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">        ```python</span>
 <a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="sd">        &gt;&gt;&gt; from cleopatra.styling.perceptual import perceptual_colormap</span>
-<a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">        &gt;&gt;&gt; cmap = perceptual_colormap(&quot;dust&quot;, [&quot;#ffffff&quot;, &quot;#ff6a00&quot;, &quot;#2a0800&quot;])</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">        &gt;&gt;&gt; cmap = perceptual_colormap("dust", ["#ffffff", "#ff6a00", "#2a0800"])</span>
 <a id="__codelineno-0-205" name="__codelineno-0-205"></a><span class="sd">        &gt;&gt;&gt; cmap.name</span>
-<a id="__codelineno-0-206" name="__codelineno-0-206"></a><span class="sd">        &#39;dust&#39;</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a><span class="sd">        'dust'</span>
 <a id="__codelineno-0-207" name="__codelineno-0-207"></a><span class="sd">        &gt;&gt;&gt; tuple(float(round(v, 3)) for v in cmap(0.0))  # starts at the first anchor</span>
 <a id="__codelineno-0-208" name="__codelineno-0-208"></a><span class="sd">        (1.0, 1.0, 1.0, 1.0)</span>
 <a id="__codelineno-0-209" name="__codelineno-0-209"></a>
 <a id="__codelineno-0-210" name="__codelineno-0-210"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="sd">    """</span>
 <a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="k">return</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">interp_perceptual</span><span class="p">(</span><span class="n">anchors</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">N</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3518,7 +3518,7 @@ both from scratch, no colour data required.</p>
 
 
 <h3 id="cleopatra.styling.perceptual.make_diverging" class="doc doc-heading"><a href="#cleopatra.styling.perceptual.make_diverging" class="toclink">
-            <code class="highlight language-python"><span class="n">cleopatra</span><span class="o">.</span><span class="n">styling</span><span class="o">.</span><span class="n">perceptual</span><span class="o">.</span><span class="n">make_diverging</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="s1">&#39;#f4f4f4&#39;</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;diverging&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">cleopatra</span><span class="o">.</span><span class="n">styling</span><span class="o">.</span><span class="n">perceptual</span><span class="o">.</span><span class="n">make_diverging</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="s1">'#f4f4f4'</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'diverging'</span><span class="p">)</span></code>
 
 </a><a href="#cleopatra.styling.perceptual.make_diverging" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3692,7 +3692,7 @@ samples, so <code>n</code> must be at least 4.</p>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_diverging</span><span class="p">,</span> <span class="n">srgb_to_lab</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">make_diverging</span><span class="p">(</span><span class="s2">&quot;#762a83&quot;</span><span class="p">,</span> <span class="s2">&quot;#1b7837&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">make_diverging</span><span class="p">(</span><span class="s2">"#762a83"</span><span class="p">,</span> <span class="s2">"#1b7837"</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="mi">256</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
@@ -3762,11 +3762,11 @@ samples, so <code>n</code> must be at least 4.</p>
 <a id="__codelineno-0-216" name="__codelineno-0-216"></a>    <span class="n">low</span><span class="p">,</span>
 <a id="__codelineno-0-217" name="__codelineno-0-217"></a>    <span class="n">high</span><span class="p">,</span>
 <a id="__codelineno-0-218" name="__codelineno-0-218"></a>    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
-<a id="__codelineno-0-219" name="__codelineno-0-219"></a>    <span class="n">center</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#f4f4f4&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>    <span class="n">center</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"#f4f4f4"</span><span class="p">,</span>
 <a id="__codelineno-0-220" name="__codelineno-0-220"></a>    <span class="n">balance</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-221" name="__codelineno-0-221"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;diverging&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"diverging"</span><span class="p">,</span>
 <a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinearSegmentedColormap</span><span class="p">:</span>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a perceptually-uniform diverging colormap from two endpoints.</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="w">    </span><span class="sd">"""Construct a perceptually-uniform diverging colormap from two endpoints.</span>
 <a id="__codelineno-0-224" name="__codelineno-0-224"></a>
 <a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">    Builds two Lab-interpolated arms from a light neutral `center` out to each</span>
 <a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">    endpoint, giving the symmetric lightness profile (a peak at the centre) a</span>
@@ -3778,9 +3778,9 @@ samples, so <code>n</code> must be at least 4.</p>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">        high: Colour for the high end of the scale.</span>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="sd">        n: Total number of levels. Defaults to 256.</span>
 <a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">        center: The neutral midpoint colour. Defaults to a near-white grey.</span>
-<a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">        balance: If `True` (default), equalise the two endpoints&#39; `L*` so the</span>
+<a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">        balance: If `True` (default), equalise the two endpoints' `L*` so the</span>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">            arms are lightness-symmetric.</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        name: Name for the resulting colormap. Defaults to `&quot;diverging&quot;`.</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        name: Name for the resulting colormap. Defaults to `"diverging"`.</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a><span class="sd">    Returns:</span>
 <a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">        matplotlib.colors.LinearSegmentedColormap: The diverging colormap.</span>
@@ -3793,18 +3793,18 @@ samples, so <code>n</code> must be at least 4.</p>
 <a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">    Examples:</span>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">        ```python</span>
 <a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">        &gt;&gt;&gt; from cleopatra.styling.perceptual import make_diverging, srgb_to_lab</span>
-<a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">        &gt;&gt;&gt; cmap = make_diverging(&quot;#762a83&quot;, &quot;#1b7837&quot;)</span>
+<a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">        &gt;&gt;&gt; cmap = make_diverging("#762a83", "#1b7837")</span>
 <a id="__codelineno-0-251" name="__codelineno-0-251"></a><span class="sd">        &gt;&gt;&gt; cmap.N</span>
 <a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">        256</span>
 <a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">        &gt;&gt;&gt; bool(srgb_to_lab(cmap(0.5)[:3])[0] &gt; srgb_to_lab(cmap(0.0)[:3])[0])</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a><span class="sd">        True</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>
 <a id="__codelineno-0-256" name="__codelineno-0-256"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-257" name="__codelineno-0-257"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-257" name="__codelineno-0-257"></a><span class="sd">    """</span>
 <a id="__codelineno-0-258" name="__codelineno-0-258"></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
 <a id="__codelineno-0-259" name="__codelineno-0-259"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-260" name="__codelineno-0-260"></a>            <span class="sa">f</span><span class="s2">&quot;make_diverging needs n &gt;= 4 (two perceptual arms of &gt;= 2 samples &quot;</span>
-<a id="__codelineno-0-261" name="__codelineno-0-261"></a>            <span class="sa">f</span><span class="s2">&quot;each); got n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-260" name="__codelineno-0-260"></a>            <span class="sa">f</span><span class="s2">"make_diverging needs n &gt;= 4 (two perceptual arms of &gt;= 2 samples "</span>
+<a id="__codelineno-0-261" name="__codelineno-0-261"></a>            <span class="sa">f</span><span class="s2">"each); got n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">."</span>
 <a id="__codelineno-0-262" name="__codelineno-0-262"></a>        <span class="p">)</span>
 <a id="__codelineno-0-263" name="__codelineno-0-263"></a>    <span class="n">lo</span> <span class="o">=</span> <span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">_to_rgb</span><span class="p">([</span><span class="n">low</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
 <a id="__codelineno-0-264" name="__codelineno-0-264"></a>    <span class="n">hi</span> <span class="o">=</span> <span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">_to_rgb</span><span class="p">([</span><span class="n">high</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
@@ -3958,7 +3958,7 @@ colours) -- widen <code>l_range</code>, lower <code>c_min</code>, or reduce <cod
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">make_categorical</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cols</span><span class="p">))</span> <span class="o">==</span> <span class="mi">5</span>  <span class="c1"># all distinct</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kc">True</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">)</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kc">True</span>
 </code></pre></div>
 
@@ -4026,7 +4026,7 @@ colours) -- widen <code>l_range</code>, lower <code>c_min</code>, or reduce <cod
 <span class="normal"><a href="#__codelineno-0-332">332</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-274" name="__codelineno-0-274"></a><span class="k">def</span><span class="w"> </span><span class="nf">make_categorical</span><span class="p">(</span>
 <a id="__codelineno-0-275" name="__codelineno-0-275"></a>    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">l_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">35.0</span><span class="p">,</span> <span class="mf">82.0</span><span class="p">),</span> <span class="n">c_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">25.0</span>
 <a id="__codelineno-0-276" name="__codelineno-0-276"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-277" name="__codelineno-0-277"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate `n` maximally-distinguishable categorical colours (glasbey method).</span>
+<a id="__codelineno-0-277" name="__codelineno-0-277"></a><span class="w">    </span><span class="sd">"""Generate `n` maximally-distinguishable categorical colours (glasbey method).</span>
 <a id="__codelineno-0-278" name="__codelineno-0-278"></a>
 <a id="__codelineno-0-279" name="__codelineno-0-279"></a><span class="sd">    Greedily selects, from a mid-lightness / chromatic gamut, the colour whose</span>
 <a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="sd">    *minimum* CIELAB distance to those already chosen is largest -- the same</span>
@@ -4055,13 +4055,13 @@ colours) -- widen <code>l_range</code>, lower <code>c_min</code>, or reduce <cod
 <a id="__codelineno-0-303" name="__codelineno-0-303"></a><span class="sd">        &gt;&gt;&gt; cols = make_categorical(5)</span>
 <a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="sd">        &gt;&gt;&gt; len(cols) == len(set(cols)) == 5  # all distinct</span>
 <a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">        True</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        &gt;&gt;&gt; all(c.startswith(&quot;#&quot;) for c in cols)</span>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        &gt;&gt;&gt; all(c.startswith("#") for c in cols)</span>
 <a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">        True</span>
 <a id="__codelineno-0-308" name="__codelineno-0-308"></a>
 <a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">    """</span>
 <a id="__codelineno-0-311" name="__codelineno-0-311"></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-<a id="__codelineno-0-312" name="__codelineno-0-312"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n must be &gt;= 1&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n must be &gt;= 1"</span><span class="p">)</span>
 <a id="__codelineno-0-313" name="__codelineno-0-313"></a>    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
 <a id="__codelineno-0-314" name="__codelineno-0-314"></a>    <span class="n">cand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">grid</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <a id="__codelineno-0-315" name="__codelineno-0-315"></a>    <span class="n">lab</span> <span class="o">=</span> <span class="n">srgb_to_lab</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span>
@@ -4070,9 +4070,9 @@ colours) -- widen <code>l_range</code>, lower <code>c_min</code>, or reduce <cod
 <a id="__codelineno-0-318" name="__codelineno-0-318"></a>    <span class="n">cand</span><span class="p">,</span> <span class="n">lab</span> <span class="o">=</span> <span class="n">cand</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span> <span class="n">lab</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
 <a id="__codelineno-0-319" name="__codelineno-0-319"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
 <a id="__codelineno-0-320" name="__codelineno-0-320"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="sa">f</span><span class="s2">&quot;make_categorical cannot produce </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> distinct colours: only &quot;</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span><span class="si">}</span><span class="s2"> candidate(s) satisfy l_range=</span><span class="si">{</span><span class="n">l_range</span><span class="si">}</span><span class="s2"> and &quot;</span>
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>            <span class="sa">f</span><span class="s2">&quot;c_min=</span><span class="si">{</span><span class="n">c_min</span><span class="si">}</span><span class="s2">. Widen l_range, lower c_min, or reduce n.&quot;</span>
+<a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="sa">f</span><span class="s2">"make_categorical cannot produce </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> distinct colours: only "</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span><span class="si">}</span><span class="s2"> candidate(s) satisfy l_range=</span><span class="si">{</span><span class="n">l_range</span><span class="si">}</span><span class="s2"> and "</span>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>            <span class="sa">f</span><span class="s2">"c_min=</span><span class="si">{</span><span class="n">c_min</span><span class="si">}</span><span class="s2">. Widen l_range, lower c_min, or reduce n."</span>
 <a id="__codelineno-0-324" name="__codelineno-0-324"></a>        <span class="p">)</span>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">lab</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lab</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])))</span>
 <a id="__codelineno-0-326" name="__codelineno-0-326"></a>    <span class="n">chosen</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">]</span>
@@ -4182,9 +4182,9 @@ against its <code>interp_perceptual</code> counterpart.</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">perceptual_colormap</span><span class="p">,</span> <span class="n">perceptual_uniformity</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">anchors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff5fc9&quot;</span><span class="p">,</span> <span class="s2">&quot;#200018&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lab</span> <span class="o">=</span> <span class="n">perceptual_uniformity</span><span class="p">(</span><span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">anchors</span><span class="p">))</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">perceptual_uniformity</span><span class="p">(</span><span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">anchors</span><span class="p">))</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">anchors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#ffffff"</span><span class="p">,</span> <span class="s2">"#ff5fc9"</span><span class="p">,</span> <span class="s2">"#200018"</span><span class="p">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lab</span> <span class="o">=</span> <span class="n">perceptual_uniformity</span><span class="p">(</span><span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">"p"</span><span class="p">,</span> <span class="n">anchors</span><span class="p">))</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">perceptual_uniformity</span><span class="p">(</span><span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">anchors</span><span class="p">))</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">lab</span> <span class="o">&lt;</span> <span class="n">rgb</span><span class="p">)</span>  <span class="c1"># Lab interpolation is more even than RGB</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kc">True</span>
 </code></pre></div>
@@ -4229,7 +4229,7 @@ against its <code>interp_perceptual</code> counterpart.</p>
 <span class="normal"><a href="#__codelineno-0-369">369</a></span>
 <span class="normal"><a href="#__codelineno-0-370">370</a></span>
 <span class="normal"><a href="#__codelineno-0-371">371</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-335" name="__codelineno-0-335"></a><span class="k">def</span><span class="w"> </span><span class="nf">perceptual_uniformity</span><span class="p">(</span><span class="n">cmap</span><span class="p">:</span> <span class="n">Colormap</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<a id="__codelineno-0-336" name="__codelineno-0-336"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Score how perceptually even a colormap&#39;s steps are (0 == perfectly even).</span>
+<a id="__codelineno-0-336" name="__codelineno-0-336"></a><span class="w">    </span><span class="sd">"""Score how perceptually even a colormap's steps are (0 == perfectly even).</span>
 <a id="__codelineno-0-337" name="__codelineno-0-337"></a>
 <a id="__codelineno-0-338" name="__codelineno-0-338"></a><span class="sd">    Returns the coefficient of variation of the per-step CIELAB distance: the</span>
 <a id="__codelineno-0-339" name="__codelineno-0-339"></a><span class="sd">    standard deviation of `DeltaE` between consecutive samples divided by their</span>
@@ -4247,14 +4247,14 @@ against its <code>interp_perceptual</code> counterpart.</p>
 <a id="__codelineno-0-351" name="__codelineno-0-351"></a><span class="sd">        ```python</span>
 <a id="__codelineno-0-352" name="__codelineno-0-352"></a><span class="sd">        &gt;&gt;&gt; from cleopatra.styling.perceptual import perceptual_colormap, perceptual_uniformity</span>
 <a id="__codelineno-0-353" name="__codelineno-0-353"></a><span class="sd">        &gt;&gt;&gt; from matplotlib.colors import LinearSegmentedColormap</span>
-<a id="__codelineno-0-354" name="__codelineno-0-354"></a><span class="sd">        &gt;&gt;&gt; anchors = [&quot;#ffffff&quot;, &quot;#ff5fc9&quot;, &quot;#200018&quot;]</span>
-<a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="sd">        &gt;&gt;&gt; lab = perceptual_uniformity(perceptual_colormap(&quot;p&quot;, anchors))</span>
-<a id="__codelineno-0-356" name="__codelineno-0-356"></a><span class="sd">        &gt;&gt;&gt; rgb = perceptual_uniformity(LinearSegmentedColormap.from_list(&quot;r&quot;, anchors))</span>
+<a id="__codelineno-0-354" name="__codelineno-0-354"></a><span class="sd">        &gt;&gt;&gt; anchors = ["#ffffff", "#ff5fc9", "#200018"]</span>
+<a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="sd">        &gt;&gt;&gt; lab = perceptual_uniformity(perceptual_colormap("p", anchors))</span>
+<a id="__codelineno-0-356" name="__codelineno-0-356"></a><span class="sd">        &gt;&gt;&gt; rgb = perceptual_uniformity(LinearSegmentedColormap.from_list("r", anchors))</span>
 <a id="__codelineno-0-357" name="__codelineno-0-357"></a><span class="sd">        &gt;&gt;&gt; bool(lab &lt; rgb)  # Lab interpolation is more even than RGB</span>
 <a id="__codelineno-0-358" name="__codelineno-0-358"></a><span class="sd">        True</span>
 <a id="__codelineno-0-359" name="__codelineno-0-359"></a>
 <a id="__codelineno-0-360" name="__codelineno-0-360"></a><span class="sd">        ```</span>
-<a id="__codelineno-0-361" name="__codelineno-0-361"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-361" name="__codelineno-0-361"></a><span class="sd">    """</span>
 <a id="__codelineno-0-362" name="__codelineno-0-362"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">Colormap</span><span class="p">):</span>
 <a id="__codelineno-0-363" name="__codelineno-0-363"></a>        <span class="n">lut</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 <a id="__codelineno-0-364" name="__codelineno-0-364"></a>    <span class="k">else</span><span class="p">:</span>
@@ -4276,20 +4276,20 @@ against its <code>interp_perceptual</code> counterpart.</p>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">perceptual_colormap</span><span class="p">,</span> <span class="n">perceptual_uniformity</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">anchors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff6a00&quot;</span><span class="p">,</span> <span class="s2">&quot;#7a1500&quot;</span><span class="p">,</span> <span class="s2">&quot;#2a0800&quot;</span><span class="p">]</span>  <span class="c1"># a &quot;dust&quot; ramp</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">cmap</span> <span class="o">=</span> <span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">&quot;dust&quot;</span><span class="p">,</span> <span class="n">anchors</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">anchors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#ffffff"</span><span class="p">,</span> <span class="s2">"#ff6a00"</span><span class="p">,</span> <span class="s2">"#7a1500"</span><span class="p">,</span> <span class="s2">"#2a0800"</span><span class="p">]</span>  <span class="c1"># a "dust" ramp</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">cmap</span> <span class="o">=</span> <span class="n">perceptual_colormap</span><span class="p">(</span><span class="s2">"dust"</span><span class="p">,</span> <span class="n">anchors</span><span class="p">)</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># far more perceptually even than an RGB LinearSegmentedColormap.from_list</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">perceptual_uniformity</span><span class="p">(</span><span class="n">cmap</span><span class="p">))</span>  <span class="c1"># ~0.02 (RGB build scores ~0.18)</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="a-diverging-map-and-a-categorical-palette"><a class="toclink" href="#a-diverging-map-and-a-categorical-palette">A diverging map and a categorical palette</a><a class="headerlink" href="#a-diverging-map-and-a-categorical-palette" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.styling.perceptual</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_diverging</span><span class="p">,</span> <span class="n">make_categorical</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">diverging</span> <span class="o">=</span> <span class="n">make_diverging</span><span class="p">(</span><span class="s2">&quot;#762a83&quot;</span><span class="p">,</span> <span class="s2">&quot;#1b7837&quot;</span><span class="p">)</span>  <span class="c1"># purple ↔ green, Lab-balanced</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">diverging</span> <span class="o">=</span> <span class="n">make_diverging</span><span class="p">(</span><span class="s2">"#762a83"</span><span class="p">,</span> <span class="s2">"#1b7837"</span><span class="p">)</span>  <span class="c1"># purple ↔ green, Lab-balanced</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">classes</span> <span class="o">=</span> <span class="n">make_categorical</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>                     <span class="c1"># 12 distinguishable class colours</span>
 </code></pre></div>
 
@@ -4406,7 +4406,7 @@ against its <code>interp_perceptual</code> counterpart.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

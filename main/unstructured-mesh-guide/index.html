@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2908,7 +2908,7 @@ since it avoids the derivation step.</p>
 <p>One value per face. This is the most common output from finite volume
 models. Each face gets a single flat color when plotted.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">water_depth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">])</span>  <span class="c1"># one value per face</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">water_depth</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">water_depth</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">"face"</span><span class="p">)</span>
 </code></pre></div>
 <p><code>MeshGlyph</code> uses matplotlib's <code>tripcolor</code> for face-centered rendering.
 Internally, polygonal faces are decomposed into triangles via <strong>fan
@@ -2918,7 +2918,7 @@ etc.), and each sub-triangle receives its parent face's value.</p>
 <p>One value per node. Used when data is defined at vertices (e.g.,
 finite element solutions). Produces smooth interpolated contours.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">elevation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>  <span class="c1"># one value per node</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elevation</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elevation</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">"node"</span><span class="p">)</span>
 </code></pre></div>
 <p><code>MeshGlyph</code> uses matplotlib's <code>tricontourf</code> for node-centered
 rendering, which interpolates between node values to produce smooth
@@ -2975,15 +2975,15 @@ variables are organized.</p>
 cleopatra takes plain NumPy arrays and does no file I/O of its own):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nc</span>  <span class="c1"># not a cleopatra dependency: pip install netCDF4</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">ds</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">ds</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"output.nc"</span><span class="p">)</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">mg</span> <span class="o">=</span> <span class="n">MeshGlyph</span><span class="p">(</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">node_x</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_node_x&quot;</span><span class="p">][:],</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">node_y</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_node_y&quot;</span><span class="p">][:],</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">face_node_connectivity</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_face_nodes&quot;</span><span class="p">][:],</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">fill_value</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_face_nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_FillValue</span><span class="p">,</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">edge_node_connectivity</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_edge_nodes&quot;</span><span class="p">][:],</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">node_x</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_node_x"</span><span class="p">][:],</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">node_y</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_node_y"</span><span class="p">][:],</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">face_node_connectivity</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_face_nodes"</span><span class="p">][:],</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">fill_value</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_face_nodes"</span><span class="p">]</span><span class="o">.</span><span class="n">_FillValue</span><span class="p">,</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">edge_node_connectivity</span><span class="o">=</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_edge_nodes"</span><span class="p">][:],</span>
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">)</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;mesh2d_waterdepth&quot;</span><span class="p">][:],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Water Depth&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">"mesh2d_waterdepth"</span><span class="p">][:],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Water Depth"</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="fan-triangulation"><a class="toclink" href="#fan-triangulation">Fan Triangulation</a><a class="headerlink" href="#fan-triangulation" title="Permanent link">#</a></h2>
 <p>Matplotlib can only render triangles natively. When a mesh contains
@@ -3009,30 +3009,30 @@ entirely -- the face-node connectivity is already the triangle array.</p>
 <h3 id="face-plot-locationface"><a class="toclink" href="#face-plot-locationface">Face Plot (<code>location="face"</code>)</a><a class="headerlink" href="#face-plot-locationface" title="Permanent link">#</a></h3>
 <p>Each face is colored by its data value using flat shading. Good for
 showing discrete per-cell results from finite volume models.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">face_data</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">face_data</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">"face"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="node-contour-plot-locationnode"><a class="toclink" href="#node-contour-plot-locationnode">Node Contour Plot (<code>location="node"</code>)</a><a class="headerlink" href="#node-contour-plot-locationnode" title="Permanent link">#</a></h3>
 <p>Smooth filled contours interpolated between node values. Good for
 showing continuous fields from finite element models.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node_data</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;terrain&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">node_data</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">"node"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"terrain"</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="wireframe-outline"><a class="toclink" href="#wireframe-outline">Wireframe Outline</a><a class="headerlink" href="#wireframe-outline" title="Permanent link">#</a></h3>
 <p>Renders mesh edges only, without data. Useful for inspecting mesh
 quality, resolution distribution, or overlaying on a data plot.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot_outline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">plot_outline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 </code></pre></div>
 <p>Since <code>MeshGlyph</code> stores <code>fig</code>/<code>ax</code> as instance state, you can overlay
 a wireframe on a data plot by calling both methods in sequence:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">mg</span> <span class="o">=</span> <span class="n">MeshGlyph</span><span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">)</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot_outline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Blues"</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot_outline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="animation"><a class="toclink" href="#animation">Animation</a><a class="headerlink" href="#animation" title="Permanent link">#</a></h3>
 <p>For time-varying data on a fixed mesh (e.g., a hydrodynamic
 simulation), <code>animate()</code> creates a frame-by-frame animation:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># frames: shape (n_timesteps, n_faces)</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time_labels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">)</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">mg</span><span class="o">.</span><span class="n">save_animation</span><span class="p">(</span><span class="s2">&quot;simulation.gif&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">mg</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time_labels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">)</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">mg</span><span class="o">.</span><span class="n">save_animation</span><span class="p">(</span><span class="s2">"simulation.gif"</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="color-scales"><a class="toclink" href="#color-scales">Color Scales</a><a class="headerlink" href="#color-scales" title="Permanent link">#</a></h2>
 <p><code>MeshGlyph</code> supports all 6 color scale types inherited from the
@@ -3089,8 +3089,8 @@ simulation), <code>animate()</code> creates a frame-by-frame animation:</p>
 <a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">mg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">difference_data</span><span class="p">,</span>
 <a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">color</span><span class="o">=</span><span class="n">ColorScaling</span><span class="o">.</span><span class="n">midpoint</span><span class="p">(</span><span class="n">at</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">colorbar</span><span class="o">=</span><span class="n">ColorBar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Change [m]&quot;</span><span class="p">),</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu_r"</span><span class="p">,</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">colorbar</span><span class="o">=</span><span class="n">ColorBar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"Change [m]"</span><span class="p">),</span>
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="comparison-arrayglyph-vs-meshglyph"><a class="toclink" href="#comparison-arrayglyph-vs-meshglyph">Comparison: ArrayGlyph vs MeshGlyph</a><a class="headerlink" href="#comparison-arrayglyph-vs-meshglyph" title="Permanent link">#</a></h2>
@@ -3269,7 +3269,7 @@ simulation), <code>animate()</code> creates a frame-by-frame animation:</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
