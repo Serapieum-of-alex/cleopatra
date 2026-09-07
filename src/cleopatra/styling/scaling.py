@@ -155,12 +155,13 @@ def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.nd
 
 
 #: Fraction of the data's peak magnitude used to size an auto-derived symlog
-#: `linthresh` when the caller passes no explicit `threshold`. At 1%, the linear
-#: band covers roughly the bottom ~1% of the range, tying the log decades to the
-#: data's magnitude instead of the fixed `0.0001` that ran arbitrarily far below
-#: it (issue #337). This bounds how far the decades reach below the data, not the
-#: exact smallest decade -- an O(1) range straddling zero can still show a
-#: sub-unit decade or two below its peak.
+#: `linthresh` when the caller passes no explicit `threshold`. `linthresh` is the
+#: half-width of the zero-centred linear band, so at 1% the band spans +/-1% of
+#: the data's peak magnitude -- tying the log decades to the data's magnitude
+#: instead of the fixed `0.0001` that ran arbitrarily far below it (issue #337).
+#: This bounds how far the decades reach below the data, not the exact smallest
+#: decade -- an O(1) range straddling zero can still show a sub-unit decade or two
+#: below its peak.
 _AUTO_LINTHRESH_FRACTION = 0.01
 
 
