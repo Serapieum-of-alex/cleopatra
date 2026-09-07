@@ -4543,6 +4543,14 @@ class ArrayGlyph(GeoMixin, Glyph):
             else:
                 self.default_options["ticks_spacing"] = self.ticks_spacing
 
+        self._apply_log_vmin_floor(
+            self.arr,
+            vmin_pinned=self._vmin_explicit or "vmin" in kwargs,
+            ticks_spacing_pinned=(
+                "ticks_spacing" in kwargs or "ticks_spacing" in resolved_colorbar
+            ),
+        )
+
         if "vmin" in kwargs.keys():
             self.default_options["vmin"] = kwargs["vmin"]
         else:

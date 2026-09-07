@@ -364,6 +364,17 @@ class TestPlotArray:
             f"a pinned ticks_spacing must be preserved, got {glyph.default_options['ticks_spacing']}"
         )
 
+    def test_log_vmin_floor_applies_on_the_animate_path(self):
+        """A log animation floors a near-zero outlier vmin, like plot() does (#339)."""
+        frame = np.concatenate(([1e-4], np.arange(1.0, 100.0))).reshape(10, 10)
+        stack = np.stack([frame, frame, frame])
+        glyph = ArrayGlyph(stack)
+        glyph.animate(time=[0, 1, 2], color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"animate should floor the outlier vmin like plot, got {glyph.im.norm.vmin}"
+        )
+        plt.close("all")
+
     def test_sym_log_set_ticks_labels_without_set_ticklabels(self):
         """`cbar.set_ticks([...])` labels the given positions unaided (#335)."""
         glyph = ArrayGlyph(self._terrain_like())
