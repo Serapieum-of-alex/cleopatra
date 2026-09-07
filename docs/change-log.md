@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.36.1 (2026-09-07)
+
+
+- fix(styling): give sym_log and log colour bars scale-aware, labelled ticks (#336)
+- Glyph.get_ticks() builds a linear tick ladder that never consults the
+colour scale, and the sym_log/log bars used matplotlib's LogFormatter,
+which blanks non-decade positions and drops the sign of negatives -- so
+a non-linear colour bar came back ~1 of 11 ticks labelled (#335).
+- get_ticks() must stay linear (it supplies vmin/vmax via ticks[0]/[-1]),
+so fix it in ColorScaling.build_norm():
+- - the sym_log/log branches place decade ticks with SymmetricalLogLocator
+  / LogLocator over [vmin, vmax] (shared via _decades_in_range, falling
+  back to the linear ladder when fewer than two decades land in range).
+- they format with a plain, sign-correct FuncFormatter (f"{v + 0.0:g}",
+  -0.0 -> "0") instead of LogFormatter, so a later cbar.set_ticks([...])
+  is labelled without a paired set_ticklabels().
+- linear, power, midpoint and boundary bars are unchanged.
+- Also add a stripped demo notebook (examples/colorbar_ticks_335.ipynb).
+A follow-up (#337) tracks auto-deriving the sym_log linear threshold.
+- Closes #335
+
 ## 0.36.0 (2026-09-06)
 
 
