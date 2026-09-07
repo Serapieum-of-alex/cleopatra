@@ -156,8 +156,11 @@ def _log_tick_positions(vmin: float, vmax: float, fallback: np.ndarray) -> np.nd
 
 #: Fraction of the data's peak magnitude used to size an auto-derived symlog
 #: `linthresh` when the caller passes no explicit `threshold`. At 1%, the linear
-#: band covers only the bottom ~1% of the range, so the log decades track the
-#: data's own scale instead of running far below it (issue #337).
+#: band covers roughly the bottom ~1% of the range, tying the log decades to the
+#: data's magnitude instead of the fixed `0.0001` that ran arbitrarily far below
+#: it (issue #337). This bounds how far the decades reach below the data, not the
+#: exact smallest decade -- an O(1) range straddling zero can still show a
+#: sub-unit decade or two below its peak.
 _AUTO_LINTHRESH_FRACTION = 0.01
 
 
@@ -167,8 +170,11 @@ def _auto_linthresh(vmin: float, vmax: float) -> float:
     A fixed `linthresh` far below the data (the old `0.0001` default) pushes a
     wide-ranging field almost entirely into the log region, so the colour bar
     fills with near-zero sub-scale decades. Sizing it as a small fraction of the
-    peak magnitude keeps the linear band -- and therefore the smallest shown
-    decade -- near the data's own scale.
+    peak magnitude ties the linear band to the data's magnitude, so the log
+    decades stay near the data's scale rather than running arbitrarily far below
+    it. This bounds how far the decades reach, not the exact smallest one: a
+    large-magnitude field shows only decades near its scale, while an O(1) range
+    straddling zero can still show a sub-unit decade or two below its peak.
 
     Args:
         vmin: Lower bound of the colour range.
@@ -555,9 +561,10 @@ class ColorScaling:
             cbar_kw = {"ticks": ticks}
         elif self.kind == ColorScale.SYM_LOGNORM:
             # A `None` threshold means "match the data": derive `linthresh` from
-            # the range so the log decades don't run below the data's scale
-            # (issue #337). The same value drives the norm (the rendered image)
-            # and the bar ticks, so they stay consistent.
+            # the range so the log decades stay near the data's scale instead of
+            # running arbitrarily far below it (issue #337). The same value drives
+            # the norm (the rendered image) and the bar ticks, so they stay
+            # consistent.
             linthresh = (
                 _auto_linthresh(vmin, vmax)
                 if self.line_threshold is None
