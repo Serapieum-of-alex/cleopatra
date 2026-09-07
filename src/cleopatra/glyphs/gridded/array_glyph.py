@@ -3321,8 +3321,9 @@ class ArrayGlyph(GeoMixin, Glyph):
 
             - Logarithmic scale.
 
-                - the logarithmic scale uses to parameters `line_threshold` and `line_scale` with a default
-                value if 0.0001, and 0.001 respectively.
+                - the symmetric-log scale takes two parameters, `line_threshold` and `line_scale`. Leaving
+                `line_threshold` unset (its default) auto-derives it from the data range so the colour bar's
+                decades track the data's own scale; `line_scale` defaults to 0.001.
                     ```python
                     >>> array = ArrayGlyph(arr, figsize=(6, 6), title="Logarithmic scale", title_size=18)
                     >>> fig, ax = array.plot(

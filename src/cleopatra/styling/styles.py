@@ -111,7 +111,7 @@ DEFAULT_OPTIONS: dict[str, Any] = {
     "color_scale": "linear",
     "gamma": 0.5,
     "line_scale": 0.001,
-    "line_threshold": 0.0001,
+    "line_threshold": None,
     "bounds": None,
     "midpoint": 0,
     "grid_alpha": 0.75,

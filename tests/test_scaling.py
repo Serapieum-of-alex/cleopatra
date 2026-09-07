@@ -9,6 +9,7 @@ import pytest
 from cleopatra.styling.params import CellValues, Classify, Contour, DataStyle
 from cleopatra.styling.scaling import (
     ColorScaling,
+    _auto_linthresh,
     _log_tick_positions,
     _symlog_tick_positions,
 )
@@ -157,6 +158,57 @@ class TestColorScalingBuildNorm:
         fmt = cbar_kw["format"]
         assert fmt(-10.0) == "-10", f"negative decade must keep its sign, got {fmt(-10.0)!r}"
         assert fmt(100.0) == "100", f"expected '100', got {fmt(100.0)!r}"
+
+    def test_sym_log_default_auto_derives_linthresh_from_the_range(self):
+        """The default (no `threshold`) sizes the norm's `linthresh` to the data (#337).
+
+        Test scenario:
+            On a wide terrain range [-24, 744] the old fixed `0.0001` default
+            pushed almost everything into the log region, so the bar filled with
+            sub-scale near-zero decades. With no explicit `threshold`, the norm
+            now derives `linthresh` from the range (1% of the peak magnitude),
+            and the bar shows only decades near the data's magnitude -- this is a
+            norm-level change (the rendered image), not just the tick labels.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-24.0, 744.0]))
+        assert isinstance(norm, mcolors.SymLogNorm)
+        assert norm.linthresh == pytest.approx(_auto_linthresh(-24.0, 744.0)), (
+            f"norm linthresh should be data-derived, got {norm.linthresh}"
+        )
+        assert norm.linthresh == pytest.approx(7.44), (
+            f"1% of peak 744 should be 7.44, got {norm.linthresh}"
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        nonzero = ticks[ticks != 0.0]
+        assert np.all(np.abs(nonzero) >= 1.0), (
+            f"default bar should not show sub-scale near-zero decades, got {ticks.tolist()}"
+        )
+
+    def test_sym_log_explicit_threshold_overrides_auto_derivation(self):
+        """An explicit `threshold` still wins, sub-scale decades and all (#337).
+
+        Test scenario:
+            The auto-derivation only applies when `threshold` is omitted. Passing
+            the old `0.0001` explicitly must reproduce the old norm exactly --
+            `linthresh` stays `0.0001` and the sub-unit decades reappear -- proving
+            the caller's value is never overridden.
+        """
+        norm, cbar_kw = ColorScaling.sym_log(threshold=0.0001).build_norm(
+            np.array([-24.0, 744.0])
+        )
+        assert norm.linthresh == 0.0001, (
+            f"explicit threshold must not be auto-derived, got {norm.linthresh}"
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert np.any((np.abs(ticks) > 0.0) & (np.abs(ticks) < 1.0)), (
+            f"an explicit tiny threshold should still expose sub-unit decades, got {ticks.tolist()}"
+        )
+
+    def test_auto_linthresh_tracks_the_peak_magnitude(self):
+        """`_auto_linthresh` is 1% of the peak magnitude, with a positive floor."""
+        assert _auto_linthresh(-24.0, 744.0) == pytest.approx(7.44)
+        assert _auto_linthresh(-1000.0, 1000.0) == pytest.approx(10.0)
+        assert _auto_linthresh(0.0, 0.0) == 1.0, "all-zero range needs a positive floor"
 
     def test_log_bar_ticks_are_decade_aligned(self):
         """log places decade bar ticks and a formatter that labels them (#335)."""
