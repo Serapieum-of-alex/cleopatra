@@ -577,48 +577,9 @@ class ColorScaling:
             norm = colors.PowerNorm(gamma=self.gamma, vmin=vmin, vmax=vmax)
             cbar_kw = {"ticks": ticks}
         elif self.kind == ColorScale.SYM_LOGNORM:
-            # A `None` threshold means "match the data": derive `linthresh` from
-            # the range so the log decades stay near the data's scale instead of
-            # running arbitrarily far below it (issue #337). The same value drives
-            # the norm (the rendered image) and the bar ticks, so they stay
-            # consistent. A `None` scale likewise pairs matplotlib's `1.0`
-            # `linscale` with that wider band, so the near-zero region keeps a
-            # legible share of the bar and its in-band ticks don't overprint.
-            linthresh = (
-                _auto_linthresh(vmin, vmax)
-                if self.line_threshold is None
-                else self.line_threshold
-            )
-            linscale = (
-                _AUTO_LINSCALE if self.line_scale is None else self.line_scale
-            )
-            norm = colors.SymLogNorm(
-                linthresh=linthresh,
-                linscale=linscale,
-                base=np.e,
-                vmin=vmin,
-                vmax=vmax,
-            )
-            cbar_kw = {
-                "ticks": _symlog_tick_positions(vmin, vmax, linthresh, ticks),
-                "format": _plain_tick_formatter(),
-            }
+            norm, cbar_kw = self._sym_log_norm(ticks, vmin, vmax)
         elif self.kind == ColorScale.LOGNORM:
-            lo, hi = float(vmin), float(vmax)
-            # A constant *positive* field yields a single tick (vmin == vmax); a
-            # log scale cannot span a zero-width range, so widen it -- matching
-            # the data-style norm='log' path, which bumps vmax = vmin + 1.0. Only
-            # widen a positive constant: a non-positive one must raise, and its
-            # error should report the real bound, not a widened one.
-            if hi == lo and lo > 0.0:
-                hi = lo + 1.0
-            norm = build_log_norm(
-                lo, hi, context="ColorScaling.log()", remedy="use ColorScaling.sym_log()"
-            )
-            cbar_kw = {
-                "ticks": _log_tick_positions(lo, hi, ticks),
-                "format": _plain_tick_formatter(),
-            }
+            norm, cbar_kw = self._log_norm(ticks, vmin, vmax)
         elif self.kind == ColorScale.BOUNDARY_NORM:
             norm, cbar_kw = self._boundary_norm(ticks, bounds_from_levels)
         elif self.kind == ColorScale.MIDPOINT:
@@ -642,6 +603,57 @@ class ColorScaling:
             norm = colors.BoundaryNorm(boundaries=bounds_from_levels, ncolors=256)
             return norm, {"ticks": bounds_from_levels}
         return None, {"ticks": ticks}
+
+    def _sym_log_norm(
+        self, ticks: np.ndarray, vmin: Any, vmax: Any
+    ) -> tuple[colors.Normalize, dict[str, Any]]:
+        """Symmetric-log norm, deriving the linear band from the data when unset.
+
+        A `None` threshold means "match the data": derive `linthresh` from the
+        range so the log decades stay near the data's scale instead of running
+        arbitrarily far below it (issue #337). The same value drives the norm
+        (the rendered image) and the bar ticks, so they stay consistent. A `None`
+        scale likewise pairs matplotlib's `1.0` `linscale` with that wider band,
+        so the near-zero region keeps a legible share of the bar and its in-band
+        ticks don't overprint. An explicit `threshold`/`scale` is used as given.
+        """
+        linthresh = (
+            _auto_linthresh(vmin, vmax)
+            if self.line_threshold is None
+            else self.line_threshold
+        )
+        linscale = _AUTO_LINSCALE if self.line_scale is None else self.line_scale
+        norm = colors.SymLogNorm(
+            linthresh=linthresh, linscale=linscale, base=np.e, vmin=vmin, vmax=vmax
+        )
+        cbar_kw = {
+            "ticks": _symlog_tick_positions(vmin, vmax, linthresh, ticks),
+            "format": _plain_tick_formatter(),
+        }
+        return norm, cbar_kw
+
+    def _log_norm(
+        self, ticks: np.ndarray, vmin: Any, vmax: Any
+    ) -> tuple[colors.Normalize, dict[str, Any]]:
+        """Plain-log norm over a strictly-positive range, widening a constant field.
+
+        A constant *positive* field yields a single tick (`vmin == vmax`); a log
+        scale cannot span a zero-width range, so widen it -- matching the
+        data-style `norm='log'` path, which bumps `vmax = vmin + 1.0`. Only widen
+        a positive constant: a non-positive one must raise, and its error should
+        report the real bound, not a widened one.
+        """
+        lo, hi = float(vmin), float(vmax)
+        if hi == lo and lo > 0.0:
+            hi = lo + 1.0
+        norm = build_log_norm(
+            lo, hi, context="ColorScaling.log()", remedy="use ColorScaling.sym_log()"
+        )
+        cbar_kw = {
+            "ticks": _log_tick_positions(lo, hi, ticks),
+            "format": _plain_tick_formatter(),
+        }
+        return norm, cbar_kw
 
     def _boundary_norm(
         self, ticks: np.ndarray, bounds_from_levels: np.ndarray | None
