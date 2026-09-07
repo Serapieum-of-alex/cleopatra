@@ -308,6 +308,23 @@ class TestPlotArray:
             f"a previously-pinned vmin should survive a later plot, got {glyph.im.norm.vmin}"
         )
 
+    def test_log_floor_does_not_leak_into_a_later_different_scale(self):
+        """The per-render log floor must not clip a later linear render (#339).
+
+        Test scenario:
+            Reusing one glyph: a log render floors the outlier vmin to 1.0, but a
+            later linear render on the same glyph (no vmin passed) must auto-range
+            from the true data minimum (1e-4), not inherit the floored value.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), "log render should floor the outlier"
+        glyph.plot(color=ColorScaling.linear())
+        assert glyph.im.get_clim()[0] == pytest.approx(1e-4), (
+            f"a later linear render must use the true minimum, got {glyph.im.get_clim()[0]}"
+        )
+
     def test_log_preserves_genuinely_low_spanning_data(self):
         """Data genuinely spread across the decades keeps its low vmin (#339).
 

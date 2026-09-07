@@ -2098,17 +2098,26 @@ class ArrayGlyph(GeoMixin, Glyph):
         non_outliers = positive[positive >= cutoff]
         return float(non_outliers.min())
 
-    def _apply_log_vmin_floor(
-        self, arr: np.ndarray, vmin_pinned: bool, ticks_spacing_pinned: bool
-    ) -> None:
-        """Raise an un-pinned `vmin` to an outlier-safe positive floor for a log scale.
+    def _log_floored_vmin(
+        self,
+        arr: np.ndarray,
+        vmin: float,
+        vmin_pinned: bool,
+        ticks_spacing_pinned: bool,
+    ) -> float:
+        """Return `vmin` raised to an outlier-safe positive floor for a log scale.
 
-        No-op unless the resolved colour scale is `lognorm` and the caller did
-        not pin `vmin`. Otherwise the floor from `_log_safe_vmin` replaces
-        `vmin` when it is higher (never lower), so a near-zero outlier stops
-        dragging the log bar's decades below the data's bulk (issue #339); the
-        true `vmax` is left untouched and the tick spacing is refreshed unless
-        the caller pinned it.
+        Returns `vmin` unchanged unless the resolved colour scale is `lognorm`
+        and the caller did not pin `vmin`. Otherwise the floor from
+        `_log_safe_vmin` replaces `vmin` when it is higher (never lower), so a
+        near-zero outlier stops dragging the log bar's decades below the data's
+        bulk (issue #339); the true `vmax` is untouched and this render's tick
+        spacing is refreshed unless the caller pinned it.
+
+        This is a per-render adjustment: it does **not** mutate the glyph's
+        persistent `self._vmin`, so reusing the same glyph for a later non-log
+        render still auto-ranges from the true data minimum rather than
+        inheriting the floor.
 
         Scope: applied on this glyph's `plot()` and `animate()` paths only. Other
         glyphs, and the data-style `norm='log'` preset path (which does not set
@@ -2116,21 +2125,24 @@ class ArrayGlyph(GeoMixin, Glyph):
 
         Args:
             arr: The layer's data array (may be masked).
+            vmin: This render's current lower colour limit.
             vmin_pinned: Whether the caller set `vmin` explicitly (it then wins).
             ticks_spacing_pinned: Whether the caller set `ticks_spacing`
                 explicitly (it is then left as-is).
+
+        Returns:
+            float: The floored lower limit for this render, or `vmin` unchanged.
         """
         if vmin_pinned:
-            return
+            return vmin
         if self.default_options.get("color_scale", "").lower() != "lognorm":
-            return
+            return vmin
         log_floor = self._log_safe_vmin(arr)
-        if log_floor is None or log_floor <= self._vmin:
-            return
-        self._vmin = log_floor
+        if log_floor is None or log_floor <= vmin:
+            return vmin
         if not ticks_spacing_pinned:
-            self.ticks_spacing = (self._vmax - self._vmin) / 10 or 1.0
-            self.default_options["ticks_spacing"] = self.ticks_spacing
+            self.default_options["ticks_spacing"] = (self._vmax - log_floor) / 10 or 1.0
+        return log_floor
 
     @staticmethod
     def _center_limits(vmin: float, vmax: float, center: float) -> tuple[float, float]:
@@ -3702,16 +3714,15 @@ class ArrayGlyph(GeoMixin, Glyph):
                 self.default_options["cmap"] = DIVERGING_DEFAULT_CMAP
 
             self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
-            self._apply_log_vmin_floor(
+            self.default_options["vmin"] = self._log_floored_vmin(
                 arr,
+                self.vmin,
                 vmin_pinned=self._vmin_explicit,
                 ticks_spacing_pinned=(
                     "ticks_spacing" in kwargs
                     or "ticks_spacing" in resolved_colorbar
                 ),
             )
-
-            self.default_options["vmin"] = self.vmin
             self.default_options["vmax"] = self.vmax
 
             ticks = self.get_ticks()
@@ -4549,18 +4560,17 @@ class ArrayGlyph(GeoMixin, Glyph):
                 self.default_options["ticks_spacing"] = self.ticks_spacing
 
         self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
-        self._apply_log_vmin_floor(
-            self.arr,
-            vmin_pinned=self._vmin_explicit,
-            ticks_spacing_pinned=(
-                "ticks_spacing" in kwargs or "ticks_spacing" in resolved_colorbar
-            ),
-        )
-
         if "vmin" in kwargs.keys():
             self.default_options["vmin"] = kwargs["vmin"]
         else:
-            self.default_options["vmin"] = self.vmin
+            self.default_options["vmin"] = self._log_floored_vmin(
+                self.arr,
+                self.vmin,
+                vmin_pinned=self._vmin_explicit,
+                ticks_spacing_pinned=(
+                    "ticks_spacing" in kwargs or "ticks_spacing" in resolved_colorbar
+                ),
+            )
 
         if "vmax" in kwargs.keys():
             self.default_options["vmax"] = kwargs["vmax"]
