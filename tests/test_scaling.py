@@ -278,6 +278,29 @@ class TestColorScalingBuildNorm:
         decades = np.log10(np.abs(nonzero))
         assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {nonzero.tolist()}"
 
+    def test_sym_log_default_keeps_in_band_ticks_legible(self):
+        """The auto default spaces the near-zero in-band ticks legibly (#337).
+
+        Test scenario:
+            Auto-deriving `linthresh` widens the linear band, so pairing it with
+            the old tiny `linscale=0.001` crushed that band to a sliver and the
+            in-band ticks (-1, 0, 1 on [-24, 744]) overprinted. With the auto
+            `linscale` the surviving ticks map to distinct colour-bar positions;
+            an explicit `scale` still reproduces the old (crushed) spacing.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-24.0, 744.0]))
+        positions = np.sort([float(norm(t)) for t in np.asarray(cbar_kw["ticks"])])
+        assert np.diff(positions).min() > 0.01, (
+            f"adjacent bar ticks must be legibly spaced, got positions {positions.tolist()}"
+        )
+        crushed_norm, crushed_kw = ColorScaling.sym_log(scale=0.001).build_norm(
+            np.array([-24.0, 744.0])
+        )
+        crushed = np.sort([float(crushed_norm(t)) for t in np.asarray(crushed_kw["ticks"])])
+        assert np.diff(crushed).min() < 0.001, (
+            f"an explicit scale should still win (old crushed spacing), got {crushed.tolist()}"
+        )
+
     def test_log_bar_ticks_are_decade_aligned(self):
         """log places decade bar ticks and a formatter that labels them (#335)."""
         _, cbar_kw = ColorScaling.log().build_norm(np.array([0.5, 744.0]))

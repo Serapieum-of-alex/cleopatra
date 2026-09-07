@@ -191,6 +191,15 @@ def _auto_linthresh(vmin: float, vmax: float) -> float:
     return linthresh if linthresh > 0.0 else 1.0
 
 
+#: `linscale` used when the caller passes no explicit `scale`, paired with an
+#: auto-derived `linthresh`. matplotlib's own default, `1.0`, gives the linear
+#: band one decade of colour-bar width -- comparable to each log decade -- so the
+#: now data-sized band stays legible and its in-band ticks don't overprint. The
+#: old vendored `0.001` only suited the tiny fixed `0.0001` threshold; against a
+#: data-sized band it crushed the near-zero region to a sliver (issue #337).
+_AUTO_LINSCALE = 1.0
+
+
 #: Defaults for the colour-scale options, matching
 #: `cleopatra.styling.styles.DEFAULT_OPTIONS`. Kept here so
 #: `ColorScaling.from_options` can fill a missing key rather than raising.
@@ -198,7 +207,7 @@ _SCALE_DEFAULTS: dict[str, Any] = {
     "color_scale": "linear",
     "gamma": 0.5,
     "line_threshold": None,
-    "line_scale": 0.001,
+    "line_scale": None,
     "bounds": None,
     "midpoint": 0,
 }
@@ -279,7 +288,10 @@ class ColorScaling:
         line_threshold: Linear-region threshold (`linthresh`) for
             `sym-lognorm`. `None` (the default) auto-derives it from the data
             range at render time; an explicit value is used as given.
-        line_scale: Linear-region scale factor for `sym-lognorm`.
+        line_scale: Linear-region scale factor (`linscale`) for `sym-lognorm`.
+            `None` (the default) pairs a sensible width (matplotlib's `1.0`)
+            with an auto-derived `line_threshold`; an explicit value is used as
+            given.
         bounds: Explicit bin edges for `boundary-norm`.
         center: Centre value for the `midpoint` scale (the value pinned to
             the colormap centre). Named `center` rather than `midpoint` so
@@ -289,7 +301,7 @@ class ColorScaling:
     kind: ColorScale = ColorScale.LINEAR
     gamma: float = 0.5
     line_threshold: float | None = None
-    line_scale: float = 0.001
+    line_scale: float | None = None
     bounds: list[float] | None = None
     center: float = 0
 
@@ -328,7 +340,7 @@ class ColorScaling:
 
     @classmethod
     def sym_log(
-        cls, threshold: float | None = None, scale: float = 0.001
+        cls, threshold: float | None = None, scale: float | None = None
     ) -> ColorScaling:
         """A symmetric-log (`SymLogNorm`) colour scale.
 
@@ -341,8 +353,12 @@ class ColorScaling:
                 far below it. Pass an explicit value to pin the band near a
                 scale you care about; an explicit `threshold` always wins over
                 the auto-derivation.
-            scale: The linear-region scale factor (`linscale`). Defaults
-                to `0.001`.
+            scale: The linear-region scale factor (`linscale`) -- how much
+                colour-bar width the linear band around zero occupies. Defaults
+                to `None`, which pairs a sensible width (matplotlib's `1.0`)
+                with the auto-derived `threshold` so the widened linear band
+                stays legible. Pass an explicit value to override it; an
+                explicit `scale` always wins.
 
         Examples:
             - Exposes the two `sym-lognorm` knobs:
@@ -565,15 +581,20 @@ class ColorScaling:
             # the range so the log decades stay near the data's scale instead of
             # running arbitrarily far below it (issue #337). The same value drives
             # the norm (the rendered image) and the bar ticks, so they stay
-            # consistent.
+            # consistent. A `None` scale likewise pairs matplotlib's `1.0`
+            # `linscale` with that wider band, so the near-zero region keeps a
+            # legible share of the bar and its in-band ticks don't overprint.
             linthresh = (
                 _auto_linthresh(vmin, vmax)
                 if self.line_threshold is None
                 else self.line_threshold
             )
+            linscale = (
+                _AUTO_LINSCALE if self.line_scale is None else self.line_scale
+            )
             norm = colors.SymLogNorm(
                 linthresh=linthresh,
-                linscale=self.line_scale,
+                linscale=linscale,
                 base=np.e,
                 vmin=vmin,
                 vmax=vmax,
