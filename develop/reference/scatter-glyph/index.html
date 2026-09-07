@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3198,7 +3198,7 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <span class="normal"><a href="#__codelineno-0-419">419</a></span>
 <span class="normal"><a href="#__codelineno-0-420">420</a></span>
 <span class="normal"><a href="#__codelineno-0-421">421</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-80" name="__codelineno-0-80"></a><span class="k">class</span><span class="w"> </span><span class="nc">ScatterGlyph</span><span class="p">(</span><span class="n">GeoMixin</span><span class="p">,</span> <span class="n">Glyph</span><span class="p">):</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualization class for 2D point clouds.</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="w">    </span><span class="sd">"""Visualization class for 2D point clouds.</span>
 <a id="__codelineno-0-82" name="__codelineno-0-82"></a>
 <a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="sd">    Wraps `matplotlib.axes.Axes.scatter`. With no `values`, points are</span>
 <a id="__codelineno-0-84" name="__codelineno-0-84"></a><span class="sd">    drawn in a single colour. With a per-point `values` array, points</span>
@@ -3228,8 +3228,8 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-108" name="__codelineno-0-108"></a><span class="sd">            per-glyph colorbar (default True) for shared-axes composition</span>
 <a id="__codelineno-0-109" name="__codelineno-0-109"></a><span class="sd">            where the host owns a single aggregated colorbar. The</span>
 <a id="__codelineno-0-110" name="__codelineno-0-110"></a><span class="sd">            `size_limits` (min/max marker area in points², default</span>
-<a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="sd">            `(10, 200)`), `size_scale` (`&quot;linear&quot;` / `&quot;log&quot;` / `&quot;sqrt&quot;`,</span>
-<a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="sd">            default `&quot;linear&quot;`), `size_legend` (bool, default False),</span>
+<a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="sd">            `(10, 200)`), `size_scale` (`"linear"` / `"log"` / `"sqrt"`,</span>
+<a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="sd">            default `"linear"`), `size_legend` (bool, default False),</span>
 <a id="__codelineno-0-113" name="__codelineno-0-113"></a><span class="sd">            `size_legend_values` (explicit representative magnitudes), and</span>
 <a id="__codelineno-0-114" name="__codelineno-0-114"></a><span class="sd">            `size_legend_kwargs` (forwarded to the legend) options control</span>
 <a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="sd">            the `sizes` mapping and its legend.</span>
@@ -3276,12 +3276,12 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-156" name="__codelineno-0-156"></a><span class="sd">            `sizes` mapping (reusable by other size-encoding glyphs).</span>
 <a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="sd">        cleopatra.styling.styles.size_legend: Builds the size legend drawn when</span>
 <a id="__codelineno-0-158" name="__codelineno-0-158"></a><span class="sd">            `size_legend` is truthy.</span>
-<a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="sd">    """</span>
 <a id="__codelineno-0-160" name="__codelineno-0-160"></a>
 <a id="__codelineno-0-161" name="__codelineno-0-161"></a>    <span class="c1">#: Option keys this glyph accepts (see `Glyph.option_keys`/`filter_kwargs`).</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a>    <span class="n">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="n">SCATTER_DEFAULT_OPTIONS</span>
 <a id="__codelineno-0-163" name="__codelineno-0-163"></a>    <span class="c1">#: Per-point `values` are a nominal class label just as often as a</span>
-<a id="__codelineno-0-164" name="__codelineno-0-164"></a>    <span class="c1">#: continuous magnitude, so `scheme=&quot;categorical&quot;` is supported.</span>
+<a id="__codelineno-0-164" name="__codelineno-0-164"></a>    <span class="c1">#: continuous magnitude, so `scheme="categorical"` is supported.</span>
 <a id="__codelineno-0-165" name="__codelineno-0-165"></a>    <span class="n">_SUPPORTS_CATEGORICAL_SCHEME</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-0-166" name="__codelineno-0-166"></a>
 <a id="__codelineno-0-167" name="__codelineno-0-167"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -3302,20 +3302,20 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-182" name="__codelineno-0-182"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 <a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
 <a id="__codelineno-0-184" name="__codelineno-0-184"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>                <span class="sa">f</span><span class="s2">&quot;x and y must have the same shape, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>                <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>                <span class="sa">f</span><span class="s2">"x and y must have the same shape, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> "</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>                <span class="sa">f</span><span class="s2">"and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
 <a id="__codelineno-0-187" name="__codelineno-0-187"></a>            <span class="p">)</span>
 <a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-189" name="__codelineno-0-189"></a>            <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
 <a id="__codelineno-0-191" name="__codelineno-0-191"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>                    <span class="sa">f</span><span class="s2">&quot;values must match x/y shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>                    <span class="sa">f</span><span class="s2">"values must match x/y shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
 <a id="__codelineno-0-193" name="__codelineno-0-193"></a>                <span class="p">)</span>
 <a id="__codelineno-0-194" name="__codelineno-0-194"></a>        <span class="k">if</span> <span class="n">sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="n">sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
 <a id="__codelineno-0-196" name="__codelineno-0-196"></a>            <span class="k">if</span> <span class="n">sizes</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
 <a id="__codelineno-0-197" name="__codelineno-0-197"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>                    <span class="sa">f</span><span class="s2">&quot;sizes must match x/y shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">sizes</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>                    <span class="sa">f</span><span class="s2">"sizes must match x/y shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">sizes</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
 <a id="__codelineno-0-199" name="__codelineno-0-199"></a>                <span class="p">)</span>
 <a id="__codelineno-0-200" name="__codelineno-0-200"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
 <a id="__codelineno-0-201" name="__codelineno-0-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="n">sizes</span>
@@ -3323,7 +3323,7 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-203" name="__codelineno-0-203"></a>        <span class="c1">#: The size legend created by `plot` when `size_legend` is truthy</span>
 <a id="__codelineno-0-204" name="__codelineno-0-204"></a>        <span class="c1">#: (None otherwise); built via `cleopatra.styling.styles.size_legend`.</span>
 <a id="__codelineno-0-205" name="__codelineno-0-205"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">size_legend_artist</span><span class="p">:</span> <span class="n">Legend</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="c1">#: The disjoint legend created by `plot` when `scheme=&quot;categorical&quot;`</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="c1">#: The disjoint legend created by `plot` when `scheme="categorical"`</span>
 <a id="__codelineno-0-207" name="__codelineno-0-207"></a>        <span class="c1">#: (`None` otherwise); built via `Glyph.create_categorical_legend`.</span>
 <a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span><span class="p">:</span> <span class="n">Legend</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-209" name="__codelineno-0-209"></a>
@@ -3337,7 +3337,7 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="n">contour</span><span class="p">:</span> <span class="n">Contour</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-218" name="__codelineno-0-218"></a>        <span class="n">classify</span><span class="p">:</span> <span class="n">Classify</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-219" name="__codelineno-0-219"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">PathCollection</span><span class="p">]:</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the point cloud, colour- and/or size-mapping per point.</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="w">        </span><span class="sd">"""Draw the point cloud, colour- and/or size-mapping per point.</span>
 <a id="__codelineno-0-221" name="__codelineno-0-221"></a>
 <a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">        When `values` was supplied at construction, the colour scale,</span>
 <a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">        norm, ticks, and colorbar are resolved through</span>
@@ -3345,13 +3345,13 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">        `color_scale` behave as for the other glyphs. With no values,</span>
 <a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">        a single-colour scatter is drawn and no colorbar is added.</span>
 <a id="__codelineno-0-227" name="__codelineno-0-227"></a>
-<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">        The one exception is `scheme=&quot;categorical&quot;`: `vmin` / `vmax` /</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">        The one exception is `scheme="categorical"`: `vmin` / `vmax` /</span>
 <a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">        `levels` / `color_scale` are ignored (with a warning if set), and</span>
 <a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">        instead of a colorbar a `disjoint_legend` is drawn and stored on</span>
 <a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">        `self.category_legend` (`self.cbar` stays `None`). See</span>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">        `Glyph._prepare_categorical_mapping`.</span>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a>
-<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">        When `sizes` was supplied, each marker&#39;s area is resolved from</span>
+<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">        When `sizes` was supplied, each marker's area is resolved from</span>
 <a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">        that magnitude via `cleopatra.styling.styles.resolve_sizes` (honouring</span>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">        `size_limits` / `size_scale`); otherwise the scalar `point_size`</span>
 <a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        option is used for every point. Colour and size are independent,</span>
@@ -3362,14 +3362,14 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="sd">        Args:</span>
 <a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="sd">            ax: Axes to draw on. Falls back to the axes supplied at</span>
 <a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">                construction, otherwise a new figure/axes is created.</span>
-<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">            title: Plot title. Overrides `default_options[&quot;title&quot;]`</span>
+<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">            title: Plot title. Overrides `default_options["title"]`</span>
 <a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">                when given.</span>
 <a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">            add_colorbar: Override the `add_colorbar` option for this call</span>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">                — True draws the colorbar, False suppresses it (for</span>
 <a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">                shared-axes composition). Defaults to None, which keeps the</span>
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">                value set at construction.</span>
 <a id="__codelineno-0-251" name="__codelineno-0-251"></a><span class="sd">            colorbar: Typed `ColorBar` spec (or `True`/`False`/`None`) for the</span>
-<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">                colorbar&#39;s placement, caption, and sizing; resolved into the</span>
+<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">                colorbar's placement, caption, and sizing; resolved into the</span>
 <a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">                `cbar_*` options. A `ColorBar`/`True` also enables the bar and is</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a><span class="sd">                **sticky** -- it persists into later plots, overriding a</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a><span class="sd">                construction-time `add_colorbar=False`; an explicit</span>
@@ -3400,9 +3400,9 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="sd">                &gt;&gt;&gt; glyph = ScatterGlyph(</span>
 <a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="sd">                ...     np.array([0.0, 1.0]), np.array([0.0, 1.0])</span>
 <a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="sd">                ... )</span>
-<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">                &gt;&gt;&gt; fig, ax, paths = glyph.plot(title=&quot;Stations&quot;)</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">                &gt;&gt;&gt; fig, ax, paths = glyph.plot(title="Stations")</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="sd">                &gt;&gt;&gt; ax.get_title()</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">                &#39;Stations&#39;</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">                'Stations'</span>
 <a id="__codelineno-0-286" name="__codelineno-0-286"></a>
 <a id="__codelineno-0-287" name="__codelineno-0-287"></a><span class="sd">                ```</span>
 <a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">            - Combine colour and size, with a size legend:</span>
@@ -3423,7 +3423,7 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-303" name="__codelineno-0-303"></a><span class="sd">                True</span>
 <a id="__codelineno-0-304" name="__codelineno-0-304"></a>
 <a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">                ```</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        """</span>
 <a id="__codelineno-0-307" name="__codelineno-0-307"></a>        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rollback_options_on_error</span><span class="p">():</span>
 <a id="__codelineno-0-308" name="__codelineno-0-308"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_merge_group_params</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">classify</span><span class="p">)</span>
 <a id="__codelineno-0-309" name="__codelineno-0-309"></a>
@@ -3437,9 +3437,9 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-317" name="__codelineno-0-317"></a>            <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span>
 <a id="__codelineno-0-318" name="__codelineno-0-318"></a>
 <a id="__codelineno-0-319" name="__codelineno-0-319"></a>            <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>                <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+<a id="__codelineno-0-320" name="__codelineno-0-320"></a>                <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
 <a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_resolve_colorbar</span><span class="p">(</span><span class="n">colorbar</span><span class="p">))</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;add_colorbar&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"add_colorbar"</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
 <a id="__codelineno-0-323" name="__codelineno-0-323"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-324" name="__codelineno-0-324"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>
@@ -3450,21 +3450,21 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-330" name="__codelineno-0-330"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
 <a id="__codelineno-0-331" name="__codelineno-0-331"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
 <a id="__codelineno-0-332" name="__codelineno-0-332"></a>                    <span class="n">s</span><span class="o">=</span><span class="n">marker_area</span><span class="p">,</span>
-<a id="__codelineno-0-333" name="__codelineno-0-333"></a>                    <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>                    <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"marker"</span><span class="p">],</span>
 <a id="__codelineno-0-334" name="__codelineno-0-334"></a>                <span class="p">)</span>
 <a id="__codelineno-0-335" name="__codelineno-0-335"></a>            <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-336" name="__codelineno-0-336"></a>                <span class="n">norm</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">,</span> <span class="n">ticks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_scalar_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-337" name="__codelineno-0-337"></a>                <span class="n">categorical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categorical</span>
 <a id="__codelineno-0-338" name="__codelineno-0-338"></a>                <span class="k">if</span> <span class="n">categorical</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-339" name="__codelineno-0-339"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-339" name="__codelineno-0-339"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"codes"</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">]</span>
 <a id="__codelineno-0-340" name="__codelineno-0-340"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-341" name="__codelineno-0-341"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-341" name="__codelineno-0-341"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">])</span>
 <a id="__codelineno-0-342" name="__codelineno-0-342"></a>                <span class="n">paths</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
 <a id="__codelineno-0-343" name="__codelineno-0-343"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
 <a id="__codelineno-0-344" name="__codelineno-0-344"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
 <a id="__codelineno-0-345" name="__codelineno-0-345"></a>                    <span class="n">c</span><span class="o">=</span><span class="n">color_array</span><span class="p">,</span>
 <a id="__codelineno-0-346" name="__codelineno-0-346"></a>                    <span class="n">s</span><span class="o">=</span><span class="n">marker_area</span><span class="p">,</span>
-<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                    <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                    <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"marker"</span><span class="p">],</span>
 <a id="__codelineno-0-348" name="__codelineno-0-348"></a>                    <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
 <a id="__codelineno-0-349" name="__codelineno-0-349"></a>                    <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>
 <a id="__codelineno-0-350" name="__codelineno-0-350"></a>                    <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">norm</span> <span class="k">else</span> <span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -3476,20 +3476,20 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-356" name="__codelineno-0-356"></a>                    <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-357" name="__codelineno-0-357"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_color_bar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">)</span>
 <a id="__codelineno-0-358" name="__codelineno-0-358"></a>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;size_legend&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-359" name="__codelineno-0-359"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"size_legend"</span><span class="p">]:</span>
 <a id="__codelineno-0-360" name="__codelineno-0-360"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-361" name="__codelineno-0-361"></a>                    <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span><span class="p">)</span>
 <a id="__codelineno-0-362" name="__codelineno-0-362"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">size_legend_artist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_size_legend</span><span class="p">(</span>
 <a id="__codelineno-0-363" name="__codelineno-0-363"></a>                    <span class="n">ax</span><span class="p">,</span> <span class="n">cast</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">marker_area</span><span class="p">)</span>
 <a id="__codelineno-0-364" name="__codelineno-0-364"></a>                <span class="p">)</span>
 <a id="__codelineno-0-365" name="__codelineno-0-365"></a>
-<a id="__codelineno-0-366" name="__codelineno-0-366"></a>            <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-367" name="__codelineno-0-367"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title_size&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-366" name="__codelineno-0-366"></a>            <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]:</span>
+<a id="__codelineno-0-367" name="__codelineno-0-367"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title_size"</span><span class="p">])</span>
 <a id="__codelineno-0-368" name="__codelineno-0-368"></a>
 <a id="__codelineno-0-369" name="__codelineno-0-369"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span>
 <a id="__codelineno-0-370" name="__codelineno-0-370"></a>
 <a id="__codelineno-0-371" name="__codelineno-0-371"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_marker_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-372" name="__codelineno-0-372"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve the scatter `s` (marker area) for this glyph.</span>
+<a id="__codelineno-0-372" name="__codelineno-0-372"></a><span class="w">        </span><span class="sd">"""Resolve the scatter `s` (marker area) for this glyph.</span>
 <a id="__codelineno-0-373" name="__codelineno-0-373"></a>
 <a id="__codelineno-0-374" name="__codelineno-0-374"></a><span class="sd">        Returns the per-point areas mapped from `sizes` when a `sizes`</span>
 <a id="__codelineno-0-375" name="__codelineno-0-375"></a><span class="sd">        array was supplied (via `cleopatra.styling.styles.resolve_sizes`, honouring</span>
@@ -3499,19 +3499,19 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-379" name="__codelineno-0-379"></a><span class="sd">        Returns:</span>
 <a id="__codelineno-0-380" name="__codelineno-0-380"></a><span class="sd">            float or np.ndarray: A scalar area (no `sizes`) or a per-point</span>
 <a id="__codelineno-0-381" name="__codelineno-0-381"></a><span class="sd">                area array spanning `size_limits` monotonically in `sizes`.</span>
-<a id="__codelineno-0-382" name="__codelineno-0-382"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-382" name="__codelineno-0-382"></a><span class="sd">        """</span>
 <a id="__codelineno-0-383" name="__codelineno-0-383"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-384" name="__codelineno-0-384"></a>            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;point_size&quot;</span><span class="p">])</span>
-<a id="__codelineno-0-385" name="__codelineno-0-385"></a>        <span class="n">size_min</span><span class="p">,</span> <span class="n">size_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;size_limits&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-384" name="__codelineno-0-384"></a>            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"point_size"</span><span class="p">])</span>
+<a id="__codelineno-0-385" name="__codelineno-0-385"></a>        <span class="n">size_min</span><span class="p">,</span> <span class="n">size_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"size_limits"</span><span class="p">]</span>
 <a id="__codelineno-0-386" name="__codelineno-0-386"></a>        <span class="k">return</span> <span class="n">resolve_sizes</span><span class="p">(</span>
 <a id="__codelineno-0-387" name="__codelineno-0-387"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">,</span>
 <a id="__codelineno-0-388" name="__codelineno-0-388"></a>            <span class="n">size_min</span><span class="p">,</span>
 <a id="__codelineno-0-389" name="__codelineno-0-389"></a>            <span class="n">size_max</span><span class="p">,</span>
-<a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;size_scale&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"size_scale"</span><span class="p">],</span>
 <a id="__codelineno-0-391" name="__codelineno-0-391"></a>        <span class="p">)</span>
 <a id="__codelineno-0-392" name="__codelineno-0-392"></a>
 <a id="__codelineno-0-393" name="__codelineno-0-393"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_draw_size_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">marker_area</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Legend</span><span class="p">:</span>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw a size legend for the resolved per-point areas.</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a><span class="w">        </span><span class="sd">"""Draw a size legend for the resolved per-point areas.</span>
 <a id="__codelineno-0-395" name="__codelineno-0-395"></a>
 <a id="__codelineno-0-396" name="__codelineno-0-396"></a><span class="sd">        Picks representative magnitudes (`size_legend_values`, or the min /</span>
 <a id="__codelineno-0-397" name="__codelineno-0-397"></a><span class="sd">        median / max of `sizes` when unset), maps each to its plotted</span>
@@ -3526,9 +3526,9 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-406" name="__codelineno-0-406"></a>
 <a id="__codelineno-0-407" name="__codelineno-0-407"></a><span class="sd">        Returns:</span>
 <a id="__codelineno-0-408" name="__codelineno-0-408"></a><span class="sd">            matplotlib.legend.Legend: The size legend added to `ax`.</span>
-<a id="__codelineno-0-409" name="__codelineno-0-409"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a><span class="sd">        """</span>
 <a id="__codelineno-0-410" name="__codelineno-0-410"></a>        <span class="n">sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-0-411" name="__codelineno-0-411"></a>        <span class="n">legend_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;size_legend_values&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a>        <span class="n">legend_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"size_legend_values"</span><span class="p">]</span>
 <a id="__codelineno-0-412" name="__codelineno-0-412"></a>        <span class="k">if</span> <span class="n">legend_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-413" name="__codelineno-0-413"></a>            <span class="n">legend_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <a id="__codelineno-0-414" name="__codelineno-0-414"></a>        <span class="n">legend_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">legend_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -3536,8 +3536,8 @@ cleopatra.styling.styles.size_legend: Builds the size legend drawn when
 <a id="__codelineno-0-416" name="__codelineno-0-416"></a>        <span class="n">legend_areas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
 <a id="__codelineno-0-417" name="__codelineno-0-417"></a>            <span class="n">legend_values</span><span class="p">,</span> <span class="n">sizes</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">marker_area</span><span class="p">)[</span><span class="n">order</span><span class="p">]</span>
 <a id="__codelineno-0-418" name="__codelineno-0-418"></a>        <span class="p">)</span>
-<a id="__codelineno-0-419" name="__codelineno-0-419"></a>        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">legend_values</span><span class="p">]</span>
-<a id="__codelineno-0-420" name="__codelineno-0-420"></a>        <span class="n">legend_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">&quot;size_legend_kwargs&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
+<a id="__codelineno-0-419" name="__codelineno-0-419"></a>        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">legend_values</span><span class="p">]</span>
+<a id="__codelineno-0-420" name="__codelineno-0-420"></a>        <span class="n">legend_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span><span class="p">[</span><span class="s2">"size_legend_kwargs"</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
 <a id="__codelineno-0-421" name="__codelineno-0-421"></a>        <span class="k">return</span> <span class="n">size_legend</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">legend_areas</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">**</span><span class="n">legend_kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -3718,9 +3718,9 @@ mappable for the coloured path).</p>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">glyph</span> <span class="o">=</span> <span class="n">ScatterGlyph</span><span class="p">(</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="o">...</span>     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">...</span> <span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">glyph</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Stations&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">glyph</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Stations"</span><span class="p">)</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_title</span><span class="p">()</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s1">&#39;Stations&#39;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s1">'Stations'</span>
 </code></pre></div></li>
 <li>Combine colour and size, with a size legend:
     <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -3912,7 +3912,7 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-217" name="__codelineno-0-217"></a>    <span class="n">contour</span><span class="p">:</span> <span class="n">Contour</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-218" name="__codelineno-0-218"></a>    <span class="n">classify</span><span class="p">:</span> <span class="n">Classify</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">PathCollection</span><span class="p">]:</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the point cloud, colour- and/or size-mapping per point.</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="w">    </span><span class="sd">"""Draw the point cloud, colour- and/or size-mapping per point.</span>
 <a id="__codelineno-0-221" name="__codelineno-0-221"></a>
 <a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">    When `values` was supplied at construction, the colour scale,</span>
 <a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">    norm, ticks, and colorbar are resolved through</span>
@@ -3920,13 +3920,13 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">    `color_scale` behave as for the other glyphs. With no values,</span>
 <a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">    a single-colour scatter is drawn and no colorbar is added.</span>
 <a id="__codelineno-0-227" name="__codelineno-0-227"></a>
-<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">    The one exception is `scheme=&quot;categorical&quot;`: `vmin` / `vmax` /</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">    The one exception is `scheme="categorical"`: `vmin` / `vmax` /</span>
 <a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">    `levels` / `color_scale` are ignored (with a warning if set), and</span>
 <a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">    instead of a colorbar a `disjoint_legend` is drawn and stored on</span>
 <a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">    `self.category_legend` (`self.cbar` stays `None`). See</span>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">    `Glyph._prepare_categorical_mapping`.</span>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a>
-<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">    When `sizes` was supplied, each marker&#39;s area is resolved from</span>
+<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">    When `sizes` was supplied, each marker's area is resolved from</span>
 <a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">    that magnitude via `cleopatra.styling.styles.resolve_sizes` (honouring</span>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">    `size_limits` / `size_scale`); otherwise the scalar `point_size`</span>
 <a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">    option is used for every point. Colour and size are independent,</span>
@@ -3937,14 +3937,14 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-242" name="__codelineno-0-242"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="sd">        ax: Axes to draw on. Falls back to the axes supplied at</span>
 <a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">            construction, otherwise a new figure/axes is created.</span>
-<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">        title: Plot title. Overrides `default_options[&quot;title&quot;]`</span>
+<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">        title: Plot title. Overrides `default_options["title"]`</span>
 <a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">            when given.</span>
 <a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">        add_colorbar: Override the `add_colorbar` option for this call</span>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">            — True draws the colorbar, False suppresses it (for</span>
 <a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">            shared-axes composition). Defaults to None, which keeps the</span>
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">            value set at construction.</span>
 <a id="__codelineno-0-251" name="__codelineno-0-251"></a><span class="sd">        colorbar: Typed `ColorBar` spec (or `True`/`False`/`None`) for the</span>
-<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">            colorbar&#39;s placement, caption, and sizing; resolved into the</span>
+<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">            colorbar's placement, caption, and sizing; resolved into the</span>
 <a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">            `cbar_*` options. A `ColorBar`/`True` also enables the bar and is</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a><span class="sd">            **sticky** -- it persists into later plots, overriding a</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a><span class="sd">            construction-time `add_colorbar=False`; an explicit</span>
@@ -3975,9 +3975,9 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="sd">            &gt;&gt;&gt; glyph = ScatterGlyph(</span>
 <a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="sd">            ...     np.array([0.0, 1.0]), np.array([0.0, 1.0])</span>
 <a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="sd">            ... )</span>
-<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">            &gt;&gt;&gt; fig, ax, paths = glyph.plot(title=&quot;Stations&quot;)</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">            &gt;&gt;&gt; fig, ax, paths = glyph.plot(title="Stations")</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="sd">            &gt;&gt;&gt; ax.get_title()</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">            &#39;Stations&#39;</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">            'Stations'</span>
 <a id="__codelineno-0-286" name="__codelineno-0-286"></a>
 <a id="__codelineno-0-287" name="__codelineno-0-287"></a><span class="sd">            ```</span>
 <a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">        - Combine colour and size, with a size legend:</span>
@@ -3998,7 +3998,7 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-303" name="__codelineno-0-303"></a><span class="sd">            True</span>
 <a id="__codelineno-0-304" name="__codelineno-0-304"></a>
 <a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">            ```</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">    """</span>
 <a id="__codelineno-0-307" name="__codelineno-0-307"></a>    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rollback_options_on_error</span><span class="p">():</span>
 <a id="__codelineno-0-308" name="__codelineno-0-308"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_group_params</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">classify</span><span class="p">)</span>
 <a id="__codelineno-0-309" name="__codelineno-0-309"></a>
@@ -4012,9 +4012,9 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-317" name="__codelineno-0-317"></a>        <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span>
 <a id="__codelineno-0-318" name="__codelineno-0-318"></a>
 <a id="__codelineno-0-319" name="__codelineno-0-319"></a>        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>            <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+<a id="__codelineno-0-320" name="__codelineno-0-320"></a>            <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
 <a id="__codelineno-0-321" name="__codelineno-0-321"></a>        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_resolve_colorbar</span><span class="p">(</span><span class="n">colorbar</span><span class="p">))</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>        <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;add_colorbar&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>        <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"add_colorbar"</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
 <a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-324" name="__codelineno-0-324"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>
@@ -4025,21 +4025,21 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-330" name="__codelineno-0-330"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
 <a id="__codelineno-0-331" name="__codelineno-0-331"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
 <a id="__codelineno-0-332" name="__codelineno-0-332"></a>                <span class="n">s</span><span class="o">=</span><span class="n">marker_area</span><span class="p">,</span>
-<a id="__codelineno-0-333" name="__codelineno-0-333"></a>                <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>                <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"marker"</span><span class="p">],</span>
 <a id="__codelineno-0-334" name="__codelineno-0-334"></a>            <span class="p">)</span>
 <a id="__codelineno-0-335" name="__codelineno-0-335"></a>        <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-336" name="__codelineno-0-336"></a>            <span class="n">norm</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">,</span> <span class="n">ticks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_scalar_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-337" name="__codelineno-0-337"></a>            <span class="n">categorical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categorical</span>
 <a id="__codelineno-0-338" name="__codelineno-0-338"></a>            <span class="k">if</span> <span class="n">categorical</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-339" name="__codelineno-0-339"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-339" name="__codelineno-0-339"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"codes"</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">]</span>
 <a id="__codelineno-0-340" name="__codelineno-0-340"></a>            <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-341" name="__codelineno-0-341"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-341" name="__codelineno-0-341"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">])</span>
 <a id="__codelineno-0-342" name="__codelineno-0-342"></a>            <span class="n">paths</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
 <a id="__codelineno-0-343" name="__codelineno-0-343"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
 <a id="__codelineno-0-344" name="__codelineno-0-344"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
 <a id="__codelineno-0-345" name="__codelineno-0-345"></a>                <span class="n">c</span><span class="o">=</span><span class="n">color_array</span><span class="p">,</span>
 <a id="__codelineno-0-346" name="__codelineno-0-346"></a>                <span class="n">s</span><span class="o">=</span><span class="n">marker_area</span><span class="p">,</span>
-<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                <span class="n">marker</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"marker"</span><span class="p">],</span>
 <a id="__codelineno-0-348" name="__codelineno-0-348"></a>                <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
 <a id="__codelineno-0-349" name="__codelineno-0-349"></a>                <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>
 <a id="__codelineno-0-350" name="__codelineno-0-350"></a>                <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">norm</span> <span class="k">else</span> <span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -4051,15 +4051,15 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-356" name="__codelineno-0-356"></a>                <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-357" name="__codelineno-0-357"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_color_bar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">)</span>
 <a id="__codelineno-0-358" name="__codelineno-0-358"></a>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;size_legend&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-359" name="__codelineno-0-359"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"size_legend"</span><span class="p">]:</span>
 <a id="__codelineno-0-360" name="__codelineno-0-360"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-361" name="__codelineno-0-361"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span><span class="p">)</span>
 <a id="__codelineno-0-362" name="__codelineno-0-362"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">size_legend_artist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_draw_size_legend</span><span class="p">(</span>
 <a id="__codelineno-0-363" name="__codelineno-0-363"></a>                <span class="n">ax</span><span class="p">,</span> <span class="n">cast</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">marker_area</span><span class="p">)</span>
 <a id="__codelineno-0-364" name="__codelineno-0-364"></a>            <span class="p">)</span>
 <a id="__codelineno-0-365" name="__codelineno-0-365"></a>
-<a id="__codelineno-0-366" name="__codelineno-0-366"></a>        <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-367" name="__codelineno-0-367"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title_size&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-366" name="__codelineno-0-366"></a>        <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]:</span>
+<a id="__codelineno-0-367" name="__codelineno-0-367"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title_size"</span><span class="p">])</span>
 <a id="__codelineno-0-368" name="__codelineno-0-368"></a>
 <a id="__codelineno-0-369" name="__codelineno-0-369"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span>
 </code></pre></div></td></tr></table></div>
@@ -4084,7 +4084,7 @@ mappable for the coloured path).</p>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">values</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">sg</span> <span class="o">=</span> <span class="n">ScatterGlyph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Coloured points&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Coloured points"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="colour-and-size-encoding-two-quantities"><a class="toclink" href="#colour-and-size-encoding-two-quantities">Colour <em>and</em> size encoding two quantities</a><a class="headerlink" href="#colour-and-size-encoding-two-quantities" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -4096,7 +4096,7 @@ mappable for the coloured path).</p>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">sizes</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>      <span class="c1"># drives marker area (independent of colour)</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">sg</span> <span class="o">=</span> <span class="n">ScatterGlyph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="n">sizes</span><span class="p">,</span> <span class="n">size_legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Two encodings at once&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Two encodings at once"</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="composing-onto-shared-axes-no-per-glyph-colorbar"><a class="toclink" href="#composing-onto-shared-axes-no-per-glyph-colorbar">Composing onto shared axes (no per-glyph colorbar)</a><a class="headerlink" href="#composing-onto-shared-axes-no-per-glyph-colorbar" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -4215,7 +4215,7 @@ mappable for the coloured path).</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

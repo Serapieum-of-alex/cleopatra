@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3537,7 +3537,7 @@ it, but <code>IPython.display.Image</code> does not sniff the WebP format, so we
 def show_webp(path):
     """Embed an animated .webp inline as a data URI."""
     encoded = base64.b64encode(Path(path).read_bytes()).decode()
-    return HTML(f'<img alt="animated webp" src="data:image/webp;base64,{encoded}"/>')
+    return HTML(f'&lt;img src="data:image/webp;base64,{encoded}" alt="animated webp"&gt;')
 
 
 def kib(path):
@@ -3854,36 +3854,36 @@ input[type=range].anim-slider {
 }
 </style>
 <div class="animation">
-<img alt="No description has been provided for this image" id="_anim_img42d32c3d32d24123b239e4a197e2d0a8"/>
+<img alt="No description has been provided for this image" id="_anim_img1ed27ac23dec4c74be5ef31d072ae212"/>
 <div class="anim-controls">
-<input class="anim-slider" id="_anim_slider42d32c3d32d24123b239e4a197e2d0a8" max="1" min="0" name="points" oninput="anim42d32c3d32d24123b239e4a197e2d0a8.set_frame(parseInt(this.value));" step="1" type="range" value="0"/>
+<input class="anim-slider" id="_anim_slider1ed27ac23dec4c74be5ef31d072ae212" max="1" min="0" name="points" oninput="anim1ed27ac23dec4c74be5ef31d072ae212.set_frame(parseInt(this.value));" step="1" type="range" value="0"/>
 <div class="anim-buttons">
-<button aria-label="Decrease speed" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.slower()" title="Decrease speed">
+<button aria-label="Decrease speed" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.slower()" title="Decrease speed">
 <i class="fa fa-minus"></i></button>
-<button aria-label="First frame" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.first_frame()" title="First frame">
+<button aria-label="First frame" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.first_frame()" title="First frame">
 <i class="fa fa-fast-backward"></i></button>
-<button aria-label="Previous frame" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.previous_frame()" title="Previous frame">
+<button aria-label="Previous frame" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.previous_frame()" title="Previous frame">
 <i class="fa fa-step-backward"></i></button>
-<button aria-label="Play backwards" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.reverse_animation()" title="Play backwards">
+<button aria-label="Play backwards" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.reverse_animation()" title="Play backwards">
 <i class="fa fa-play fa-flip-horizontal"></i></button>
-<button aria-label="Pause" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.pause_animation()" title="Pause">
+<button aria-label="Pause" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.pause_animation()" title="Pause">
 <i class="fa fa-pause"></i></button>
-<button aria-label="Play" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.play_animation()" title="Play">
+<button aria-label="Play" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.play_animation()" title="Play">
 <i class="fa fa-play"></i></button>
-<button aria-label="Next frame" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.next_frame()" title="Next frame">
+<button aria-label="Next frame" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.next_frame()" title="Next frame">
 <i class="fa fa-step-forward"></i></button>
-<button aria-label="Last frame" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.last_frame()" title="Last frame">
+<button aria-label="Last frame" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.last_frame()" title="Last frame">
 <i class="fa fa-fast-forward"></i></button>
-<button aria-label="Increase speed" onclick="anim42d32c3d32d24123b239e4a197e2d0a8.faster()" title="Increase speed">
+<button aria-label="Increase speed" onclick="anim1ed27ac23dec4c74be5ef31d072ae212.faster()" title="Increase speed">
 <i class="fa fa-plus"></i></button>
 </div>
-<form action="#n" aria-label="Repetition mode" class="anim-state" name="_anim_loop_select42d32c3d32d24123b239e4a197e2d0a8" title="Repetition mode">
-<input id="_anim_radio1_42d32c3d32d24123b239e4a197e2d0a8" name="state" type="radio" value="once"/>
-<label for="_anim_radio1_42d32c3d32d24123b239e4a197e2d0a8">Once</label>
-<input checked="" id="_anim_radio2_42d32c3d32d24123b239e4a197e2d0a8" name="state" type="radio" value="loop"/>
-<label for="_anim_radio2_42d32c3d32d24123b239e4a197e2d0a8">Loop</label>
-<input id="_anim_radio3_42d32c3d32d24123b239e4a197e2d0a8" name="state" type="radio" value="reflect"/>
-<label for="_anim_radio3_42d32c3d32d24123b239e4a197e2d0a8">Reflect</label>
+<form action="#n" aria-label="Repetition mode" class="anim-state" name="_anim_loop_select1ed27ac23dec4c74be5ef31d072ae212" title="Repetition mode">
+<input id="_anim_radio1_1ed27ac23dec4c74be5ef31d072ae212" name="state" type="radio" value="once"/>
+<label for="_anim_radio1_1ed27ac23dec4c74be5ef31d072ae212">Once</label>
+<input checked="" id="_anim_radio2_1ed27ac23dec4c74be5ef31d072ae212" name="state" type="radio" value="loop"/>
+<label for="_anim_radio2_1ed27ac23dec4c74be5ef31d072ae212">Loop</label>
+<input id="_anim_radio3_1ed27ac23dec4c74be5ef31d072ae212" name="state" type="radio" value="reflect"/>
+<label for="_anim_radio3_1ed27ac23dec4c74be5ef31d072ae212">Reflect</label>
 </form>
 </div>
 </div>
@@ -3891,9 +3891,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img42d32c3d32d24123b239e4a197e2d0a8";
-    var slider_id = "_anim_slider42d32c3d32d24123b239e4a197e2d0a8";
-    var loop_select_id = "_anim_loop_select42d32c3d32d24123b239e4a197e2d0a8";
+    var img_id = "_anim_img1ed27ac23dec4c74be5ef31d072ae212";
+    var slider_id = "_anim_slider1ed27ac23dec4c74be5ef31d072ae212";
+    var loop_select_id = "_anim_loop_select1ed27ac23dec4c74be5ef31d072ae212";
     var frames = new Array(12);
     
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAACAvzbMAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -7849,7 +7849,7 @@ bGEAISIiW/4/sulBUdFPO4kAAAAASUVORK5CYII=\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim42d32c3d32d24123b239e4a197e2d0a8 = new Animation(frames, img_id, slider_id, 149.0,
+        anim1ed27ac23dec4c74be5ef31d072ae212 = new Animation(frames, img_id, slider_id, 149.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -7913,7 +7913,7 @@ Image(gif_path)</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>wrote /tmp/cleopatra_anim_1oahy1mv/blob.gif -&gt; 277.9 KiB
+<pre>wrote /tmp/cleopatra_anim_5mu0h7iq/blob.gif -&gt; 277.9 KiB
 </pre>
 </div>
 </div>
@@ -8812,7 +8812,7 @@ print('ArrayGlyph.save_animation(crf=32, preset="veryfast") -&gt;', kib(glyph_ou
       <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

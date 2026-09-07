@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2994,7 +2994,7 @@ the number of polygons.</p>
 <span class="normal"><a href="#__codelineno-0-295">295</a></span>
 <span class="normal"><a href="#__codelineno-0-296">296</a></span>
 <span class="normal"><a href="#__codelineno-0-297">297</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">class</span><span class="w"> </span><span class="nc">PolygonGlyph</span><span class="p">(</span><span class="n">GeoMixin</span><span class="p">,</span> <span class="n">Glyph</span><span class="p">):</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualization class for collections of polygons.</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">"""Visualization class for collections of polygons.</span>
 <a id="__codelineno-0-83" name="__codelineno-0-83"></a>
 <a id="__codelineno-0-84" name="__codelineno-0-84"></a><span class="sd">    Wraps `matplotlib.collections.PolyCollection`. With a per-polygon</span>
 <a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="sd">    `values` array, polygons are filled and colour-mapped through the</span>
@@ -3041,12 +3041,12 @@ the number of polygons.</p>
 <a id="__codelineno-0-126" name="__codelineno-0-126"></a><span class="sd">    See Also:</span>
 <a id="__codelineno-0-127" name="__codelineno-0-127"></a><span class="sd">        cleopatra.glyphs.base.glyph.Glyph._prepare_scalar_mapping: Shared</span>
 <a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">            norm/colorbar/ticks pipeline used for the filled path.</span>
-<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">    """</span>
 <a id="__codelineno-0-130" name="__codelineno-0-130"></a>
 <a id="__codelineno-0-131" name="__codelineno-0-131"></a>    <span class="c1">#: Option keys this glyph accepts (see `Glyph.option_keys`/`filter_kwargs`).</span>
 <a id="__codelineno-0-132" name="__codelineno-0-132"></a>    <span class="n">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="n">POLYGON_DEFAULT_OPTIONS</span>
 <a id="__codelineno-0-133" name="__codelineno-0-133"></a>    <span class="c1">#: Per-polygon `values` are a nominal class label just as often as a</span>
-<a id="__codelineno-0-134" name="__codelineno-0-134"></a>    <span class="c1">#: continuous magnitude, so `scheme=&quot;categorical&quot;` is supported.</span>
+<a id="__codelineno-0-134" name="__codelineno-0-134"></a>    <span class="c1">#: continuous magnitude, so `scheme="categorical"` is supported.</span>
 <a id="__codelineno-0-135" name="__codelineno-0-135"></a>    <span class="n">_SUPPORTS_CATEGORICAL_SCHEME</span> <span class="o">=</span> <span class="kc">True</span>
 <a id="__codelineno-0-136" name="__codelineno-0-136"></a>
 <a id="__codelineno-0-137" name="__codelineno-0-137"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -3066,12 +3066,12 @@ the number of polygons.</p>
 <a id="__codelineno-0-151" name="__codelineno-0-151"></a>            <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-152" name="__codelineno-0-152"></a>            <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">),):</span>
 <a id="__codelineno-0-153" name="__codelineno-0-153"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-154" name="__codelineno-0-154"></a>                    <span class="sa">f</span><span class="s2">&quot;values shape </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> must match the number of &quot;</span>
-<a id="__codelineno-0-155" name="__codelineno-0-155"></a>                    <span class="sa">f</span><span class="s2">&quot;polygons (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">)</span><span class="si">}</span><span class="s2">,).&quot;</span>
+<a id="__codelineno-0-154" name="__codelineno-0-154"></a>                    <span class="sa">f</span><span class="s2">"values shape </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> must match the number of "</span>
+<a id="__codelineno-0-155" name="__codelineno-0-155"></a>                    <span class="sa">f</span><span class="s2">"polygons (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">)</span><span class="si">}</span><span class="s2">,)."</span>
 <a id="__codelineno-0-156" name="__codelineno-0-156"></a>                <span class="p">)</span>
 <a id="__codelineno-0-157" name="__codelineno-0-157"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
 <a id="__codelineno-0-158" name="__codelineno-0-158"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span><span class="p">:</span> <span class="n">Colorbar</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-159" name="__codelineno-0-159"></a>        <span class="c1">#: The disjoint legend created by `plot` when `scheme=&quot;categorical&quot;`</span>
+<a id="__codelineno-0-159" name="__codelineno-0-159"></a>        <span class="c1">#: The disjoint legend created by `plot` when `scheme="categorical"`</span>
 <a id="__codelineno-0-160" name="__codelineno-0-160"></a>        <span class="c1">#: (`None` otherwise); built via `Glyph.create_categorical_legend`.</span>
 <a id="__codelineno-0-161" name="__codelineno-0-161"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span><span class="p">:</span> <span class="n">Legend</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a>
@@ -3086,7 +3086,7 @@ the number of polygons.</p>
 <a id="__codelineno-0-171" name="__codelineno-0-171"></a>        <span class="n">contour</span><span class="p">:</span> <span class="n">Contour</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-172" name="__codelineno-0-172"></a>        <span class="n">classify</span><span class="p">:</span> <span class="n">Classify</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-173" name="__codelineno-0-173"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">PolyCollection</span><span class="p">]:</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the polygons, filling by value when present.</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="w">        </span><span class="sd">"""Draw the polygons, filling by value when present.</span>
 <a id="__codelineno-0-175" name="__codelineno-0-175"></a>
 <a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        When `values` was supplied and `outline_only` is False, the</span>
 <a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">        polygons are filled and colour-mapped through</span>
@@ -3094,9 +3094,9 @@ the number of polygons.</p>
 <a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">        `color_scale` apply) with a matching colorbar. Otherwise only</span>
 <a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        the outlines are drawn and no colorbar is added; the outlines</span>
 <a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">        use `OUTLINE_EDGECOLOR` when `edgecolor` is left at its</span>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">        borderless-fill default of `&quot;none&quot;`.</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">        borderless-fill default of `"none"`.</span>
 <a id="__codelineno-0-183" name="__codelineno-0-183"></a>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">        The one exception is `scheme=&quot;categorical&quot;`: `vmin` / `vmax` /</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">        The one exception is `scheme="categorical"`: `vmin` / `vmax` /</span>
 <a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">        `levels` / `color_scale` are ignored (with a warning if set), and</span>
 <a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="sd">        instead of a colorbar a `disjoint_legend` is drawn and stored on</span>
 <a id="__codelineno-0-187" name="__codelineno-0-187"></a><span class="sd">        `self.category_legend` (`self.cbar` stays `None`). See</span>
@@ -3107,14 +3107,14 @@ the number of polygons.</p>
 <a id="__codelineno-0-192" name="__codelineno-0-192"></a><span class="sd">                present (the `shapes` use case). Default is False.</span>
 <a id="__codelineno-0-193" name="__codelineno-0-193"></a><span class="sd">            ax: Axes to draw on. Falls back to the axes supplied at</span>
 <a id="__codelineno-0-194" name="__codelineno-0-194"></a><span class="sd">                construction, otherwise a new figure/axes is created.</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a><span class="sd">            title: Plot title. Overrides `default_options[&quot;title&quot;]`</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a><span class="sd">            title: Plot title. Overrides `default_options["title"]`</span>
 <a id="__codelineno-0-196" name="__codelineno-0-196"></a><span class="sd">                when given.</span>
 <a id="__codelineno-0-197" name="__codelineno-0-197"></a><span class="sd">            add_colorbar: Override the `add_colorbar` option for this call</span>
 <a id="__codelineno-0-198" name="__codelineno-0-198"></a><span class="sd">                — True draws the colorbar, False suppresses it (for</span>
 <a id="__codelineno-0-199" name="__codelineno-0-199"></a><span class="sd">                shared-axes composition). Defaults to None, which keeps the</span>
 <a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="sd">                value set at construction.</span>
 <a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">            colorbar: Typed `ColorBar` spec (or `True`/`False`/`None`) for the</span>
-<a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">                colorbar&#39;s placement, caption, and sizing; resolved into the</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">                colorbar's placement, caption, and sizing; resolved into the</span>
 <a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="sd">                `cbar_*` options. A `ColorBar`/`True` also enables the bar and is</span>
 <a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">                **sticky** -- it persists into later plots, overriding a</span>
 <a id="__codelineno-0-205" name="__codelineno-0-205"></a><span class="sd">                construction-time `add_colorbar=False`; an explicit</span>
@@ -3143,13 +3143,13 @@ the number of polygons.</p>
 <a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">                ```</span>
 <a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">            - An explicit `edgecolor` is honoured as given:</span>
 <a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">                ```python</span>
-<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">                &gt;&gt;&gt; glyph = PolygonGlyph(polys, edgecolor=&quot;navy&quot;)</span>
+<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">                &gt;&gt;&gt; glyph = PolygonGlyph(polys, edgecolor="navy")</span>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">                &gt;&gt;&gt; fig, ax, pc = glyph.plot(outline_only=True)</span>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="sd">                &gt;&gt;&gt; tuple(round(float(c), 3) for c in pc.get_edgecolor()[0])</span>
 <a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">                (0.0, 0.0, 0.502, 1.0)</span>
 <a id="__codelineno-0-235" name="__codelineno-0-235"></a>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">                ```</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">        """</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a>        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rollback_options_on_error</span><span class="p">():</span>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_merge_group_params</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">classify</span><span class="p">)</span>
 <a id="__codelineno-0-240" name="__codelineno-0-240"></a>
@@ -3163,21 +3163,21 @@ the number of polygons.</p>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a>            <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span>
 <a id="__codelineno-0-249" name="__codelineno-0-249"></a>
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a>            <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-251" name="__codelineno-0-251"></a>                <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+<a id="__codelineno-0-251" name="__codelineno-0-251"></a>                <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
 <a id="__codelineno-0-252" name="__codelineno-0-252"></a>            <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_resolve_colorbar</span><span class="p">(</span><span class="n">colorbar</span><span class="p">))</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a>            <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;add_colorbar&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a>            <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"add_colorbar"</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-256" name="__codelineno-0-256"></a>
 <a id="__codelineno-0-257" name="__codelineno-0-257"></a>            <span class="k">if</span> <span class="n">outline_only</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>                <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a>                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edgecolor</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">edgecolor</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a>                <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"edgecolor"</span><span class="p">]</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edgecolor</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">edgecolor</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
 <a id="__codelineno-0-260" name="__codelineno-0-260"></a>                    <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">OUTLINE_EDGECOLOR</span>
 <a id="__codelineno-0-261" name="__codelineno-0-261"></a>                <span class="n">pc</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span>
 <a id="__codelineno-0-262" name="__codelineno-0-262"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">,</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a>                    <span class="n">facecolors</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-263" name="__codelineno-0-263"></a>                    <span class="n">facecolors</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
 <a id="__codelineno-0-264" name="__codelineno-0-264"></a>                    <span class="n">edgecolors</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">,</span>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a>                    <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-265" name="__codelineno-0-265"></a>                    <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"linewidth"</span><span class="p">],</span>
 <a id="__codelineno-0-266" name="__codelineno-0-266"></a>                <span class="p">)</span>
 <a id="__codelineno-0-267" name="__codelineno-0-267"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
 <a id="__codelineno-0-268" name="__codelineno-0-268"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">autoscale_view</span><span class="p">()</span>
@@ -3185,16 +3185,16 @@ the number of polygons.</p>
 <a id="__codelineno-0-270" name="__codelineno-0-270"></a>                <span class="n">norm</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">,</span> <span class="n">ticks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_scalar_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-271" name="__codelineno-0-271"></a>                <span class="n">categorical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categorical</span>
 <a id="__codelineno-0-272" name="__codelineno-0-272"></a>                <span class="k">if</span> <span class="n">categorical</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"codes"</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">]</span>
 <a id="__codelineno-0-274" name="__codelineno-0-274"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a>                    <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">])</span>
 <a id="__codelineno-0-276" name="__codelineno-0-276"></a>                <span class="n">pc</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span>
 <a id="__codelineno-0-277" name="__codelineno-0-277"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">,</span>
 <a id="__codelineno-0-278" name="__codelineno-0-278"></a>                    <span class="n">array</span><span class="o">=</span><span class="n">color_array</span><span class="p">,</span>
 <a id="__codelineno-0-279" name="__codelineno-0-279"></a>                    <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
 <a id="__codelineno-0-280" name="__codelineno-0-280"></a>                    <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>                    <span class="n">edgecolors</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-282" name="__codelineno-0-282"></a>                    <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-281" name="__codelineno-0-281"></a>                    <span class="n">edgecolors</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"edgecolor"</span><span class="p">],</span>
+<a id="__codelineno-0-282" name="__codelineno-0-282"></a>                    <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"linewidth"</span><span class="p">],</span>
 <a id="__codelineno-0-283" name="__codelineno-0-283"></a>                <span class="p">)</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a>                <span class="k">if</span> <span class="n">norm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-285" name="__codelineno-0-285"></a>                    <span class="n">pc</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ticks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -3206,8 +3206,8 @@ the number of polygons.</p>
 <a id="__codelineno-0-291" name="__codelineno-0-291"></a>                    <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-292" name="__codelineno-0-292"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_color_bar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">)</span>
 <a id="__codelineno-0-293" name="__codelineno-0-293"></a>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a>            <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title_size&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>            <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]:</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title_size"</span><span class="p">])</span>
 <a id="__codelineno-0-296" name="__codelineno-0-296"></a>
 <a id="__codelineno-0-297" name="__codelineno-0-297"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span>
 </code></pre></div></td></tr></table></div>
@@ -3399,7 +3399,7 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="mf">1.0</span>
 </code></pre></div></li>
 <li>An explicit <code>edgecolor</code> is honoured as given:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">glyph</span> <span class="o">=</span> <span class="n">PolygonGlyph</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;navy&quot;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">glyph</span> <span class="o">=</span> <span class="n">PolygonGlyph</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"navy"</span><span class="p">)</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">glyph</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">outline_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">pc</span><span class="o">.</span><span class="n">get_edgecolor</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.502</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
@@ -3554,7 +3554,7 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-171" name="__codelineno-0-171"></a>    <span class="n">contour</span><span class="p">:</span> <span class="n">Contour</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="n">classify</span><span class="p">:</span> <span class="n">Classify</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">PolyCollection</span><span class="p">]:</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw the polygons, filling by value when present.</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="w">    </span><span class="sd">"""Draw the polygons, filling by value when present.</span>
 <a id="__codelineno-0-175" name="__codelineno-0-175"></a>
 <a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">    When `values` was supplied and `outline_only` is False, the</span>
 <a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">    polygons are filled and colour-mapped through</span>
@@ -3562,9 +3562,9 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">    `color_scale` apply) with a matching colorbar. Otherwise only</span>
 <a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">    the outlines are drawn and no colorbar is added; the outlines</span>
 <a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">    use `OUTLINE_EDGECOLOR` when `edgecolor` is left at its</span>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">    borderless-fill default of `&quot;none&quot;`.</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">    borderless-fill default of `"none"`.</span>
 <a id="__codelineno-0-183" name="__codelineno-0-183"></a>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">    The one exception is `scheme=&quot;categorical&quot;`: `vmin` / `vmax` /</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">    The one exception is `scheme="categorical"`: `vmin` / `vmax` /</span>
 <a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">    `levels` / `color_scale` are ignored (with a warning if set), and</span>
 <a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="sd">    instead of a colorbar a `disjoint_legend` is drawn and stored on</span>
 <a id="__codelineno-0-187" name="__codelineno-0-187"></a><span class="sd">    `self.category_legend` (`self.cbar` stays `None`). See</span>
@@ -3575,14 +3575,14 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-192" name="__codelineno-0-192"></a><span class="sd">            present (the `shapes` use case). Default is False.</span>
 <a id="__codelineno-0-193" name="__codelineno-0-193"></a><span class="sd">        ax: Axes to draw on. Falls back to the axes supplied at</span>
 <a id="__codelineno-0-194" name="__codelineno-0-194"></a><span class="sd">            construction, otherwise a new figure/axes is created.</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a><span class="sd">        title: Plot title. Overrides `default_options[&quot;title&quot;]`</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a><span class="sd">        title: Plot title. Overrides `default_options["title"]`</span>
 <a id="__codelineno-0-196" name="__codelineno-0-196"></a><span class="sd">            when given.</span>
 <a id="__codelineno-0-197" name="__codelineno-0-197"></a><span class="sd">        add_colorbar: Override the `add_colorbar` option for this call</span>
 <a id="__codelineno-0-198" name="__codelineno-0-198"></a><span class="sd">            — True draws the colorbar, False suppresses it (for</span>
 <a id="__codelineno-0-199" name="__codelineno-0-199"></a><span class="sd">            shared-axes composition). Defaults to None, which keeps the</span>
 <a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="sd">            value set at construction.</span>
 <a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">        colorbar: Typed `ColorBar` spec (or `True`/`False`/`None`) for the</span>
-<a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">            colorbar&#39;s placement, caption, and sizing; resolved into the</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">            colorbar's placement, caption, and sizing; resolved into the</span>
 <a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="sd">            `cbar_*` options. A `ColorBar`/`True` also enables the bar and is</span>
 <a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">            **sticky** -- it persists into later plots, overriding a</span>
 <a id="__codelineno-0-205" name="__codelineno-0-205"></a><span class="sd">            construction-time `add_colorbar=False`; an explicit</span>
@@ -3611,13 +3611,13 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">            ```</span>
 <a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">        - An explicit `edgecolor` is honoured as given:</span>
 <a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">            ```python</span>
-<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">            &gt;&gt;&gt; glyph = PolygonGlyph(polys, edgecolor=&quot;navy&quot;)</span>
+<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">            &gt;&gt;&gt; glyph = PolygonGlyph(polys, edgecolor="navy")</span>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="sd">            &gt;&gt;&gt; fig, ax, pc = glyph.plot(outline_only=True)</span>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="sd">            &gt;&gt;&gt; tuple(round(float(c), 3) for c in pc.get_edgecolor()[0])</span>
 <a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">            (0.0, 0.0, 0.502, 1.0)</span>
 <a id="__codelineno-0-235" name="__codelineno-0-235"></a>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">            ```</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">    """</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a>    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rollback_options_on_error</span><span class="p">():</span>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_group_params</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">contour</span><span class="p">,</span> <span class="n">classify</span><span class="p">)</span>
 <a id="__codelineno-0-240" name="__codelineno-0-240"></a>
@@ -3631,21 +3631,21 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a>        <span class="n">opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_options</span>
 <a id="__codelineno-0-249" name="__codelineno-0-249"></a>
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a>        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-251" name="__codelineno-0-251"></a>            <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+<a id="__codelineno-0-251" name="__codelineno-0-251"></a>            <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
 <a id="__codelineno-0-252" name="__codelineno-0-252"></a>        <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_resolve_colorbar</span><span class="p">(</span><span class="n">colorbar</span><span class="p">))</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a>        <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;add_colorbar&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a>        <span class="n">draw_colorbar</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"add_colorbar"</span><span class="p">]</span> <span class="k">if</span> <span class="n">add_colorbar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">add_colorbar</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-255" name="__codelineno-0-255"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">category_legend</span> <span class="o">=</span> <span class="kc">None</span>
 <a id="__codelineno-0-256" name="__codelineno-0-256"></a>
 <a id="__codelineno-0-257" name="__codelineno-0-257"></a>        <span class="k">if</span> <span class="n">outline_only</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>            <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edgecolor</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">edgecolor</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a>            <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"edgecolor"</span><span class="p">]</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edgecolor</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">edgecolor</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
 <a id="__codelineno-0-260" name="__codelineno-0-260"></a>                <span class="n">edgecolor</span> <span class="o">=</span> <span class="n">OUTLINE_EDGECOLOR</span>
 <a id="__codelineno-0-261" name="__codelineno-0-261"></a>            <span class="n">pc</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span>
 <a id="__codelineno-0-262" name="__codelineno-0-262"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">,</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a>                <span class="n">facecolors</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-263" name="__codelineno-0-263"></a>                <span class="n">facecolors</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
 <a id="__codelineno-0-264" name="__codelineno-0-264"></a>                <span class="n">edgecolors</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">,</span>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a>                <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-265" name="__codelineno-0-265"></a>                <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"linewidth"</span><span class="p">],</span>
 <a id="__codelineno-0-266" name="__codelineno-0-266"></a>            <span class="p">)</span>
 <a id="__codelineno-0-267" name="__codelineno-0-267"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
 <a id="__codelineno-0-268" name="__codelineno-0-268"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">autoscale_view</span><span class="p">()</span>
@@ -3653,16 +3653,16 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-270" name="__codelineno-0-270"></a>            <span class="n">norm</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">,</span> <span class="n">ticks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_scalar_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <a id="__codelineno-0-271" name="__codelineno-0-271"></a>            <span class="n">categorical</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categorical</span>
 <a id="__codelineno-0-272" name="__codelineno-0-272"></a>            <span class="k">if</span> <span class="n">categorical</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;codes&quot;</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"codes"</span><span class="p">],</span> <span class="n">categorical</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">]</span>
 <a id="__codelineno-0-274" name="__codelineno-0-274"></a>            <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;cmap&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a>                <span class="n">color_array</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"cmap"</span><span class="p">])</span>
 <a id="__codelineno-0-276" name="__codelineno-0-276"></a>            <span class="n">pc</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span>
 <a id="__codelineno-0-277" name="__codelineno-0-277"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">polygons</span><span class="p">,</span>
 <a id="__codelineno-0-278" name="__codelineno-0-278"></a>                <span class="n">array</span><span class="o">=</span><span class="n">color_array</span><span class="p">,</span>
 <a id="__codelineno-0-279" name="__codelineno-0-279"></a>                <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
 <a id="__codelineno-0-280" name="__codelineno-0-280"></a>                <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>                <span class="n">edgecolors</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-282" name="__codelineno-0-282"></a>                <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-281" name="__codelineno-0-281"></a>                <span class="n">edgecolors</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"edgecolor"</span><span class="p">],</span>
+<a id="__codelineno-0-282" name="__codelineno-0-282"></a>                <span class="n">linewidths</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"linewidth"</span><span class="p">],</span>
 <a id="__codelineno-0-283" name="__codelineno-0-283"></a>            <span class="p">)</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a>            <span class="k">if</span> <span class="n">norm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-285" name="__codelineno-0-285"></a>                <span class="n">pc</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ticks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -3674,8 +3674,8 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-291" name="__codelineno-0-291"></a>                <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-292" name="__codelineno-0-292"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">cbar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_color_bar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">cbar_kw</span><span class="p">)</span>
 <a id="__codelineno-0-293" name="__codelineno-0-293"></a>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a>        <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;title_size&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>        <span class="k">if</span> <span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]:</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">opts</span><span class="p">[</span><span class="s2">"title_size"</span><span class="p">])</span>
 <a id="__codelineno-0-296" name="__codelineno-0-296"></a>
 <a id="__codelineno-0-297" name="__codelineno-0-297"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span>
 </code></pre></div></td></tr></table></div>
@@ -3703,7 +3703,7 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">])</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PolygonGlyph</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Polygons by value&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Polygons by value"</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="Polygons filled by value" src="../../images/polygon_glyph/polygons-filled.png" /></p>
 <h3 id="outlines-only"><a class="toclink" href="#outlines-only">Outlines only</a><a class="headerlink" href="#outlines-only" title="Permanent link">#</a></h3>
@@ -3711,7 +3711,7 @@ and the <code>PolyCollection</code> added to the axes.</p>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">outline_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># ... or pick the outline colour and width</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PolygonGlyph</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;navy&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PolygonGlyph</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"navy"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">outline_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="Polygon outlines" src="../../images/polygon_glyph/polygons-outline.png" /></p>
@@ -3829,7 +3829,7 @@ and the <code>PolyCollection</code> added to the axes.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

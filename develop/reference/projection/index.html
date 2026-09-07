@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2731,7 +2731,7 @@
 directly and skip the pyproj-backed presets.</p>
 <h2 id="usage"><a class="toclink" href="#usage">Usage</a><a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>  <span class="c1"># any backend; Agg shown for headless rendering</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"Agg"</span><span class="p">)</span>  <span class="c1"># any backend; Agg shown for headless rendering</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
@@ -2756,7 +2756,7 @@ directly and skip the pyproj-backed presets.</p>
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">graticule_lines</span><span class="o">=</span><span class="p">[</span><span class="n">meridian</span><span class="p">],</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">)</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;globe.png&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"globe.png"</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2803,7 +2803,7 @@ clean: the upstream owns CRS/PROJ, cleopatra owns matplotlib.</p>
     <p>Frame a plain axes as an orthographic globe and clip an image to the
 boundary circle:</p>
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"Agg"</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -3086,7 +3086,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <li>Frame a plain axes as a globe and read back the result: the
     returned patch is registered on the axes and the aspect is equal:
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"Agg"</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.basemap.projection</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_projection_frame</span>
@@ -3104,7 +3104,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <li>Clip a data image and draw one graticule line (plain lists are
     accepted): the image gains a clip path and one line is added:
     <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"Agg"</span><span class="p">)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">cleopatra.basemap.projection</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_projection_frame</span>
@@ -3297,7 +3297,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-112" name="__codelineno-0-112"></a>    <span class="n">boundary_kw</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-113" name="__codelineno-0-113"></a>    <span class="n">graticule_kw</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-114" name="__codelineno-0-114"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PathPatch</span><span class="p">:</span>
-<a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a plain axes into a static projected (&#39;globe&#39;) frame.</span>
+<a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="w">    </span><span class="sd">"""Turn a plain axes into a static projected ('globe') frame.</span>
 <a id="__codelineno-0-116" name="__codelineno-0-116"></a>
 <a id="__codelineno-0-117" name="__codelineno-0-117"></a><span class="sd">    Sets equal aspect and the projected x/y limits, draws the projection</span>
 <a id="__codelineno-0-118" name="__codelineno-0-118"></a><span class="sd">    boundary as a `matplotlib.patches.PathPatch`, draws the graticule</span>
@@ -3315,7 +3315,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="sd">        ax: Matplotlib `matplotlib.axes.Axes` to frame. Any data</span>
 <a id="__codelineno-0-131" name="__codelineno-0-131"></a><span class="sd">            layers to be clipped should already be plotted.</span>
 <a id="__codelineno-0-132" name="__codelineno-0-132"></a><span class="sd">        boundary_xy: ``(N, 2)`` projection-boundary vertices in projected</span>
-<a id="__codelineno-0-133" name="__codelineno-0-133"></a><span class="sd">            coordinates (e.g. the globe&#39;s circle). Array-like.</span>
+<a id="__codelineno-0-133" name="__codelineno-0-133"></a><span class="sd">            coordinates (e.g. the globe's circle). Array-like.</span>
 <a id="__codelineno-0-134" name="__codelineno-0-134"></a><span class="sd">        xlim: Projected-coordinate x-limits ``(xmin, xmax)`` -- the CRS</span>
 <a id="__codelineno-0-135" name="__codelineno-0-135"></a><span class="sd">            domain in the x direction.</span>
 <a id="__codelineno-0-136" name="__codelineno-0-136"></a><span class="sd">        ylim: Projected-coordinate y-limits ``(ymin, ymax)``.</span>
@@ -3327,7 +3327,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="sd">            graticule to the boundary path.</span>
 <a id="__codelineno-0-143" name="__codelineno-0-143"></a><span class="sd">        boundary_kw: Style overrides for the boundary patch, merged over</span>
 <a id="__codelineno-0-144" name="__codelineno-0-144"></a><span class="sd">            `DEFAULT_BOUNDARY_KW`. ``facecolor`` defaults to</span>
-<a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="sd">            ``&quot;none&quot;`` so the patch never hides the data.</span>
+<a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="sd">            ``"none"`` so the patch never hides the data.</span>
 <a id="__codelineno-0-146" name="__codelineno-0-146"></a><span class="sd">        graticule_kw: Style overrides for the graticule lines, merged</span>
 <a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">            over `DEFAULT_GRATICULE_KW`.</span>
 <a id="__codelineno-0-148" name="__codelineno-0-148"></a>
@@ -3345,7 +3345,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="sd">            returned patch is registered on the axes and the aspect is equal:</span>
 <a id="__codelineno-0-161" name="__codelineno-0-161"></a><span class="sd">            ```python</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">            &gt;&gt;&gt; import matplotlib</span>
-<a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">            &gt;&gt;&gt; matplotlib.use(&quot;Agg&quot;)</span>
+<a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">            &gt;&gt;&gt; matplotlib.use("Agg")</span>
 <a id="__codelineno-0-164" name="__codelineno-0-164"></a><span class="sd">            &gt;&gt;&gt; import numpy as np</span>
 <a id="__codelineno-0-165" name="__codelineno-0-165"></a><span class="sd">            &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="sd">            &gt;&gt;&gt; from cleopatra.basemap.projection import apply_projection_frame</span>
@@ -3365,7 +3365,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">            accepted): the image gains a clip path and one line is added:</span>
 <a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">            ```python</span>
 <a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">            &gt;&gt;&gt; import matplotlib</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a><span class="sd">            &gt;&gt;&gt; matplotlib.use(&quot;Agg&quot;)</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a><span class="sd">            &gt;&gt;&gt; matplotlib.use("Agg")</span>
 <a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">            &gt;&gt;&gt; import numpy as np</span>
 <a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">            &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <a id="__codelineno-0-186" name="__codelineno-0-186"></a><span class="sd">            &gt;&gt;&gt; from cleopatra.basemap.projection import apply_projection_frame</span>
@@ -3397,27 +3397,27 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-212" name="__codelineno-0-212"></a><span class="sd">            TypeError: ax must be a matplotlib.axes.Axes instance, got object</span>
 <a id="__codelineno-0-213" name="__codelineno-0-213"></a>
 <a id="__codelineno-0-214" name="__codelineno-0-214"></a><span class="sd">            ```</span>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-216" name="__codelineno-0-216"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;set_xlim&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;add_patch&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="sd">    """</span>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"set_xlim"</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"add_patch"</span><span class="p">):</span>
 <a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-<a id="__codelineno-0-218" name="__codelineno-0-218"></a>            <span class="sa">f</span><span class="s2">&quot;ax must be a matplotlib.axes.Axes instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>            <span class="sa">f</span><span class="s2">"ax must be a matplotlib.axes.Axes instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 <a id="__codelineno-0-219" name="__codelineno-0-219"></a>        <span class="p">)</span>
 <a id="__codelineno-0-220" name="__codelineno-0-220"></a>
 <a id="__codelineno-0-221" name="__codelineno-0-221"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
 <a id="__codelineno-0-222" name="__codelineno-0-222"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a>            <span class="sa">f</span><span class="s2">&quot;xlim and ylim must each be a (min, max) pair, &quot;</span>
-<a id="__codelineno-0-224" name="__codelineno-0-224"></a>            <span class="sa">f</span><span class="s2">&quot;got xlim=</span><span class="si">{</span><span class="n">xlim</span><span class="si">!r}</span><span class="s2">, ylim=</span><span class="si">{</span><span class="n">ylim</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a>            <span class="sa">f</span><span class="s2">"xlim and ylim must each be a (min, max) pair, "</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>            <span class="sa">f</span><span class="s2">"got xlim=</span><span class="si">{</span><span class="n">xlim</span><span class="si">!r}</span><span class="s2">, ylim=</span><span class="si">{</span><span class="n">ylim</span><span class="si">!r}</span><span class="s2">."</span>
 <a id="__codelineno-0-225" name="__codelineno-0-225"></a>        <span class="p">)</span>
 <a id="__codelineno-0-226" name="__codelineno-0-226"></a>
-<a id="__codelineno-0-227" name="__codelineno-0-227"></a>    <span class="n">boundary</span> <span class="o">=</span> <span class="n">_as_xy</span><span class="p">(</span><span class="n">boundary_xy</span><span class="p">,</span> <span class="s2">&quot;boundary_xy&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>    <span class="n">boundary</span> <span class="o">=</span> <span class="n">_as_xy</span><span class="p">(</span><span class="n">boundary_xy</span><span class="p">,</span> <span class="s2">"boundary_xy"</span><span class="p">)</span>
 <a id="__codelineno-0-228" name="__codelineno-0-228"></a>
-<a id="__codelineno-0-229" name="__codelineno-0-229"></a>    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-229" name="__codelineno-0-229"></a>    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
 <a id="__codelineno-0-230" name="__codelineno-0-230"></a>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <a id="__codelineno-0-231" name="__codelineno-0-231"></a>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <a id="__codelineno-0-232" name="__codelineno-0-232"></a>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a>    <span class="n">patch</span> <span class="o">=</span> <span class="n">PathPatch</span><span class="p">(</span>
 <a id="__codelineno-0-234" name="__codelineno-0-234"></a>        <span class="n">Path</span><span class="p">(</span><span class="n">boundary</span><span class="p">),</span>
-<a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="n">facecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
 <a id="__codelineno-0-236" name="__codelineno-0-236"></a>        <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">DEFAULT_BOUNDARY_KW</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">boundary_kw</span> <span class="ow">or</span> <span class="p">{})},</span>
 <a id="__codelineno-0-237" name="__codelineno-0-237"></a>    <span class="p">)</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a>    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>
@@ -3425,7 +3425,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 <a id="__codelineno-0-240" name="__codelineno-0-240"></a>    <span class="n">graticule_style</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">DEFAULT_GRATICULE_KW</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">graticule_kw</span> <span class="ow">or</span> <span class="p">{})}</span>
 <a id="__codelineno-0-241" name="__codelineno-0-241"></a>    <span class="n">graticule_artists</span> <span class="o">=</span> <span class="p">[]</span>
 <a id="__codelineno-0-242" name="__codelineno-0-242"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">graticule_lines</span> <span class="ow">or</span> <span class="p">[]):</span>
-<a id="__codelineno-0-243" name="__codelineno-0-243"></a>        <span class="n">xy</span> <span class="o">=</span> <span class="n">_as_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;graticule_lines[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-243" name="__codelineno-0-243"></a>        <span class="n">xy</span> <span class="o">=</span> <span class="n">_as_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"graticule_lines[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
 <a id="__codelineno-0-244" name="__codelineno-0-244"></a>        <span class="p">(</span><span class="n">artist</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">graticule_style</span><span class="p">)</span>
 <a id="__codelineno-0-245" name="__codelineno-0-245"></a>        <span class="n">graticule_artists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
 <a id="__codelineno-0-246" name="__codelineno-0-246"></a>
@@ -3445,7 +3445,7 @@ over <code>DEFAULT_GRATICULE_KW</code>.</p>
 
 
 <h4 id="cleopatra.basemap.projection.apply_projection_style" class="doc doc-heading"><a href="#cleopatra.basemap.projection.apply_projection_style" class="toclink">
-            <code class="highlight language-python"><span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;globe&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">'globe'</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">)</span></code>
 
 </a><a href="#cleopatra.basemap.projection.apply_projection_style" class="headerlink" title="Permanent link">#</a></h4>
 
@@ -3468,7 +3468,7 @@ degenerate slivers -- so edges are computed explicitly and reliably
 instead. The <em>same</em> two-line pattern composes both layers regardless of
 which style was chosen:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">chosen</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">apply_data_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;dust&quot;</span><span class="p">:</span> <span class="n">masked</span><span class="p">},</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">apply_data_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">{</span><span class="s2">"dust"</span><span class="p">:</span> <span class="n">masked</span><span class="p">},</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">"flat"</span><span class="p">)</span>
 </code></pre></div>
 <p>Neither function requires the other: use <code>"globe"</code> with a single plain
 colormap instead of <code>apply_data_style</code>, or <code>"flat"</code> with the <code>"haze"</code>
@@ -3480,8 +3480,8 @@ the boundary/graticule) is one-shot per axes: a second unguarded call
 stacks a duplicate boundary patch and graticule. Pass <code>draw_frame=False</code>
 on every call after the first to reproject/mask that layer's data
 without redrawing the chrome:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">om</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">organic_matter</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;globe&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">du</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">dust</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;globe&quot;</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">om</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">organic_matter</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"globe"</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">du</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">dust</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"globe"</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 
 
@@ -3722,10 +3722,10 @@ not installed.</p>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">])</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">])</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;globe&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"globe"</span><span class="p">)</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">)</span>  <span class="c1"># the boundary circle</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="mi">1</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># one larger per axis than data&#39;s (2, 2)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># one larger per axis than data's (2, 2)</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">masked</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1"># far hemisphere still masked</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">np</span><span class="o">.</span><span class="n">True_</span>
@@ -3740,7 +3740,7 @@ not installed.</p>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">])</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">])</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"flat"</span><span class="p">)</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">)</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="mi">0</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
@@ -3759,8 +3759,8 @@ not installed.</p>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.0</span><span class="p">])</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">first</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">second</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">]])</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;globe&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;globe&quot;</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"globe"</span><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">apply_projection_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"globe"</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">)</span>  <span class="c1"># still one boundary, not two</span>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="mi">1</span>
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
@@ -3772,11 +3772,11 @@ not installed.</p>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">apply_projection_style</span><span class="p">(</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="o">...</span>     <span class="n">ax</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">]]),</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">...</span>     <span class="n">style</span><span class="o">=</span><span class="s2">&quot;not-a-style&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">...</span>     <span class="n">style</span><span class="o">=</span><span class="s2">"not-a-style"</span><span class="p">,</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">...</span> <span class="p">)</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="o">...</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="ne">KeyError</span><span class="p">:</span> <span class="s2">&quot;Unknown projection style &#39;not-a-style&#39;; available: [&#39;flat&#39;, &#39;globe&#39;]&quot;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="ne">KeyError</span><span class="p">:</span> <span class="s2">"Unknown projection style 'not-a-style'; available: ['flat', 'globe']"</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </code></pre></div></li>
 </ul>
@@ -4021,15 +4021,15 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-823" name="__codelineno-0-823"></a>    <span class="n">lon</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-824" name="__codelineno-0-824"></a>    <span class="n">lat</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-825" name="__codelineno-0-825"></a>    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-<a id="__codelineno-0-826" name="__codelineno-0-826"></a>    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;globe&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-826" name="__codelineno-0-826"></a>    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"globe"</span><span class="p">,</span>
 <a id="__codelineno-0-827" name="__codelineno-0-827"></a>    <span class="o">*</span><span class="p">,</span>
 <a id="__codelineno-0-828" name="__codelineno-0-828"></a>    <span class="n">draw_frame</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-0-829" name="__codelineno-0-829"></a>    <span class="o">**</span><span class="n">overrides</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-830" name="__codelineno-0-830"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<a id="__codelineno-0-831" name="__codelineno-0-831"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject `(lon, lat, data)` and frame `ax` per a `PROJECTION_STYLES` preset.</span>
+<a id="__codelineno-0-831" name="__codelineno-0-831"></a><span class="w">    </span><span class="sd">"""Reproject `(lon, lat, data)` and frame `ax` per a `PROJECTION_STYLES` preset.</span>
 <a id="__codelineno-0-832" name="__codelineno-0-832"></a>
-<a id="__codelineno-0-833" name="__codelineno-0-833"></a><span class="sd">    For `&quot;globe&quot;`, reprojects via `orthographic_grid` and draws the globe</span>
-<a id="__codelineno-0-834" name="__codelineno-0-834"></a><span class="sd">    boundary + graticule on `ax` via `apply_projection_frame`. For `&quot;flat&quot;`,</span>
+<a id="__codelineno-0-833" name="__codelineno-0-833"></a><span class="sd">    For `"globe"`, reprojects via `orthographic_grid` and draws the globe</span>
+<a id="__codelineno-0-834" name="__codelineno-0-834"></a><span class="sd">    boundary + graticule on `ax` via `apply_projection_frame`. For `"flat"`,</span>
 <a id="__codelineno-0-835" name="__codelineno-0-835"></a><span class="sd">    returns `(lon, lat, data)` unchanged and does not touch `ax` at all --</span>
 <a id="__codelineno-0-836" name="__codelineno-0-836"></a><span class="sd">    the data is meant to be plotted directly in lon/lat coordinates.</span>
 <a id="__codelineno-0-837" name="__codelineno-0-837"></a>
@@ -4037,20 +4037,20 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-839" name="__codelineno-0-839"></a><span class="sd">    is `cleopatra.styling.colors.apply_data_style`, called with the `(x, y, data)`</span>
 <a id="__codelineno-0-840" name="__codelineno-0-840"></a><span class="sd">    this function returns as its `x`/`y`/layer arguments. Both styles return</span>
 <a id="__codelineno-0-841" name="__codelineno-0-841"></a><span class="sd">    cell-**edge** coordinates (one larger per axis than `data`) for use with</span>
-<a id="__codelineno-0-842" name="__codelineno-0-842"></a><span class="sd">    `shading=&quot;flat&quot;`: the orthographic projection&#39;s extreme distortion near</span>
-<a id="__codelineno-0-843" name="__codelineno-0-843"></a><span class="sd">    its centre makes matplotlib&#39;s automatic centre-to-edge inference</span>
-<a id="__codelineno-0-844" name="__codelineno-0-844"></a><span class="sd">    (`shading=&quot;auto&quot;`/`&quot;nearest&quot;`) unreliable -- most cells can render as</span>
+<a id="__codelineno-0-842" name="__codelineno-0-842"></a><span class="sd">    `shading="flat"`: the orthographic projection's extreme distortion near</span>
+<a id="__codelineno-0-843" name="__codelineno-0-843"></a><span class="sd">    its centre makes matplotlib's automatic centre-to-edge inference</span>
+<a id="__codelineno-0-844" name="__codelineno-0-844"></a><span class="sd">    (`shading="auto"`/`"nearest"`) unreliable -- most cells can render as</span>
 <a id="__codelineno-0-845" name="__codelineno-0-845"></a><span class="sd">    degenerate slivers -- so edges are computed explicitly and reliably</span>
 <a id="__codelineno-0-846" name="__codelineno-0-846"></a><span class="sd">    instead. The *same* two-line pattern composes both layers regardless of</span>
 <a id="__codelineno-0-847" name="__codelineno-0-847"></a><span class="sd">    which style was chosen:</span>
 <a id="__codelineno-0-848" name="__codelineno-0-848"></a>
 <a id="__codelineno-0-849" name="__codelineno-0-849"></a><span class="sd">    ```python</span>
 <a id="__codelineno-0-850" name="__codelineno-0-850"></a><span class="sd">    x, y, masked = apply_projection_style(ax, lon, lat, data, style=chosen)</span>
-<a id="__codelineno-0-851" name="__codelineno-0-851"></a><span class="sd">    apply_data_style(ax, {&quot;dust&quot;: masked}, x=x, y=y, shading=&quot;flat&quot;)</span>
+<a id="__codelineno-0-851" name="__codelineno-0-851"></a><span class="sd">    apply_data_style(ax, {"dust": masked}, x=x, y=y, shading="flat")</span>
 <a id="__codelineno-0-852" name="__codelineno-0-852"></a><span class="sd">    ```</span>
 <a id="__codelineno-0-853" name="__codelineno-0-853"></a>
-<a id="__codelineno-0-854" name="__codelineno-0-854"></a><span class="sd">    Neither function requires the other: use `&quot;globe&quot;` with a single plain</span>
-<a id="__codelineno-0-855" name="__codelineno-0-855"></a><span class="sd">    colormap instead of `apply_data_style`, or `&quot;flat&quot;` with the `&quot;haze&quot;`</span>
+<a id="__codelineno-0-854" name="__codelineno-0-854"></a><span class="sd">    Neither function requires the other: use `"globe"` with a single plain</span>
+<a id="__codelineno-0-855" name="__codelineno-0-855"></a><span class="sd">    colormap instead of `apply_data_style`, or `"flat"` with the `"haze"`</span>
 <a id="__codelineno-0-856" name="__codelineno-0-856"></a><span class="sd">    data style and no globe at all.</span>
 <a id="__codelineno-0-857" name="__codelineno-0-857"></a>
 <a id="__codelineno-0-858" name="__codelineno-0-858"></a><span class="sd">    This function takes a single `data` array, not a `layers` dict like</span>
@@ -4058,16 +4058,16 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-860" name="__codelineno-0-860"></a><span class="sd">    means calling it once per layer. `apply_projection_frame` (which draws</span>
 <a id="__codelineno-0-861" name="__codelineno-0-861"></a><span class="sd">    the boundary/graticule) is one-shot per axes: a second unguarded call</span>
 <a id="__codelineno-0-862" name="__codelineno-0-862"></a><span class="sd">    stacks a duplicate boundary patch and graticule. Pass `draw_frame=False`</span>
-<a id="__codelineno-0-863" name="__codelineno-0-863"></a><span class="sd">    on every call after the first to reproject/mask that layer&#39;s data</span>
+<a id="__codelineno-0-863" name="__codelineno-0-863"></a><span class="sd">    on every call after the first to reproject/mask that layer's data</span>
 <a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="sd">    without redrawing the chrome:</span>
 <a id="__codelineno-0-865" name="__codelineno-0-865"></a>
 <a id="__codelineno-0-866" name="__codelineno-0-866"></a><span class="sd">    ```python</span>
-<a id="__codelineno-0-867" name="__codelineno-0-867"></a><span class="sd">    x, y, om = apply_projection_style(ax, lon, lat, organic_matter, style=&quot;globe&quot;)</span>
-<a id="__codelineno-0-868" name="__codelineno-0-868"></a><span class="sd">    _, _, du = apply_projection_style(ax, lon, lat, dust, style=&quot;globe&quot;, draw_frame=False)</span>
+<a id="__codelineno-0-867" name="__codelineno-0-867"></a><span class="sd">    x, y, om = apply_projection_style(ax, lon, lat, organic_matter, style="globe")</span>
+<a id="__codelineno-0-868" name="__codelineno-0-868"></a><span class="sd">    _, _, du = apply_projection_style(ax, lon, lat, dust, style="globe", draw_frame=False)</span>
 <a id="__codelineno-0-869" name="__codelineno-0-869"></a><span class="sd">    ```</span>
 <a id="__codelineno-0-870" name="__codelineno-0-870"></a>
 <a id="__codelineno-0-871" name="__codelineno-0-871"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-872" name="__codelineno-0-872"></a><span class="sd">        ax: Axes to draw the boundary/graticule on. Ignored for `&quot;flat&quot;`</span>
+<a id="__codelineno-0-872" name="__codelineno-0-872"></a><span class="sd">        ax: Axes to draw the boundary/graticule on. Ignored for `"flat"`</span>
 <a id="__codelineno-0-873" name="__codelineno-0-873"></a><span class="sd">            (which never draws) and when `draw_frame=False`.</span>
 <a id="__codelineno-0-874" name="__codelineno-0-874"></a><span class="sd">        lon: 1D vector of cell-centre longitudes, degrees. Both styles</span>
 <a id="__codelineno-0-875" name="__codelineno-0-875"></a><span class="sd">            require 1D `lon`/`lat` so cell edges can be computed reliably;</span>
@@ -4075,31 +4075,31 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-877" name="__codelineno-0-877"></a><span class="sd">            directly and build your own edge coordinates.</span>
 <a id="__codelineno-0-878" name="__codelineno-0-878"></a><span class="sd">        lat: 1D vector of cell-centre latitudes, degrees, paired with `lon`.</span>
 <a id="__codelineno-0-879" name="__codelineno-0-879"></a><span class="sd">        data: 2D array of values, shape `(len(lat), len(lon))`. Reprojected</span>
-<a id="__codelineno-0-880" name="__codelineno-0-880"></a><span class="sd">            and hemisphere-masked for `&quot;globe&quot;`; returned unchanged for</span>
-<a id="__codelineno-0-881" name="__codelineno-0-881"></a><span class="sd">            `&quot;flat&quot;`.</span>
-<a id="__codelineno-0-882" name="__codelineno-0-882"></a><span class="sd">        style: A name from `PROJECTION_STYLES` (`&quot;globe&quot;` or `&quot;flat&quot;`).</span>
+<a id="__codelineno-0-880" name="__codelineno-0-880"></a><span class="sd">            and hemisphere-masked for `"globe"`; returned unchanged for</span>
+<a id="__codelineno-0-881" name="__codelineno-0-881"></a><span class="sd">            `"flat"`.</span>
+<a id="__codelineno-0-882" name="__codelineno-0-882"></a><span class="sd">        style: A name from `PROJECTION_STYLES` (`"globe"` or `"flat"`).</span>
 <a id="__codelineno-0-883" name="__codelineno-0-883"></a><span class="sd">        draw_frame: If `True` (default), draw the boundary/graticule via</span>
-<a id="__codelineno-0-884" name="__codelineno-0-884"></a><span class="sd">            `apply_projection_frame` (`&quot;globe&quot;` only -- `&quot;flat&quot;` never draws</span>
+<a id="__codelineno-0-884" name="__codelineno-0-884"></a><span class="sd">            `apply_projection_frame` (`"globe"` only -- `"flat"` never draws</span>
 <a id="__codelineno-0-885" name="__codelineno-0-885"></a><span class="sd">            regardless). Pass `False` for every call after the first when</span>
 <a id="__codelineno-0-886" name="__codelineno-0-886"></a><span class="sd">            drawing multiple layers on one already-framed axes.</span>
-<a id="__codelineno-0-887" name="__codelineno-0-887"></a><span class="sd">        **overrides: Override any of the style&#39;s parameters -- for</span>
-<a id="__codelineno-0-888" name="__codelineno-0-888"></a><span class="sd">            `&quot;globe&quot;`: `center_lat`, `center_lon`, `graticule_step`,</span>
+<a id="__codelineno-0-887" name="__codelineno-0-887"></a><span class="sd">        **overrides: Override any of the style's parameters -- for</span>
+<a id="__codelineno-0-888" name="__codelineno-0-888"></a><span class="sd">            `"globe"`: `center_lat`, `center_lon`, `graticule_step`,</span>
 <a id="__codelineno-0-889" name="__codelineno-0-889"></a><span class="sd">            `boundary_kw`, `graticule_kw` (the last two forwarded to</span>
 <a id="__codelineno-0-890" name="__codelineno-0-890"></a><span class="sd">            `apply_projection_frame`).</span>
 <a id="__codelineno-0-891" name="__codelineno-0-891"></a>
 <a id="__codelineno-0-892" name="__codelineno-0-892"></a><span class="sd">    Returns:</span>
 <a id="__codelineno-0-893" name="__codelineno-0-893"></a><span class="sd">        tuple: `(x_edges, y_edges, data)` -- cell-edge coordinates, each</span>
 <a id="__codelineno-0-894" name="__codelineno-0-894"></a><span class="sd">        shaped `(len(lat) + 1, len(lon) + 1)`, and `data` unchanged (for</span>
-<a id="__codelineno-0-895" name="__codelineno-0-895"></a><span class="sd">        `&quot;flat&quot;`) or hemisphere-masked (for `&quot;globe&quot;`).</span>
+<a id="__codelineno-0-895" name="__codelineno-0-895"></a><span class="sd">        `"flat"`) or hemisphere-masked (for `"globe"`).</span>
 <a id="__codelineno-0-896" name="__codelineno-0-896"></a>
 <a id="__codelineno-0-897" name="__codelineno-0-897"></a><span class="sd">    Raises:</span>
 <a id="__codelineno-0-898" name="__codelineno-0-898"></a><span class="sd">        KeyError: If `style` is not registered.</span>
 <a id="__codelineno-0-899" name="__codelineno-0-899"></a><span class="sd">        ValueError: If `lon`/`lat` are not 1D.</span>
-<a id="__codelineno-0-900" name="__codelineno-0-900"></a><span class="sd">        ImportError: If `style=&quot;globe&quot;` and pyproj (the `[tiles]` extra) is</span>
+<a id="__codelineno-0-900" name="__codelineno-0-900"></a><span class="sd">        ImportError: If `style="globe"` and pyproj (the `[tiles]` extra) is</span>
 <a id="__codelineno-0-901" name="__codelineno-0-901"></a><span class="sd">            not installed.</span>
 <a id="__codelineno-0-902" name="__codelineno-0-902"></a>
 <a id="__codelineno-0-903" name="__codelineno-0-903"></a><span class="sd">    Examples:</span>
-<a id="__codelineno-0-904" name="__codelineno-0-904"></a><span class="sd">        - `&quot;globe&quot;` reprojects the data, draws a boundary patch on `ax`, and</span>
+<a id="__codelineno-0-904" name="__codelineno-0-904"></a><span class="sd">        - `"globe"` reprojects the data, draws a boundary patch on `ax`, and</span>
 <a id="__codelineno-0-905" name="__codelineno-0-905"></a><span class="sd">          returns edge coordinates one larger per axis than `data`:</span>
 <a id="__codelineno-0-906" name="__codelineno-0-906"></a><span class="sd">            ```python</span>
 <a id="__codelineno-0-907" name="__codelineno-0-907"></a><span class="sd">            &gt;&gt;&gt; import numpy as np</span>
@@ -4109,18 +4109,18 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-911" name="__codelineno-0-911"></a><span class="sd">            &gt;&gt;&gt; lon = np.array([0.0, 90.0])</span>
 <a id="__codelineno-0-912" name="__codelineno-0-912"></a><span class="sd">            &gt;&gt;&gt; lat = np.array([90.0, -90.0])</span>
 <a id="__codelineno-0-913" name="__codelineno-0-913"></a><span class="sd">            &gt;&gt;&gt; data = np.array([[1.0, 2.0], [3.0, 4.0]])</span>
-<a id="__codelineno-0-914" name="__codelineno-0-914"></a><span class="sd">            &gt;&gt;&gt; x, y, masked = apply_projection_style(ax, lon, lat, data, style=&quot;globe&quot;)</span>
+<a id="__codelineno-0-914" name="__codelineno-0-914"></a><span class="sd">            &gt;&gt;&gt; x, y, masked = apply_projection_style(ax, lon, lat, data, style="globe")</span>
 <a id="__codelineno-0-915" name="__codelineno-0-915"></a><span class="sd">            &gt;&gt;&gt; len(ax.patches)  # the boundary circle</span>
 <a id="__codelineno-0-916" name="__codelineno-0-916"></a><span class="sd">            1</span>
-<a id="__codelineno-0-917" name="__codelineno-0-917"></a><span class="sd">            &gt;&gt;&gt; x.shape  # one larger per axis than data&#39;s (2, 2)</span>
+<a id="__codelineno-0-917" name="__codelineno-0-917"></a><span class="sd">            &gt;&gt;&gt; x.shape  # one larger per axis than data's (2, 2)</span>
 <a id="__codelineno-0-918" name="__codelineno-0-918"></a><span class="sd">            (3, 3)</span>
 <a id="__codelineno-0-919" name="__codelineno-0-919"></a><span class="sd">            &gt;&gt;&gt; np.all(np.isnan(masked[1]))  # far hemisphere still masked</span>
 <a id="__codelineno-0-920" name="__codelineno-0-920"></a><span class="sd">            np.True_</span>
 <a id="__codelineno-0-921" name="__codelineno-0-921"></a><span class="sd">            &gt;&gt;&gt; plt.close(fig)</span>
 <a id="__codelineno-0-922" name="__codelineno-0-922"></a>
 <a id="__codelineno-0-923" name="__codelineno-0-923"></a><span class="sd">            ```</span>
-<a id="__codelineno-0-924" name="__codelineno-0-924"></a><span class="sd">        - `&quot;flat&quot;` draws nothing but still returns matching edge coordinates,</span>
-<a id="__codelineno-0-925" name="__codelineno-0-925"></a><span class="sd">          so the same `shading=&quot;flat&quot;` call works for either style:</span>
+<a id="__codelineno-0-924" name="__codelineno-0-924"></a><span class="sd">        - `"flat"` draws nothing but still returns matching edge coordinates,</span>
+<a id="__codelineno-0-925" name="__codelineno-0-925"></a><span class="sd">          so the same `shading="flat"` call works for either style:</span>
 <a id="__codelineno-0-926" name="__codelineno-0-926"></a><span class="sd">            ```python</span>
 <a id="__codelineno-0-927" name="__codelineno-0-927"></a><span class="sd">            &gt;&gt;&gt; import numpy as np</span>
 <a id="__codelineno-0-928" name="__codelineno-0-928"></a><span class="sd">            &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
@@ -4129,7 +4129,7 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-931" name="__codelineno-0-931"></a><span class="sd">            &gt;&gt;&gt; lon = np.array([0.0, 90.0])</span>
 <a id="__codelineno-0-932" name="__codelineno-0-932"></a><span class="sd">            &gt;&gt;&gt; lat = np.array([90.0, -90.0])</span>
 <a id="__codelineno-0-933" name="__codelineno-0-933"></a><span class="sd">            &gt;&gt;&gt; data = np.array([[1.0, 2.0], [3.0, 4.0]])</span>
-<a id="__codelineno-0-934" name="__codelineno-0-934"></a><span class="sd">            &gt;&gt;&gt; x, y, out = apply_projection_style(ax, lon, lat, data, style=&quot;flat&quot;)</span>
+<a id="__codelineno-0-934" name="__codelineno-0-934"></a><span class="sd">            &gt;&gt;&gt; x, y, out = apply_projection_style(ax, lon, lat, data, style="flat")</span>
 <a id="__codelineno-0-935" name="__codelineno-0-935"></a><span class="sd">            &gt;&gt;&gt; len(ax.patches)</span>
 <a id="__codelineno-0-936" name="__codelineno-0-936"></a><span class="sd">            0</span>
 <a id="__codelineno-0-937" name="__codelineno-0-937"></a><span class="sd">            &gt;&gt;&gt; x.shape</span>
@@ -4150,8 +4150,8 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-952" name="__codelineno-0-952"></a><span class="sd">            &gt;&gt;&gt; lat = np.array([90.0, -90.0])</span>
 <a id="__codelineno-0-953" name="__codelineno-0-953"></a><span class="sd">            &gt;&gt;&gt; first = np.array([[1.0, 2.0], [3.0, 4.0]])</span>
 <a id="__codelineno-0-954" name="__codelineno-0-954"></a><span class="sd">            &gt;&gt;&gt; second = np.array([[5.0, 6.0], [7.0, 8.0]])</span>
-<a id="__codelineno-0-955" name="__codelineno-0-955"></a><span class="sd">            &gt;&gt;&gt; _ = apply_projection_style(ax, lon, lat, first, style=&quot;globe&quot;)</span>
-<a id="__codelineno-0-956" name="__codelineno-0-956"></a><span class="sd">            &gt;&gt;&gt; _ = apply_projection_style(ax, lon, lat, second, style=&quot;globe&quot;, draw_frame=False)</span>
+<a id="__codelineno-0-955" name="__codelineno-0-955"></a><span class="sd">            &gt;&gt;&gt; _ = apply_projection_style(ax, lon, lat, first, style="globe")</span>
+<a id="__codelineno-0-956" name="__codelineno-0-956"></a><span class="sd">            &gt;&gt;&gt; _ = apply_projection_style(ax, lon, lat, second, style="globe", draw_frame=False)</span>
 <a id="__codelineno-0-957" name="__codelineno-0-957"></a><span class="sd">            &gt;&gt;&gt; len(ax.patches)  # still one boundary, not two</span>
 <a id="__codelineno-0-958" name="__codelineno-0-958"></a><span class="sd">            1</span>
 <a id="__codelineno-0-959" name="__codelineno-0-959"></a><span class="sd">            &gt;&gt;&gt; plt.close(fig)</span>
@@ -4165,25 +4165,25 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-967" name="__codelineno-0-967"></a><span class="sd">            &gt;&gt;&gt; fig, ax = plt.subplots()</span>
 <a id="__codelineno-0-968" name="__codelineno-0-968"></a><span class="sd">            &gt;&gt;&gt; apply_projection_style(</span>
 <a id="__codelineno-0-969" name="__codelineno-0-969"></a><span class="sd">            ...     ax, np.array([0.0]), np.array([0.0]), np.array([[1.0]]),</span>
-<a id="__codelineno-0-970" name="__codelineno-0-970"></a><span class="sd">            ...     style=&quot;not-a-style&quot;,</span>
+<a id="__codelineno-0-970" name="__codelineno-0-970"></a><span class="sd">            ...     style="not-a-style",</span>
 <a id="__codelineno-0-971" name="__codelineno-0-971"></a><span class="sd">            ... )</span>
 <a id="__codelineno-0-972" name="__codelineno-0-972"></a><span class="sd">            Traceback (most recent call last):</span>
 <a id="__codelineno-0-973" name="__codelineno-0-973"></a><span class="sd">                ...</span>
-<a id="__codelineno-0-974" name="__codelineno-0-974"></a><span class="sd">            KeyError: &quot;Unknown projection style &#39;not-a-style&#39;; available: [&#39;flat&#39;, &#39;globe&#39;]&quot;</span>
+<a id="__codelineno-0-974" name="__codelineno-0-974"></a><span class="sd">            KeyError: "Unknown projection style 'not-a-style'; available: ['flat', 'globe']"</span>
 <a id="__codelineno-0-975" name="__codelineno-0-975"></a><span class="sd">            &gt;&gt;&gt; plt.close(fig)</span>
 <a id="__codelineno-0-976" name="__codelineno-0-976"></a>
 <a id="__codelineno-0-977" name="__codelineno-0-977"></a><span class="sd">            ```</span>
 <a id="__codelineno-0-978" name="__codelineno-0-978"></a>
 <a id="__codelineno-0-979" name="__codelineno-0-979"></a><span class="sd">    See Also:</span>
-<a id="__codelineno-0-980" name="__codelineno-0-980"></a><span class="sd">        orthographic_grid: The `&quot;globe&quot;` cell-centre reprojection primitive.</span>
-<a id="__codelineno-0-981" name="__codelineno-0-981"></a><span class="sd">        orthographic_grid_edges: The `&quot;globe&quot;` cell-edge reprojection primitive.</span>
+<a id="__codelineno-0-980" name="__codelineno-0-980"></a><span class="sd">        orthographic_grid: The `"globe"` cell-centre reprojection primitive.</span>
+<a id="__codelineno-0-981" name="__codelineno-0-981"></a><span class="sd">        orthographic_grid_edges: The `"globe"` cell-edge reprojection primitive.</span>
 <a id="__codelineno-0-982" name="__codelineno-0-982"></a><span class="sd">        apply_projection_frame: Draws the boundary/graticule this composes.</span>
 <a id="__codelineno-0-983" name="__codelineno-0-983"></a><span class="sd">        cleopatra.styling.colors.apply_data_style: The companion data-style axis.</span>
-<a id="__codelineno-0-984" name="__codelineno-0-984"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-984" name="__codelineno-0-984"></a><span class="sd">    """</span>
 <a id="__codelineno-0-985" name="__codelineno-0-985"></a>    <span class="k">if</span> <span class="n">style</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROJECTION_STYLES</span><span class="p">:</span>
 <a id="__codelineno-0-986" name="__codelineno-0-986"></a>        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-<a id="__codelineno-0-987" name="__codelineno-0-987"></a>            <span class="sa">f</span><span class="s2">&quot;Unknown projection style </span><span class="si">{</span><span class="n">style</span><span class="si">!r}</span><span class="s2">; available: &quot;</span>
-<a id="__codelineno-0-988" name="__codelineno-0-988"></a>            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">PROJECTION_STYLES</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-987" name="__codelineno-0-987"></a>            <span class="sa">f</span><span class="s2">"Unknown projection style </span><span class="si">{</span><span class="n">style</span><span class="si">!r}</span><span class="s2">; available: "</span>
+<a id="__codelineno-0-988" name="__codelineno-0-988"></a>            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">PROJECTION_STYLES</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 <a id="__codelineno-0-989" name="__codelineno-0-989"></a>        <span class="p">)</span>
 <a id="__codelineno-0-990" name="__codelineno-0-990"></a>    <span class="n">cfg</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">PROJECTION_STYLES</span><span class="p">[</span><span class="n">style</span><span class="p">],</span> <span class="o">**</span><span class="n">overrides</span><span class="p">}</span>
 <a id="__codelineno-0-991" name="__codelineno-0-991"></a>
@@ -4191,23 +4191,23 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 <a id="__codelineno-0-993" name="__codelineno-0-993"></a>    <span class="n">lat_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-994" name="__codelineno-0-994"></a>    <span class="k">if</span> <span class="n">lon_arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">lat_arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 <a id="__codelineno-0-995" name="__codelineno-0-995"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-996" name="__codelineno-0-996"></a>            <span class="s2">&quot;apply_projection_style requires 1D lon/lat vectors so cell &quot;</span>
-<a id="__codelineno-0-997" name="__codelineno-0-997"></a>            <span class="s2">&quot;edges can be computed reliably; for an already-2D curvilinear &quot;</span>
-<a id="__codelineno-0-998" name="__codelineno-0-998"></a>            <span class="s2">&quot;grid, call orthographic_grid directly and build your own edge &quot;</span>
-<a id="__codelineno-0-999" name="__codelineno-0-999"></a>            <span class="s2">&quot;coordinates.&quot;</span>
+<a id="__codelineno-0-996" name="__codelineno-0-996"></a>            <span class="s2">"apply_projection_style requires 1D lon/lat vectors so cell "</span>
+<a id="__codelineno-0-997" name="__codelineno-0-997"></a>            <span class="s2">"edges can be computed reliably; for an already-2D curvilinear "</span>
+<a id="__codelineno-0-998" name="__codelineno-0-998"></a>            <span class="s2">"grid, call orthographic_grid directly and build your own edge "</span>
+<a id="__codelineno-0-999" name="__codelineno-0-999"></a>            <span class="s2">"coordinates."</span>
 <a id="__codelineno-0-1000" name="__codelineno-0-1000"></a>        <span class="p">)</span>
 <a id="__codelineno-0-1001" name="__codelineno-0-1001"></a>
-<a id="__codelineno-0-1002" name="__codelineno-0-1002"></a>    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">&quot;flat&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-1002" name="__codelineno-0-1002"></a>    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">"flat"</span><span class="p">:</span>
 <a id="__codelineno-0-1003" name="__codelineno-0-1003"></a>        <span class="n">lon_edges_1d</span> <span class="o">=</span> <span class="n">_bin_edges</span><span class="p">(</span><span class="n">lon_arr</span><span class="p">)</span>
 <a id="__codelineno-0-1004" name="__codelineno-0-1004"></a>        <span class="n">lat_edges_1d</span> <span class="o">=</span> <span class="n">_bin_edges</span><span class="p">(</span><span class="n">lat_arr</span><span class="p">)</span>
 <a id="__codelineno-0-1005" name="__codelineno-0-1005"></a>        <span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_edges_1d</span><span class="p">,</span> <span class="n">lat_edges_1d</span><span class="p">)</span>
 <a id="__codelineno-0-1006" name="__codelineno-0-1006"></a>        <span class="k">return</span> <span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-1007" name="__codelineno-0-1007"></a>
-<a id="__codelineno-0-1008" name="__codelineno-0-1008"></a>    <span class="n">center_lat</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;center_lat&quot;</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">)</span>
-<a id="__codelineno-0-1009" name="__codelineno-0-1009"></a>    <span class="n">center_lon</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;center_lon&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-<a id="__codelineno-0-1010" name="__codelineno-0-1010"></a>    <span class="n">graticule_step</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;graticule_step&quot;</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
-<a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>    <span class="n">boundary_kw</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;boundary_kw&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-1012" name="__codelineno-0-1012"></a>    <span class="n">graticule_kw</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;graticule_kw&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-1008" name="__codelineno-0-1008"></a>    <span class="n">center_lat</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"center_lat"</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">)</span>
+<a id="__codelineno-0-1009" name="__codelineno-0-1009"></a>    <span class="n">center_lon</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"center_lon"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<a id="__codelineno-0-1010" name="__codelineno-0-1010"></a>    <span class="n">graticule_step</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"graticule_step"</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
+<a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>    <span class="n">boundary_kw</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"boundary_kw"</span><span class="p">)</span>
+<a id="__codelineno-0-1012" name="__codelineno-0-1012"></a>    <span class="n">graticule_kw</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"graticule_kw"</span><span class="p">)</span>
 <a id="__codelineno-0-1013" name="__codelineno-0-1013"></a>
 <a id="__codelineno-0-1014" name="__codelineno-0-1014"></a>    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">masked</span> <span class="o">=</span> <span class="n">orthographic_grid</span><span class="p">(</span>
 <a id="__codelineno-0-1015" name="__codelineno-0-1015"></a>        <span class="n">lon_arr</span><span class="p">,</span> <span class="n">lat_arr</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">center_lat</span><span class="o">=</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="o">=</span><span class="n">center_lon</span>
@@ -4251,7 +4251,7 @@ cleopatra.styling.colors.apply_data_style: The companion data-style axis.</p>
 
 
 <h4 id="cleopatra.basemap.projection.apply_projection_style_mesh" class="doc doc-heading"><a href="#cleopatra.basemap.projection.apply_projection_style_mesh" class="toclink">
-            <code class="highlight language-python"><span class="n">apply_projection_style_mesh</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;globe&#39;</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">apply_projection_style_mesh</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">triangles</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">'globe'</span><span class="p">,</span> <span class="n">draw_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">)</span></code>
 
 </a><a href="#cleopatra.basemap.projection.apply_projection_style_mesh" class="headerlink" title="Permanent link">#</a></h4>
 
@@ -4529,51 +4529,51 @@ extra).</p>
 <a id="__codelineno-0-753" name="__codelineno-0-753"></a>    <span class="n">node_y</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-754" name="__codelineno-0-754"></a>    <span class="n">triangles</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-755" name="__codelineno-0-755"></a>    <span class="o">*</span><span class="p">,</span>
-<a id="__codelineno-0-756" name="__codelineno-0-756"></a>    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;globe&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-756" name="__codelineno-0-756"></a>    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"globe"</span><span class="p">,</span>
 <a id="__codelineno-0-757" name="__codelineno-0-757"></a>    <span class="n">draw_frame</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-0-758" name="__codelineno-0-758"></a>    <span class="o">**</span><span class="n">overrides</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <a id="__codelineno-0-759" name="__codelineno-0-759"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Triangulation</span><span class="p">:</span>
-<a id="__codelineno-0-760" name="__codelineno-0-760"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject an unstructured-mesh triangulation onto a projection preset.</span>
+<a id="__codelineno-0-760" name="__codelineno-0-760"></a><span class="w">    </span><span class="sd">"""Reproject an unstructured-mesh triangulation onto a projection preset.</span>
 <a id="__codelineno-0-761" name="__codelineno-0-761"></a>
 <a id="__codelineno-0-762" name="__codelineno-0-762"></a><span class="sd">    The mesh counterpart to `apply_projection_style`: reproject the node lon/lat</span>
 <a id="__codelineno-0-763" name="__codelineno-0-763"></a><span class="sd">    to the projected plane, build a `matplotlib.tri.Triangulation` on the</span>
 <a id="__codelineno-0-764" name="__codelineno-0-764"></a><span class="sd">    projected coordinates with the same connectivity, mask any triangle that has</span>
-<a id="__codelineno-0-765" name="__codelineno-0-765"></a><span class="sd">    a node on the far hemisphere, and -- for `&quot;globe&quot;` -- draw the boundary +</span>
+<a id="__codelineno-0-765" name="__codelineno-0-765"></a><span class="sd">    a node on the far hemisphere, and -- for `"globe"` -- draw the boundary +</span>
 <a id="__codelineno-0-766" name="__codelineno-0-766"></a><span class="sd">    graticule frame on `ax`. Returns the (masked) triangulation, ready for</span>
 <a id="__codelineno-0-767" name="__codelineno-0-767"></a><span class="sd">    `tripcolor` / `tricontourf`.</span>
 <a id="__codelineno-0-768" name="__codelineno-0-768"></a>
 <a id="__codelineno-0-769" name="__codelineno-0-769"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-770" name="__codelineno-0-770"></a><span class="sd">        ax: Axes to frame (used by the `&quot;globe&quot;` style).</span>
+<a id="__codelineno-0-770" name="__codelineno-0-770"></a><span class="sd">        ax: Axes to frame (used by the `"globe"` style).</span>
 <a id="__codelineno-0-771" name="__codelineno-0-771"></a><span class="sd">        node_x: 1-D node longitudes (degrees).</span>
 <a id="__codelineno-0-772" name="__codelineno-0-772"></a><span class="sd">        node_y: 1-D node latitudes (degrees).</span>
 <a id="__codelineno-0-773" name="__codelineno-0-773"></a><span class="sd">        triangles: `(n_tri, 3)` node-index connectivity.</span>
-<a id="__codelineno-0-774" name="__codelineno-0-774"></a><span class="sd">        style: A `PROJECTION_STYLES` key (`&quot;globe&quot;` / `&quot;flat&quot;`).</span>
+<a id="__codelineno-0-774" name="__codelineno-0-774"></a><span class="sd">        style: A `PROJECTION_STYLES` key (`"globe"` / `"flat"`).</span>
 <a id="__codelineno-0-775" name="__codelineno-0-775"></a><span class="sd">        draw_frame: Draw the globe boundary + graticule (globe only).</span>
-<a id="__codelineno-0-776" name="__codelineno-0-776"></a><span class="sd">        **overrides: Override the style&#39;s `center_lat` / `center_lon` /</span>
+<a id="__codelineno-0-776" name="__codelineno-0-776"></a><span class="sd">        **overrides: Override the style's `center_lat` / `center_lon` /</span>
 <a id="__codelineno-0-777" name="__codelineno-0-777"></a><span class="sd">            `graticule_step`.</span>
 <a id="__codelineno-0-778" name="__codelineno-0-778"></a>
 <a id="__codelineno-0-779" name="__codelineno-0-779"></a><span class="sd">    Returns:</span>
 <a id="__codelineno-0-780" name="__codelineno-0-780"></a><span class="sd">        matplotlib.tri.Triangulation: The reprojected, far-hemisphere-masked</span>
-<a id="__codelineno-0-781" name="__codelineno-0-781"></a><span class="sd">            triangulation. `&quot;flat&quot;` returns the unprojected triangulation.</span>
+<a id="__codelineno-0-781" name="__codelineno-0-781"></a><span class="sd">            triangulation. `"flat"` returns the unprojected triangulation.</span>
 <a id="__codelineno-0-782" name="__codelineno-0-782"></a>
 <a id="__codelineno-0-783" name="__codelineno-0-783"></a><span class="sd">    Raises:</span>
 <a id="__codelineno-0-784" name="__codelineno-0-784"></a><span class="sd">        KeyError: If `style` is not a known projection style.</span>
 <a id="__codelineno-0-785" name="__codelineno-0-785"></a><span class="sd">        ImportError: If the globe path is used without `pyproj` (the `[tiles]`</span>
 <a id="__codelineno-0-786" name="__codelineno-0-786"></a><span class="sd">            extra).</span>
-<a id="__codelineno-0-787" name="__codelineno-0-787"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-787" name="__codelineno-0-787"></a><span class="sd">    """</span>
 <a id="__codelineno-0-788" name="__codelineno-0-788"></a>    <span class="k">if</span> <span class="n">style</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROJECTION_STYLES</span><span class="p">:</span>
 <a id="__codelineno-0-789" name="__codelineno-0-789"></a>        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-<a id="__codelineno-0-790" name="__codelineno-0-790"></a>            <span class="sa">f</span><span class="s2">&quot;Unknown projection style </span><span class="si">{</span><span class="n">style</span><span class="si">!r}</span><span class="s2">; available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">PROJECTION_STYLES</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-790" name="__codelineno-0-790"></a>            <span class="sa">f</span><span class="s2">"Unknown projection style </span><span class="si">{</span><span class="n">style</span><span class="si">!r}</span><span class="s2">; available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">PROJECTION_STYLES</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 <a id="__codelineno-0-791" name="__codelineno-0-791"></a>        <span class="p">)</span>
 <a id="__codelineno-0-792" name="__codelineno-0-792"></a>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">PROJECTION_STYLES</span><span class="p">[</span><span class="n">style</span><span class="p">],</span> <span class="o">**</span><span class="n">overrides</span><span class="p">}</span>
 <a id="__codelineno-0-793" name="__codelineno-0-793"></a>    <span class="n">node_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-794" name="__codelineno-0-794"></a>    <span class="n">node_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">node_y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <a id="__codelineno-0-795" name="__codelineno-0-795"></a>    <span class="n">triangles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">triangles</span><span class="p">)</span>
-<a id="__codelineno-0-796" name="__codelineno-0-796"></a>    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">&quot;flat&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-796" name="__codelineno-0-796"></a>    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">"flat"</span><span class="p">:</span>
 <a id="__codelineno-0-797" name="__codelineno-0-797"></a>        <span class="k">return</span> <span class="n">Triangulation</span><span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">triangles</span><span class="p">)</span>
-<a id="__codelineno-0-798" name="__codelineno-0-798"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">&quot;Orthographic (&#39;globe&#39;) mesh projection&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-799" name="__codelineno-0-799"></a>    <span class="n">center_lat</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;center_lat&quot;</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">)</span>
-<a id="__codelineno-0-800" name="__codelineno-0-800"></a>    <span class="n">center_lon</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;center_lon&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<a id="__codelineno-0-798" name="__codelineno-0-798"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">"Orthographic ('globe') mesh projection"</span><span class="p">)</span>
+<a id="__codelineno-0-799" name="__codelineno-0-799"></a>    <span class="n">center_lat</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"center_lat"</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">)</span>
+<a id="__codelineno-0-800" name="__codelineno-0-800"></a>    <span class="n">center_lon</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"center_lon"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <a id="__codelineno-0-801" name="__codelineno-0-801"></a>    <span class="n">x_proj</span><span class="p">,</span> <span class="n">y_proj</span> <span class="o">=</span> <span class="n">orthographic_points</span><span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">)</span>
 <a id="__codelineno-0-802" name="__codelineno-0-802"></a>    <span class="n">tri</span> <span class="o">=</span> <span class="n">Triangulation</span><span class="p">(</span><span class="n">x_proj</span><span class="p">,</span> <span class="n">y_proj</span><span class="p">,</span> <span class="n">triangles</span><span class="p">)</span>
 <a id="__codelineno-0-803" name="__codelineno-0-803"></a>    <span class="n">visible</span> <span class="o">=</span> <span class="n">_visible_hemisphere</span><span class="p">(</span><span class="n">node_x</span><span class="p">,</span> <span class="n">node_y</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">)</span>
@@ -4587,7 +4587,7 @@ extra).</p>
 <a id="__codelineno-0-811" name="__codelineno-0-811"></a>            <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">),</span>
 <a id="__codelineno-0-812" name="__codelineno-0-812"></a>            <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">),</span>
 <a id="__codelineno-0-813" name="__codelineno-0-813"></a>            <span class="n">graticule_lines</span><span class="o">=</span><span class="n">orthographic_graticule</span><span class="p">(</span>
-<a id="__codelineno-0-814" name="__codelineno-0-814"></a>                <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;graticule_step&quot;</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
+<a id="__codelineno-0-814" name="__codelineno-0-814"></a>                <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"graticule_step"</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">)</span>
 <a id="__codelineno-0-815" name="__codelineno-0-815"></a>            <span class="p">),</span>
 <a id="__codelineno-0-816" name="__codelineno-0-816"></a>            <span class="n">clip_artists</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <a id="__codelineno-0-817" name="__codelineno-0-817"></a>        <span class="p">)</span>
@@ -4750,12 +4750,12 @@ apply_projection_frame: Renders the boundary onto an axes.</p>
 <span class="normal"><a href="#__codelineno-0-627">627</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-590" name="__codelineno-0-590"></a><span class="k">def</span><span class="w"> </span><span class="nf">orthographic_boundary</span><span class="p">(</span>
 <a id="__codelineno-0-591" name="__codelineno-0-591"></a>    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">ORTHOGRAPHIC_RADIUS_M</span>
 <a id="__codelineno-0-592" name="__codelineno-0-592"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<a id="__codelineno-0-593" name="__codelineno-0-593"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the orthographic globe&#39;s boundary circle.</span>
+<a id="__codelineno-0-593" name="__codelineno-0-593"></a><span class="w">    </span><span class="sd">"""Return the orthographic globe's boundary circle.</span>
 <a id="__codelineno-0-594" name="__codelineno-0-594"></a>
-<a id="__codelineno-0-595" name="__codelineno-0-595"></a><span class="sd">    The orthographic projection&#39;s visible-hemisphere boundary is always a</span>
-<a id="__codelineno-0-596" name="__codelineno-0-596"></a><span class="sd">    circle of the projection&#39;s radius centred at the origin, independent of</span>
+<a id="__codelineno-0-595" name="__codelineno-0-595"></a><span class="sd">    The orthographic projection's visible-hemisphere boundary is always a</span>
+<a id="__codelineno-0-596" name="__codelineno-0-596"></a><span class="sd">    circle of the projection's radius centred at the origin, independent of</span>
 <a id="__codelineno-0-597" name="__codelineno-0-597"></a><span class="sd">    which point the globe is centred on -- no pyproj call is needed. Pass</span>
-<a id="__codelineno-0-598" name="__codelineno-0-598"></a><span class="sd">    the result as `apply_projection_frame`&#39;s `boundary_xy`.</span>
+<a id="__codelineno-0-598" name="__codelineno-0-598"></a><span class="sd">    the result as `apply_projection_frame`'s `boundary_xy`.</span>
 <a id="__codelineno-0-599" name="__codelineno-0-599"></a>
 <a id="__codelineno-0-600" name="__codelineno-0-600"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-601" name="__codelineno-0-601"></a><span class="sd">        n: Number of vertices around the circle.</span>
@@ -4782,7 +4782,7 @@ apply_projection_frame: Renders the boundary onto an axes.</p>
 <a id="__codelineno-0-622" name="__codelineno-0-622"></a><span class="sd">    See Also:</span>
 <a id="__codelineno-0-623" name="__codelineno-0-623"></a><span class="sd">        orthographic_grid: The projected data this boundary frames.</span>
 <a id="__codelineno-0-624" name="__codelineno-0-624"></a><span class="sd">        apply_projection_frame: Renders the boundary onto an axes.</span>
-<a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="sd">    """</span>
 <a id="__codelineno-0-626" name="__codelineno-0-626"></a>    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 <a id="__codelineno-0-627" name="__codelineno-0-627"></a>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)])</span>
 </code></pre></div></td></tr></table></div>
@@ -5078,13 +5078,13 @@ orthographic_boundary: The matching globe outline.</p>
 <a id="__codelineno-0-633" name="__codelineno-0-633"></a>    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">30.0</span><span class="p">,</span>
 <a id="__codelineno-0-634" name="__codelineno-0-634"></a>    <span class="n">densify</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
 <a id="__codelineno-0-635" name="__codelineno-0-635"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<a id="__codelineno-0-636" name="__codelineno-0-636"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build graticule (meridian/parallel) polylines for an orthographic view.</span>
+<a id="__codelineno-0-636" name="__codelineno-0-636"></a><span class="w">    </span><span class="sd">"""Build graticule (meridian/parallel) polylines for an orthographic view.</span>
 <a id="__codelineno-0-637" name="__codelineno-0-637"></a>
 <a id="__codelineno-0-638" name="__codelineno-0-638"></a><span class="sd">    Generates meridian (constant-longitude) and parallel (constant-latitude)</span>
 <a id="__codelineno-0-639" name="__codelineno-0-639"></a><span class="sd">    lines spaced `step` degrees apart, reprojects them with the same centre</span>
 <a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="sd">    as `orthographic_grid`, and splits each at the visible-hemisphere edge so</span>
 <a id="__codelineno-0-641" name="__codelineno-0-641"></a><span class="sd">    only the visible portion of each line is returned. Pass the result as</span>
-<a id="__codelineno-0-642" name="__codelineno-0-642"></a><span class="sd">    `apply_projection_frame`&#39;s `graticule_lines`.</span>
+<a id="__codelineno-0-642" name="__codelineno-0-642"></a><span class="sd">    `apply_projection_frame`'s `graticule_lines`.</span>
 <a id="__codelineno-0-643" name="__codelineno-0-643"></a>
 <a id="__codelineno-0-644" name="__codelineno-0-644"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-645" name="__codelineno-0-645"></a><span class="sd">        center_lat: Latitude the globe is centred on. Must match the value</span>
@@ -5130,14 +5130,14 @@ orthographic_boundary: The matching globe outline.</p>
 <a id="__codelineno-0-685" name="__codelineno-0-685"></a><span class="sd">    See Also:</span>
 <a id="__codelineno-0-686" name="__codelineno-0-686"></a><span class="sd">        orthographic_grid: The projected data this graticule frames.</span>
 <a id="__codelineno-0-687" name="__codelineno-0-687"></a><span class="sd">        orthographic_boundary: The matching globe outline.</span>
-<a id="__codelineno-0-688" name="__codelineno-0-688"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-688" name="__codelineno-0-688"></a><span class="sd">    """</span>
 <a id="__codelineno-0-689" name="__codelineno-0-689"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="ow">or</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-690" name="__codelineno-0-690"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;step must be a positive, finite number, got </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-691" name="__codelineno-0-691"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">&quot;Orthographic (&#39;globe&#39;) graticule&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-690" name="__codelineno-0-690"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"step must be a positive, finite number, got </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-0-691" name="__codelineno-0-691"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">"Orthographic ('globe') graticule"</span><span class="p">)</span>
 <a id="__codelineno-0-692" name="__codelineno-0-692"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
 <a id="__codelineno-0-693" name="__codelineno-0-693"></a>
 <a id="__codelineno-0-694" name="__codelineno-0-694"></a>    <span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span>
-<a id="__codelineno-0-695" name="__codelineno-0-695"></a>        <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-0-695" name="__codelineno-0-695"></a>        <span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
 <a id="__codelineno-0-696" name="__codelineno-0-696"></a>    <span class="p">)</span>
 <a id="__codelineno-0-697" name="__codelineno-0-697"></a>
 <a id="__codelineno-0-698" name="__codelineno-0-698"></a>    <span class="n">lines_lonlat</span> <span class="o">=</span> <span class="p">[]</span>
@@ -5522,7 +5522,7 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders the returned grid.</p>
 <a id="__codelineno-0-331" name="__codelineno-0-331"></a>    <span class="n">center_lat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span>
 <a id="__codelineno-0-332" name="__codelineno-0-332"></a>    <span class="n">center_lon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <a id="__codelineno-0-333" name="__codelineno-0-333"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<a id="__codelineno-0-334" name="__codelineno-0-334"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject a lon/lat grid onto an orthographic (&#39;globe&#39;) view.</span>
+<a id="__codelineno-0-334" name="__codelineno-0-334"></a><span class="w">    </span><span class="sd">"""Reproject a lon/lat grid onto an orthographic ('globe') view.</span>
 <a id="__codelineno-0-335" name="__codelineno-0-335"></a>
 <a id="__codelineno-0-336" name="__codelineno-0-336"></a><span class="sd">    Projects every grid point via pyproj onto a sphere viewed from directly</span>
 <a id="__codelineno-0-337" name="__codelineno-0-337"></a><span class="sd">    above `(center_lat, center_lon)`, and masks out the far (non-visible)</span>
@@ -5536,10 +5536,10 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders the returned grid.</p>
 <a id="__codelineno-0-345" name="__codelineno-0-345"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-346" name="__codelineno-0-346"></a><span class="sd">        lon: Longitudes in degrees, either a 1D vector (paired with a 1D</span>
 <a id="__codelineno-0-347" name="__codelineno-0-347"></a><span class="sd">            `lat` to build a regular grid via `np.meshgrid`) or a 2D array</span>
-<a id="__codelineno-0-348" name="__codelineno-0-348"></a><span class="sd">            already matching `data`&#39;s shape.</span>
+<a id="__codelineno-0-348" name="__codelineno-0-348"></a><span class="sd">            already matching `data`'s shape.</span>
 <a id="__codelineno-0-349" name="__codelineno-0-349"></a><span class="sd">        lat: Latitudes in degrees, same convention as `lon`.</span>
 <a id="__codelineno-0-350" name="__codelineno-0-350"></a><span class="sd">        data: 2D array of values to reproject alongside the grid.</span>
-<a id="__codelineno-0-351" name="__codelineno-0-351"></a><span class="sd">        center_lat: Latitude the globe is centred on (the &quot;camera&quot; points at</span>
+<a id="__codelineno-0-351" name="__codelineno-0-351"></a><span class="sd">        center_lat: Latitude the globe is centred on (the "camera" points at</span>
 <a id="__codelineno-0-352" name="__codelineno-0-352"></a><span class="sd">            this point). Defaults to `90.0` (the North Pole), matching the</span>
 <a id="__codelineno-0-353" name="__codelineno-0-353"></a><span class="sd">            CAMS Arctic-centred style.</span>
 <a id="__codelineno-0-354" name="__codelineno-0-354"></a><span class="sd">        center_lon: Longitude the globe is centred on. Defaults to `0.0`.</span>
@@ -5578,8 +5578,8 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders the returned grid.</p>
 <a id="__codelineno-0-387" name="__codelineno-0-387"></a><span class="sd">        orthographic_boundary: The matching globe outline for this centre.</span>
 <a id="__codelineno-0-388" name="__codelineno-0-388"></a><span class="sd">        orthographic_graticule: Matching meridian/parallel lines.</span>
 <a id="__codelineno-0-389" name="__codelineno-0-389"></a><span class="sd">        cleopatra.styling.colors.alpha_scaled_mesh: Renders the returned grid.</span>
-<a id="__codelineno-0-390" name="__codelineno-0-390"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-391" name="__codelineno-0-391"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">&quot;Orthographic (&#39;globe&#39;) projection&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-390" name="__codelineno-0-390"></a><span class="sd">    """</span>
+<a id="__codelineno-0-391" name="__codelineno-0-391"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">"Orthographic ('globe') projection"</span><span class="p">)</span>
 <a id="__codelineno-0-392" name="__codelineno-0-392"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
 <a id="__codelineno-0-393" name="__codelineno-0-393"></a>
 <a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="n">lon_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -5589,12 +5589,12 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders the returned grid.</p>
 <a id="__codelineno-0-398" name="__codelineno-0-398"></a>        <span class="n">lon_arr</span><span class="p">,</span> <span class="n">lat_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_arr</span><span class="p">,</span> <span class="n">lat_arr</span><span class="p">)</span>
 <a id="__codelineno-0-399" name="__codelineno-0-399"></a>    <span class="k">if</span> <span class="n">lon_arr</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">data_arr</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">lat_arr</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">data_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
 <a id="__codelineno-0-400" name="__codelineno-0-400"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<a id="__codelineno-0-401" name="__codelineno-0-401"></a>            <span class="s2">&quot;lon/lat/data shapes must match (after meshgrid for 1D lon/lat), &quot;</span>
-<a id="__codelineno-0-402" name="__codelineno-0-402"></a>            <span class="sa">f</span><span class="s2">&quot;got lon=</span><span class="si">{</span><span class="n">lon_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, lat=</span><span class="si">{</span><span class="n">lat_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, data=</span><span class="si">{</span><span class="n">data_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>            <span class="s2">"lon/lat/data shapes must match (after meshgrid for 1D lon/lat), "</span>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>            <span class="sa">f</span><span class="s2">"got lon=</span><span class="si">{</span><span class="n">lon_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, lat=</span><span class="si">{</span><span class="n">lat_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, data=</span><span class="si">{</span><span class="n">data_arr</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span>
 <a id="__codelineno-0-403" name="__codelineno-0-403"></a>        <span class="p">)</span>
 <a id="__codelineno-0-404" name="__codelineno-0-404"></a>
 <a id="__codelineno-0-405" name="__codelineno-0-405"></a>    <span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span>
-<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
 <a id="__codelineno-0-407" name="__codelineno-0-407"></a>    <span class="p">)</span>
 <a id="__codelineno-0-408" name="__codelineno-0-408"></a>    <span class="n">x_raw</span><span class="p">,</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon_arr</span><span class="p">,</span> <span class="n">lat_arr</span><span class="p">)</span>
 <a id="__codelineno-0-409" name="__codelineno-0-409"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_raw</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -5891,16 +5891,16 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders with <code>shading="flat"</c
 <a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="n">center_lat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span>
 <a id="__codelineno-0-445" name="__codelineno-0-445"></a>    <span class="n">center_lon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject 1D lon/lat cell-centre vectors to orthographic cell-*edge* coordinates.</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="w">    </span><span class="sd">"""Reproject 1D lon/lat cell-centre vectors to orthographic cell-*edge* coordinates.</span>
 <a id="__codelineno-0-448" name="__codelineno-0-448"></a>
 <a id="__codelineno-0-449" name="__codelineno-0-449"></a><span class="sd">    Companion to `orthographic_grid`: that function reprojects data at cell</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a><span class="sd">    *centres*, matching `pcolormesh`&#39;s `shading=&quot;auto&quot;`/`&quot;nearest&quot;`</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a><span class="sd">    convention -- but the orthographic projection&#39;s extreme local distortion</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a><span class="sd">    *centres*, matching `pcolormesh`'s `shading="auto"`/`"nearest"`</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a><span class="sd">    convention -- but the orthographic projection's extreme local distortion</span>
 <a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="sd">    (longitude lines compress drastically near the projection centre) makes</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="sd">    matplotlib&#39;s automatic centre-to-edge inference unreliable there: most</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="sd">    matplotlib's automatic centre-to-edge inference unreliable there: most</span>
 <a id="__codelineno-0-454" name="__codelineno-0-454"></a><span class="sd">    cells can render as degenerate slivers, silently dropping most of the</span>
 <a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">    grid. This function instead reprojects the cell **edges**, for use with</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">    `shading=&quot;flat&quot;` (matplotlib draws exactly the given quads, inferring</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">    `shading="flat"` (matplotlib draws exactly the given quads, inferring</span>
 <a id="__codelineno-0-457" name="__codelineno-0-457"></a><span class="sd">    nothing) -- the reliable choice for this projection.</span>
 <a id="__codelineno-0-458" name="__codelineno-0-458"></a>
 <a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="sd">    Args:</span>
@@ -5914,7 +5914,7 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders with <code>shading="flat"</c
 <a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="sd">    Returns:</span>
 <a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="sd">        tuple: `(x_edges, y_edges)`, each shaped `(len(lat) + 1, len(lon) + 1)`</span>
 <a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">        -- one more per axis than a `(len(lat), len(lon))` data array, ready</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">        for `ax.pcolormesh(x_edges, y_edges, data, shading=&quot;flat&quot;)`.</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">        for `ax.pcolormesh(x_edges, y_edges, data, shading="flat")`.</span>
 <a id="__codelineno-0-471" name="__codelineno-0-471"></a>
 <a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">    Raises:</span>
 <a id="__codelineno-0-473" name="__codelineno-0-473"></a><span class="sd">        ImportError: If pyproj (the `[tiles]` extra) is not installed.</span>
@@ -5945,8 +5945,8 @@ cleopatra.styling.colors.alpha_scaled_mesh: Renders with <code>shading="flat"</c
 <a id="__codelineno-0-498" name="__codelineno-0-498"></a>
 <a id="__codelineno-0-499" name="__codelineno-0-499"></a><span class="sd">    See Also:</span>
 <a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="sd">        orthographic_grid: The matching cell-centre reprojection for `data`.</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        cleopatra.styling.colors.alpha_scaled_mesh: Renders with `shading=&quot;flat&quot;`.</span>
-<a id="__codelineno-0-502" name="__codelineno-0-502"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        cleopatra.styling.colors.alpha_scaled_mesh: Renders with `shading="flat"`.</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a><span class="sd">    """</span>
 <a id="__codelineno-0-503" name="__codelineno-0-503"></a>    <span class="n">lon_edges_1d</span> <span class="o">=</span> <span class="n">_bin_edges</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
 <a id="__codelineno-0-504" name="__codelineno-0-504"></a>    <span class="n">lat_edges_1d</span> <span class="o">=</span> <span class="n">_bin_edges</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
 <a id="__codelineno-0-505" name="__codelineno-0-505"></a>    <span class="n">lon_e</span><span class="p">,</span> <span class="n">lat_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">lon_edges_1d</span><span class="p">,</span> <span class="n">lat_edges_1d</span><span class="p">)</span>
@@ -6240,11 +6240,11 @@ cleopatra.basemap.geo.add_point_labels: Renders the reprojected points.</p>
 <a id="__codelineno-0-516" name="__codelineno-0-516"></a>    <span class="n">center_lat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span>
 <a id="__codelineno-0-517" name="__codelineno-0-517"></a>    <span class="n">center_lon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
 <a id="__codelineno-0-518" name="__codelineno-0-518"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<a id="__codelineno-0-519" name="__codelineno-0-519"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject scattered lon/lat points onto an orthographic (&#39;globe&#39;) view.</span>
+<a id="__codelineno-0-519" name="__codelineno-0-519"></a><span class="w">    </span><span class="sd">"""Reproject scattered lon/lat points onto an orthographic ('globe') view.</span>
 <a id="__codelineno-0-520" name="__codelineno-0-520"></a>
 <a id="__codelineno-0-521" name="__codelineno-0-521"></a><span class="sd">    The point counterpart to `orthographic_grid`: use this for discrete</span>
 <a id="__codelineno-0-522" name="__codelineno-0-522"></a><span class="sd">    locations -- e.g. city markers for `cleopatra.basemap.geo.add_point_labels` --</span>
-<a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="sd">    rather than a raster grid. A globe&#39;s axes are scaled in projected</span>
+<a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="sd">    rather than a raster grid. A globe's axes are scaled in projected</span>
 <a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="sd">    metres (`ORTHOGRAPHIC_RADIUS_M`), not degrees, so plotting raw lon/lat</span>
 <a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="sd">    values directly on a globe axes collapses every point toward the origin;</span>
 <a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="sd">    reproject with this function first.</span>
@@ -6293,14 +6293,14 @@ cleopatra.basemap.geo.add_point_labels: Renders the reprojected points.</p>
 <a id="__codelineno-0-569" name="__codelineno-0-569"></a><span class="sd">    See Also:</span>
 <a id="__codelineno-0-570" name="__codelineno-0-570"></a><span class="sd">        orthographic_grid: The raster-grid counterpart.</span>
 <a id="__codelineno-0-571" name="__codelineno-0-571"></a><span class="sd">        cleopatra.basemap.geo.add_point_labels: Renders the reprojected points.</span>
-<a id="__codelineno-0-572" name="__codelineno-0-572"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-573" name="__codelineno-0-573"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">&quot;Orthographic (&#39;globe&#39;) point reprojection&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-572" name="__codelineno-0-572"></a><span class="sd">    """</span>
+<a id="__codelineno-0-573" name="__codelineno-0-573"></a>    <span class="n">_require_pyproj</span><span class="p">(</span><span class="s2">"Orthographic ('globe') point reprojection"</span><span class="p">)</span>
 <a id="__codelineno-0-574" name="__codelineno-0-574"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
 <a id="__codelineno-0-575" name="__codelineno-0-575"></a>
 <a id="__codelineno-0-576" name="__codelineno-0-576"></a>    <span class="n">lon_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
 <a id="__codelineno-0-577" name="__codelineno-0-577"></a>    <span class="n">lat_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
 <a id="__codelineno-0-578" name="__codelineno-0-578"></a>    <span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span>
-<a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="n">_ortho_proj4</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">),</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span>
 <a id="__codelineno-0-580" name="__codelineno-0-580"></a>    <span class="p">)</span>
 <a id="__codelineno-0-581" name="__codelineno-0-581"></a>    <span class="n">x_raw</span><span class="p">,</span> <span class="n">y_raw</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon_arr</span><span class="p">,</span> <span class="n">lat_arr</span><span class="p">)</span>
 <a id="__codelineno-0-582" name="__codelineno-0-582"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x_raw</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -6404,19 +6404,19 @@ render must undo it), treating <code>"flat"</code> and <code>None</code> alike a
 <span class="normal"><a href="#__codelineno-0-745">745</a></span>
 <span class="normal"><a href="#__codelineno-0-746">746</a></span>
 <span class="normal"><a href="#__codelineno-0-747">747</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-733" name="__codelineno-0-733"></a><span class="k">def</span><span class="w"> </span><span class="nf">projection_draws_frame</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<a id="__codelineno-0-734" name="__codelineno-0-734"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether a projection `style` draws a frozen boundary/graticule frame.</span>
+<a id="__codelineno-0-734" name="__codelineno-0-734"></a><span class="w">    </span><span class="sd">"""Whether a projection `style` draws a frozen boundary/graticule frame.</span>
 <a id="__codelineno-0-735" name="__codelineno-0-735"></a>
-<a id="__codelineno-0-736" name="__codelineno-0-736"></a><span class="sd">    `&quot;globe&quot;` draws the frame and freezes the axes limits/aspect and hides the</span>
-<a id="__codelineno-0-737" name="__codelineno-0-737"></a><span class="sd">    axis; `&quot;flat&quot;` (identity) and no projection do not touch the axes. Glyphs use</span>
+<a id="__codelineno-0-736" name="__codelineno-0-736"></a><span class="sd">    `"globe"` draws the frame and freezes the axes limits/aspect and hides the</span>
+<a id="__codelineno-0-737" name="__codelineno-0-737"></a><span class="sd">    axis; `"flat"` (identity) and no projection do not touch the axes. Glyphs use</span>
 <a id="__codelineno-0-738" name="__codelineno-0-738"></a><span class="sd">    this to decide whether the current render installs a frame (so a later flat</span>
-<a id="__codelineno-0-739" name="__codelineno-0-739"></a><span class="sd">    render must undo it), treating `&quot;flat&quot;` and `None` alike as flat views.</span>
+<a id="__codelineno-0-739" name="__codelineno-0-739"></a><span class="sd">    render must undo it), treating `"flat"` and `None` alike as flat views.</span>
 <a id="__codelineno-0-740" name="__codelineno-0-740"></a>
 <a id="__codelineno-0-741" name="__codelineno-0-741"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-742" name="__codelineno-0-742"></a><span class="sd">        style: A projection style name, or a falsy value for no projection.</span>
 <a id="__codelineno-0-743" name="__codelineno-0-743"></a>
 <a id="__codelineno-0-744" name="__codelineno-0-744"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-745" name="__codelineno-0-745"></a><span class="sd">        bool: `True` only for a framed style (currently `&quot;globe&quot;`).</span>
-<a id="__codelineno-0-746" name="__codelineno-0-746"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-745" name="__codelineno-0-745"></a><span class="sd">        bool: `True` only for a framed style (currently `"globe"`).</span>
+<a id="__codelineno-0-746" name="__codelineno-0-746"></a><span class="sd">    """</span>
 <a id="__codelineno-0-747" name="__codelineno-0-747"></a>    <span class="k">return</span> <span class="n">style</span> <span class="ow">in</span> <span class="n">_FRAMED_PROJECTION_STYLES</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -6545,7 +6545,7 @@ render must undo it), treating <code>"flat"</code> and <code>None</code> alike a
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "content.tooltips", "search.highlight", "search.suggest", "toc.follow", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
