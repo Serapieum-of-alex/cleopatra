@@ -321,6 +321,24 @@ class TestPlotArray:
             "no positive values should yield None"
         )
 
+    def test_log_vmin_floor_preserves_an_explicit_ticks_spacing(self):
+        """The log vmin floor still fires but leaves a pinned `ticks_spacing` (#339).
+
+        Test scenario:
+            A log plot with a near-zero outlier and an explicit `ticks_spacing`:
+            the outlier is still floored away, but the caller's tick spacing is
+            not recomputed from the new range.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log(), ticks_spacing=100)
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"the outlier should still be floored, got {glyph.im.norm.vmin}"
+        )
+        assert glyph.default_options["ticks_spacing"] == 100, (
+            f"a pinned ticks_spacing must be preserved, got {glyph.default_options['ticks_spacing']}"
+        )
+
     def test_sym_log_set_ticks_labels_without_set_ticklabels(self):
         """`cbar.set_ticks([...])` labels the given positions unaided (#335)."""
         glyph = ArrayGlyph(self._terrain_like())
