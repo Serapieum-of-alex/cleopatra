@@ -3697,9 +3697,10 @@ class ArrayGlyph(GeoMixin, Glyph):
             ):
                 self.default_options["cmap"] = DIVERGING_DEFAULT_CMAP
 
+            self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
             self._apply_log_vmin_floor(
                 arr,
-                vmin_pinned=self._vmin_explicit or "vmin" in kwargs,
+                vmin_pinned=self._vmin_explicit,
                 ticks_spacing_pinned=(
                     "ticks_spacing" in kwargs
                     or "ticks_spacing" in resolved_colorbar
@@ -4543,9 +4544,10 @@ class ArrayGlyph(GeoMixin, Glyph):
             else:
                 self.default_options["ticks_spacing"] = self.ticks_spacing
 
+        self._vmin_explicit = self._vmin_explicit or "vmin" in kwargs
         self._apply_log_vmin_floor(
             self.arr,
-            vmin_pinned=self._vmin_explicit or "vmin" in kwargs,
+            vmin_pinned=self._vmin_explicit,
             ticks_spacing_pinned=(
                 "ticks_spacing" in kwargs or "ticks_spacing" in resolved_colorbar
             ),

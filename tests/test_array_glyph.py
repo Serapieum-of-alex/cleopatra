@@ -292,6 +292,22 @@ class TestPlotArray:
             f"explicit vmin must be honoured, got {glyph.im.norm.vmin}"
         )
 
+    def test_log_vmin_floor_remembers_a_sticky_explicit_vmin(self):
+        """A `vmin` pinned on an earlier plot() stays pinned on a later log plot (#339).
+
+        Test scenario:
+            The glyph's options are sticky; once the caller pins `vmin`, a later
+            plot() with no `vmin` must not let the floor override it.
+        """
+        arr = np.concatenate(([1e-4], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log(), vmin=0.5)
+        assert glyph.im.norm.vmin == pytest.approx(0.5)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(0.5), (
+            f"a previously-pinned vmin should survive a later plot, got {glyph.im.norm.vmin}"
+        )
+
     def test_log_preserves_genuinely_low_spanning_data(self):
         """Data genuinely spread across the decades keeps its low vmin (#339).
 
