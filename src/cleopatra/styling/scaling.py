@@ -391,7 +391,7 @@ class ColorScaling:
         On `ArrayGlyph`, an un-pinned `vmin` is floored at the smallest positive
         value that is not an extreme low outlier (`ArrayGlyph._log_safe_vmin`),
         so a lone near-zero pixel does not drag the bar's decades below the
-        data's bulk (issue #337 / #339); pass an explicit `vmin` to keep the raw
+        data's bulk (issue #339); pass an explicit `vmin` to keep the raw
         minimum.
 
         Examples:

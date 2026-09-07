@@ -2056,6 +2056,12 @@ class ArrayGlyph(GeoMixin, Glyph):
         low end is genuine (its minimum is within those decades) keeps its true
         minimum, so nothing is clipped needlessly.
 
+        This targets a *small fraction* of stray low pixels. Once the low
+        outliers make up more than about `ROBUST_LOWER_PERCENTILE`% of the
+        positive values, the reference percentile itself sinks into them and the
+        floor no longer fires -- for a field with many unmasked near-zero /
+        no-data pixels, mask them or pass an explicit `vmin` instead.
+
         Args:
             arr: The layer's data array (may be masked).
 
