@@ -320,6 +320,31 @@ class TestPlotArray:
         assert ArrayGlyph._log_safe_vmin(np.array([-1.0, 0.0, -5.0])) is None, (
             "no positive values should yield None"
         )
+        assert ArrayGlyph._log_safe_vmin(np.array([-5.0, 1.0, 744.0])) is None, (
+            "a genuine negative should yield None so the log guardrail still fires"
+        )
+
+    def test_log_with_negative_data_still_raises(self):
+        """Genuine negatives keep the log guardrail (steer to sym_log), not masked (#339).
+
+        Test scenario:
+            The vmin floor is derived from positives only; it must not rescue a
+            negative `vmin` into positive range, or `build_log_norm`'s
+            strictly-positive guardrail would be silently suppressed.
+        """
+        arr = np.concatenate(([-5.0], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        with pytest.raises(ValueError, match="strictly-positive"):
+            glyph.plot(color=ColorScaling.log())
+
+    def test_log_rescues_a_lone_zero_pixel(self):
+        """A lone zero among positives is rescued to the positive min, not raised (#339)."""
+        arr = np.concatenate(([0.0], np.arange(1.0, 745.0))).reshape(1, -1)
+        glyph = ArrayGlyph(arr)
+        glyph.plot(color=ColorScaling.log())
+        assert glyph.im.norm.vmin == pytest.approx(1.0), (
+            f"a zero pixel should be rescued to the positive min, got {glyph.im.norm.vmin}"
+        )
 
     def test_log_vmin_floor_preserves_an_explicit_ticks_spacing(self):
         """The log vmin floor still fires but leaves a pinned `ticks_spacing` (#339).

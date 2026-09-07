@@ -2059,10 +2059,16 @@ class ArrayGlyph(GeoMixin, Glyph):
         Args:
             arr: The layer's data array (may be masked).
 
+        Genuine negative data is left for `build_log_norm` to reject: the floor
+        returns `None` so `vmin` stays negative and the norm raises, steering the
+        caller to `sym_log()` rather than silently masking the negatives. A lone
+        exact zero among positives is not negative, so it is still rescued.
+
         Returns:
             float or None: The outlier-safe positive lower bound, or `None` when
-                the array has no positive finite values (the log norm then raises
-                on its own, reporting the real non-positive range).
+                the array has no positive finite values, or when it contains a
+                genuine negative value (the log norm then raises on its own,
+                reporting the real non-positive range).
 
         Examples:
             - A lone near-zero pixel is dropped; the real minimum sets the floor:
@@ -2079,13 +2085,18 @@ class ArrayGlyph(GeoMixin, Glyph):
             values = arr.compressed()
         else:
             values = np.asarray(arr).ravel()
-        positive = values[np.isfinite(values) & (values > 0)]
+        finite = values[np.isfinite(values)]
+        if np.any(finite < 0.0):
+            return None
+        positive = finite[finite > 0.0]
         if positive.size == 0:
             return None
         robust_low = float(np.nanpercentile(positive, ROBUST_LOWER_PERCENTILE))
         cutoff = robust_low / 10.0**LOG_OUTLIER_DECADES
+        # `non_outliers` always contains the maximum (>= robust_low > cutoff), so
+        # it is non-empty whenever `positive` is.
         non_outliers = positive[positive >= cutoff]
-        return float(non_outliers.min()) if non_outliers.size else None
+        return float(non_outliers.min())
 
     def _apply_log_vmin_floor(
         self, arr: np.ndarray, vmin_pinned: bool, ticks_spacing_pinned: bool
