@@ -1351,7 +1351,7 @@ class ArrayGlyph(GeoMixin, Glyph):
             vmax_explicit="vmax" in explicit_keys,
         )
         #: Whether the caller pinned `vmin` themselves. A log scale floors an
-        #: un-pinned `vmin` at a robust positive percentile (see
+        #: un-pinned `vmin` at the smallest positive non-outlier (see
         #: `_log_safe_vmin`); an explicit `vmin` must still win.
         self._vmin_explicit: bool = "vmin" in explicit_keys
         if (
@@ -2101,7 +2101,7 @@ class ArrayGlyph(GeoMixin, Glyph):
     def _apply_log_vmin_floor(
         self, arr: np.ndarray, vmin_pinned: bool, ticks_spacing_pinned: bool
     ) -> None:
-        """Raise an un-pinned `vmin` to a robust positive floor for a log scale.
+        """Raise an un-pinned `vmin` to an outlier-safe positive floor for a log scale.
 
         No-op unless the resolved colour scale is `lognorm` and the caller did
         not pin `vmin`. Otherwise the floor from `_log_safe_vmin` replaces
@@ -2109,6 +2109,10 @@ class ArrayGlyph(GeoMixin, Glyph):
         dragging the log bar's decades below the data's bulk (issue #339); the
         true `vmax` is left untouched and the tick spacing is refreshed unless
         the caller pinned it.
+
+        Scope: applied on this glyph's `plot()` and `animate()` paths only. Other
+        glyphs, and the data-style `norm='log'` preset path (which does not set
+        `color_scale='lognorm'`), do not use this floor.
 
         Args:
             arr: The layer's data array (may be masked).
