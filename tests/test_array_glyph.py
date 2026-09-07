@@ -234,6 +234,45 @@ class TestPlotArray:
         assert array.im.norm.vmin == 1.0, f"vmin should be 1.0, got {array.im.norm.vmin}"
         assert array.im.norm.vmax == 1000.0, f"vmax should be 1000.0, got {array.im.norm.vmax}"
 
+    @staticmethod
+    def _terrain_like() -> np.ndarray:
+        """A signed, long-tailed terrain-like array (most cells near 0, tail to ~740)."""
+        rng = np.random.default_rng(0)
+        return np.concatenate([
+            rng.normal(4.0, 3.0, 6_000),
+            rng.uniform(-24.0, 0.0, 800),
+            rng.uniform(10.0, 50.0, 2_000),
+            rng.uniform(50.0, 744.0, 1_200),
+        ]).reshape(100, 100)
+
+    def test_sym_log_colorbar_is_labelled(self):
+        """A sym_log colour bar labels several ticks, not ~1 of 11 (#335)."""
+        glyph = ArrayGlyph(self._terrain_like())
+        glyph.plot(cmap="terrain", color=ColorScaling.sym_log(threshold=10.0, scale=1.0))
+        labels = [t.get_text() for t in glyph.cbar.ax.get_yticklabels()]
+        labelled = [t for t in labels if t]
+        assert len(labelled) >= 3, f"sym_log bar should label multiple ticks, got {labels}"
+        assert any("-" in t for t in labelled), (
+            f"sym_log bar should keep a signed (negative) label, got {labelled}"
+        )
+
+    def test_log_colorbar_is_labelled(self):
+        """A log colour bar labels several ticks, not ~1 of 11 (#335)."""
+        glyph = ArrayGlyph(np.abs(self._terrain_like()) + 0.5)
+        glyph.plot(cmap="terrain", color=ColorScaling.log())
+        labelled = [t.get_text() for t in glyph.cbar.ax.get_yticklabels() if t.get_text()]
+        assert len(labelled) >= 3, f"log bar should label multiple ticks, got {labelled}"
+
+    def test_sym_log_set_ticks_labels_without_set_ticklabels(self):
+        """`cbar.set_ticks([...])` labels the given positions unaided (#335)."""
+        glyph = ArrayGlyph(self._terrain_like())
+        glyph.plot(cmap="terrain", color=ColorScaling.sym_log(threshold=10.0, scale=1.0))
+        glyph.cbar.set_ticks([-20, -5, 0, 5, 10, 20, 50, 100, 300, 700])
+        labelled = [t.get_text() for t in glyph.cbar.ax.get_yticklabels() if t.get_text()]
+        assert len(labelled) >= 8, (
+            f"set_ticks alone should label the caller's positions, got {labelled}"
+        )
+
     def test_plot_array_display_cell_values(
         self,
         arr: np.ndarray,

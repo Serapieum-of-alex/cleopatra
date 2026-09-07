@@ -7,7 +7,11 @@ import numpy as np
 import pytest
 
 from cleopatra.styling.params import CellValues, Classify, Contour, DataStyle
-from cleopatra.styling.scaling import ColorScaling
+from cleopatra.styling.scaling import (
+    ColorScaling,
+    _log_tick_positions,
+    _symlog_tick_positions,
+)
 
 
 class TestColorScalingToOptions:
@@ -129,6 +133,85 @@ class TestColorScalingBuildNorm:
         opts = ColorScaling.log().to_options()
         assert opts["color_scale"] == "lognorm"
         assert ColorScaling.from_options(opts).kind.name == "LOGNORM"
+
+    def test_sym_log_bar_ticks_are_scale_aware_and_signed(self):
+        """sym_log places decade-aligned bar ticks and keeps negative signs (#335).
+
+        Test scenario:
+            The linear ladder ([-24, 744] here) supplies vmin/vmax, but the bar
+            ticks are the symlog decades within that range, and the formatter
+            labels a negative decade with its sign -- unlike LogFormatter, which
+            blanked non-decades and dropped the sign of -10.
+        """
+        _, cbar_kw = ColorScaling.sym_log(threshold=10.0, scale=1.0).build_norm(
+            np.array([-24.0, 0.0, 744.0])
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert ticks.size >= 2, f"expected several bar ticks, got {ticks.tolist()}"
+        assert ticks.min() >= -24.0, f"tick below vmin: {ticks.tolist()}"
+        assert ticks.max() <= 744.0, f"tick above vmax: {ticks.tolist()}"
+        assert ticks.min() < 0.0, f"a below-zero range should span a negative tick: {ticks.tolist()}"
+        nonzero = ticks[ticks != 0.0]
+        decades = np.log10(np.abs(nonzero))
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
+        fmt = cbar_kw["format"]
+        assert fmt(-10.0) == "-10", f"negative decade must keep its sign, got {fmt(-10.0)!r}"
+        assert fmt(100.0) == "100", f"expected '100', got {fmt(100.0)!r}"
+
+    def test_log_bar_ticks_are_decade_aligned(self):
+        """log places decade bar ticks and a formatter that labels them (#335)."""
+        _, cbar_kw = ColorScaling.log().build_norm(np.array([0.5, 744.0]))
+        ticks = np.asarray(cbar_kw["ticks"])
+        assert ticks.size >= 2, f"expected several bar ticks, got {ticks.tolist()}"
+        assert ticks.min() >= 0.5, f"tick below vmin: {ticks.tolist()}"
+        assert ticks.max() <= 744.0, f"tick above vmax: {ticks.tolist()}"
+        decades = np.log10(ticks)
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
+        assert cbar_kw["format"](10.0) == "10", "log formatter should label a decade"
+
+    def test_non_linear_formatter_labels_arbitrary_positions(self):
+        """The sym_log formatter labels any value, so set_ticks needs no set_ticklabels.
+
+        Test scenario:
+            The formatter is position-agnostic: a caller's non-decade tick (e.g.
+            -5 or 42.5) is labelled with its plain value, which is what makes a
+            later cbar.set_ticks([...]) readable without a paired set_ticklabels.
+        """
+        _, cbar_kw = ColorScaling.sym_log(threshold=10.0).build_norm(
+            np.array([-24.0, 744.0])
+        )
+        fmt = cbar_kw["format"]
+        assert fmt(-5.0) == "-5", f"expected '-5', got {fmt(-5.0)!r}"
+        assert fmt(42.5) == "42.5", f"expected '42.5', got {fmt(42.5)!r}"
+
+    def test_tick_positions_fall_back_to_the_ladder_when_sparse(self):
+        """When no decade lands in range, the helpers return the caller's ladder."""
+        ladder = np.array([1.0, 2.0, 3.0])
+        assert _log_tick_positions(2.0, 5.0, ladder).tolist() == ladder.tolist(), (
+            "log within one decade should fall back to the ladder"
+        )
+        assert _symlog_tick_positions(200.0, 500.0, 10.0, ladder).tolist() == (
+            ladder.tolist()
+        ), "symlog within one decade should fall back to the ladder"
+
+    def test_formatter_normalizes_signed_zero(self):
+        """The tick formatter renders a signed zero as '0', not '-0'."""
+        fmt = ColorScaling.sym_log(threshold=10.0).build_norm(
+            np.array([-24.0, 744.0])
+        )[1]["format"]
+        assert fmt(-0.0) == "0", f"signed zero should render '0', got {fmt(-0.0)!r}"
+        assert fmt(0.0) == "0", f"zero should render '0', got {fmt(0.0)!r}"
+
+    def test_log_ticks_stay_bounded_over_many_decades(self):
+        """A log bar spanning many decades stays a handful of decade ticks, not hundreds."""
+        _, cbar_kw = ColorScaling.log().build_norm(np.array([1e-6, 1e6]))
+        ticks = np.asarray(cbar_kw["ticks"])
+        # LogLocator strides decades on wide ranges (13 decades here -> ~7 ticks); 30
+        # is generous headroom that only guards against an unbounded explosion. The
+        # decade-alignment assertion below is the load-bearing check.
+        assert 2 <= ticks.size <= 30, f"decade set should stay bounded, got {ticks.size}"
+        decades = np.log10(ticks)
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
 
 
 class TestParamGroupsEmitOnlySetFields:
