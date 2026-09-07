@@ -370,8 +370,9 @@ class TestPlotArray:
         """
         arr = np.concatenate(([-5.0], np.arange(1.0, 745.0))).reshape(1, -1)
         glyph = ArrayGlyph(arr)
+        scale = ColorScaling.log()
         with pytest.raises(ValueError, match="strictly-positive"):
-            glyph.plot(color=ColorScaling.log())
+            glyph.plot(color=scale)
 
     def test_log_rescues_a_lone_zero_pixel(self):
         """A lone zero among positives is rescued to the positive min, not raised (#339)."""
