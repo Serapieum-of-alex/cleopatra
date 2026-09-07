@@ -168,7 +168,10 @@ class TestColorScalingBuildNorm:
             sub-scale near-zero decades. With no explicit `threshold`, the norm
             now derives `linthresh` from the range (1% of the peak magnitude),
             and the bar shows only decades near the data's magnitude -- this is a
-            norm-level change (the rendered image), not just the tick labels.
+            norm-level change (the rendered image), not just the tick labels. The
+            `|tick| >= 1` assertion is specific to this large-magnitude range,
+            not a general guarantee -- see
+            `test_sym_log_auto_derivation_on_o1_range_still_shows_sub_scale_decades`.
         """
         norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-24.0, 744.0]))
         assert isinstance(norm, mcolors.SymLogNorm)
@@ -209,6 +212,60 @@ class TestColorScalingBuildNorm:
         assert _auto_linthresh(-24.0, 744.0) == pytest.approx(7.44)
         assert _auto_linthresh(-1000.0, 1000.0) == pytest.approx(10.0)
         assert _auto_linthresh(0.0, 0.0) == 1.0, "all-zero range needs a positive floor"
+
+    def test_sym_log_auto_derivation_flows_through_from_options(self):
+        """The flat `line_threshold=None` option derives `linthresh` too (#337).
+
+        Test scenario:
+            Glyphs reach the norm via `from_options` on their flat option dict,
+            whose `line_threshold` now defaults to `None`. Rebuilding a
+            sym-lognorm scale from a bare `{"color_scale": "sym-lognorm"}` (no
+            `line_threshold`) must derive the threshold from the range, exactly
+            like the `sym_log()` object path -- not fall back to a fixed value.
+        """
+        scaling = ColorScaling.from_options({"color_scale": "sym-lognorm"})
+        assert scaling.line_threshold is None, (
+            "flat default should defer to auto-derivation"
+        )
+        norm, _ = scaling.build_norm(np.array([-24.0, 744.0]))
+        assert norm.linthresh == pytest.approx(_auto_linthresh(-24.0, 744.0)), (
+            f"flat path should derive linthresh, got {norm.linthresh}"
+        )
+
+    def test_sym_log_auto_derivation_on_a_negative_only_range(self):
+        """A negative-only range derives `linthresh` from `|vmin|` (#337).
+
+        Test scenario:
+            `_auto_linthresh` is the peak *magnitude*, so an all-negative range
+            like [-744, -24] must size the band off `|vmin| = 744`, not the
+            near-zero `vmax`.
+        """
+        norm, _ = ColorScaling.sym_log().build_norm(np.array([-744.0, -24.0]))
+        assert norm.linthresh == pytest.approx(7.44), (
+            f"|vmin|=744 should drive linthresh to 7.44, got {norm.linthresh}"
+        )
+
+    def test_sym_log_auto_derivation_on_o1_range_still_shows_sub_scale_decades(self):
+        """An O(1) range straddling zero still shows sub-unit decades (#337).
+
+        Test scenario:
+            The derivation bounds how far the decades reach below the data; it
+            does not pin the smallest decade to the data's scale. For [-5, 5] the
+            1%-of-peak `linthresh` is 0.05, so the bar legitimately still shows
+            sub-unit decades (0.1, 0.01) -- the honest counterpart to the
+            wide-range case, and the limit of the auto-derivation.
+        """
+        norm, cbar_kw = ColorScaling.sym_log().build_norm(np.array([-5.0, 5.0]))
+        assert norm.linthresh == pytest.approx(0.05), (
+            f"1% of peak 5 should be 0.05, got {norm.linthresh}"
+        )
+        ticks = np.asarray(cbar_kw["ticks"])
+        nonzero = ticks[ticks != 0.0]
+        assert np.any(np.abs(nonzero) < 1.0), (
+            f"an O(1) straddle range should still show sub-unit decades, got {ticks.tolist()}"
+        )
+        decades = np.log10(np.abs(nonzero))
+        assert np.allclose(decades, np.round(decades)), f"non-decade ticks: {ticks.tolist()}"
 
     def test_log_bar_ticks_are_decade_aligned(self):
         """log places decade bar ticks and a formatter that labels them (#335)."""
