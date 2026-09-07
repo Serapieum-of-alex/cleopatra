@@ -339,6 +339,9 @@ class TestPlotArray:
         assert ArrayGlyph._log_safe_vmin(np.array([-5.0, 1.0, 744.0])) is None, (
             "a genuine negative should yield None so the log guardrail still fires"
         )
+        assert ArrayGlyph._log_safe_vmin(np.array([0.0, 0.0])) is None, (
+            "all-zero data (no negatives, no positives) should yield None"
+        )
 
     def test_log_with_negative_data_still_raises(self):
         """Genuine negatives keep the log guardrail (steer to sym_log), not masked (#339).
